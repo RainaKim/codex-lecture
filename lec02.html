@@ -96,13 +96,7 @@
 </head>
 <body class="hud-on">
 <div id="wrap"><div id="stage">
-<section class="mk anim">
-          <div class="kick" style="left:3.43%; top:12.18%;">개발자를 위한 Codex — CHAPTER 1</div>
-          <div class="h cover" style="left:3.43%; top:30%;">대화창 답변을<br>작업 자산으로 바꾸기</div>
-          <div class="t mid" style="left:3.43%; top:57%; color:#5B5B5B;">요청 기록 · 사실과 추정 분리 · 결정 질문 · 다음 작업</div>
-          <div class="t mut" style="left:3.43%; top:65%;">2강 · 이론 + 실습 · 약 45분</div>
-          <div class="mark"><b></b>Fast campus</div>
-        </section>
+<section class="mk cover-img anim"><img src="assets/cover02.png" alt="표지"></section>
 <section class="mk anim">
           <div class="lbl">CHAPTER 1</div>
           <div class="kick" style="left:3.43%; top:12.18%;">지난 강의 리캡</div>
@@ -182,13 +176,13 @@ enum으로 정의하세요…
           <div class="t mut" style="left:56.6%; top:24%; font-size:6.5px; font-weight:700; letter-spacing:.05em;">실습하며 기억할 것</div>
           <div style="left:52%; top:29.2%; width:2.35%; aspect-ratio:1; border:1.3px solid #FC1C49; border-radius:50%; background:#FFE5EB;"></div>
           <div class="card" style="left:56.6%; top:28%; width:39.2%; height:9.5%; border-radius:999px;"></div>
-          <div class="t sm" style="left:60%; top:30.8%; font-weight:700;">확인 전까지는 전부 추정이다</div>
+          <div class="t sm" style="left:60%; top:30.8%;"><b>가정하지 말고 무조건 확인하기</b> <span style="color:#9C9C9C; font-size:6.3px;">— 확인 전까지는 전부 추정</span></div>
           <div style="left:52%; top:41.7%; width:2.35%; aspect-ratio:1; border:1.3px solid #FC1C49; border-radius:50%; background:#FFE5EB;"></div>
           <div class="card" style="left:56.6%; top:40.5%; width:39.2%; height:9.5%; border-radius:999px;"></div>
-          <div class="t sm" style="left:60%; top:43.3%; font-weight:700;">일반론은 아까워하지 말고 지운다</div>
+          <div class="t sm" style="left:60%; top:43.3%;"><b>일반론은 아까워하지 말고 지우기</b></div>
           <div style="left:52%; top:54.2%; width:2.35%; aspect-ratio:1; border:1.3px solid #FC1C49; border-radius:50%; background:#FFE5EB;"></div>
           <div class="card" style="left:56.6%; top:53%; width:39.2%; height:9.5%; border-radius:999px;"></div>
-          <div class="t sm" style="left:60%; top:55.8%; font-weight:700;">커밋까지 해야 실습이 끝난다</div>
+          <div class="t sm" style="left:60%; top:55.8%;"><b>결정하지 말고 질문으로 남기기</b> <span style="color:#9C9C9C; font-size:6.3px;">— 답은 7강에서</span></div>
           <div class="kstrip" style="left:4.2%; top:79%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:81.6%; width:88%; text-align:center;"><b>따라 치는 실습이 아닌, 분류 기준을 세우는 실습</b></div>
           <div class="mark"><b></b>Fast campus</div>
         </section>
@@ -395,7 +389,7 @@ enum으로 정의하세요…
 <div id="toc"><div class="list" id="tocList"></div></div>
 <script>
 var slides = Array.prototype.slice.call(document.querySelectorAll('#stage .mk'));
-var TITLES = [["01", "대화창 답변을 작업 자산으로 바꾸기"], ["02", "지난 강의 — 4가지 실패 패턴"], ["03", "대화 로그 하나를, 파일 세 개로"], ["04", "agent 답변의 3층 구조"], ["05", "재료는 1강의 실패한 대화"], ["06", "분류 기준"], ["E1", "실습 1"], ["06b", "1,500자에서 6문장으로"], ["E2", "실습 2"], ["07", "추정이 사실 행세를 할 때"], ["08", "사람이 정할 것은 질문으로 남긴다"], ["E3", "실습 3"], ["09", "다음 세션이 이어받을 수 있게"], ["E4", "실습 4"], ["10", "대화창에서 repo로"], ["11", "루프에서 오늘의 위치"], ["12", "기록을 남겼으니, 이제 경계를 정할 차례"]];
+var TITLES = [["01", "표지"], ["02", "지난 강의 — 4가지 실패 패턴"], ["03", "대화 로그 하나를, 파일 세 개로"], ["04", "agent 답변의 3층 구조"], ["05", "재료는 1강의 실패한 대화"], ["06", "분류 기준"], ["E1", "실습 1"], ["06b", "1,500자에서 6문장으로"], ["E2", "실습 2"], ["07", "추정이 사실 행세를 할 때"], ["08", "사람이 정할 것은 질문으로 남긴다"], ["E3", "실습 3"], ["09", "다음 세션이 이어받을 수 있게"], ["E4", "실습 4"], ["10", "대화창에서 repo로"], ["11", "루프에서 오늘의 위치"], ["12", "기록을 남겼으니, 이제 경계를 정할 차례"]];
 var N = slides.length, cur = -1, hudT = null;
 var ctr = document.getElementById('ctr'), toc = document.getElementById('toc');
 
