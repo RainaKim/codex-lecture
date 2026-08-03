@@ -48,8 +48,8 @@ MOCKS = {
 </ol>
 <p class="gray">프로젝트 구조를 공유해 주시면 더 구체적으로 도와드릴 수 있어요.</p>'''),
 
-  # 데모 ① — 설명 붙여서: payments.ts:88 + 정책 3개
-  'mock-ctx': page('주문 상태 처리 개선해줘', 'repo 구조 · 상태 5개 · 정책 3줄', '''
+  # 데모 ① 세션 A — 컨텍스트 붙여서: payments.ts:88 + 정책 3개
+  'mock-ctx': page('주문 상태 처리 개선해줘', '1,500자 컨텍스트 · 상태 5개 · 정책 3줄 · 완료 조건', '''
 <p><span class="mono">order-ops</span> 구조 기준으로 수정 지점을 정리했어요.</p>
 <ol>
 <li><span class="hl">payments.ts:88</span> — 결제 실패 시 주문을 삭제하지 말고 <span class="mono">payment_failed</span>로 보존 <span class="gray">(정책 ②)</span></li>
@@ -57,6 +57,17 @@ MOCKS = {
 <li><span class="mono">admin.ts</span> — 실패 주문에 실패 사유 필드 노출 <span class="gray">(정책 ③)</span></li>
 </ol>
 <p class="gray">원하시면 payments.ts부터 수정 diff를 만들어 드릴게요.</p>'''),
+
+  # 데모 ① 세션 B — 새 세션, "어제 정한 대로" → 모름 + 같은 질문 반복
+  'mock-sessb': page('어제 정한 대로 결제 실패 처리 이어서 해줘', None, '''
+<p><span class="hl">이전 대화 내용은 확인할 수 없습니다.</span> 현재 코드 기준으로 다시 정리했습니다.</p>
+<p>진행하려면 다음을 먼저 결정해야 합니다.</p>
+<ol>
+<li>결제 실패 주문을 <b>보존</b>할까요, <b>삭제</b>할까요?</li>
+<li>재고는 <b>주문 생성</b>과 <b>결제 성공</b> 중 언제 차감할까요?</li>
+<li>관리자 화면에 실패 사유를 어디까지 노출할까요?</li>
+</ol>
+<p class="gray">참고 — 현재 <span class="mono">OrderStatus</span>는 pending | paid | cancelled 입니다.</p>'''),
 
   # 데모 ② 마지막 답변 — 결론만, 근거 없음 (C3 리캡용)
   'mock-demo2': page('결제 실패 상태 처리해줘', None, '''
