@@ -53,7 +53,7 @@ MOCKS = {
 <p><span class="mono">order-ops</span> 구조 기준으로 수정 지점을 정리했어요.</p>
 <ol>
 <li><span class="hl">payments.ts:88</span> — 결제 실패 시 주문을 삭제하지 말고 <span class="mono">payment_failed</span>로 보존 <span class="gray">(정책 ②)</span></li>
-<li><span class="mono">orders.ts:31</span> — 재고 차감을 주문 생성이 아니라 <b>결제 성공 후</b>로 이동 <span class="gray">(정책 ①)</span></li>
+<li><span class="mono">orders.ts:62</span> — 재고 차감을 주문 생성이 아니라 <b>결제 성공 후</b>로 이동 <span class="gray">(정책 ①)</span></li>
 <li><span class="mono">admin.ts</span> — 실패 주문에 실패 사유 필드 노출 <span class="gray">(정책 ③)</span></li>
 </ol>
 <p class="gray">원하시면 payments.ts부터 수정 diff를 만들어 드릴게요.</p>'''),
