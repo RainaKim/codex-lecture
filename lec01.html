@@ -150,6 +150,24 @@
         </section>
 <section class="mk anim">
           <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">실습 준비</div>
+          <div class="h" style="left:3.43%; top:16.8%;">실습 repo 받기</div>
+          <div class="code" style="left:4.2%; top:32%; width:52%; height:33.5%;"><s># GitHub에서 Use this template → 내 repo 생성</s>
+git clone https://github.com/<b>&lt;내계정&gt;</b>/order-ops.git
+cd order-ops
+npm install
+npm run dev
+<s># → localhost:3000 응답이 오면 준비 끝</s>
+<s># 막히면 README.md 「시작하기」</s></div>
+
+          <div class="anno" style="left:60%; top:35%; width:35.8%;">자세한 안내는 README<span>설치 요구사항 · 실행 확인 · 자주 막히는 지점까지<br>repo에 정리해 뒀습니다</span></div>
+          <div class="anno" style="left:60%; top:51%; width:35.8%; color:#5B5B5B;">오늘은 보기만 하셔도 됩니다<span>직접 손을 움직이는 건 2강부터입니다</span></div>
+
+          <div class="kstrip" style="left:4.2%; top:74%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:76.6%; width:88%; text-align:center;"><b>준비물</b> — Node 20+ · npm 또는 pnpm · VS Code · Codex CLI · ChatGPT Desktop App</div>
+          <div class="mark"><b></b>Fast campus</div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 1</div>
           <div class="kick" style="left:3.43%; top:12.18%;">패턴 01 · 정의</div>
           <div class="n" style="left:3.43%; top:17.6%;">01</div>
           <div class="h" style="left:9.6%; top:16.8%;">매번 재설명</div>
@@ -178,10 +196,25 @@
 <section class="mk anim">
           <div class="lbl">CHAPTER 1</div>
           <div class="kick" style="left:3.43%; top:12.18%;">패턴 01 · 데모</div>
-          <div class="h" style="left:3.43%; top:16.8%;">데모 1</div>
+          <div class="h" style="left:3.43%; top:16.8%;">데모 1 — 같은 요청, 세 번</div>
           <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">LIVE</div>
-          <div class="t sm c" style="left:4.2%; top:44%; width:91.6%; font-weight:700; color:#9C9C9C;">핵심 포인트</div>
-          <div class="t c" style="left:4.2%; top:51%; width:91.6%; font-weight:700; font-size:11.5px;">답이 우리 파일명을 짚는가 · 정책이 반영되는가</div>
+
+          <div class="card g" style="left:4.2%; top:30%; width:91.6%; height:14%;"></div>
+          <div class="t" style="left:6.8%; top:35.2%; width:5%; color:#B3B3B3; font-weight:800; font-size:10px;">①</div>
+          <div class="t sm" style="left:12%; top:33%; width:44%; line-height:1.45;"><b style="color:#000;">완료 조건도 컨텍스트도 없는 요청</b><br><span style="color:#9C9C9C; font-size:6.3px;">“주문 상태 처리 개선해줘” 한 줄만 — 대부분 여기서 시작한다</span></div>
+          <div class="t sm" style="left:60%; top:35.6%; width:34%; color:#5B5B5B;">→ 일반론. <b style="color:#000;">우리 파일명 0개</b></div>
+
+          <div class="card" style="left:4.2%; top:46.5%; width:91.6%; height:14%;"></div>
+          <div class="t" style="left:6.8%; top:51.7%; width:5%; color:#000; font-weight:800; font-size:10px;">②</div>
+          <div class="t sm" style="left:12%; top:49.5%; width:44%; line-height:1.45;"><b style="color:#000;">컨텍스트와 완료 조건을 모두 갖춘 요청</b><br><span style="color:#9C9C9C; font-size:6.3px;">공들여 쓴 1,500자 — repo 구조 · 상태 5개 · 정책 3줄 · 검증 기준</span></div>
+          <div class="t sm" style="left:60%; top:52.1%; width:34%; color:#5B5B5B;">→ <b style="color:#000;">payments.ts:88</b>을 짚는다</div>
+
+          <div class="card" style="left:4.2%; top:63%; width:91.6%; height:14%;"></div>
+          <div class="t" style="left:6.8%; top:68.2%; width:5%; color:#FC1C49; font-weight:800; font-size:10px;">③</div>
+          <div class="t sm" style="left:12%; top:66%; width:44%; line-height:1.45;"><b style="color:#FC1C49;">새 세션 — 그 1,500자가 사라진 상태</b><br><span style="color:#9C9C9C; font-size:6.3px;">요청 문장은 ①과 한 글자도 다르지 않다</span></div>
+          <div class="t sm" style="left:60%; top:68.6%; width:34%; color:#5B5B5B;">→ 다시 일반론. <b style="color:#FC1C49;">①로 원위치</b></div>
+
+          <div class="kstrip" style="left:4.2%; top:80%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.6%; width:88%; text-align:center;"><b>볼 것</b> — ②가 잘 되는 건 이미 안다. 문제는 <b>②를 만드는 비용을 매 세션 다시 낸다</b>는 것</div>
           <div class="mark"><b></b>Fast campus</div>
         </section>
 <section class="mk anim">
@@ -575,11 +608,11 @@
 <div class="edge" style="right:0" onclick="go(1)"></div>
 <a class="hud" id="home" href="index.html">목차</a>
 <div class="hud" id="ttl">1강 · Codex를 써도 일이 안 줄어드는 4가지 패턴</div>
-<div class="hud" id="ctr" onclick="toggleToc()" title="클릭: 슬라이드 목록">1 / 28</div>
+<div class="hud" id="ctr" onclick="toggleToc()" title="클릭: 슬라이드 목록">1 / 29</div>
 <div id="toc"><div class="list" id="tocList"></div></div>
 <script>
 var slides = Array.prototype.slice.call(document.querySelectorAll('#stage .mk'));
-var TITLES = [["01", "표지"], ["02", "잘 되는 요청, 안 되는 요청"], ["03", "4가지 실패 패턴"], ["04", "실패하는 구조 실험"], ["05", "패턴1 매번 재설명"], ["D1", "데모 1"], ["05b", "설명 유무 = 답의 격차"], ["05c", "세션이 바뀌면 원점"], ["C2", "패턴 ② 바로 구현"], ["06", "패턴2 바로 구현"], ["D2", "데모 2"], ["06b", "한 줄 요청 = 파일 3개"], ["06c", "코드에 섞인 결정 3개"], ["C3", "패턴 ③ 검수 불가"], ["07", "패턴3 검수 불가"], ["D3", "데모 3"], ["07b", "답변에 없는 4가지"], ["07c", "3분 생성, 30분 검수"], ["C4", "패턴 ④ 대화창에만 남음"], ["08", "패턴4 대화창에만 남음"], ["D4", "데모 4"], ["08b", "5군데 모두 비어 있음"], ["08c", "대화는 소비, 파일은 자산"], ["09", "4패턴 한 장 요약"], ["10", "기준·경계·증거·기록"], ["11", "패턴 → 해법 → 강의"], ["12", "실패 패턴 진단표"], ["13", "다음: 답변을 자산으로"]];
+var TITLES = [["01", "표지"], ["02", "잘 되는 요청, 안 되는 요청"], ["03", "4가지 실패 패턴"], ["04", "실패하는 구조 실험"], ["04b", "실습 repo 받기"], ["05", "패턴1 매번 재설명"], ["D1", "데모 1 — 같은 요청, 세 번"], ["05b", "설명 유무 = 답의 격차"], ["05c", "세션이 바뀌면 원점"], ["C2", "패턴 ② 바로 구현"], ["06", "패턴2 바로 구현"], ["D2", "데모 2"], ["06b", "한 줄 요청 = 파일 3개"], ["06c", "코드에 섞인 결정 3개"], ["C3", "패턴 ③ 검수 불가"], ["07", "패턴3 검수 불가"], ["D3", "데모 3"], ["07b", "답변에 없는 4가지"], ["07c", "3분 생성, 30분 검수"], ["C4", "패턴 ④ 대화창에만 남음"], ["08", "패턴4 대화창에만 남음"], ["D4", "데모 4"], ["08b", "5군데 모두 비어 있음"], ["08c", "대화는 소비, 파일은 자산"], ["09", "4패턴 한 장 요약"], ["10", "기준·경계·증거·기록"], ["11", "패턴 → 해법 → 강의"], ["12", "실패 패턴 진단표"], ["13", "다음: 답변을 자산으로"]];
 var N = slides.length, cur = -1, hudT = null;
 var ctr = document.getElementById('ctr'), toc = document.getElementById('toc');
 
