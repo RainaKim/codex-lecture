@@ -198,28 +198,18 @@ npm run dev</div>
 <section class="mk anim">
           <div class="lbl">CHAPTER 1</div>
           <div class="kick" style="left:3.43%; top:12.18%;">패턴 01 · 데모</div>
-          <div class="h" style="left:3.43%; top:16.8%;">데모 1 — 세 가지 요청</div>
+          <div class="h" style="left:3.43%; top:16.8%;">데모 1 — 두 번의 세션</div>
           <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">LIVE</div>
 
-          <div class="card g" style="left:4.2%; top:31%; width:91.6%; height:13%;"></div>
-          <div class="t" style="left:6.5%; top:31%; width:5%; height:13%; display:flex; align-items:center; justify-content:center; color:#B3B3B3; font-weight:800; font-size:10px;">①</div>
-          <div class="t sm" style="left:12%; top:31%; width:38%; height:13%; display:flex; align-items:center;"><b style="color:#000;">완료 조건과 컨텍스트 둘 다 없는 요청</b></div>
-          <div class="t sm" style="left:51%; top:31%; width:3%; height:13%; display:flex; align-items:center; justify-content:center; color:#9C9C9C;">→</div>
-          <div class="t sm" style="left:56%; top:31%; width:39%; height:13%; display:flex; align-items:center;"><b style="color:#000;">“주문 상태 처리 개선해줘”</b></div>
+          <div class="bar" style="left:4.2%; top:32%; width:91.6%; height:5.5%;">세션 A · 오늘 — 컨텍스트를 주고 요청</div>
+          <div class="card" style="left:4.2%; top:37.5%; width:91.6%; height:13%; border-radius:0 0 3px 3px;"></div>
+          <div class="t sm" style="left:7%; top:37.5%; width:88%; height:13%; display:flex; align-items:center;"><b style="color:#000;">1,500자 컨텍스트 설명</b>&nbsp;<span style="color:#9C9C9C;">(repo 구조 · 상태 5개 · 정책 3줄 · 완료 조건)</span>&nbsp;<b style="color:#000;">+ “주문 상태 처리 개선해줘”</b></div>
 
-          <div class="card" style="left:4.2%; top:47.5%; width:91.6%; height:13%;"></div>
-          <div class="t" style="left:6.5%; top:47.5%; width:5%; height:13%; display:flex; align-items:center; justify-content:center; color:#000; font-weight:800; font-size:10px;">②</div>
-          <div class="t sm" style="left:12%; top:47.5%; width:38%; height:13%; display:flex; align-items:center;"><b style="color:#000;">컨텍스트와 완료 조건을 모두 갖춘 요청</b></div>
-          <div class="t sm" style="left:51%; top:47.5%; width:3%; height:13%; display:flex; align-items:center; justify-content:center; color:#9C9C9C;">→</div>
-          <div class="t sm" style="left:56%; top:47.5%; width:39%; height:13%; display:flex; align-items:center;"><b style="color:#000;">①번 요청 + 1,500자 컨텍스트 설명</b></div>
+          <div class="bar r" style="left:4.2%; top:57%; width:91.6%; height:5.5%;">세션 B · 내일 — 새 세션에서 다음 작업</div>
+          <div class="card" style="left:4.2%; top:62.5%; width:91.6%; height:13%; border-radius:0 0 3px 3px;"></div>
+          <div class="t sm" style="left:7%; top:62.5%; width:88%; height:13%; display:flex; align-items:center;"><b style="color:#000;">“어제 정한 대로 결제 실패 처리 이어서 해줘”</b>&nbsp;<span style="color:#9C9C9C;">— 컨텍스트는 붙이지 않는다</span></div>
 
-          <div class="card" style="left:4.2%; top:64%; width:91.6%; height:13%;"></div>
-          <div class="t" style="left:6.5%; top:64%; width:5%; height:13%; display:flex; align-items:center; justify-content:center; color:#FC1C49; font-weight:800; font-size:10px;">③</div>
-          <div class="t sm" style="left:12%; top:64%; width:38%; height:13%; display:flex; align-items:center;"><b style="color:#FC1C49;">새 세션을 열고 다시 요청</b></div>
-          <div class="t sm" style="left:51%; top:64%; width:3%; height:13%; display:flex; align-items:center; justify-content:center; color:#9C9C9C;">→</div>
-          <div class="t sm" style="left:56%; top:64%; width:39%; height:13%; display:flex; align-items:center;"><b style="color:#000;">①번과 똑같은 요청</b></div>
-
-          <div class="kstrip" style="left:4.2%; top:81%; width:91.6%; height:7.4%;"></div><div class="kstrip-t c" style="left:6%; top:83.2%; width:88%; text-align:center;"><b>볼 것</b> — ②가 잘 되는 건 이미 안다. 문제는 <b>②를 만드는 비용을 매 세션 다시 낸다</b>는 것</div>
+          <div class="kstrip" style="left:4.2%; top:79%; width:91.6%; height:7.4%;"></div><div class="kstrip-t c" style="left:6%; top:81.2%; width:88%; text-align:center;"><b>볼 것</b> — 세션 A에서 확정한 정책이 세션 B에 남아 있는가</div>
           <div class="mark"><b></b>Fast campus</div>
         </section>
 <section class="mk anim">
@@ -617,7 +607,7 @@ npm run dev</div>
 <div id="toc"><div class="list" id="tocList"></div></div>
 <script>
 var slides = Array.prototype.slice.call(document.querySelectorAll('#stage .mk'));
-var TITLES = [["01", "표지"], ["02", "잘 되는 요청, 안 되는 요청"], ["03", "4가지 실패 패턴"], ["04", "실패하는 구조 실험"], ["04b", "실습 repo 받기"], ["05", "패턴1 매번 재설명"], ["D1", "데모 1 — 세 가지 요청"], ["05b", "설명 유무 = 답의 격차"], ["05c", "세션이 바뀌면 원점"], ["C2", "패턴 ② 바로 구현"], ["06", "패턴2 바로 구현"], ["D2", "데모 2"], ["06b", "한 줄 요청 = 파일 3개"], ["06c", "코드에 섞인 결정 3개"], ["C3", "패턴 ③ 검수 불가"], ["07", "패턴3 검수 불가"], ["D3", "데모 3"], ["07b", "답변에 없는 4가지"], ["07c", "3분 생성, 30분 검수"], ["C4", "패턴 ④ 대화창에만 남음"], ["08", "패턴4 대화창에만 남음"], ["D4", "데모 4"], ["08b", "5군데 모두 비어 있음"], ["08c", "대화는 소비, 파일은 자산"], ["09", "4패턴 한 장 요약"], ["10", "기준·경계·증거·기록"], ["11", "패턴 → 해법 → 강의"], ["12", "실패 패턴 진단표"], ["13", "다음: 답변을 자산으로"]];
+var TITLES = [["01", "표지"], ["02", "잘 되는 요청, 안 되는 요청"], ["03", "4가지 실패 패턴"], ["04", "실패하는 구조 실험"], ["04b", "실습 repo 받기"], ["05", "패턴1 매번 재설명"], ["D1", "데모 1 — 두 번의 세션"], ["05b", "설명 유무 = 답의 격차"], ["05c", "세션이 바뀌면 원점"], ["C2", "패턴 ② 바로 구현"], ["06", "패턴2 바로 구현"], ["D2", "데모 2"], ["06b", "한 줄 요청 = 파일 3개"], ["06c", "코드에 섞인 결정 3개"], ["C3", "패턴 ③ 검수 불가"], ["07", "패턴3 검수 불가"], ["D3", "데모 3"], ["07b", "답변에 없는 4가지"], ["07c", "3분 생성, 30분 검수"], ["C4", "패턴 ④ 대화창에만 남음"], ["08", "패턴4 대화창에만 남음"], ["D4", "데모 4"], ["08b", "5군데 모두 비어 있음"], ["08c", "대화는 소비, 파일은 자산"], ["09", "4패턴 한 장 요약"], ["10", "기준·경계·증거·기록"], ["11", "패턴 → 해법 → 강의"], ["12", "실패 패턴 진단표"], ["13", "다음: 답변을 자산으로"]];
 var N = slides.length, cur = -1, hudT = null;
 var ctr = document.getElementById('ctr'), toc = document.getElementById('toc');
 
