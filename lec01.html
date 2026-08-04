@@ -334,29 +334,30 @@ npm run dev</div>
           <div class="kick" style="left:3.43%; top:12.18%;">패턴 03 · 정의</div>
           <div class="n" style="left:3.43%; top:17.6%;">03</div>
           <div class="h" style="left:9.6%; top:16.8%;">검수 불가</div>
-          <div class="bar r" style="left:4.2%; top:31%; width:38%; height:5.5%;">agent의 답변 — 결론만 있다</div>
-          <div class="card" style="left:4.2%; top:36.5%; width:38%; height:31.5%;"></div>
-          <div class="t sm" style="left:7.6%; top:39.5%; width:2.5%; color:#B3B3B3; font-weight:700;">✓</div>
-          <div class="t sm" style="left:10.4%; top:39.5%; width:29%; line-height:1.35;"><b style="color:#000;">“수정했습니다”</b><br><span style="color:#9C9C9C; font-size:6.2px;">검증 가능한 사실이 아니라 주장이다</span></div>
-          <div class="t sm" style="left:7.6%; top:46.6%; width:2.5%; color:#FC1C49; font-weight:700;">✕</div>
-          <div class="t sm" style="left:10.4%; top:46.6%; width:29%; line-height:1.35;"><b style="color:#FC1C49;">근거 파일 없음</b><br><span style="color:#9C9C9C; font-size:6.2px;">어떤 파일의 몇 번째 줄인지 알 수 없다</span></div>
-          <div class="t sm" style="left:7.6%; top:53.7%; width:2.5%; color:#FC1C49; font-weight:700;">✕</div>
-          <div class="t sm" style="left:10.4%; top:53.7%; width:29%; line-height:1.35;"><b style="color:#FC1C49;">실행 기록 없음</b><br><span style="color:#9C9C9C; font-size:6.2px;">뭘 돌려봤는지, 돌리긴 했는지 알 수 없다</span></div>
-          <div class="t sm" style="left:7.6%; top:60.8%; width:2.5%; color:#FC1C49; font-weight:700;">✕</div>
-          <div class="t sm" style="left:10.4%; top:60.8%; width:29%; line-height:1.35;"><b style="color:#FC1C49;">테스트 결과 없음</b><br><span style="color:#9C9C9C; font-size:6.2px;">통과 여부를 보여줄 유일한 증거가 빠졌다</span></div>
-          <div class="t c" style="left:43.6%; top:44%; width:12.4%; color:#FC1C49; font-weight:700; font-size:9px;">빠진 세 가지는</div>
-          <div class="t c" style="left:43.6%; top:48.5%; width:12.4%; color:#FC1C49; font-weight:700; font-size:9px;">결국 내가 확인한다</div>
-          <div class="bar" style="left:57.6%; top:31%; width:38%; height:5.5%;">이렇게 왔다면 — 바로 확인된다</div>
-          <div class="card g" style="left:57.6%; top:36.5%; width:38%; height:31.5%;"></div>
-          <div class="t sm" style="left:61%; top:39.5%; width:2.5%; color:#B3B3B3; font-weight:700;">✓</div>
-          <div class="t sm" style="left:63.8%; top:39.5%; width:29%; line-height:1.35;"><b style="color:#000;">같은 결론 한 줄 +</b><br><span style="color:#9C9C9C; font-size:6.2px;">아래 세 줄이 붙는 순간 주장이 증거가 된다</span></div>
-          <div class="t sm" style="left:61%; top:46.6%; width:2.5%; color:#B3B3B3; font-weight:700;">✓</div>
-          <div class="t sm" style="left:63.8%; top:46.6%; width:29%; line-height:1.35;"><b style="color:#000;">고친 파일 : 줄 번호</b><br><span style="color:#9C9C9C; font-size:6.2px;">src/payments.ts:42 — diff를 바로 열 수 있다</span></div>
-          <div class="t sm" style="left:61%; top:53.7%; width:2.5%; color:#B3B3B3; font-weight:700;">✓</div>
-          <div class="t sm" style="left:63.8%; top:53.7%; width:29%; line-height:1.35;"><b style="color:#000;">돌린 명령과 출력</b><br><span style="color:#9C9C9C; font-size:6.2px;">npm test -- payments — 그대로 재현할 수 있다</span></div>
-          <div class="t sm" style="left:61%; top:60.8%; width:2.5%; color:#B3B3B3; font-weight:700;">✓</div>
-          <div class="t sm" style="left:63.8%; top:60.8%; width:29%; line-height:1.35;"><b style="color:#000;">통과 개수</b><br><span style="color:#9C9C9C; font-size:6.2px;">5 passed (2 added) — 검수가 3분으로 줄어든다</span></div>
-          <div class="kstrip" style="left:4.2%; top:74%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:76.6%; width:88%; text-align:center;"><b>왜 이럴까</b> — LLM은 “됐습니다”라는 결론을 만드는 데 최적화돼 있다. 근거는 <b>달라고 해야 준다</b> (13강에서 자동으로 받는 법)</div>
+
+          <div class="bar" style="left:4.2%; top:31%; width:35.8%; height:5.5%;">agent가 보고한 것</div>
+          <div class="card g" style="left:4.2%; top:36.5%; width:35.8%; height:31.5%;"></div>
+          <div class="t sm" style="left:7.2%; top:40.5%; width:2.5%; color:#B3B3B3; font-weight:700;">✓</div>
+          <div class="t sm" style="left:10%; top:40.5%; width:27%;"><b style="color:#000;">완료했다고 말한다</b></div>
+          <div class="t sm" style="left:7.2%; top:47.6%; width:2.5%; color:#B3B3B3; font-weight:700;">✓</div>
+          <div class="t sm" style="left:10%; top:47.6%; width:27%;"><b style="color:#000;">고친 파일을 알려준다</b></div>
+          <div class="t sm" style="left:7.2%; top:54.7%; width:2.5%; color:#B3B3B3; font-weight:700;">✓</div>
+          <div class="t sm" style="left:10%; top:54.7%; width:27%;"><b style="color:#000;">테스트가 통과했다고 한다</b></div>
+          <div class="t sm" style="left:7.2%; top:61.8%; width:2.5%; color:#B3B3B3; font-weight:700;">✓</div>
+          <div class="t sm" style="left:10%; top:61.8%; width:27%;"><b style="color:#000;">lint · typecheck도 통과</b></div>
+
+          <div class="t c" style="left:41%; top:45.5%; width:18%; color:#FC1C49; font-weight:700; font-size:8.4px; line-height:1.5;">다 통과했다는데,<br>왜 다시 확인해야 할까</div>
+
+          <div class="bar r" style="left:60%; top:31%; width:35.8%; height:5.5%;">그래도 여전히 모르는 것</div>
+          <div class="card" style="left:60%; top:36.5%; width:35.8%; height:31.5%;"></div>
+          <div class="t sm" style="left:63%; top:39.5%; width:2.5%; color:#FC1C49; font-weight:700;">✕</div>
+          <div class="t sm" style="left:65.8%; top:39.5%; width:28%; line-height:1.35;"><b style="color:#FC1C49;">그 테스트를 누가 썼나</b><br><span style="color:#9C9C9C; font-size:6.2px;">agent가 쓴 테스트로 agent를 채점했다</span></div>
+          <div class="t sm" style="left:63%; top:47.5%; width:2.5%; color:#FC1C49; font-weight:700;">✕</div>
+          <div class="t sm" style="left:65.8%; top:47.5%; width:28%; line-height:1.35;"><b style="color:#FC1C49;">무엇을 통과했나</b><br><span style="color:#9C9C9C; font-size:6.2px;">통과했다는 말만 있고 항목은 없다</span></div>
+          <div class="t sm" style="left:63%; top:55.5%; width:2.5%; color:#FC1C49; font-weight:700;">✕</div>
+          <div class="t sm" style="left:65.8%; top:55.5%; width:28%; line-height:1.35;"><b style="color:#FC1C49;">우리 기준이 그 안에 있나</b><br><span style="color:#9C9C9C; font-size:6.2px;">지켜야 할 것이 테스트에 없으면 통과해도 미검증</span></div>
+
+          <div class="kstrip" style="left:4.2%; top:74%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:76.6%; width:88%; text-align:center;"><b>통과했다는 말은 있는데, 무엇을 통과해야 하는지는 아무도 정하지 않았다</b> — 검증 기준을 지정해서 받는 법은 13강에서 다룬다</div>
           <div class="mark"><b></b>Fast campus</div>
         </section>
 <section class="mk anim">
@@ -371,27 +372,29 @@ npm run dev</div>
 <section class="mk anim">
           <div class="lbl">CHAPTER 1</div>
           <div class="kick" style="left:3.43%; top:12.18%;">패턴 03 · 데모</div>
-          <div class="h" style="left:3.43%; top:16.8%;">답변에 없는 4가지</div>
-          <div class="bar r" style="left:4.2%; top:28%; width:44.6%; height:5.5%;">실제로 받은 답변</div>
-          <div class="card" style="left:4.2%; top:33.5%; width:44.6%; height:38.5%;"></div>
-          <div class="t mid" style="left:7%; top:36.5%; width:39%; line-height:1.5;">“결제 실패 처리를 수정했습니다.<br>이제 정상 동작합니다.”</div>
-          <div style="left:7%; top:49%; width:39%; border-top:1px dashed #c9c9cf;"></div>
-          <div class="t sm" style="left:7%; top:52.5%; color:#FC1C49; font-weight:700;">✕ 어느 파일을?</div>
-          <div class="t sm" style="left:27%; top:52.5%; color:#FC1C49; font-weight:700;">✕ 무엇을 근거로?</div>
-          <div class="t sm" style="left:7%; top:59.5%; color:#FC1C49; font-weight:700;">✕ 뭘 실행했나?</div>
-          <div class="t sm" style="left:27%; top:59.5%; color:#FC1C49; font-weight:700;">✕ 결과는?</div>
-          <div class="bar" style="left:51.2%; top:28%; width:44.6%; height:5.5%;">검수 가능한 형태였다면</div>
-      <div class="card g" style="left:51.2%; top:33.5%; width:44.6%; height:38.5%;"></div>
-              <div class="t mut" style="left:54%; top:36.5%; width:39%;">같은 결론 한 줄 +</div>
-          <div class="t sm" style="left:54%; top:41.5%; width:11%; font-weight:700; color:#5B5B5B;">근거 파일</div>
-          <div class="kchip" style="left:66%; top:40.6%; font-size:6px;">src/payments.ts:42</div>
-          <div class="t sm" style="left:54%; top:48.5%; width:11%; font-weight:700; color:#5B5B5B;">동작 요약</div>
-          <div class="kchip" style="left:66%; top:47.6%; font-size:6px;">실패 시 재고 미복원 → 복원 추가</div>
-          <div class="t sm" style="left:54%; top:55.5%; width:11%; font-weight:700; color:#5B5B5B;">실행 명령</div>
-          <div class="kchip" style="left:66%; top:54.6%; font-size:6px;">npm test -- payments</div>
-          <div class="t sm" style="left:54%; top:62.5%; width:11%; font-weight:700; color:#5B5B5B;">결과</div>
-          <div class="kchip" style="left:66%; top:61.6%; font-size:6px;">5 passed (2 added)</div>
-          <div class="kstrip" style="left:4.2%; top:78%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:80.6%; width:88%; text-align:center;"><b>답변 템플릿</b> — 결론 아래 이 네 줄을 달라고 하면 준다: 근거 파일 · 동작 요약 · 실행 명령 · 결과. 13강에서 자동으로 받는 법을 다룬다</div>
+          <div class="h" style="left:3.43%; top:16.8%;">“통과했습니다”를 받았을 때 물어볼 것</div>
+
+          <div class="card" style="left:4.2%; top:29%; width:91.6%; height:11.5%;"></div>
+          <div class="tag" style="left:6.6%; top:32.2%; width:5.4%; height:5.2%; border-radius:999px;">01</div>
+          <div class="t sm" style="left:14%; top:29%; width:34%; height:11.5%; display:flex; align-items:center;"><b style="color:#000;">그 테스트, 누가 썼나</b></div>
+          <div class="t sm" style="left:50%; top:29%; width:44%; height:11.5%; display:flex; align-items:center; color:#5B5B5B;">agent가 쓴 테스트로 agent를 채점한 건 아닌가</div>
+
+          <div class="card" style="left:4.2%; top:42.5%; width:91.6%; height:11.5%;"></div>
+          <div class="tag" style="left:6.6%; top:45.7%; width:5.4%; height:5.2%; border-radius:999px;">02</div>
+          <div class="t sm" style="left:14%; top:42.5%; width:34%; height:11.5%; display:flex; align-items:center;"><b style="color:#000;">무엇을 통과했나</b></div>
+          <div class="t sm" style="left:50%; top:42.5%; width:44%; height:11.5%; display:flex; align-items:center; color:#5B5B5B;">통과 개수 말고, 검증한 항목이 무엇인지</div>
+
+          <div class="card" style="left:4.2%; top:56%; width:91.6%; height:11.5%;"></div>
+          <div class="tag" style="left:6.6%; top:59.2%; width:5.4%; height:5.2%; border-radius:999px;">03</div>
+          <div class="t sm" style="left:14%; top:56%; width:34%; height:11.5%; display:flex; align-items:center;"><b style="color:#FC1C49;">우리 기준이 그 안에 있나</b></div>
+          <div class="t sm" style="left:50%; top:56%; width:44%; height:11.5%; display:flex; align-items:center; color:#5B5B5B;">지켜야 하는 것 중 테스트에 없는 것</div>
+
+          <div class="card" style="left:4.2%; top:69.5%; width:91.6%; height:11.5%;"></div>
+          <div class="tag" style="left:6.6%; top:72.7%; width:5.4%; height:5.2%; border-radius:999px;">04</div>
+          <div class="t sm" style="left:14%; top:69.5%; width:34%; height:11.5%; display:flex; align-items:center;"><b style="color:#000;">통과가 곧 맞다인가</b></div>
+          <div class="t sm" style="left:50%; top:69.5%; width:44%; height:11.5%; display:flex; align-items:center; color:#5B5B5B;">lint · typecheck는 문법을 볼 뿐, 정책은 안 본다</div>
+
+          <div class="t c" style="left:4.2%; top:84%; width:91.6%; color:#FC1C49; font-weight:700; font-size:8.6px;">네 질문에 답이 안 나오면, 검증된 게 아니라 검증했다고 들은 것이다</div>
           <div class="mark"><b></b>Fast campus</div>
         </section>
 <section class="mk anim">
@@ -580,7 +583,7 @@ npm run dev</div>
 <div id="toc"><div class="list" id="tocList"></div></div>
 <script>
 var slides = Array.prototype.slice.call(document.querySelectorAll('#stage .mk'));
-var TITLES = [["01", "표지"], ["02", "잘 되는 요청, 안 되는 요청"], ["03", "4가지 실패 패턴"], ["04", "실패하는 구조 실험"], ["04b", "실습 repo 받기"], ["05", "패턴1 매번 재설명"], ["D1", "데모 1 — 두 번의 세션"], ["05b", "세션이 바뀌면 결정이 사라진다"], ["05c", "세션이 바뀌면 원점"], ["C2", "패턴 ② 바로 구현"], ["06", "패턴2 바로 구현"], ["D2", "데모 2"], ["06c", "diff에서 찾아야 할 세 가지"], ["C3", "패턴 ③ 검수 불가"], ["07", "패턴3 검수 불가"], ["D3", "데모 3"], ["07b", "답변에 없는 4가지"], ["07c", "3분 생성, 30분 검수"], ["C4", "패턴 ④ 대화창에만 남음"], ["08", "패턴4 대화창에만 남음"], ["D4", "데모 4"], ["08b", "5군데 모두 비어 있음"], ["08c", "대화는 소비, 파일은 자산"], ["09", "4패턴 한 장 요약"], ["10", "기준·경계·증거·기록"], ["11", "패턴 → 해법 → 강의"], ["12", "실패 패턴 진단표"], ["13", "다음: 답변을 자산으로"]];
+var TITLES = [["01", "표지"], ["02", "잘 되는 요청, 안 되는 요청"], ["03", "4가지 실패 패턴"], ["04", "실패하는 구조 실험"], ["04b", "실습 repo 받기"], ["05", "패턴1 매번 재설명"], ["D1", "데모 1 — 두 번의 세션"], ["05b", "세션이 바뀌면 결정이 사라진다"], ["05c", "세션이 바뀌면 원점"], ["C2", "패턴 ② 바로 구현"], ["06", "패턴2 바로 구현"], ["D2", "데모 2"], ["06c", "diff에서 찾아야 할 세 가지"], ["C3", "패턴 ③ 검수 불가"], ["07", "패턴3 검수 불가"], ["D3", "데모 3"], ["07b", "“통과했습니다”를 받았을 때 물어볼 것"], ["07c", "3분 생성, 30분 검수"], ["C4", "패턴 ④ 대화창에만 남음"], ["08", "패턴4 대화창에만 남음"], ["D4", "데모 4"], ["08b", "5군데 모두 비어 있음"], ["08c", "대화는 소비, 파일은 자산"], ["09", "4패턴 한 장 요약"], ["10", "기준·경계·증거·기록"], ["11", "패턴 → 해법 → 강의"], ["12", "실패 패턴 진단표"], ["13", "다음: 답변을 자산으로"]];
 var N = slides.length, cur = -1, hudT = null;
 var ctr = document.getElementById('ctr'), toc = document.getElementById('toc');
 
