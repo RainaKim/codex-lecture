@@ -271,13 +271,13 @@ npm run dev</div>
           <div class="t sm c" style="left:4.2%; top:53.5%; width:26.9%; color:#5B5B5B;">“결제 실패 상태 처리해줘”</div>
           <div style="left:33.28%; top:37%; width:26.9%; height:33%; background:#F5F5F5; border:1.3px dashed #B3B3B3; border-radius:4px;"></div>
           <div class="t big c" style="left:33.28%; top:45.5%; width:26.9%; color:#9C9C9C;">계획</div>
-          <div class="t sm c" style="left:33.28%; top:53.5%; width:26.9%; color:#B3B3B3;">묻지 않고 건너뜀</div>
+          <div class="t sm c" style="left:33.28%; top:53.5%; width:26.9%; color:#B3B3B3;">일부만 묻고 지나감</div>
           <div style="left:62.36%; top:37%; width:26.9%; height:33%; background:#fff; border:1px solid #FC1C49; border-radius:4px;"></div>
           <div class="t big c" style="left:62.36%; top:45.5%; width:26.9%; color:#000;">코드</div>
-          <div class="t sm c" style="left:62.36%; top:53.5%; width:26.9%; color:#5B5B5B;">파일 3개 수정 · 테스트 없음</div>
+          <div class="t sm c" style="left:62.36%; top:52.5%; width:26.9%; color:#5B5B5B; line-height:1.5;">계획에 없던 파일까지 수정<br>묻지 않은 결정 다수</div>
           <div class="card" style="left:4.2%; top:82%; width:91.6%; height:9.5%; background:#FFE5EB;"></div>
           <div class="t mid c" style="left:4.2%; top:84.7%; width:91.6%; color:#FC1C49; font-weight:700;">사람이 정해야 할 것을, agent가 정해버린다</div>
-          <div class="kstrip" style="left:4.2%; top:71.5%; width:91.6%; height:7.6%;"></div><div class="kstrip-t c" style="left:6%; top:74.1%; width:88%; text-align:center;"><b>기본 동작</b> — agent는 시키지 않으면 묻지 않고 실행한다. 멈추게 하려면 plan 승인 단계를 직접 넣어야 한다 (3강)</div>
+          <div class="kstrip" style="left:4.2%; top:71.5%; width:91.6%; height:7.6%;"></div><div class="kstrip-t c" style="left:6%; top:74.1%; width:88%; text-align:center;"><b>기본 동작</b> — agent는 명백히 갈리는 것만 묻는다. 묻지 않은 결정은 그대로 코드가 된다 — 어디서 멈출지는 사람이 설계해야 한다 (3강)</div>
           <div class="mark"><b></b>Fast campus</div>
         </section>
 <section class="mk anim">
@@ -286,32 +286,32 @@ npm run dev</div>
           <div class="h" style="left:3.43%; top:16.8%;">데모 2</div>
           <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">LIVE</div>
           <div class="t sm c" style="left:4.2%; top:44%; width:91.6%; font-weight:700; color:#9C9C9C;">핵심 포인트</div>
-          <div class="t c" style="left:4.2%; top:51%; width:91.6%; font-weight:700; font-size:11.5px;">질문을 하는가 · 파일을 몇 개 건드리는가 · 테스트를 돌리는가</div>
+          <div class="t c" style="left:4.2%; top:51%; width:91.6%; font-weight:700; font-size:11.5px;">무엇을 물었는가 · 그리고 <span style="color:#FC1C49;">무엇을 묻지 않고 정했는가</span></div>
           <div class="mark"><b></b>Fast campus</div>
         </section>
 <section class="mk anim">
           <div class="lbl">CHAPTER 1</div>
           <div class="kick" style="left:3.43%; top:12.18%;">패턴 02 · 데모</div>
-          <div class="h" style="left:3.43%; top:16.8%;">한 줄 요청 = 파일 3개</div>
+          <div class="h" style="left:3.43%; top:16.8%;">물어보지 않고 정해진 것들</div>
           <div class="t sm" style="left:3.43%; top:27%; font-weight:700; color:#9C9C9C;">입력</div>
           <div class="kchip" style="left:3.43%; top:31%; font-size:7px;">&gt; 결제 실패 상태 처리해줘</div>
-          <div class="t mut" style="left:3.43%; top:38%;">새 세션 · 컨텍스트 없음 · 12단어</div>
+          <div class="t mut" style="left:3.43%; top:38%;">새 세션 · 컨텍스트 없음</div>
           <div style="left:3.43%; top:45%; width:31%; border-top:1px solid #C9C9CF;"></div>
-          <div class="t sm" style="left:3.43%; top:49.5%; font-weight:700; color:#9C9C9C;">출력</div>
-          <div class="t mid" style="left:3.43%; top:54%; font-weight:700;">파일 3개 · +187줄</div>
-          <div class="t sm" style="left:3.43%; top:61%; color:#5B5B5B;">질문 <b style="color:#FC1C49">0</b> · 테스트 <b style="color:#FC1C49">0</b> · 근거 <b style="color:#FC1C49">0</b></div>
+          <div class="t sm" style="left:3.43%; top:49.5%; font-weight:700; color:#9C9C9C;">결과</div>
+          <div class="t sm" style="left:3.43%; top:54%; width:31%; line-height:1.5;">물어본 결정 — <b style="color:#000;">일부</b><br>묻지 않고 정한 결정 — <b style="color:#FC1C49;">다수</b></div>
+          <div class="t mut" style="left:3.43%; top:65%; width:31%;">테스트 실행 없음</div>
           <div class="card" style="left:40.5%; top:24%; width:55.3%; height:50%;"></div>
           <div class="t sm" style="left:43.2%; top:27%; font-weight:700; color:#9C9C9C;">agent가 수정한 파일 — diff 요약</div>
-          <div class="kchip" style="left:43.2%; top:34%; font-size:6.2px;"><b style="color:#FC1C49">M</b> src/payments/webhook.ts</div>
+          <div class="kchip" style="left:43.2%; top:34%; font-size:6.2px;"><b style="color:#FC1C49">M</b> src/payments.ts</div>
           <div class="t mut" style="left:43.2%; top:39.2%; width:30%;">결제 실패 분기 추가</div>
           <div class="tag" style="left:82%; top:34.5%; width:12%; height:5.6%; border-radius:999px; font-size:6.6px;">① 주문 보존?</div>
-          <div class="kchip" style="left:43.2%; top:45%; font-size:6.2px;"><b style="color:#FC1C49">M</b> src/orders/status.ts</div>
-          <div class="t mut" style="left:43.2%; top:50.2%; width:30%;">payment_failed 전이 추가</div>
+          <div class="kchip" style="left:43.2%; top:45%; font-size:6.2px;"><b style="color:#FC1C49">M</b> src/store.ts</div>
+          <div class="t mut" style="left:43.2%; top:50.2%; width:30%;">payment_failed 상태 추가</div>
           <div class="tag" style="left:82%; top:45.5%; width:12%; height:5.6%; border-radius:999px; font-size:6.6px;">② 재고 차단?</div>
-          <div class="kchip" style="left:43.2%; top:56%; font-size:6.2px;"><b style="color:#FC1C49">M</b> src/admin/orders.tsx</div>
+          <div class="kchip" style="left:43.2%; top:56%; font-size:6.2px;"><b style="color:#FC1C49">M</b> src/admin.ts</div>
           <div class="t mut" style="left:43.2%; top:61.2%; width:30%;">실패 사유 표시 추가</div>
           <div class="tag" style="left:82%; top:56.5%; width:12%; height:5.6%; border-radius:999px; font-size:6.6px;">③ 사유 노출?</div>
-          <div class="kstrip" style="left:4.2%; top:79%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:81.6%; width:88%; text-align:center;"><b>한 줄 요청에서 agent가 스스로 채운 것</b> — 범위(파일 3개) · 정책(결정 ①②③) · 검증(생략). 다음 장에서 이 결정들을 뜯는다</div>
+          <div class="kstrip" style="left:4.2%; top:79%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:81.6%; width:88%; text-align:center;"><b>agent가 스스로 채운 것</b> — 범위 · 정책 · 검증. <b>물어본 건 일부일 뿐</b>, 나머지는 이미 코드가 되어 있다</div>
           <div class="mark"><b></b>Fast campus</div>
         </section>
 <section class="mk anim">
@@ -607,7 +607,7 @@ npm run dev</div>
 <div id="toc"><div class="list" id="tocList"></div></div>
 <script>
 var slides = Array.prototype.slice.call(document.querySelectorAll('#stage .mk'));
-var TITLES = [["01", "표지"], ["02", "잘 되는 요청, 안 되는 요청"], ["03", "4가지 실패 패턴"], ["04", "실패하는 구조 실험"], ["04b", "실습 repo 받기"], ["05", "패턴1 매번 재설명"], ["D1", "데모 1 — 두 번의 세션"], ["05b", "세션이 바뀌면 결정이 사라진다"], ["05c", "세션이 바뀌면 원점"], ["C2", "패턴 ② 바로 구현"], ["06", "패턴2 바로 구현"], ["D2", "데모 2"], ["06b", "한 줄 요청 = 파일 3개"], ["06c", "코드에 섞인 결정 3개"], ["C3", "패턴 ③ 검수 불가"], ["07", "패턴3 검수 불가"], ["D3", "데모 3"], ["07b", "답변에 없는 4가지"], ["07c", "3분 생성, 30분 검수"], ["C4", "패턴 ④ 대화창에만 남음"], ["08", "패턴4 대화창에만 남음"], ["D4", "데모 4"], ["08b", "5군데 모두 비어 있음"], ["08c", "대화는 소비, 파일은 자산"], ["09", "4패턴 한 장 요약"], ["10", "기준·경계·증거·기록"], ["11", "패턴 → 해법 → 강의"], ["12", "실패 패턴 진단표"], ["13", "다음: 답변을 자산으로"]];
+var TITLES = [["01", "표지"], ["02", "잘 되는 요청, 안 되는 요청"], ["03", "4가지 실패 패턴"], ["04", "실패하는 구조 실험"], ["04b", "실습 repo 받기"], ["05", "패턴1 매번 재설명"], ["D1", "데모 1 — 두 번의 세션"], ["05b", "세션이 바뀌면 결정이 사라진다"], ["05c", "세션이 바뀌면 원점"], ["C2", "패턴 ② 바로 구현"], ["06", "패턴2 바로 구현"], ["D2", "데모 2"], ["06b", "물어보지 않고 정해진 것들"], ["06c", "코드에 섞인 결정 3개"], ["C3", "패턴 ③ 검수 불가"], ["07", "패턴3 검수 불가"], ["D3", "데모 3"], ["07b", "답변에 없는 4가지"], ["07c", "3분 생성, 30분 검수"], ["C4", "패턴 ④ 대화창에만 남음"], ["08", "패턴4 대화창에만 남음"], ["D4", "데모 4"], ["08b", "5군데 모두 비어 있음"], ["08c", "대화는 소비, 파일은 자산"], ["09", "4패턴 한 장 요약"], ["10", "기준·경계·증거·기록"], ["11", "패턴 → 해법 → 강의"], ["12", "실패 패턴 진단표"], ["13", "다음: 답변을 자산으로"]];
 var N = slides.length, cur = -1, hudT = null;
 var ctr = document.getElementById('ctr'), toc = document.getElementById('toc');
 
