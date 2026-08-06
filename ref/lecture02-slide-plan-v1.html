@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><title>2강 대화창 답변을 작업 자산으로 — 슬라이드 구성안 v1</title>
+<style>
+  :root{
+    --ink:#111114; --sub:#6b6b73; --line:#e6e6e9;
+    --main:#FC1C49; --main-lt:#FFE5EB; --sub-o:#FFA71B;
+    --g1:#F5F5F5; --g2:#E6E6E6; --d1:#282828; --d2:#5B5B5B;
+    --wf-line:#b3b3b3; --wf-dash:#c9c9cf; --wf-fill:#fafafb; --wf-txt:#6b6b73;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Segoe UI","Noto Sans KR","Apple SD Gothic Neo",sans-serif;
+    background:#f0f0f2; color:var(--ink); line-height:1.55; padding:40px 20px 80px; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1180px; margin:0 auto;}
+
+  /* ── 문서 헤더 ── */
+  .doc-head{background:#0f0f12; color:#fff; border-radius:16px; padding:36px 40px; margin-bottom:28px;}
+  .doc-head .tag{display:inline-block; background:var(--main); border:none;
+    border-radius:999px; padding:4px 15px; font-size:12.5px; letter-spacing:.2px; margin-bottom:14px; font-weight:700;}
+  .doc-head h1{font-size:27px; font-weight:800; letter-spacing:-.4px;}
+  .doc-head p.sub{margin-top:8px; color:#c9c9d2; font-size:14.5px;}
+  .doc-head .meta{display:flex; flex-wrap:wrap; gap:10px 26px; margin-top:18px; font-size:13px; color:#e2e2e8;}
+  .doc-head .meta b{color:#fff; font-weight:700;}
+
+  /* ── 패널 ── */
+  .panel{background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 30px; margin-bottom:28px;}
+  .panel h2{font-size:17px; font-weight:800; margin-bottom:14px; letter-spacing:-.2px;}
+  .flow{display:flex; gap:8px; flex-wrap:wrap;}
+  .flow .blk{flex:1 1 150px; border-radius:10px; padding:12px 14px; border:1px solid var(--line); background:#fafafb;}
+  .flow .blk .t{font-size:11.5px; color:var(--sub); font-weight:600;}
+  .flow .blk .n{font-size:14px; font-weight:800; margin:2px 0;}
+  .flow .blk .s{font-size:12px; color:var(--sub);}
+  .flow .blk.hl{background:var(--main-lt); border-color:#ffc7d4;}
+  table.idx{width:100%; border-collapse:collapse; font-size:13.5px; margin-top:6px;}
+  table.idx th{background:#fafafb; text-align:left; padding:8px 12px; border-bottom:2px solid var(--line); font-size:12.5px; color:var(--sub);}
+  table.idx td{padding:7px 12px; border-bottom:1px solid #f2f2f4; vertical-align:top;}
+  table.idx td.no{color:var(--main); font-weight:800; width:46px;}
+  table.idx td.lay{color:var(--sub); font-size:12px; width:132px;}
+  .note-inline{font-size:12.5px; color:var(--sub); margin-top:12px;}
+  .sw{display:inline-flex; align-items:center; gap:6px; font-size:12px; margin:0 14px 6px 0;}
+  .sw i{width:13px; height:13px; border-radius:3px; display:inline-block; border:1px solid rgba(0,0,0,.12);}
+
+  /* ── 섹션 헤더 ── */
+  .sec-head{display:flex; align-items:center; gap:14px; margin:44px 0 18px; flex-wrap:wrap;}
+  .sec-head .num{background:var(--main); color:#fff; font-weight:800; font-size:13px; border-radius:8px; padding:5px 12px;}
+  .sec-head h2{font-size:20px; font-weight:800; letter-spacing:-.3px;}
+  .sec-head .time{font-size:13px; color:var(--sub);}
+
+  /* ── 슬라이드 카드 ── */
+  .slide{background:#fff; border:1px solid var(--line); border-radius:14px; padding:24px 28px 28px; margin-bottom:22px;}
+  .s-top{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:6px;}
+  .s-num{font-size:12px; font-weight:800; color:#fff; background:#111114; border-radius:6px; padding:3px 9px;}
+  .chip{font-size:11.5px; font-weight:700; border-radius:999px; padding:3px 11px;}
+  .chip.op{background:#f0f0f2; color:#3c3c42;}
+  .chip.p1{background:var(--main-lt); color:#b8143a;}
+  .chip.p2{background:#FFF1DA; color:#9a5b00;}
+  .chip.p3{background:#EDEDF0; color:#3c3c42;}
+  .chip.p4{background:#E4E4E8; color:#282828;}
+  .chip.cl{background:#111114; color:#fff;}
+  .chip.demo{background:var(--main); color:#fff;}
+  .chip.lay{background:#fff; color:var(--sub); border:1px solid var(--line);}
+  .s-time{font-size:12px; color:var(--sub); margin-left:auto;}
+  .slide h3{font-size:18px; font-weight:800; letter-spacing:-.2px; margin-bottom:16px;}
+  .s-body{display:flex; gap:26px; align-items:flex-start; flex-wrap:wrap;}
+  .wf{flex:0 0 560px; max-width:100%;}
+  .wf .cap{font-size:11.5px; color:var(--sub); margin-top:7px;}
+  .txt{flex:1 1 400px; min-width:320px;}
+  .txt h4{font-size:12px; font-weight:800; color:var(--main); letter-spacing:.5px; margin:0 0 7px;}
+  .txt h4:not(:first-child){margin-top:16px;}
+  .copy{background:#fafafb; border:1px solid var(--line); border-left:3px solid var(--main); border-radius:8px; padding:12px 16px; font-size:13.5px;}
+  .copy .t{font-weight:800; font-size:14.5px; margin-bottom:6px;}
+  .copy .st{color:var(--sub); font-size:12.5px; margin-bottom:8px;}
+  .copy ul{margin:4px 0 0 18px;} .copy li{margin:3px 0;}
+  .copy .small{font-size:12px; color:var(--sub); margin-top:8px;}
+  .txt ul.pts{margin-left:18px; font-size:13px; color:#333;}
+  .txt ul.pts li{margin:4px 0;}
+  .memo{font-size:12.5px; color:#4a4a52; background:#fffdf5; border:1px solid #ffe2b0; border-radius:8px; padding:9px 13px;}
+  .memo.red{background:#fff5f7; border-color:#ffc7d4;}
+
+  /* ── 슬라이드 목업: 실제 EMU 좌표를 %로 환산, 실제 팔레트·타입스케일(0.4375×) ──
+     x% = EMU / 12192000 × 100   ·   y% = EMU / 6858000 × 100
+     pt → px = pt × (96/72) × 0.4375                                              */
+  .mk{position:relative; width:100%; aspect-ratio:16/9; background:#F5F5F5;
+     border:1px solid #e3e3e7; overflow:hidden;
+     font-family:-apple-system,"Pretendard","Helvetica Neue",sans-serif; color:#000;}
+  .mk:before,.mk:after{content:""; position:absolute; left:4.204%; width:91.59%; border-top:1px solid #B3B3B3;}
+  .mk:before{top:7.42%;} .mk:after{top:92.51%;}
+  .mk > *{position:absolute; box-sizing:border-box;}
+  .mk .lbl{left:3.43%; top:2.67%; font-size:6.4px; font-weight:700; letter-spacing:.08em; color:#B3B3B3;}
+  .mk .mark{left:3%; bottom:2%; width:33px; height:5.1px; font-size:0; line-height:0;
+            background-image:url(data:image/png;base64,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);
+            background-size:contain; background-repeat:no-repeat; background-position:left bottom; opacity:.9;}
+  .mk .mark b{display:none;}
+  .mk .kick{font-size:9.3px; font-weight:700; color:#9C9C9C; letter-spacing:.02em;}
+  .mk .h{font-size:17.5px; font-weight:800; line-height:1.2; letter-spacing:-.02em;}
+  .mk .h.big{font-size:22.2px;} .mk .h.cover{font-size:25.7px; line-height:1.24;}
+  .mk .h em{color:#FC1C49; font-style:normal;}
+  .mk .card{background:#fff; border-radius:3px;}
+  .mk .card.g{background:#E6E6E6;}
+  .mk .card.k{background:#282828; color:#fff;}
+  .mk .bar{background:#5B5B5B; color:#fff; border-radius:3px 3px 0 0;
+          display:flex; align-items:center; justify-content:center; font-size:10.5px; font-weight:700;}
+  .mk .bar.r{background:#FC1C49;}
+  .mk .tag{background:#FFE5EB; color:#FC1C49; border-radius:3px; display:flex; align-items:center;
+          justify-content:center; font-size:8.2px; font-weight:700; border:.7px solid #FC1C49;}
+  .mk .n{font-size:16.3px; font-weight:800; color:#FC1C49; line-height:1;}
+  .mk .t{font-size:8.2px; line-height:1.5;}
+  .mk .t.mid{font-size:10.5px;} .mk .t.big{font-size:11.7px; font-weight:700;}
+  .mk .t.sm{font-size:7px; color:#5B5B5B;} .mk .t.mut{font-size:7px; color:#9C9C9C;}
+  .mk .t.r{color:#FC1C49;} .mk .t.c{text-align:center;}
+  .mk .shot{background:#EDEDF0; border-radius:3px;}
+  .mk .shot span{position:absolute; left:4px; top:3px; font-size:6px; color:#9A9AA5; letter-spacing:.04em;}
+  .mk .rule{border-top:1px solid #FC1C49;}
+  .mk .dash{border-top:1px dashed #c9c9cf;}
+  .mk table{position:absolute; border-collapse:collapse; font-size:8.2px;}
+  .mk table th{background:#FC1C49; color:#fff; font-weight:700; padding:3px 5px; text-align:center;}
+  .mk table td{background:#fff; padding:3px 6px; border-bottom:1px solid #FC1C49;}
+  .mk table td.k{background:#FFE5EB; color:#FC1C49; font-weight:700; text-align:center; width:16%;}
+  .mk .code{background:#1E1E1E; border-radius:3px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+            font-size:7.6px; line-height:1.62; color:#D8D8DE; padding:9px 11px; white-space:pre;}
+  .mk .code i{color:#569CD6; font-style:normal;}
+  .mk .code b{color:#CE9178; font-weight:400;}
+  .mk .code u{color:#FF5C7A; text-decoration:none;}
+  .mk .code s{color:#6A6A72; text-decoration:none;}
+  .mk .chip5{border:1px solid #C9C9CF; border-radius:999px; display:flex; align-items:center;
+             justify-content:center; font-size:7.4px; color:#5B5B5B; background:#fff;}
+  .mk .lead{border-top:1px solid #B3B3B3;} .mk .lead.r{border-color:#FC1C49;}
+  .mk .dot{width:3.5px; height:3.5px; border-radius:50%; background:#B3B3B3;} .mk .dot.r{background:#FC1C49;}
+  .mk .kchip{background:#EDEDF0; border-radius:3px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+            font-size:6.6px; color:#3c3c42; padding:2.5px 6px; white-space:nowrap;}
+  .mk .kstrip{background:#fafafb; border:1px solid #e3e3e7; border-radius:3px;}
+  .mk .kstrip-t{font-size:7.4px; color:#5B5B5B;} .mk .kstrip-t b{color:#000;}
+  .mk .anno{font-size:11.7px; font-weight:800; line-height:1.3; letter-spacing:-.01em;}
+  .mk .anno.r{color:#FC1C49;} .mk .anno span{display:block; font-size:7px; font-weight:400; color:#9C9C9C; margin-top:2px;}
+  .wf-spec{font-size:11.5px; color:#4a4a52; margin-top:7px; background:#fafafb; border:1px solid var(--line);
+           border-radius:7px; padding:8px 10px; line-height:1.5;}
+</style>
+</head><body><div class="wrap">
+  <div class="doc-head">
+    <span class="tag">PLAN v1.0</span>
+    <h1>2강 — 대화창 답변을 작업 자산으로 바꾸기</h1>
+    <p class="sub">이론 + 실습 · 약 45분 · 총 17장 · 4클립 (10/13/13/8분) · v1.0</p>
+    <div class="meta"><span>정렬: 커리큘럼 정본 §2 2강 · 산출물 지도 §3</span><span>산출물: <b>order-status-request.md · pending-decisions.md · next-actions.md</b></span><span>입력: labs/fixtures/lecture01-transcript.md</span></div>
+  </div>
+
+  <!-- 01 표지 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">01</span><span class="chip op">표지</span><span class="chip lay">텍스트 표지 · 클립 1</span></div>
+    <h3>대화창 답변을 작업 자산으로 바꾸기</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="kick" style="left:3.43%; top:12.18%;">개발자를 위한 Codex — CHAPTER 1</div>
+          <div class="h cover" style="left:3.43%; top:30%;">대화창 답변을<br>작업 자산으로 바꾸기</div>
+          <div class="t mid" style="left:3.43%; top:57%; color:#5B5B5B;">요청 기록 · 사실과 추정 분리 · 결정 질문 · 다음 작업</div>
+          <div class="t mut" style="left:3.43%; top:65%;">2강 · 이론 + 실습 · 약 45분</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">텍스트 표지 — 0강·1강 표지와 같은 톤</div>
+        <div class="wf-spec"><b>제작 명세:</b> 커버 타이포만. 부제가 오늘 산출물 4단계를 예고.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 지난 강 리캡 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">02</span><span class="chip op">리캡</span><span class="chip lay">4카드 + 핑크 바</span></div>
+    <h3>지난 강의 — 4가지 실패 패턴</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">지난 강의 리캡</div>
+          <div class="h" style="left:3.43%; top:16.8%;">지난 강의 — 4가지 실패 패턴</div>
+          <div class="card" style="left:4.204%; top:30%; width:21.189%; height:15%;"></div>
+          <div class="t mut" style="left:6.4%; top:32.6%; font-size:6.5px; font-weight:700;">01</div>
+          <div class="t sm" style="left:6.4%; top:36.8%; width:17%; font-weight:700;">매번 재설명</div>
+          <div class="card" style="left:27.671%; top:30%; width:21.189%; height:15%;"></div>
+          <div class="t mut" style="left:29.9%; top:32.6%; font-size:6.5px; font-weight:700;">02</div>
+          <div class="t sm" style="left:29.9%; top:36.8%; width:17%; font-weight:700;">바로 구현</div>
+          <div class="card" style="left:51.139%; top:30%; width:21.189%; height:15%;"></div>
+          <div class="t mut" style="left:53.4%; top:32.6%; font-size:6.5px; font-weight:700;">03</div>
+          <div class="t sm" style="left:53.4%; top:36.8%; width:17%; font-weight:700;">검수 불가</div>
+          <div class="card" style="left:74.607%; top:30%; width:21.189%; height:15%;"></div>
+          <div class="t mut" style="left:76.8%; top:32.6%; font-size:6.5px; font-weight:700;">04</div>
+          <div class="t sm" style="left:76.8%; top:36.8%; width:17%; font-weight:700;">대화창에만 남음</div>
+          <div class="card" style="left:4.2%; top:53%; width:91.6%; height:11%; border-radius:999px; background:#FFE5EB;"></div>
+          <div class="t mid c" style="left:4.2%; top:56.2%; width:91.6%; color:#FC1C49; font-weight:700;">대화는 소비되지만, 기록으로 남기면 자산이 된다</div>
+          <div class="kstrip" style="left:4.2%; top:76%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:78.6%; width:88%; text-align:center;"><b>네 가지 실패 패턴의 해결 방법</b> — repo에 실패를 기록으로 남기기</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">1강 목차 4카드의 축소 재등장 + 1강 마지막 문장(핑크 필)이 오늘의 출발점</div>
+        <div class="wf-spec"><b>제작 명세:</b> 4카드는 이름만(설명 없이 — 리캡이므로). 핑크 필 문장이 이 장의 주인공.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 오늘의 목표 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">03</span><span class="chip op">오늘의 목표</span><span class="chip lay">코드 카드 → 칩 3</span></div>
+    <h3>대화 로그 하나를, 파일 세 개로</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">오늘의 목표</div>
+          <div class="h" style="left:3.43%; top:16.8%;">대화 로그 하나를, 파일 세 개로</div>
+          <div class="code" style="left:4.2%; top:30%; width:38%; height:36%;"><i>labs/fixtures/</i>
+<i>lecture01-transcript.md</i>
+
+<s># 1강 데모 ①·② 대화 로그</s>
+<s># 약 1,500자 · 답변 2개</s></div>
+          <div class="n c" style="left:44.5%; top:44%; width:9%;">→</div>
+          <div class="kchip" style="left:55.5%; top:31%; width:40%; text-align:center; font-size:7px;">order-status-request.md</div>
+          <div class="t mut" style="left:55.5%; top:38.6%; width:40%; text-align:center;">요청 원문 · 확인된 사실 · 추정</div>
+          <div class="kchip" style="left:55.5%; top:45%; width:40%; text-align:center; font-size:7px;">pending-decisions.md</div>
+          <div class="t mut" style="left:55.5%; top:52.6%; width:40%; text-align:center;">사람이 정해야 할 질문들</div>
+          <div class="kchip" style="left:55.5%; top:59%; width:40%; text-align:center; font-size:7px;">next-actions.md</div>
+          <div class="t mut" style="left:55.5%; top:66.6%; width:40%; text-align:center;">다음 세션의 시작점</div>
+          <div class="kstrip" style="left:4.2%; top:79%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:81.6%; width:88%; text-align:center;"><b>오늘이 끝나면 git log에 이 세 파일의 커밋이 남는다</b> — 대화가 자산이 된 첫 기록</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">입력(대화 로그) → 출력(파일 3개)을 한 장으로 — 산출물을 미리 보여주고 시작</div>
+        <div class="wf-spec"><b>제작 명세:</b> 좌 다크 코드 카드(입력) + 레드 화살표 + 우 코드 칩 3개(출력, 각자 아래 회색 설명 1줄).</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 답변의 3층 구조 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">04</span><span class="chip op">핵심 개념</span><span class="chip lay">3단 스트립</span></div>
+    <h3>agent 답변의 3층 구조</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">핵심 개념</div>
+          <div class="h" style="left:3.43%; top:16.8%;">agent 답변의 3층 구조</div>
+          <div class="card" style="left:4.2%; top:28.5%; width:91.6%; height:13.5%;"></div>
+          <div class="t mut" style="left:7%; top:31%; font-size:6.5px; font-weight:700;">층 1</div>
+          <div class="t sm" style="left:7%; top:35.2%; width:20%; font-weight:700; font-size:8.5px;">확인된 사실</div>
+          <div class="t sm" style="left:30%; top:33%; width:48%; color:#5B5B5B; line-height:1.5;">코드와 실행으로 검증된 문장 —<br>답변에서 가장 적고, 가장 값진 층</div>
+          <div class="kchip" style="left:82%; top:33.8%; width:12%; text-align:center;">→ 기록</div>
+          <div class="card" style="left:4.2%; top:44.5%; width:91.6%; height:13.5%; background:#FFE5EB;"></div>
+          <div class="t mut" style="left:7%; top:47%; font-size:6.5px; font-weight:700; color:#FC1C49;">층 2</div>
+          <div class="t sm" style="left:7%; top:51.2%; width:20%; font-weight:700; font-size:8.5px; color:#FC1C49;">그럴듯한 추정</div>
+          <div class="t sm" style="left:30%; top:49%; width:48%; color:#5B5B5B; line-height:1.5;">검증되지 않은 단정 — 사실처럼 읽히는<br>가장 위험한 층. 여기서 사고가 난다</div>
+          <div class="kchip" style="left:82%; top:49.8%; width:12%; text-align:center; background:#fff; color:#FC1C49; font-weight:700;">→ 질문</div>
+          <div class="card g" style="left:4.2%; top:60.5%; width:91.6%; height:13.5%;"></div>
+          <div class="t mut" style="left:7%; top:63%; font-size:6.5px; font-weight:700;">층 3</div>
+          <div class="t sm" style="left:7%; top:67.2%; width:20%; font-weight:700; font-size:8.5px; color:#5B5B5B;">일반론</div>
+          <div class="t sm" style="left:30%; top:65%; width:48%; color:#5B5B5B; line-height:1.5;">어느 프로젝트에 줘도 맞는 조언 —<br>우리 repo에 더해 주는 것이 없다</div>
+          <div class="kchip" style="left:82%; top:65.8%; width:12%; text-align:center;">→ 삭제</div>
+          <div class="kstrip" style="left:4.2%; top:79%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:81.6%; width:88%; text-align:center;"><b>자산화 = 이 3층을 분리하는 일</b> — 사실은 기록으로, 추정은 질문으로, 일반론은 삭제로</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">2강의 lesson 한 장 — 3층(사실/추정/일반론) + 각 층의 목적지 칩. 추정 층만 핑크</div>
+        <div class="wf-spec"><b>제작 명세:</b> 3단 스트립, 각 행 = 층 라벨 · 이름(8.5px 볼드) · 설명 2행 · 목적지 칩. 추정 행만 핑크 — 이 강의 위험 지점.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 재료 확인 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">05</span><span class="chip op">실습 준비</span><span class="chip lay">코드 카드 + 체크 필</span></div>
+    <h3>재료는 1강의 실패한 대화</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">실습 준비</div>
+          <div class="h" style="left:3.43%; top:16.8%;">재료는 1강의 실패한 대화</div>
+          <div class="code" style="left:4.2%; top:28%; width:42%; height:44%;"><i>lecture01-transcript.md</i>
+
+<s># 데모 ① — 설명 없이</s>
+<b>&gt; 주문 상태 처리 개선해줘</b>
+enum으로 정의하세요…
+상태 머신 패턴을 권장…
+
+<s># 데모 ② — 바로 구현</s>
+<b>&gt; 결제 실패 상태 처리해줘</b>
+구현했습니다. +187줄…</div>
+          <div class="t mut" style="left:56.6%; top:24%; font-size:6.5px; font-weight:700; letter-spacing:.05em;">실습하며 기억할 것</div>
+          <div style="left:52%; top:29.2%; width:2.35%; aspect-ratio:1; border:1.3px solid #FC1C49; border-radius:50%; background:#FFE5EB;"></div>
+          <div class="card" style="left:56.6%; top:28%; width:39.2%; height:9.5%; border-radius:999px;"></div>
+          <div class="t sm" style="left:60%; top:30.8%;"><b>가정하지 말고 무조건 확인하기</b> <span style="color:#9C9C9C; font-size:6.3px;">— 확인 전까지는 전부 추정</span></div>
+          <div style="left:52%; top:41.7%; width:2.35%; aspect-ratio:1; border:1.3px solid #FC1C49; border-radius:50%; background:#FFE5EB;"></div>
+          <div class="card" style="left:56.6%; top:40.5%; width:39.2%; height:9.5%; border-radius:999px;"></div>
+          <div class="t sm" style="left:60%; top:43.3%;"><b>일반론은 아까워하지 말고 지우기</b></div>
+          <div style="left:52%; top:54.2%; width:2.35%; aspect-ratio:1; border:1.3px solid #FC1C49; border-radius:50%; background:#FFE5EB;"></div>
+          <div class="card" style="left:56.6%; top:53%; width:39.2%; height:9.5%; border-radius:999px;"></div>
+          <div class="t sm" style="left:60%; top:55.8%;"><b>결정하지 말고 질문으로 남기기</b> <span style="color:#9C9C9C; font-size:6.3px;">— 답은 7강에서</span></div>
+          <div class="kstrip" style="left:4.2%; top:79%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:81.6%; width:88%; text-align:center;"><b>따라 치는 실습이 아닌, 분류 기준을 세우는 실습</b></div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">transcript 미리보기(다크 카드) + 실습 핵심 포인트 3필</div>
+        <div class="wf-spec"><b>제작 명세:</b> 좌 코드 카드는 transcript 축약본. 우 필 3개는 실습 내내 기억할 포인트 — 준비 체크가 아니다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 판별 기준 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">06</span><span class="chip op">이론</span><span class="chip lay">질문 카드 + 분기 2카드 · 클립 2</span></div>
+    <h3>분류 기준</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">사실 vs 추정</div>
+          <div class="h" style="left:3.43%; top:16.8%;">분류 기준</div>
+          <div class="card" style="left:20%; top:27.5%; width:60%; height:10.5%;"></div>
+          <div class="t mid c" style="left:20%; top:30.5%; width:60%; font-weight:700;">코드나 실행을 통해 확인되었는가?</div>
+          <div class="card" style="left:4.2%; top:43%; width:44.9%; height:17%;"></div>
+          <div class="t sm c" style="left:4.2%; top:46.5%; width:44.9%; font-weight:700; font-size:8.5px;">YES → 사실</div>
+          <div class="t sm c" style="left:4.2%; top:52.5%; width:44.9%; color:#5B5B5B;">order-status-request에 그대로 기록한다</div>
+          <div class="card" style="left:50.9%; top:43%; width:44.9%; height:17%; background:#FFE5EB;"></div>
+          <div class="t sm c" style="left:50.9%; top:46.5%; width:44.9%; font-weight:700; font-size:8.5px; color:#FC1C49;">NO → 추정</div>
+          <div class="t sm c" style="left:50.9%; top:52.5%; width:44.9%; color:#5B5B5B;">추정 라벨을 붙이고, 질문으로 바꾼다</div>
+          <div class="kchip" style="left:4.2%; top:65%; width:29.2%; text-align:center;">payment_failed가 있다?</div>
+          <div class="kchip" style="left:35.4%; top:65%; width:29.2%; text-align:center;">재고는 생성 시 차감된다?</div>
+          <div class="kchip" style="left:66.6%; top:65%; width:29.2%; text-align:center;">실패 사유가 노출된다?</div>
+          <div class="t mut c" style="left:4.2%; top:71.5%; width:91.6%;">transcript의 이 세 문장 — 코드를 열어보기 전까지는 전부 추정이다</div>
+          <div class="kstrip" style="left:4.2%; top:79%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:81.6%; width:88%; text-align:center;"><b>그럴듯함은 기준이 아니다</b> — 확인 여부만이 기준이다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">질문 카드 1 + YES/NO 분기 2카드(NO만 핑크) + 판별 연습 칩 3개</div>
+        <div class="wf-spec"><b>제작 명세:</b> 분기 구조가 한눈에 — 위 질문, 아래 좌우 결과. 칩 3개는 1강 데모에서 나온 실제 문장.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- E1 실습 1 큐 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">E1</span><span class="chip demo">실습 큐</span><span class="chip lay">큐 컴포넌트</span></div>
+    <h3>실습 1</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 2 · 실습</div>
+          <div class="h" style="left:3.43%; top:16.8%;">실습 1</div>
+          <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
+          <div class="t sm c" style="left:4.2%; top:44%; width:91.6%; font-weight:700; color:#9C9C9C;">핵심 포인트</div>
+          <div class="t c" style="left:4.2%; top:51%; width:91.6%; font-weight:700; font-size:11.5px;">일반론을 지운다 — 남는 문장이 몇 개인가</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">1강 데모 큐와 같은 문법 — LIVE 대신 <b>실습</b> 필. 핵심 포인트 한 줄만</div>
+        <div class="wf-spec"><b>제작 명세:</b> 큐 공통 문법. 진행은 강사가 화면 공유로 같이.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06b 실습 1 결과 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">06b</span><span class="chip op">실습 ① 결과</span><span class="chip lay">비교형</span></div>
+    <h3>1,500자에서 6문장으로</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">실습 ① 결과</div>
+          <div class="h" style="left:3.43%; top:16.8%;">1,500자에서 6문장으로</div>
+          <div class="bar" style="left:4.2%; top:31%; width:38%; height:5.5%;">원문 — 약 1,500자</div>
+          <div class="card g" style="left:4.2%; top:36.5%; width:38%; height:30%;"></div>
+          <div class="t sm" style="left:8.2%; top:40%; width:30%; color:#5B5B5B; opacity:.85;">enum으로 정의하세요…</div>
+          <div class="t sm" style="left:8.2%; top:45.5%; width:30%; color:#5B5B5B; opacity:.65;">상태 머신 패턴을 권장…</div>
+          <div class="t sm" style="left:8.2%; top:51%; width:30%; color:#5B5B5B; opacity:.45;">에러 핸들링과 로깅을…</div>
+          <div class="t sm" style="left:8.2%; top:56.5%; width:30%; color:#5B5B5B; opacity:.3;">모범 사례에 따르면…</div>
+          <div class="bar r" style="left:57.6%; top:31%; width:38%; height:5.5%;">남은 것 — 6문장</div>
+          <div class="card" style="left:57.6%; top:36.5%; width:38%; height:30%;"></div>
+          <div class="t sm" style="left:61%; top:40%; width:31%; line-height:1.4;"><b>요청 원문 — 1문장</b><br><span style="color:#9C9C9C; font-size:6.3px;">주문 상태 처리 개선해줘</span></div>
+          <div class="t sm" style="left:61%; top:48.5%; width:31%; line-height:1.4;"><b>우리 repo를 짚은 문장 — 2개</b><br><span style="color:#9C9C9C; font-size:6.3px;">파일명이 들어간 문장만 남는다</span></div>
+          <div class="t sm" style="left:61%; top:57%; width:31%; line-height:1.4;"><b style="color:#FC1C49;">확인 안 된 단정 — 3개</b><br><span style="color:#9C9C9C; font-size:6.3px;">다음 실습의 재료</span></div>
+          <div class="kstrip" style="left:4.2%; top:76%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:78.6%; width:88%; text-align:center;"><b>지운 분량이 곧 일반론의 부피다</b> — 원문 대부분은 어느 프로젝트에 줘도 맞는 말이었다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">좌(원문, 흐려지는 일반론) vs 우(남은 6문장 분류) — 지워진 부피가 메시지</div>
+        <div class="wf-spec"><b>제작 명세:</b> 좌 카드 텍스트는 opacity 그라데이션(사라지는 일반론). 우 카드는 볼드 헤드라인+회색 부연 위계.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- E2 실습 2 큐 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">E2</span><span class="chip demo">실습 큐</span><span class="chip lay">큐 컴포넌트</span></div>
+    <h3>실습 2</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 2 · 실습</div>
+          <div class="h" style="left:3.43%; top:16.8%;">실습 2</div>
+          <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
+          <div class="t sm c" style="left:4.2%; top:44%; width:91.6%; font-weight:700; color:#9C9C9C;">핵심 포인트</div>
+          <div class="t c" style="left:4.2%; top:51%; width:91.6%; font-weight:700; font-size:11.5px;">남은 문장마다 묻는다 — 코드로 확인했는가 → order-status-request.md</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">실습 ② — 사실/추정 태깅 후 첫 파일 작성</div>
+        <div class="wf-spec"><b>제작 명세:</b> 큐 공통 문법.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 진단 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">07</span><span class="chip op">진단</span><span class="chip lay">비교형</span></div>
+    <h3>추정이 사실 행세를 할 때</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">패턴 ②의 정체</div>
+          <div class="h" style="left:3.43%; top:16.8%;">추정이 사실 행세를 할 때</div>
+          <div class="bar" style="left:4.2%; top:31%; width:38%; height:5.5%;">추정을 방치하면</div>
+          <div class="card" style="left:4.2%; top:36.5%; width:38%; height:29%;"></div>
+          <div class="t sm" style="left:7.6%; top:40%; width:2.5%; color:#FC1C49; font-weight:700;">✕</div>
+          <div class="t sm" style="left:10.4%; top:40%; width:29%; line-height:1.35;"><b>agent가 추정을 전제로 구현한다</b><br><span style="color:#9C9C9C; font-size:6.3px;">1강 데모 ② — 질문 0번, +187줄</span></div>
+          <div class="t sm" style="left:7.6%; top:49%; width:2.5%; color:#FC1C49; font-weight:700;">✕</div>
+          <div class="t sm" style="left:10.4%; top:49%; width:29%; line-height:1.35;"><b>정책이 코드에 섞인다</b><br><span style="color:#9C9C9C; font-size:6.3px;">아무도 정하지 않은 규칙이 배포된다</span></div>
+          <div class="t sm" style="left:7.6%; top:58%; width:2.5%; color:#FC1C49; font-weight:700;">✕</div>
+          <div class="t sm" style="left:10.4%; top:58%; width:29%; line-height:1.35;"><b>되돌릴 땐 이미 diff가 크다</b><br><span style="color:#9C9C9C; font-size:6.3px;">검토 비용은 그대로 내 몫</span></div>
+          <div class="bar r" style="left:57.6%; top:31%; width:38%; height:5.5%;">추정에 라벨을 붙이면</div>
+          <div class="card" style="left:57.6%; top:36.5%; width:38%; height:29%;"></div>
+          <div class="t sm" style="left:61%; top:40%; width:2.5%; color:#B3B3B3; font-weight:700;">✓</div>
+          <div class="t sm" style="left:63.8%; top:40%; width:29%; line-height:1.35;"><b>구현 전에 질문이 돌아온다</b><br><span style="color:#9C9C9C; font-size:6.3px;">추정 = 아직 결정이 필요하다는 신호</span></div>
+          <div class="t sm" style="left:61%; top:49%; width:2.5%; color:#B3B3B3; font-weight:700;">✓</div>
+          <div class="t sm" style="left:63.8%; top:49%; width:29%; line-height:1.35;"><b>사람이 정한 다음에 코드가 나온다</b><br><span style="color:#9C9C9C; font-size:6.3px;">순서가 바뀌는 것만으로 사고가 준다</span></div>
+          <div class="t sm" style="left:61%; top:58%; width:2.5%; color:#B3B3B3; font-weight:700;">✓</div>
+          <div class="t sm" style="left:63.8%; top:58%; width:29%; line-height:1.35;"><b>human gate의 씨앗</b><br><span style="color:#9C9C9C; font-size:6.3px;">3강에서 이 지점이 멈춤 조건이 된다</span></div>
+          <div class="kstrip" style="left:4.2%; top:74%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:76.6%; width:88%; text-align:center;"><b>1강 패턴 ②의 정체</b> — agent가 정책을 정한 게 아니라, 우리가 추정을 방치했다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">방치 vs 라벨 — 1강 데모 ②를 원인으로 회수. 볼드/부연 위계(1강 05 문법)</div>
+        <div class="wf-spec"><b>제작 명세:</b> 비교형 + 체크 칼럼 분리. 우측 마지막 항목이 3강 예고를 겸한다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 결정 질문 3카드 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">08</span><span class="chip op">이론</span><span class="chip lay">3카드 · vs 칩 · 클립 3</span></div>
+    <h3>사람이 정할 것은 질문으로 남긴다</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">pending-decisions</div>
+          <div class="h" style="left:3.43%; top:16.8%;">사람이 정할 것은 질문으로 남긴다</div>
+          <div class="card" style="left:4.2%; top:28%; width:29.2%; height:42%;"></div>
+          <div class="tag" style="left:6.6%; top:31%; width:6.4%; height:5.2%; border-radius:999px;">01</div>
+          <div class="t big" style="left:6.6%; top:38%; width:24.4%;">실패 주문을 남길까?</div>
+          <div class="chip5" style="left:6.6%; top:47%; width:10.6%; height:6%;">남긴다</div>
+          <div class="t mut c" style="left:17.4%; top:48.5%; width:2.6%;">vs</div>
+          <div class="chip5" style="left:20.2%; top:47%; width:10.6%; height:6%;">지운다</div>
+          <div class="t mut" style="left:6.6%; top:56%; width:24.4%; line-height:1.45;">CS와 정산이 걸려 있다 —<br>아직 아무도 고르지 않았다</div>
+          <div class="card" style="left:35.4%; top:28%; width:29.2%; height:42%;"></div>
+          <div class="tag" style="left:37.8%; top:31%; width:6.4%; height:5.2%; border-radius:999px;">02</div>
+          <div class="t big" style="left:37.8%; top:38%; width:24.4%;">재고는 언제 차단할까?</div>
+          <div class="chip5" style="left:37.8%; top:47%; width:10.6%; height:6%;">생성 전</div>
+          <div class="t mut c" style="left:48.6%; top:48.5%; width:2.6%;">vs</div>
+          <div class="chip5" style="left:51.4%; top:47%; width:10.6%; height:6%;">결제 후</div>
+          <div class="t mut" style="left:37.8%; top:56%; width:24.4%; line-height:1.45;">정책 ③이 될 자리 —<br>지금은 질문으로만</div>
+          <div class="card" style="left:66.6%; top:28%; width:29.2%; height:42%;"></div>
+          <div class="tag" style="left:69%; top:31%; width:6.4%; height:5.2%; border-radius:999px;">03</div>
+          <div class="t big" style="left:69%; top:38%; width:24.4%;">실패 사유, 어디까지?</div>
+          <div class="chip5" style="left:69%; top:47%; width:10.6%; height:6%;">관리자만</div>
+          <div class="t mut c" style="left:79.8%; top:48.5%; width:2.6%;">vs</div>
+          <div class="chip5" style="left:82.6%; top:47%; width:10.6%; height:6%;">고객까지</div>
+          <div class="t mut" style="left:69%; top:56%; width:24.4%; line-height:1.45;">보안과 CX 사이 —<br>노출 범위는 사람의 결정</div>
+          <div class="kstrip" style="left:4.2%; top:78%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:80.6%; width:88%; text-align:center;"><b>오늘은 정하지 않는다</b> — 질문으로 남기는 것까지가 오늘 몫. 답은 7강에서 정책 문서가 된다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">1강 06c와 같은 3카드 문법 — 단, 이번엔 <b>어느 칩도 선택되지 않은 상태</b>(전부 흰색)가 포인트</div>
+        <div class="wf-spec"><b>제작 명세:</b> 1강 06c의 수미상관. 1강에선 agent가 고른 쪽이 핑크였지만, 여기선 둘 다 흰색 — "아직 아무도 정하지 않았다"가 시각 메시지.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- E3 실습 3 큐 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">E3</span><span class="chip demo">실습 큐</span><span class="chip lay">큐 컴포넌트</span></div>
+    <h3>실습 3</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 3 · 실습</div>
+          <div class="h" style="left:3.43%; top:16.8%;">실습 3</div>
+          <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
+          <div class="t sm c" style="left:4.2%; top:44%; width:91.6%; font-weight:700; color:#9C9C9C;">핵심 포인트</div>
+          <div class="t c" style="left:4.2%; top:51%; width:91.6%; font-weight:700; font-size:11.5px;">질문 3개를 선택지와 함께 — pending-decisions.md</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">실습 ③ — 결정 질문 기록</div>
+        <div class="wf-spec"><b>제작 명세:</b> 큐 공통 문법.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 다음 작업 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">09</span><span class="chip op">이론</span><span class="chip lay">체크 필 3행</span></div>
+    <h3>다음 세션이 이어받을 수 있게</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">next-actions</div>
+          <div class="h" style="left:3.43%; top:16.8%;">다음 세션이 이어받을 수 있게</div>
+          <div style="left:4.2%; top:31.3%; width:2.35%; aspect-ratio:1; border:1.3px solid #FC1C49; border-radius:50%; background:#FFE5EB;"></div>
+          <div class="card" style="left:8.8%; top:28.5%; width:87%; height:10.5%; border-radius:999px;"></div>
+          <div class="t sm" style="left:12.4%; top:31.7%; font-weight:700;">관련 파일 후보 찾기</div>
+          <div class="t sm" style="left:50%; top:31.7%; width:42%; text-align:right; color:#5B5B5B;">orders · payments · admin — 후보와 이유까지</div>
+          <div style="left:4.2%; top:44.3%; width:2.35%; aspect-ratio:1; border:1.3px solid #FC1C49; border-radius:50%; background:#FFE5EB;"></div>
+          <div class="card" style="left:8.8%; top:41.5%; width:87%; height:10.5%; border-radius:999px;"></div>
+          <div class="t sm" style="left:12.4%; top:44.7%; font-weight:700;">현재 동작 표 만들기</div>
+          <div class="t sm" style="left:50%; top:44.7%; width:42%; text-align:right; color:#5B5B5B;">결제 성공 · 실패 · 재고 부족 — 케이스별 상태</div>
+          <div style="left:4.2%; top:57.3%; width:2.35%; aspect-ratio:1; border:1.3px solid #FC1C49; border-radius:50%; background:#FFE5EB;"></div>
+          <div class="card" style="left:8.8%; top:54.5%; width:87%; height:10.5%; border-radius:999px;"></div>
+          <div class="t sm" style="left:12.4%; top:57.7%; font-weight:700;">테스트 누락 케이스 찾기</div>
+          <div class="t sm" style="left:50%; top:57.7%; width:42%; text-align:right; color:#5B5B5B;">지금 테스트가 안 잡는 것들의 목록</div>
+          <div class="kstrip" style="left:4.2%; top:75%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:77.6%; width:88%; text-align:center;"><b>기준은 하나</b> — 새 세션이 이 파일만 읽고 바로 시작할 수 있는가</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">체크 필 3행 — 다음 작업은 "할 일"이 아니라 "이어받을 수 있는 단위"로</div>
+        <div class="wf-spec"><b>제작 명세:</b> 체크 필 문법. 우측 회색이 각 항목의 완료 형태를 설명.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- E4 실습 4 큐 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">E4</span><span class="chip demo">실습 큐</span><span class="chip lay">큐 컴포넌트</span></div>
+    <h3>실습 4</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 3 · 실습</div>
+          <div class="h" style="left:3.43%; top:16.8%;">실습 4</div>
+          <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
+          <div class="t sm c" style="left:4.2%; top:44%; width:91.6%; font-weight:700; color:#9C9C9C;">핵심 포인트</div>
+          <div class="t c" style="left:4.2%; top:51%; width:91.6%; font-weight:700; font-size:11.5px;">next-actions.md까지 쓰고 — 세 파일을 커밋한다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">실습 ④ — 작성 + 커밋. git log에 남는 순간이 이 강의 클라이맥스</div>
+        <div class="wf-spec"><b>제작 명세:</b> 큐 공통 문법.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 Before/After -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">10</span><span class="chip op">오늘의 증거</span><span class="chip lay">비교형 · 클립 4</span></div>
+    <h3>대화창에서 repo로</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">오늘의 증거</div>
+          <div class="h" style="left:3.43%; top:16.8%;">대화창에서 repo로</div>
+          <div class="bar" style="left:4.2%; top:31%; width:38%; height:5.5%;">어제 — 대화창에만</div>
+          <div class="card g" style="left:4.2%; top:36.5%; width:38%; height:28%;"></div>
+          <div class="t sm c" style="left:8%; top:42%; width:30.4%; color:#5B5B5B; opacity:.85;">검색이 안 된다</div>
+          <div class="t sm c" style="left:8%; top:49%; width:30.4%; color:#5B5B5B; opacity:.55;">공유가 안 된다</div>
+          <div class="t sm c" style="left:8%; top:56%; width:30.4%; color:#5B5B5B; opacity:.3;">세션이 끝나면 사라진다</div>
+          <div class="bar r" style="left:57.6%; top:31%; width:38%; height:5.5%;">오늘 — repo에</div>
+          <div class="card" style="left:57.6%; top:36.5%; width:38%; height:28%;"></div>
+          <div class="kchip" style="left:61%; top:40%; width:31.2%; font-size:6.4px;">+ order-status-request.md</div>
+          <div class="kchip" style="left:61%; top:47%; width:31.2%; font-size:6.4px;">+ pending-decisions.md</div>
+          <div class="kchip" style="left:61%; top:54%; width:31.2%; font-size:6.4px;">+ next-actions.md</div>
+          <div class="t sm" style="left:61%; top:60.5%; width:31.2%;"><b style="color:#FC1C49">✓</b> git log에 남았다 — 검색되고, 공유된다</div>
+          <div class="kstrip" style="left:4.2%; top:75%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:77.6%; width:88%; text-align:center;"><b>1강의 빈 슬롯 다섯 칸</b> — 오늘 첫 칸이 채워지기 시작했다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">1강 20(대화는 소비) 좌측 카드의 재등장 vs 오늘의 커밋 — 수미상관</div>
+        <div class="wf-spec"><b>제작 명세:</b> 좌측은 1강과 동일한 페이드 텍스트(기억을 부른다). 우측은 커밋된 파일 칩 3개 + 체크 한 줄.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 루프 위치 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">11</span><span class="chip op">루프</span><span class="chip lay">루프 6칩</span></div>
+    <h3>루프에서 오늘의 위치</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">루프 엔지니어링</div>
+          <div class="h" style="left:3.43%; top:16.8%;">루프에서 오늘의 위치</div>
+          <div class="chip5" style="left:4.2%; top:42%; width:12.6%; height:8%; background:#FFE5EB; border-color:#FC1C49; color:#FC1C49; font-weight:700;">조사</div>
+          <div class="t mut c" style="left:16.8%; top:44.4%; width:3.2%;">→</div>
+          <div class="chip5" style="left:20%; top:42%; width:12.6%; height:8%;">계획</div>
+          <div class="t mut c" style="left:32.6%; top:44.4%; width:3.2%;">→</div>
+          <div class="chip5" style="left:35.8%; top:42%; width:12.6%; height:8%;">구현</div>
+          <div class="t mut c" style="left:48.4%; top:44.4%; width:3.2%;">→</div>
+          <div class="chip5" style="left:51.6%; top:42%; width:12.6%; height:8%;">검증</div>
+          <div class="t mut c" style="left:64.2%; top:44.4%; width:3.2%;">→</div>
+          <div class="chip5" style="left:67.4%; top:42%; width:12.6%; height:8%; background:#FFE5EB; border-color:#FC1C49; color:#FC1C49; font-weight:700;">기록</div>
+          <div class="t mut c" style="left:80%; top:44.4%; width:3.2%;">→</div>
+          <div class="chip5" style="left:83.2%; top:42%; width:12.6%; height:8%;">자동화</div>
+          <div class="t mut c" style="left:4.2%; top:56%; width:91.6%;">오늘 켠 칸 — 조사(transcript 분석)와 기록(파일 3개). 나머지는 아직 꺼져 있다</div>
+          <div class="kstrip" style="left:4.2%; top:75%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:77.6%; width:88%; text-align:center;"><b>구현은 아직 멀었다</b> — 지금은 루프의 왼쪽부터 단단하게 쌓는다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">0강 루프 칩의 재등장 — 조사·기록 2칸만 점등. 매 강 이 지도가 갱신된다</div>
+        <div class="wf-spec"><b>제작 명세:</b> 루프 칩 문법 재사용. 점등 칩만 핑크+레드 — 진행도 표시가 곧 커리큘럼 지도.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 정리 + 예고 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">12</span><span class="chip cl">마무리</span><span class="chip lay">텍스트 + 필 3</span></div>
+    <h3>기록을 남겼으니, 이제 경계를 정할 차례</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">정리 · 다음 강</div>
+          <div class="t mut" style="left:3.43%; top:27%; font-weight:700;">3강</div>
+          <div class="h big" style="left:3.43%; top:32%;">기록을 남겼으니,<br>이제 경계를 정할 차례</div>
+          <div class="t sm" style="left:3.43%; top:56%; width:32%; color:#5B5B5B; line-height:1.55;">어디까지 맡기고 어디서 멈출지 —<br>단계별 금지 조건과 human gate를 만든다</div>
+          <div class="card" style="left:57%; top:30%; width:38.8%; height:9.5%; border-radius:999px;"></div>
+          <div class="t sm" style="left:60%; top:32.8%;"><b style="color:#FC1C49">01</b>&nbsp;&nbsp;<b>넓은 요청을 단계로 분해</b></div>
+          <div class="card" style="left:57%; top:42%; width:38.8%; height:9.5%; border-radius:999px;"></div>
+          <div class="t sm" style="left:60%; top:44.8%;"><b style="color:#FC1C49">02</b>&nbsp;&nbsp;<b>"아직 하지 마" — 단계별 금지 조건</b></div>
+          <div class="card" style="left:57%; top:54%; width:38.8%; height:9.5%; border-radius:999px;"></div>
+          <div class="t sm" style="left:60%; top:56.8%;"><b style="color:#FC1C49">03</b>&nbsp;&nbsp;<b>멈춤 조건과 human gate</b></div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">1강 마무리와 같은 문법 — 좌 큰 예고 문장, 우 3강 목차 필 3개</div>
+        <div class="wf-spec"><b>제작 명세:</b> 오늘 산출물 요약은 발화로 처리(10에서 이미 시각화됨). 이 장은 예고에 집중.</div>
+      </div>
+    </div>
+  </section>
+
+</div></body></html>

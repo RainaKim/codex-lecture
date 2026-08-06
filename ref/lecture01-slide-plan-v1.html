@@ -1,0 +1,1556 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1강 슬라이드 구성안 · 와이어프레임 — Codex를 써도 일이 안 줄어드는 4가지 패턴</title>
+<style>
+  :root{
+    --ink:#111114; --sub:#6b6b73; --line:#e6e6e9;
+    --main:#FC1C49; --main-lt:#FFE5EB; --sub-o:#FFA71B;
+    --g1:#F5F5F5; --g2:#E6E6E6; --d1:#282828; --d2:#5B5B5B;
+    --wf-line:#b3b3b3; --wf-dash:#c9c9cf; --wf-fill:#fafafb; --wf-txt:#6b6b73;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Segoe UI","Noto Sans KR","Apple SD Gothic Neo",sans-serif;
+    background:#f0f0f2; color:var(--ink); line-height:1.55; padding:40px 20px 80px; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1180px; margin:0 auto;}
+
+  /* ── 문서 헤더 ── */
+  .doc-head{background:#0f0f12; color:#fff; border-radius:16px; padding:36px 40px; margin-bottom:28px;}
+  .doc-head .tag{display:inline-block; background:var(--main); border:none;
+    border-radius:999px; padding:4px 15px; font-size:12.5px; letter-spacing:.2px; margin-bottom:14px; font-weight:700;}
+  .doc-head h1{font-size:27px; font-weight:800; letter-spacing:-.4px;}
+  .doc-head p.sub{margin-top:8px; color:#c9c9d2; font-size:14.5px;}
+  .doc-head .meta{display:flex; flex-wrap:wrap; gap:10px 26px; margin-top:18px; font-size:13px; color:#e2e2e8;}
+  .doc-head .meta b{color:#fff; font-weight:700;}
+
+  /* ── 패널 ── */
+  .panel{background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 30px; margin-bottom:28px;}
+  .panel h2{font-size:17px; font-weight:800; margin-bottom:14px; letter-spacing:-.2px;}
+  .flow{display:flex; gap:8px; flex-wrap:wrap;}
+  .flow .blk{flex:1 1 150px; border-radius:10px; padding:12px 14px; border:1px solid var(--line); background:#fafafb;}
+  .flow .blk .t{font-size:11.5px; color:var(--sub); font-weight:600;}
+  .flow .blk .n{font-size:14px; font-weight:800; margin:2px 0;}
+  .flow .blk .s{font-size:12px; color:var(--sub);}
+  .flow .blk.hl{background:var(--main-lt); border-color:#ffc7d4;}
+  table.idx{width:100%; border-collapse:collapse; font-size:13.5px; margin-top:6px;}
+  table.idx th{background:#fafafb; text-align:left; padding:8px 12px; border-bottom:2px solid var(--line); font-size:12.5px; color:var(--sub);}
+  table.idx td{padding:7px 12px; border-bottom:1px solid #f2f2f4; vertical-align:top;}
+  table.idx td.no{color:var(--main); font-weight:800; width:46px;}
+  table.idx td.lay{color:var(--sub); font-size:12px; width:132px;}
+  .note-inline{font-size:12.5px; color:var(--sub); margin-top:12px;}
+  .sw{display:inline-flex; align-items:center; gap:6px; font-size:12px; margin:0 14px 6px 0;}
+  .sw i{width:13px; height:13px; border-radius:3px; display:inline-block; border:1px solid rgba(0,0,0,.12);}
+
+  /* ── 섹션 헤더 ── */
+  .sec-head{display:flex; align-items:center; gap:14px; margin:44px 0 18px; flex-wrap:wrap;}
+  .sec-head .num{background:var(--main); color:#fff; font-weight:800; font-size:13px; border-radius:8px; padding:5px 12px;}
+  .sec-head h2{font-size:20px; font-weight:800; letter-spacing:-.3px;}
+  .sec-head .time{font-size:13px; color:var(--sub);}
+
+  /* ── 슬라이드 카드 ── */
+  .slide{background:#fff; border:1px solid var(--line); border-radius:14px; padding:24px 28px 28px; margin-bottom:22px;}
+  .s-top{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:6px;}
+  .s-num{font-size:12px; font-weight:800; color:#fff; background:#111114; border-radius:6px; padding:3px 9px;}
+  .chip{font-size:11.5px; font-weight:700; border-radius:999px; padding:3px 11px;}
+  .chip.op{background:#f0f0f2; color:#3c3c42;}
+  .chip.p1{background:var(--main-lt); color:#b8143a;}
+  .chip.p2{background:#FFF1DA; color:#9a5b00;}
+  .chip.p3{background:#EDEDF0; color:#3c3c42;}
+  .chip.p4{background:#E4E4E8; color:#282828;}
+  .chip.cl{background:#111114; color:#fff;}
+  .chip.demo{background:var(--main); color:#fff;}
+  .chip.lay{background:#fff; color:var(--sub); border:1px solid var(--line);}
+  .s-time{font-size:12px; color:var(--sub); margin-left:auto;}
+  .slide h3{font-size:18px; font-weight:800; letter-spacing:-.2px; margin-bottom:16px;}
+  .s-body{display:flex; gap:26px; align-items:flex-start; flex-wrap:wrap;}
+  .wf{flex:0 0 560px; max-width:100%;}
+  .wf .cap{font-size:11.5px; color:var(--sub); margin-top:7px;}
+  .txt{flex:1 1 400px; min-width:320px;}
+  .txt h4{font-size:12px; font-weight:800; color:var(--main); letter-spacing:.5px; margin:0 0 7px;}
+  .txt h4:not(:first-child){margin-top:16px;}
+  .copy{background:#fafafb; border:1px solid var(--line); border-left:3px solid var(--main); border-radius:8px; padding:12px 16px; font-size:13.5px;}
+  .copy .t{font-weight:800; font-size:14.5px; margin-bottom:6px;}
+  .copy .st{color:var(--sub); font-size:12.5px; margin-bottom:8px;}
+  .copy ul{margin:4px 0 0 18px;} .copy li{margin:3px 0;}
+  .copy .small{font-size:12px; color:var(--sub); margin-top:8px;}
+  .txt ul.pts{margin-left:18px; font-size:13px; color:#333;}
+  .txt ul.pts li{margin:4px 0;}
+  .memo{font-size:12.5px; color:#4a4a52; background:#fffdf5; border:1px solid #ffe2b0; border-radius:8px; padding:9px 13px;}
+  .memo.red{background:#fff5f7; border-color:#ffc7d4;}
+
+  /* ── 슬라이드 목업: 실제 EMU 좌표를 %로 환산, 실제 팔레트·타입스케일(0.4375×) ──
+     x% = EMU / 12192000 × 100   ·   y% = EMU / 6858000 × 100
+     pt → px = pt × (96/72) × 0.4375                                              */
+  .mk{position:relative; width:100%; aspect-ratio:16/9; background:#F5F5F5;
+     border:1px solid #e3e3e7; overflow:hidden;
+     font-family:-apple-system,"Pretendard","Helvetica Neue",sans-serif; color:#000;}
+  .mk:before,.mk:after{content:""; position:absolute; left:4.204%; width:91.59%; border-top:1px solid #B3B3B3;}
+  .mk:before{top:7.42%;} .mk:after{top:92.51%;}
+  .mk > *{position:absolute; box-sizing:border-box;}
+  .mk .lbl{left:3.43%; top:2.67%; font-size:6.4px; font-weight:700; letter-spacing:.08em; color:#B3B3B3;}
+  .mk .mark{left:3%; bottom:2%; width:33px; height:5.1px; font-size:0; line-height:0;
+            background-image:url(data:image/png;base64,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);
+            background-size:contain; background-repeat:no-repeat; background-position:left bottom; opacity:.9;}
+  .mk .mark b{display:none;}
+  .mk .kick{font-size:9.3px; font-weight:700; color:#9C9C9C; letter-spacing:.02em;}
+  .mk .h{font-size:17.5px; font-weight:800; line-height:1.2; letter-spacing:-.02em;}
+  .mk .h.big{font-size:22.2px;} .mk .h.cover{font-size:25.7px; line-height:1.24;}
+  .mk .h em{color:#FC1C49; font-style:normal;}
+  .mk .card{background:#fff; border-radius:3px;}
+  .mk .card.g{background:#E6E6E6;}
+  .mk .card.k{background:#282828; color:#fff;}
+  .mk .bar{background:#5B5B5B; color:#fff; border-radius:3px 3px 0 0;
+          display:flex; align-items:center; justify-content:center; font-size:10.5px; font-weight:700;}
+  .mk .bar.r{background:#FC1C49;}
+  .mk .tag{background:#FFE5EB; color:#FC1C49; border-radius:3px; display:flex; align-items:center;
+          justify-content:center; font-size:8.2px; font-weight:700; border:.7px solid #FC1C49;}
+  .mk .n{font-size:16.3px; font-weight:800; color:#FC1C49; line-height:1;}
+  .mk .t{font-size:8.2px; line-height:1.5;}
+  .mk .t.mid{font-size:10.5px;} .mk .t.big{font-size:11.7px; font-weight:700;}
+  .mk .t.sm{font-size:7px; color:#5B5B5B;} .mk .t.mut{font-size:7px; color:#9C9C9C;}
+  .mk .t.r{color:#FC1C49;} .mk .t.c{text-align:center;}
+  .mk .shot{background:#EDEDF0; border-radius:3px;}
+  .mk .shot span{position:absolute; left:4px; top:3px; font-size:6px; color:#9A9AA5; letter-spacing:.04em;}
+  .mk .rule{border-top:1px solid #FC1C49;}
+  .mk .dash{border-top:1px dashed #c9c9cf;}
+  .mk table{position:absolute; border-collapse:collapse; font-size:8.2px;}
+  .mk table th{background:#FC1C49; color:#fff; font-weight:700; padding:3px 5px; text-align:center;}
+  .mk table td{background:#fff; padding:3px 6px; border-bottom:1px solid #FC1C49;}
+  .mk table td.k{background:#FFE5EB; color:#FC1C49; font-weight:700; text-align:center; width:16%;}
+  .mk .code{background:#1E1E1E; border-radius:3px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+            font-size:7.6px; line-height:1.62; color:#D8D8DE; padding:9px 11px; white-space:pre;}
+  .mk .code i{color:#569CD6; font-style:normal;}
+  .mk .code b{color:#CE9178; font-weight:400;}
+  .mk .code u{color:#FF5C7A; text-decoration:none;}
+  .mk .code s{color:#6A6A72; text-decoration:none;}
+  .mk .chip5{border:1px solid #C9C9CF; border-radius:999px; display:flex; align-items:center;
+             justify-content:center; font-size:7.4px; color:#5B5B5B; background:#fff;}
+  .mk .lead{border-top:1px solid #B3B3B3;} .mk .lead.r{border-color:#FC1C49;}
+  .mk .dot{width:3.5px; height:3.5px; border-radius:50%; background:#B3B3B3;} .mk .dot.r{background:#FC1C49;}
+  .mk .kchip{background:#EDEDF0; border-radius:3px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+            font-size:6.6px; color:#3c3c42; padding:2.5px 6px; white-space:nowrap;}
+  .mk .kstrip{background:#fafafb; border:1px solid #e3e3e7; border-radius:3px;}
+  .mk .kstrip-t{font-size:7.4px; color:#5B5B5B;} .mk .kstrip-t b{color:#000;}
+  .mk .anno{font-size:11.7px; font-weight:800; line-height:1.3; letter-spacing:-.01em;}
+  .mk .anno.r{color:#FC1C49;} .mk .anno span{display:block; font-size:7px; font-weight:400; color:#9C9C9C; margin-top:2px;}
+  .wf-spec{font-size:11.5px; color:#4a4a52; margin-top:7px; background:#fafafb; border:1px solid var(--line);
+           border-radius:7px; padding:8px 10px; line-height:1.5;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="doc-head">
+    <span class="tag">1강 슬라이드 구성안 + 와이어프레임 · v4.6 · 데모 큐 4장 추가 (라이브 전환용) — 총 25장</span>
+    <h1>1강. Codex를 써도 일이 안 줄어드는 4가지 패턴</h1>
+    <p class="sub">Part 1 · Chapter 1 — 설치나 기능 소개가 아니라, 실패 패턴에서 시작한다</p>
+    <div class="meta">
+      <span>형식 <b>이론 + 데모</b></span>
+      <span>길이 <b>45분</b></span>
+      <span>분량 총 <b>21장</b></span>
+      <span>실습 repo <b>주문/결제/재고 sandbox</b></span>
+      <span>디자인 <b>Fast campus 16:9 Light</b></span>
+    </div>
+  </div>
+
+  <!-- 전체 흐름 -->
+  <div class="panel">
+    <h2>전체 흐름 &amp; 슬라이드 배분</h2>
+    <div class="flow">
+      <div class="blk"><div class="t">0–7분</div><div class="n">오프닝</div><div class="s">01–04 · 4장</div></div>
+      <div class="blk hl"><div class="t">7–15분</div><div class="n">패턴 1 · 매번 재설명</div><div class="s">05–05c · 3장</div></div>
+      <div class="blk hl"><div class="t">15–23분</div><div class="n">패턴 2 · 바로 구현</div><div class="s">06–06c · 3장</div></div>
+      <div class="blk hl"><div class="t">23–31분</div><div class="n">패턴 3 · 검수 불가</div><div class="s">07–07c · 3장</div></div>
+      <div class="blk hl"><div class="t">31–38분</div><div class="n">패턴 4 · 대화창에만 남음</div><div class="s">08–08c · 3장</div></div>
+      <div class="blk"><div class="t">38–45분</div><div class="n">마무리</div><div class="s">09–13 · 5장</div></div>
+    </div>
+    <table class="idx" style="margin-top:16px;">
+      <tr><th>#</th><th>슬라이드</th><th>템플릿 레이아웃</th><th>#</th><th>슬라이드</th><th>템플릿 레이아웃</th></tr>
+      <tr><td class="no">01</td><td>일이 안 줄어드는 4가지 패턴</td><td class="lay">1 · 표지</td><td class="no">07</td><td>패턴3 검수 불가</td><td class="lay">19 · 알약 3행</td></tr>
+      <tr><td class="no">02</td><td>잘 되는 요청, 안 되는 요청 <b>· 병합</b></td><td class="lay">49 · 비교형</td><td class="no">07b</td><td>답변에 없는 4가지 <b>· 데모</b></td><td class="lay">21 · 체크 필 4행</td></tr>
+      <tr><td class="no">03</td><td>4가지 실패 패턴</td><td class="lay">30 · 텍스트 4단</td><td class="no">07c</td><td>3분 생성, 30분 검수</td><td class="lay">63 · 가로 막대 TYPE 2</td></tr>
+      <tr><td class="no">04</td><td>실패하는 구조 실험</td><td class="lay">18 + 코드 카드</td><td class="no">08</td><td>패턴4 대화창에만 남음</td><td class="lay">19 · 알약 3행</td></tr>
+      <tr><td class="no">05</td><td>패턴1 매번 재설명</td><td class="lay">19 · 알약 3행</td><td class="no">08b</td><td>5군데 모두 비어 있음 <b>· 데모</b></td><td class="lay">36 · 5단 빈 슬롯</td></tr>
+      <tr><td class="no">05b</td><td>설명 유무 = 답의 격차 <b>· 데모</b></td><td class="lay">78 · 텍스트&amp;이미지 2단</td><td class="no">08c</td><td>대화는 소비, 파일은 자산</td><td class="lay">20 · 텍스트 1단</td></tr>
+      <tr><td class="no">05c</td><td>세션이 바뀌면 원점</td><td class="lay">79 · 텍스트&amp;이미지 2단</td><td class="no">09</td><td>4패턴 한 장 요약</td><td class="lay">33 · 텍스트 4단</td></tr>
+      <tr><td class="no">06</td><td>패턴2 바로 구현</td><td class="lay">45 · 화살표 프로세스</td><td class="no">10</td><td>기준·경계·증거·기록</td><td class="lay">72 · 텍스트&amp;이미지 1단</td></tr>
+      <tr><td class="no">—</td><td><s>06b 물어보지 않고 정해진 것들</s> <b>· 삭제(라이브 diff로 대체)</b></td><td class="lay">—</td><td class="no">11</td><td>패턴 → 해법 → 강의</td><td class="lay">54 · 표 유형</td></tr>
+      <tr><td class="no">06c</td><td>diff에서 찾아야 할 세 가지</td><td class="lay">27 · 텍스트 3단</td><td class="no">12</td><td>실패 패턴 진단표</td><td class="lay">55 · 표 유형</td></tr>
+      <tr><td class="no"></td><td></td><td class="lay"></td><td class="no">13</td><td>다음: 답변을 자산으로</td><td class="lay">71 · 텍스트&amp;이미지 1단</td></tr>
+    </table>
+    <p class="note-inline">설계 원칙: ① 기능 소개가 아니라 <b>실패 재현</b>에서 시작 — 데모 4개가 이 강의의 본체 ② 패턴마다 <b>「문제 정의 → 데모 → 진단」 3장</b>의 같은 리듬 반복 ③ 패턴 4개는 각각 해법(AGENTS.md · human gate · 검증 명령 · repo 문서)과 1:1로 연결되어 <b>11이 강의 전체 로드맵</b> 역할 ④ 모든 예시는 주문/결제/재고 sandbox repo 안에서만 — 커머스 제품 만들기처럼 보이지 않게 ⑤ 12 진단표는 수강생이 자기 repo로 가져가는 <b>Chapter 1 첫 산출물</b>.</p>
+    <p class="note-inline" style="border-top:1px solid #eee; padding-top:10px;"><b>v2 변경 — 오프닝 병합(A-1)</b> · 구 02「다들 해본 3가지 요청」 + 구 03「답변은 늘고, 남는 건 없다」를 <b>02 「잘 되는 요청, 안 되는 요청」 한 장</b>으로 합침. 두 장이 <i>잘 된다 → 근데 안 된다</i>로 한 호흡이라 서로 잡아먹었고, 좌우 대비로 놓으면 넘김 없이 한 화면에서 반전이 일어난다. 이후 번호가 전부 −1(패턴 블록 05~08, 마무리 09~13), <b>총 22장 → 21장</b>.</p>
+  </div>
+
+  <!-- 디자인 시스템 준수 -->
+  <div class="panel">
+    <h2>디자인 시스템 준수 — Fast campus 16:9 Light (필수)</h2>
+    <div style="margin-bottom:10px;">
+      <span class="sw"><i style="background:#FC1C49"></i> Main #FC1C49</span>
+      <span class="sw"><i style="background:#FFE5EB"></i> Main Light #FFE5EB</span>
+      <span class="sw"><i style="background:#FFA71B"></i> Sub #FFA71B</span>
+      <span class="sw"><i style="background:#000"></i> Black</span>
+      <span class="sw"><i style="background:#282828"></i> Dark Gray1 #282828</span>
+      <span class="sw"><i style="background:#5B5B5B"></i> Dark Gray2 #5B5B5B</span>
+      <span class="sw"><i style="background:#E6E6E6"></i> Light Gray2 #E6E6E6</span>
+      <span class="sw"><i style="background:#F5F5F5"></i> 배경 #F5F5F5</span>
+    </div>
+    <table class="idx">
+      <tr><th>항목</th><th>기준</th></tr>
+      <tr><td>캔버스</td><td>12192000 × 6858000 EMU (13.333 × 7.5 in) — 구 세미나 덱(10×5.625in)과 좌표 혼용 금지</td></tr>
+      <tr><td>폰트</td><td>한글 Pretendard(Regular~ExtraBold) · 영문 Gilroy · 자간 0% — 헤드라인 30/38pt Bold · 본문 14pt · 주석 12pt · 상단 라벨 11pt Bold #B3B3B3</td></tr>
+      <tr><td>고정 요소</td><td>배경 #F5F5F5 · 상하 헤어라인 · 좌하단 Fast campus 로고 · 우하단 데코 — <b>마스터가 그리므로 슬라이드에 다시 그리지 않는다</b></td></tr>
+      <tr><td>콘텐츠 컨테이너</td><td>흰색 라운드 카드(roundRect adj=1649, 선·그림자 없음). 1단 대형 카드 / 2·3·4단 카드 좌표는 디자인 시스템 문서 §4 참조</td></tr>
+      <tr><td>강조 규칙</td><td><b>한 슬라이드에 레드 강조는 1개</b>. 비강조 = 그레이 램프(#E6E6E6 → #5B5B5B), 강조 = #FC1C49. 파랑·초록·보라 금지</td></tr>
+      <tr><td>코드 스니펫</td><td>배경 #1E1E1E · Courier New — 데모 캡처 대체용으로만 사용(07b·08b)</td></tr>
+      <tr><td>제작 방법</td><td>템플릿 <code>ppt_16_9_light.pptx</code>에서 위 인덱스의 <b>레이아웃 번호 슬라이드를 복제 → 텍스트만 교체</b>. 가이드 슬라이드 2–8은 최종본에서 삭제</td></tr>
+      <tr><td><b>대비 2카드 = 비교형 문법</b></td><td>좌우 대비 구조(05·07·07b·08c)는 반드시 <b>템플릿 49 비교형</b>으로 — <b>다크 바(#5B5B5B) + 회색 카드</b> vs <b>레드 바(#FC1C49) + 흰 카드</b>. 레드 바 = 그 장의 진단이 사는 쪽. 02와 같은 문법이라 덱 전체에서 "바 색만 보면 어느 쪽이 문제인지" 읽힌다</td></tr>
+      <tr><td><b>아이콘은 쓰지 않는다</b></td><td>템플릿 아이콘 세트(Cycle·Gear·Eye·saying)를 03의 4카드에 넣어봤으나 <b>번호 + 아이콘 + 2행 패턴명이 작은 카드 안에서 겹쳐 지저분해졌다</b>. 아이콘 형태가 개념을 즉시 읽히게 하지도 못했다(특히 Eye). 이 덱의 힘은 타이포 절제에 있으므로 <b>아이콘 없이 레드 번호 + 패턴명만</b>으로 간다</td></tr>
+      <tr><td><b>제목 2단 구조</b></td><td>헤드라인 위에 <b>킥커(16pt Bold #9C9C9C)</b>로 <b>이 장이 무슨 장인지</b>를 먼저 쓴다 — 「<b>데모 미리보기</b> / 실패하는 구조 실험」처럼. 상단 라벨(11pt #B3B3B3)은 <code>CHAPTER 1</code> 고정으로 챕터만 표시. 11pt 회색 라벨만으로는 눈에 안 들어와 <b>제목이 무슨 장인지 못 알려주던 문제</b>를 해결한 구조다</td></tr>
+      <tr><td><b>킥커 문구</b></td><td><code>문제 정의</code> · <code>오늘의 목차</code> · <code>데모 미리보기</code> · <code>패턴 01~04 · 정의 / 데모 / 진단</code> · <code>정리</code> · <code>정리 · 핵심</code> · <code>강의 로드맵</code> · <code>산출물</code> · <code>다음 강</code>. 패턴 구간만 <b>「정의 → 데모 → 진단」 3장 리듬을 라벨로 노출</b>해, 12장이 같은 규칙으로 반복된다는 걸 청중이 알게 한다</td></tr>
+      <tr><td><b>블랙 반전 카드 금지</b></td><td>검은 박스 + 흰 글씨는 쓰지 않는다. 강조가 필요한 진단 행은 <b>레드 틴트</b>(배경 <code>#FFE5EB</code> + 텍스트 <code>#FC1C49</code> Bold)로 한다. 이 덱에서 <b>다크 블록은 04의 코드 카드(#1E1E1E) 하나뿐</b> — 반전 바를 여기저기 쓰면 코드 카드의 유일함이 사라지고, 검은 덩어리가 슬라이드마다 떠 있는 인상이 된다</td></tr>
+      <tr><td><b>자료성 원칙 (v4.1)</b></td><td>슬라이드는 발표 대본이 아니라 <b>수강생이 나중에 다시 여는 자료</b>다. 각 장에 최소 하나의 <b>가져갈 지식</b>(정의·기준·실물·수치)을 담는다. 표현 수단은 아래 두 컴포넌트 — 장식이 아니라 정보일 것</td></tr>
+      <tr><td><b>코드 칩</b></td><td>명령·경로·프롬프트·코드 <b>실물</b>을 담는 인라인 칩 — 배경 <code>#EDEDF0</code> · Courier New · 다크 텍스트. 수강생이 그대로 따라 칠 수 있는 것만 넣는다(요약·의역 금지)</td></tr>
+      <tr><td><b>지식 스트립</b></td><td>하단 정보 블록 — 배경 <code>#FAFAFB</code> + 헤어라인 테두리, 「<b>라벨</b> — 내용」 구조. 정의(02) · 메커니즘(05) · 해법 예고(05c) · 원인(07c) · 사용법(12)처럼 <b>구조화된 지식 한 개</b>만. 레드 틴트 진단 바와 혼동 금지 — 진단은 레드, 지식은 회색</td></tr>
+      <tr><td><b>보조 한 줄 금지 (개정)</b></td><td>헤드라인 아래·슬라이드 하단의 <b>작은 회색 보조 한 줄은 넣지 않는다</b>(요약·부연, 다른 장에 덧붙인 다음 강 예고 포함) — 전부 구두로. 슬라이드에 남기는 건 헤드라인 · 본문 카드 · 진단 바까지. <b>같은 말을 세 번째로 반복하는 줄</b>이 보이면 그 줄이 지울 대상. <b>단, 코드 칩·지식 스트립은 예외</b> — 장식 캡션이 아니라 정보 블록이다</td></tr>
+      <tr><td>레이아웃 편집 주의</td><td>① 체크 아이콘·번호 뱃지·카드 배경 등 <b>장식은 슬라이드가 아니라 레이아웃에 있다.</b> 행을 줄일 때는 레이아웃에서도 지워야 빈 아이콘이 남지 않는다. ② <b>슬라이드에서 placeholder 크기를 바꾸면 레이아웃의 같은 placeholder도 함께 바꾼다</b> — LibreOffice 렌더는 레이아웃 지오메트리를 그려서 미리보기와 실제가 어긋난다(02 제작 시 확인)</td></tr>
+    </table>
+    <p class="note-inline">기준 문서 — 디자인: <code>claude/ppt-design-system-light-v1.md</code> · 내용: <code>claude/lecture-curriculum-master.md</code> · 지식: <code>claude/codex-book-digest.md</code></p>
+  </div>
+
+  <!-- 비주얼 우선순위 -->
+  <div class="panel">
+    <h2>비주얼 제작 우선순위</h2>
+    <table class="idx">
+      <tr><th>등급</th><th>슬라이드</th><th>제작할 핵심 비주얼</th></tr>
+      <tr><td><span class="chip demo">최상</span></td><td>02 · 09 · 11</td><td>요청 좌우 대비 · 4패턴 2×2 종합 · 패턴↔해법 1:1 매핑표 (강의 전체 로드맵)</td></tr>
+      <tr><td><span class="chip demo">최상</span></td><td>05b · 07b</td><td>Before/After 답변 비교 · 「답변에 없는 4가지」 체크 4단</td></tr>
+      <tr><td><span class="chip p1">높음</span></td><td>06c · 07c · 12</td><td>diff 3렌즈 카드 · 검수 비용 역전 그래프 · 진단표 4행</td></tr>
+      <tr><td><span class="chip p3">보통</span></td><td>04 · 08b · 10</td><td>repo 트리 코드 카드 · 산출물 5칸 전부 비어있음 · 공통 원인 한 문장</td></tr>
+    </table>
+    <p class="note-inline">데모 캡처는 <b>실제 화면 캡처가 원칙</b>. 캡처 확보 전까지는 코드 스니펫 카드(#1E1E1E)로 대체하고, 캡처 확보 후 교체합니다. 05b·07b·08b 세 장이 캡처 대상.</p>
+  </div>
+
+  <!-- ═══════════ 오프닝 ═══════════ -->
+  <div class="sec-head"><span class="num">OPENING</span><h2>01–04 · 도입 7분</h2><span class="time">목표: "내 얘기다" 만들고, 오늘 볼 4가지를 예고</span></div>
+
+  <!-- 01 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">01</span><span class="chip op">오프닝</span><span class="chip lay">템플릿 1 · 표지</span><span class="s-time">0:00 · 30초</span><span class="chip demo">제작 완료</span></div>
+    <h3>일이 안 줄어드는 4가지 패턴</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="t sm" style="left:3.77%; top:22.75%;">PART 1 · CHAPTER 1</div>
+          <div class="h cover" style="left:3.67%; top:28.44%; width:48.01%;">Codex를 써도<br>일이 안 줄어드는<br>4가지 패턴</div>
+          <div class="t sm" style="left:3.77%; top:63.87%;">개발자를 위한 Codex — 1강</div>
+          <div class="shot" style="right:5%; top:20%; width:27%; height:56%; border-radius:50% 50% 50% 50%/40% 40% 40% 40%; background:linear-gradient(150deg,#FF4D6E,#FC1C49);"></div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">템플릿 표지(슬라이드 1) 그대로 — 좌측 3행 타이틀 + 우측 기본 오브젝트. 배경·오브젝트 교체하지 않음</div>
+        <div class="wf-spec"><b>제작 명세:</b> 타이틀 자리 <code>off(446810, 1950000) ext(5853190, 2318633)</code> · <b>44pt Bold 3행</b>. 템플릿 기본 48pt 2행은 우측 오브젝트 영역을 침범해 줄바꿈이 깨진다. 킥커 11pt Bold #B3B3B3 · 부제 14pt #5B5B5B. <b>표지형 96px 텍스트는 이 장에서만 허용.</b></div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy">
+          <div class="t">Codex를 써도 / 일이 안 줄어드는 / 4가지 패턴</div>
+          <div class="st">PART 1 · CHAPTER 1</div>
+          <ul><li>개발자를 위한 Codex — 1강</li></ul>
+        </div>
+        <h4>발표 포인트</h4>
+        <ul class="pts">
+          <li>제목을 그대로 읽고 바로 넘깁니다. 강의 소개·자기소개는 여기서 하지 않습니다(오리엔테이션에서 이미 함).</li>
+        </ul>
+        <h4>제작 메모</h4>
+        <p class="memo red"><b>제작 완료</b> — <code>Codex_1강_S01-S02.pptx</code>. validate PASS · 렌더 확인 완료.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">02</span><span class="chip op">오프닝</span><span class="chip lay">템플릿 49 · 비교형</span><span class="s-time">0:30–3:30 · 약 3분 · <b style="color:#FC1C49">v2.1 재설계</b></span></div>
+    <h3>잘 되는 요청, 안 되는 요청</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">문제 정의</div>
+          <div class="h" style="left:3.43%; top:16.8%;">잘 되는 요청, 안 되는 요청</div>
+          <div class="bar" style="left:4.20%; top:36.75%; width:44.76%; height:10.39%;">완료 조건 있음</div>
+          <div class="card g" style="left:4.20%; top:47.14%; width:44.76%; height:28.44%; border-radius:0 0 3px 3px;"></div>
+          <div class="t c" style="left:4.20%; top:52%; width:44.76%;">“이 함수 고쳐줘”<br>“테스트 짜줘”<br>“README 정리해줘”</div>
+          <div class="t sm c" style="left:4.20%; top:69.5%; width:44.76%;">범위가 이미 정해진 일</div>
+          <div class="bar r" style="left:51.04%; top:36.75%; width:44.76%; height:10.39%;">완료 조건 없음</div>
+          <div class="card" style="left:51.04%; top:47.14%; width:44.76%; height:28.44%; border-radius:0 0 3px 3px;"></div>
+          <div class="t c" style="left:51.04%; top:52%; width:44.76%;">“주문 상태 처리 개선해줘”<br>“이거 맞게 고친 거 맞아?”<br>“어제 하던 거 이어서 해줘”</div>
+          <div class="t sm c r" style="left:51.04%; top:69.5%; width:44.76%;">범위부터 정해야 하는 일</div>
+          <div class="kstrip" style="left:4.2%; top:79%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:81.6%; width:88%; text-align:center;"><b>완료 조건</b> — “됐는지”를 확인할 방법이 요청 안에 들어 있느냐의 차이다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">좌우 모두 <b>Codex에 실제로 치는 요청 문장</b> — 같은 종류라 비교가 성립한다. 헤더는 <b>언제 끝나는지</b>, 하단 줄은 <b>어디까지 하는지</b> — 두 축이 겹치지 않게 쌓았다. 좌 회색(비강조) / 우 흰 카드 + 레드 헤더(강조, 위로 오프셋)</div>
+        <div class="wf-spec"><b>제작 명세:</b> 템플릿 49 비교형, 각 카드 <b>요청 3줄 + 구분선 + 이유 1줄</b> 구조(템플릿 기본 2줄에서 확장 — 앞 문단의 <code>pPr</code> 복사). 요청 문장은 <b>따옴표 포함 14pt</b>, 이유 줄은 <b>12pt</b>에 얇은 구분선 위. 레드는 <b>우측 헤더 + 우측 이유 줄</b>만(같은 덩어리로 읽히므로 1개 취급) — 헤드라인은 전부 블랙. 좌우 세로 오프셋은 템플릿 기본값 유지.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy">
+          <div class="t">잘 되는 요청, 안 되는 요청</div>
+          <ul>
+            <li>[좌 · <b>완료 조건 있음</b>] "이 함수 고쳐줘" / "테스트 짜줘" / "README 정리해줘" → 범위가 이미 정해진 일</li>
+            <li>[우 · <b>완료 조건 없음</b>] "주문 상태 처리 개선해줘" / "이거 맞게 고친 거 맞아?" / "어제 하던 거 이어서 해줘" → 범위부터 정해야 하는 일</li>
+          </ul>
+        </div>
+        <h4>발표 포인트</h4>
+        <ul class="pts">
+          <li>왼쪽을 먼저 읽고 공감 확인 — "여기까지는 다들 해보셨을 거고, 결과도 꽤 그럴듯했을 겁니다."</li>
+          <li>헤더를 짚으며 축을 명시: "왼쪽은 <b>뭘 하면 끝인지가 문장 안에 있고</b>, 오른쪽은 없습니다."</li>
+          <li>오른쪽은 <b>한 줄씩 읽으면서 왜 안 되는지</b>를 짚습니다. 세 문장이 각각 뒤에 나올 패턴의 예고입니다:
+            <ul>
+              <li>"주문 상태 처리 개선해줘" → 범위가 없으니 <b>바로 구현</b>해버린다 (패턴 2)</li>
+              <li>"이거 맞게 고친 거 맞아?" → 근거가 없으니 <b>검수가 안 된다</b> (패턴 3)</li>
+              <li>"어제 하던 거 이어서 해줘" → 남은 게 없으니 <b>어제를 모른다</b> (패턴 1·4)</li>
+            </ul>
+          </li>
+          <li>하단 한 줄이 결론이자 다음 장 연결: <b>"어려워서 안 되는 게 아닙니다. 범위가 없어서 안 되는 겁니다."</b></li>
+          <li>"Codex가 나쁘다"는 말이 아니라는 걸 분명히 — 문제는 도구가 아니라 <b>요청의 모양</b>.</li>
+        </ul>
+        <h4>v2.1 재설계</h4>
+        <p class="memo red">좌우가 <b>요청 문장 vs 내가 겪는 증상</b>이라 같은 축이 아니었다 → 양쪽 모두 <b>Codex에 치는 요청 문장</b>으로 통일. 각 카드 하단에 "왜 되는지 / 왜 안 되는지"를 한 줄로 붙여 대비 기준을 명시(범위). 헤더는 <b>잘 된다/안 된다</b>(주관적 판정) → <b>완료 조건 있음/없음</b>(관찰 가능한 기준)으로 교체 — 오른쪽 세 문장을 예외 없이 관통하고, <b>완료 조건</b>은 커리큘럼 5강·8강(Acceptance Criteria)의 용어라 강의 전체 언어와 이어진다. 우측 3문장은 뒤 네 패턴과 1:1로 연결되어 <b>03(4가지 실패 패턴)의 예고</b>가 된다.</p>
+        <h4>제작 메모</h4>
+        <p class="memo">"주문 상태 처리 개선해줘"는 커리큘럼 3·5강에서 <b>애매한 요청의 대표 사례</b>로 계속 쓰이는 문장 — 여기서 처음 심고 3강에서 분해합니다. 문구를 바꾸지 말 것.<br>헤더 <b>"완료 조건"</b>도 5강(테스트/검증 계획)·8강(Acceptance Criteria)에서 회수되는 용어이므로 표기를 통일합니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">03</span><span class="chip op">오프닝</span><span class="chip lay">템플릿 30 · 텍스트 4단</span><span class="s-time">3:30–5:30 · 약 2분</span></div>
+    <h3>4가지 실패 패턴</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">오늘의 목차</div>
+          <div class="h" style="left:3.43%; top:16.8%;">4가지 실패 패턴</div>
+          <div class="card" style="left:4.204%; top:40.682%; width:21.189%; height:31%;"></div><div class="card" style="left:27.671%; top:40.682%; width:21.189%; height:31%;"></div><div class="card" style="left:51.139%; top:40.682%; width:21.189%; height:31%;"></div><div class="card" style="left:74.607%; top:40.682%; width:21.189%; height:31%;"></div><div class="n" style="left:5.804%; top:43.4%;">01</div><div class="t big" style="left:5.804%; top:49%; width:18%;">매번<br>재설명</div><div class="n" style="left:29.271%; top:43.4%;">02</div><div class="t big" style="left:29.271%; top:49%; width:18%;">바로<br>구현</div><div class="n" style="left:52.739%; top:43.4%;">03</div><div class="t big" style="left:52.739%; top:49%; width:18%;">검수<br>불가</div><div class="n" style="left:76.207%; top:43.4%;">04</div><div class="t big" style="left:76.207%; top:49%; width:18%;">대화창에만<br>남음</div>
+          <div class="t mut" style="left:5.804%; top:61.6%; width:18.5%; line-height:1.45; font-size:6.5px;">설명은 세션이 끝나면<br>컨텍스트에서 사라진다</div><div class="t mut" style="left:29.271%; top:61.6%; width:18.5%; line-height:1.45; font-size:6.5px;">요청에 없던 결정까지<br>코드로 정해진다</div><div class="t mut" style="left:52.738%; top:61.6%; width:18.5%; line-height:1.45; font-size:6.5px;">무엇을 통과해야 하는지<br>아무도 정하지 않았다</div><div class="t mut" style="left:76.205%; top:61.6%; width:18.5%; line-height:1.45; font-size:6.5px;">파일로 남지 않은 결과는<br>다음 작업으로 이어지지 않는다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">4단 번호 카드 — 이후 05·06·07·08의 목차 역할. 09에서 같은 4개가 진단과 함께 다시 등장</div>
+        <div class="wf-spec"><b>제작 명세:</b> 번호 01–04는 <b>#FFE5EB 배경 + #FC1C49 28pt Bold</b>(템플릿 09 계열 번호 스타일 차용). 패턴명은 20pt Bold 블랙, 2행 고정. 설명 문장은 넣지 않는다 — 각 패턴 장에서 다룸.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy">
+          <div class="t">4가지 실패 패턴</div>
+          <ul>
+            <li><b>01</b> 매번 재설명</li>
+            <li><b>02</b> 바로 구현</li>
+            <li><b>03</b> 검수 불가</li>
+            <li><b>04</b> 대화창에만 남음</li>
+          </ul>
+        </div>
+        <h4>발표 포인트</h4>
+        <ul class="pts">
+          <li>도입 한마디는 구두로: "기능 소개 대신, 실패를 재현합니다."</li>
+          <li>"이 강의는 Codex 기능을 순서대로 훑지 않습니다. 오늘은 <b>안 되는 장면부터</b> 같이 보겠습니다."</li>
+          <li>네 개를 이름만 읽고 넘어갑니다. 설명은 각 패턴 장에서.</li>
+          <li>"네 개 전부 sandbox repo에서 직접 재현해 보여드립니다" — 데모가 본체임을 예고.</li>
+        </ul>
+        <h4>제작 메모</h4>
+        <p class="memo">이 4칸 레이아웃은 09(종합)·11(해법 매핑)·12(진단표)에서 <b>같은 순서·같은 색</b>으로 반복됩니다. 한 번 만들어 재사용.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">04</span><span class="chip op">오프닝</span><span class="chip lay">템플릿 72 · 이미지 1단 → 코드 카드</span><span class="s-time">5:30–7:00 · 약 1.5분 · <b style="color:#FC1C49">v3.1 전면 재설계</b></span></div>
+    <h3>실패하는 구조 실험</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">데모 미리보기</div>
+          <div class="h" style="left:3.43%; top:16.8%;">실패하는 구조 실험</div>
+          <div class="code" style="left:30%; top:32.25%; width:40%; height:47%;"><i>order-ops/</i>
+├─ <b>src/orders.ts</b>
+├─ <b>src/payments.ts</b>
+├─ <b>src/admin.ts</b>
+├─ <b>src/store.ts</b>
+├─ <b>tests/</b>
+└─ <b>README.md</b>
+<s># 이 repo에 없는 것</s>
+   <u>AGENTS.md</u>
+   <u>docs/</u>
+   <u>npm run preflight</u></div>
+
+          <div class="anno" style="left:4.20%; top:39.6%; width:22%; text-align:right;">실행 가능한 코드베이스<span>주문 · 결제 · 운영 모듈 — 코드는 돌아간다</span></div>
+          <div class="lead" style="left:27%; top:43%; width:4.5%;"></div>
+          <div class="dot"  style="left:31.2%; top:42.45%;"></div>
+
+          <div class="anno r" style="left:74.8%; top:64.6%; width:22%;">기준 · 정책 · 검증이 없다<span>무엇을 먼저 읽고, 무엇을 지키고,<br>무엇으로 검증할지</span></div>
+          <div class="lead r" style="left:50%; top:68%; width:24.8%;"></div>
+          <div class="dot r"  style="left:49.6%; top:67.45%;"></div>
+
+          <div class="kstrip" style="left:4.2%; top:82%; width:91.6%; height:7.6%;"></div>
+          <div class="kstrip-t c" style="left:6%; top:84.3%; width:88%; text-align:center;"><b>이 서비스가 지켜야 할 규칙</b> — ① 재고는 결제 성공 후에 차감한다 · ② 결제에 실패해도 주문은 남긴다 · ③ 관리자 화면에 실패 사유를 보여준다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">코드 트리를 <b>가운데</b>에 두고 좌·우로 주석을 뽑아낸 형태 — 트리 상단(있는 것)은 좌측 회색, 하단(없는 것)은 우측 레드. 리더 라인이 대각선을 만들어 시선이 <b>좌상 → 우하</b>로 흐른다</div>
+        <div class="wf-spec"><b>제작 명세:</b> 코드 카드를 <b>슬라이드 정중앙</b>에 둔다 <code>x=3657600 w=4876800 y=2211705 h=3223260</code> — 좌우 여백 25.8% 대칭, 세로도 헤드라인 아래~하단 헤어라인 사이 정중앙. <b>카드 높이는 코드 줄 수에 맞춰 잡는다</b>(11줄 + 상하 패딩) — 템플릿처럼 크게 두면 하단이 비어 보인다. 주석은 <b>텍스트 + 리더 라인 + 점</b> 3요소로만 — 말풍선·박스·화살촉은 쓰지 않는다. 리더 라인 0.75pt, 좌 <code>#B3B3B3</code> / 우 <code>#FC1C49</code>, 길이 4.2%(≈512000 EMU). 주석 본문 20pt Bold + 보조 12pt <code>#9C9C9C</code>(2행 허용). 문구는 <b>서술형이 아니라 명사구</b> — 다이어그램 라벨의 어법이다. 좌 「실행 가능한 코드베이스」 / 우 「기준 · 정책 · 검증이 없다」가 <b>트리 위 5줄과 아래 3줄을 각각 정확히 라벨링</b>한다. 코드 카드는 템플릿 컴포넌트가 아니라 <b>직접 배치</b>한다 — 디자인 시스템 §2 코드 스니펫 문법 그대로(배경 <code>#1E1E1E</code> · Courier New · 경로 <code>#CE9178</code> · 루트 <code>#569CD6</code> · 본문 <code>#D8D8DE</code> · <b>없는 것 <code>#FF5C7A</code></b> · 주석 <code>#6A6A72</code>). 좌 카드 <code>x=512633 w=6340000</code>, 우 블록 <code>x=7315200 w=4364167</code>(우측 끝 헤어라인). <b>주문 상태 5개 칩은 삭제한다</b> — 트리에 <code>src/orders</code> <code>src/payments</code> <code>src/admin</code>이 이미 도메인을 보여주고, <code>payment_failed</code>는 데모 ② 화면에서 자연스럽게 나온다. 슬라이드에 정보를 더 얹으면 주석 구조가 흐려진다.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy">
+          <div class="t">실패하는 구조 실험</div>
+          <ul>
+            <li>[코드 카드] <code>order-ops/</code> · src/orders.ts · payments.ts · admin.ts · store.ts · tests · README.md</li>
+            <li>[코드 카드 하단] <span style="color:#FC1C49">이 repo에 없는 것 — AGENTS.md · docs/policies/ · npm run preflight</span></li>
+            <li>[좌 주석] <b>실행 가능한 코드베이스</b> — 주문 · 결제 · 관리자 모듈, 테스트</li>
+            <li>[우 주석] <span style="color:#FC1C49"><b>기준 · 정책 · 검증이 없다</b></span> — 무엇을 먼저 읽고, 무엇을 지키고, 무엇으로 검증할지</li>
+          </ul>
+        </div>
+        <h4>발표 포인트</h4>
+        <ul class="pts">
+          <li>트리 위쪽을 짚습니다. "코드는 다 있습니다. <b>돌아가는 repo예요.</b>" — 슬라이드는 명사구로 두고, 말은 구어로 풉니다.</li>
+          <li>없는 것 3줄에서 멈춥니다: "그런데 <b>기준이 하나도 없습니다.</b> 무엇을 먼저 읽어야 하는지(AGENTS.md), 어떤 정책을 지켜야 하는지(docs/policies), 무엇으로 검증하는지(preflight) — 셋 다 비어 있습니다."</li>
+          <li>두 주석을 이어 읽으며 닫습니다: "<b>코드는 돌아가는데, 기준이 없습니다.</b> 이 상태에서 네 가지가 어떻게 일어나는지 직접 재현해보겠습니다."</li>
+          <li>"이 강의는 커머스를 만드는 강의가 아닙니다. 이 repo는 <b>workflow를 설명하기 위한 재료</b>입니다." — 표현 기준상 반드시 짚고 갑니다.</li>
+          <li>구두로만: "기능 소개 대신, 실패를 재현합니다."</li>
+        </ul>
+        <h4>v3.3 주석형 재설계</h4>
+        <p class="memo red">구 버전은 <b>「실험 무대 / 실험 규칙 / 실험 조건」 3행 라벨형</b>이었다 — 정보는 다 있었지만 <b>스펙 표처럼 읽히고</b> 슬라이드로서 볼 것이 없었다. 구조를 바꿔 <b>repo 트리 하나</b>로 무대와 조건을 동시에 보여준다. 있는 파일과 없는 파일이 <b>같은 트리 안에</b> 놓이면 "없다"가 설명 없이 보인다.<br>
+        덤으로 리듬도 살아난다 — 01 표지 / 02 카드 대비 / 03 4카드 / <b>04 코드 블록</b> / 05 진술형으로 네 장 연속 다른 형태가 된다.<br><b>[v3.3]</b> 코드 트리를 <b>가운데로 옮기고 주석(annotation) 구조</b>로 바꿨다 — 좌우 어느 쪽에도 텍스트 블록을 쌓지 않고, 트리의 <b>어느 부분을 가리키는지</b>를 리더 라인으로 지정한다. 「있는 것」과 「없는 것」이 트리 안에서 위·아래로 나뉘어 있으므로 주석도 좌상·우하로 놓여 자연스러운 대각선이 생긴다. 상태 칩은 삭제.<br><b>[v3.2]</b> 우측 결론을 블랙 반전 박스로 뒀더니 <b>다크 요소가 한 슬라이드에 둘</b>이 되어 코드 카드와 경쟁했다 — 정체 없는 검은 덩어리로 보였다. 박스를 걷고 <b>타이포만</b> 남겼다. 이 덱에서 다크 블록은 코드 카드 하나뿐이어야 한다.</p>
+        <h4>✅ 규칙 3줄 — 유지 확정 + 정본 정렬 (v3)</h4>
+        <p class="memo">구 메모는 "이 3줄이 06c와 충돌하므로 빼야 한다"였다. <b>06c가 렌즈 3개(범위·호환·누락)로 재설계되면서 충돌이 사라졌다</b> — 06c는 더 이상 "이 세 정책을 아무도 정하지 않았다"를 반전으로 쓰지 않는다.<br>
+        오히려 이 3줄이 <b>있어야 한다.</b> ⑴ 데모 ①의 컨텍스트 문단(<code>demo1-context.txt</code>)에 들어가는 정책이 바로 이 3줄이고, ⑵ "이 규칙은 지금 <b>강사 머릿속에만 있다</b>"가 1강 전체의 전제이며, ⑶ 데모 ②에서 agent가 이 규칙과 다르게 정하는 장면의 대조군이 된다.<br>
+        문서화는 여전히 <b>7강</b> 몫이다 — 1강에서는 "말로만 존재한다"가 사실이어야 한다.<br>
+        <b>[정본 정렬]</b> 구 문구는 세 줄이 전부 재고 얘기였고(「결제 성공 후 차감 / 실패 시 미차감 / 재고 부족 시 주문 전 차단」) 뒤에서 회수되지 않았다. 커리큘럼 1강 원문(<b>실패 주문 보존 여부 · 재고 차단 시점 · 관리자 노출 범위</b>)과 v0 repo의 의도된 결함 3개에 맞춰 <b>재고 · 주문 보존 · 관리자</b> 세 축으로 교체했다. 이 세 줄이 <code>demo1-context.txt</code>의 「지켜야 할 정책」과 <b>글자 그대로 같아야</b> 한다 — 슬라이드 4에서 본 규칙이 데모 ① 컨텍스트로 들어가고, 데모 ②에서 agent가 무엇을 다르게 정했는지의 대조군이 된다.</p>
+        <h4>제작 메모</h4>
+        <p class="memo">repo 트리는 실제 캡처 대신 <b>코드 카드로 직접 조판</b>한다 — 캡처는 폰트·여백이 제각각이라 이 덱의 유일한 다크 요소가 지저분해진다.<br>「20강 동안 채워갈 것」 같은 강의 전체 로드맵은 여기 넣지 않는다 — 오리엔테이션 몫, 1강 안에서는 11번이 축약.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04b -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">04b</span><span class="chip op">오프닝</span><span class="chip lay">템플릿 72 · 코드 카드 + 주석</span><span class="s-time">7:00–7:40 · 약 40초 · <b style="color:#FC1C49">신설</b></span></div>
+    <h3>실습 repo 받기</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">실습 준비</div>
+          <div class="h" style="left:3.43%; top:16.8%;">실습 repo 받기</div>
+          <div class="bar" style="left:4.2%; top:29.5%; width:52%; height:5.5%;">STEP 1 · GitHub에서</div>
+          <div class="card" style="left:4.2%; top:35%; width:52%; height:13%;"></div>
+          <div class="t sm" style="left:7%; top:37.5%; width:46.4%; line-height:1.45;"><b style="color:#000;">「Use this template」 버튼 클릭</b><br><span style="color:#9C9C9C; font-size:6.3px;">내 계정에 order-ops 저장소가 새로 생깁니다</span></div>
+
+          <div class="bar" style="left:4.2%; top:51%; width:52%; height:5.5%;">STEP 2 · 내 컴퓨터에서</div>
+          <div class="code" style="left:4.2%; top:56.5%; width:52%; height:21.5%; border-radius:0 0 3px 3px;">git clone https://github.com/<b>&lt;내계정&gt;</b>/order-ops.git
+cd order-ops
+npm install
+npm run dev</div>
+
+          <div class="anno" style="left:60%; top:36%; width:35.8%;">자세한 안내는 README<span>설치 요구사항 · 실행 확인 · 자주 막히는 지점까지<br>repo에 정리해 뒀습니다</span></div>
+          <div class="anno" style="left:60%; top:56%; width:35.8%; color:#5B5B5B;">오늘은 보기만 하셔도 됩니다<span>직접 손을 움직이는 건 2강부터입니다</span></div>
+
+          <div class="kstrip" style="left:4.2%; top:82%; width:91.6%; height:7.4%;"></div><div class="kstrip-t c" style="left:6%; top:84.2%; width:88%; text-align:center;"><b>준비물</b> — Node 20+ · npm 또는 pnpm · VS Code · Codex CLI · ChatGPT Desktop App</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">데모 직전 <b>40초짜리 안내 장</b> — <b>STEP 1(GitHub) / STEP 2(로컬)</b>로 나눠 "내 repo를 먼저 만든다"가 1단계로 보이게 한다. 상세는 README로 넘긴다</div>
+        <div class="wf-spec"><b>제작 명세:</b> 04와 같은 <b>코드 카드 + 주석</b> 문법이되 리더 라인은 쓰지 않는다(가리킬 대상이 없다). 좌측은 <b>바 + 카드 2세트</b> — STEP 1은 흰 카드(GitHub 웹 작업이라 셸이 아니다), STEP 2만 다크 코드 카드. 이 구분이 "어디서 하는 일인지"를 형태로 보여준다. 우측 주석 3개는 모두 <b>블랙/그레이</b> — 이 장에 레드는 없다(경고할 내용이 아니다). <code>&lt;내계정&gt;</code>만 <code>#CE9178</code>로 강조해 <b>바꿔 넣어야 할 자리</b>임을 표시.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy">
+          <div class="t">실습 repo 받기</div>
+          <ul>
+            <li>[STEP 1 · GitHub에서] <b>「Use this template」 버튼 클릭</b> — 내 계정에 order-ops 저장소가 새로 생깁니다</li>
+            <li>[STEP 2 · 내 컴퓨터에서] <code>git clone .../&lt;내계정&gt;/order-ops.git</code> → <code>cd order-ops</code> → <code>npm install</code> → <code>npm run dev</code></li>
+            <li>[우측] <b>자세한 안내는 README</b> — 설치 요구사항 · 실행 확인 · 자주 막히는 지점</li>
+            <li>[우측] <b>오늘은 보기만 하셔도 됩니다</b> — 직접 손을 움직이는 건 2강부터</li>
+            <li>[하단] 준비물 — Node 20+ · npm/pnpm · VS Code · Codex CLI · ChatGPT Desktop App</li>
+          </ul>
+        </div>
+        <h4>발표 포인트</h4>
+        <ul class="pts">
+          <li>40초 안에 닫습니다. <b>명령을 설명하지 않습니다</b> — "이 네 줄이면 끝이고, 막히는 부분은 README에 다 있습니다."</li>
+          <li><b>STEP 1만 또박또박</b>: "GitHub 들어가셔서 <b>Use this template</b> 버튼 누르시면 됩니다. 그러면 여러분 계정에 order-ops가 하나 생겨요." — 버튼 위치를 화면으로 보여주면 더 좋습니다.</li>
+          <li>부담 덜기: "1강은 <b>보시는 강의</b>입니다. 지금 안 받으셔도 따라오는 데 지장 없어요. 2강부터 손을 씁니다."</li>
+        </ul>
+        <h4>신설 사유</h4>
+        <p class="memo red">세팅 안내가 0강에만 있으면 <b>0강을 건너뛴 수강생</b>이 1강 데모를 보고 따라 하려다 막힌다. 반대로 1강에서 세팅을 제대로 다루면(clone·설치·검증 walkthrough) 5~8분이 들어 클립 1(15분)이 무너진다. → <b>안내 40초 + 정본은 README</b>가 두 요구의 접점. 세팅 walkthrough 자체는 0강 몫으로 유지한다.</p>
+        <h4>시간 예산 메모</h4>
+        <p class="memo">04b 신설로 05 이후가 <b>40초씩 밀린다.</b> 05c(2.5분 → 2분)에서 흡수해 클립 1을 15분대에 유지한다 — 05c는 클립 마무리라 슬랙이 가장 크다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 패턴 1 ═══════════ -->
+  <div class="sec-head"><span class="num">패턴 1</span><h2>05–05c · 매번 재설명</h2><span class="time">7–15분 · 목표: 설명이 사람 머릿속에만 있다는 걸 보이기</span></div>
+
+  <!-- 05 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">05</span><span class="chip p1">패턴 1</span><span class="chip lay">템플릿 19 · 알약 3행 + ▼</span><span class="s-time">7:00–8:30 · 약 1.5분</span></div>
+    <h3>패턴1 매번 재설명</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">패턴 01 · 정의</div>
+          <div class="n" style="left:3.43%; top:17.6%;">01</div>
+          <div class="h" style="left:9.6%; top:16.8%;">매번 재설명</div>
+          <div class="bar" style="left:4.2%; top:33%; width:38%; height:5.5%;">세션 1</div>
+          <div class="card g" style="left:4.2%; top:38.5%; width:38%; height:27.5%;"></div>
+          <div class="t sm" style="left:7.2%; top:41.8%; width:2.5%; color:#B3B3B3; font-weight:700;">✓</div>
+          <div class="t sm" style="left:10%; top:41.8%; width:29.5%; line-height:1.4;"><b style="color:#000;">1,500자 long prompt</b><br><span style="color:#9C9C9C; font-size:6.3px;">컨텍스트 윈도우에 약 1,000토큰으로 적재됨</span></div>
+          <div class="t sm" style="left:7.2%; top:49.8%; width:2.5%; color:#B3B3B3; font-weight:700;">✓</div>
+          <div class="t sm" style="left:10%; top:49.8%; width:29.5%; line-height:1.4;"><b style="color:#000;">높은 퀄리티의 답변</b><br><span style="color:#9C9C9C; font-size:6.3px;">학습된 게 아니라 in-context 참조 덕분</span></div>
+          <div class="t sm" style="left:7.2%; top:57.8%; width:2.5%; color:#FC1C49; font-weight:700;">✕</div>
+          <div class="t sm" style="left:10%; top:57.8%; width:29.5%; line-height:1.4;"><b style="color:#FC1C49;">세션 종료 = 컨텍스트 소멸</b><br><span style="color:#9C9C9C; font-size:6.3px;">모델 자체에는 아무것도 남지 않는다</span></div>
+          <div class="dash" style="left:43.6%; top:48.5%; width:12.4%;"></div>
+          <div class="t c" style="left:43.6%; top:42.5%; width:12.4%; color:#FC1C49; font-weight:700; font-size:10px;">✕</div>
+          <div class="t mut c" style="left:43.6%; top:52%; width:12.4%;">전달되지 않음</div>
+          <div class="bar r" style="left:57.6%; top:33%; width:38%; height:5.5%;">세션 2 — 새로 연 세션</div>
+          <div class="card" style="left:57.6%; top:38.5%; width:38%; height:27.5%;"></div>
+          <div class="t sm" style="left:60.6%; top:41.8%; width:2.5%; color:#FC1C49; font-weight:700;">✕</div>
+          <div class="t sm" style="left:63.4%; top:41.8%; width:29.5%; line-height:1.4;"><b style="color:#FC1C49;">컨텍스트 윈도우 0토큰에서 시작</b><br><span style="color:#9C9C9C; font-size:6.3px;">새 세션은 이전 대화를 이어받지 않는다</span></div>
+          <div class="t sm" style="left:60.6%; top:49.8%; width:2.5%; color:#B3B3B3; font-weight:700;">✓</div>
+          <div class="t sm" style="left:63.4%; top:49.8%; width:29.5%; line-height:1.4;"><b style="color:#000;">모델이 읽을 수 있는 건 repo뿐</b><br><span style="color:#9C9C9C; font-size:6.3px;">세션 간에 살아남는 것은 파일뿐이다</span></div>
+          <div class="t sm" style="left:60.6%; top:57.8%; width:2.5%; color:#FC1C49; font-weight:700;">✕</div>
+          <div class="t sm" style="left:63.4%; top:57.8%; width:29.5%; line-height:1.4;"><b style="color:#FC1C49;">기록이 없으니 다시 설명해야 함</b><br><span style="color:#9C9C9C; font-size:6.3px;">같은 1,000토큰을 다시 입력한다</span></div>
+          <div class="kstrip" style="left:4.2%; top:74%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:76.6%; width:88%; text-align:center;"><b>무상태(stateless) — 대화는 모델을 바꾸지 못한다.</b> 세션 간에 살아남는 건 파일뿐 — 그래서 설명은 컨텍스트가 아니라 repo에 넣는다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap"><b>세션 카드 2장 + 끊긴 화살표</b> — 세션 1(설명 有)과 세션 2(원점) 사이에 "전달되지 않음" ✕. 왜 실패인지가 메커니즘으로 보인다</div>
+        <div class="wf-spec"><b>제작 명세:</b> 흰 카드 2장(세션 1 / 세션 2 — 새로 연 세션), 각 카드에 상태 3행(✓ 회색 / ✕ 레드). 카드 사이 <b>회색 점선 + 레드 ✕ + "전달되지 않음"</b> — 설명이 세션 경계를 못 넘는 게 이 패턴의 원인이다. 하단 지식 스트립에 <b>무상태(stateless) 정의</b> — 이 슬라이드의 가져갈 지식. 05c 톱니 그래프가 이 구조의 시간축 버전이다.</div>
+        
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy">
+          <div class="t">패턴1 · 매번 재설명</div>
+          <ul>
+            <li>설명 없이 요청하면 → 일반론이 돌아온다</li>
+            <li>긴 설명을 붙이면 → 그 세션만 잘 된다</li>
+            <li><b>다음 세션이 시작되면 → 처음으로 돌아간다</b></li>
+          </ul>
+        </div>
+        <h4>발표 포인트</h4>
+        <ul class="pts">
+          <li>구두 정의: "프로젝트를 모르는 채로 답한다."</li>
+          <li>"설명을 안 해서 생기는 문제 같지만, 설명을 해도 안 없어진다는 게 핵심입니다."</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  
+  <!-- D1 데모 큐 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">D1</span><span class="chip demo">데모 큐</span><span class="chip p1">라이브 전환</span><span class="chip lay">큐 컴포넌트 · 2세션</span><span class="s-time"><b style="color:#FC1C49">v3 재설계 — 리허설 반영</b></span></div>
+    <h3>데모 1 — 두 번의 세션</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">패턴 01 · 데모</div>
+          <div class="h" style="left:3.43%; top:16.8%;">데모 1 — 두 번의 세션</div>
+          <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">LIVE</div>
+
+          <div class="bar" style="left:4.2%; top:32%; width:91.6%; height:5.5%;">세션 A — 컨텍스트를 주고 요청</div>
+          <div class="card" style="left:4.2%; top:37.5%; width:91.6%; height:13%; border-radius:0 0 3px 3px;"></div>
+          <div class="t sm" style="left:7%; top:37.5%; width:88%; height:13%; display:flex; align-items:center;"><b style="color:#000;">1,500자 컨텍스트 설명</b>&nbsp;<span style="color:#9C9C9C;">(repo 구조 · 상태 5개 · 정책 3줄 · 완료 조건)</span>&nbsp;<b style="color:#000;">+ “주문 상태 처리 개선해줘”</b></div>
+
+          <div class="bar r" style="left:4.2%; top:57%; width:91.6%; height:5.5%;">세션 B — 새 세션에서 다음 작업</div>
+          <div class="card" style="left:4.2%; top:62.5%; width:91.6%; height:13%; border-radius:0 0 3px 3px;"></div>
+          <div class="t sm" style="left:7%; top:62.5%; width:88%; height:13%; display:flex; align-items:center;"><b style="color:#000;">“이전에 정한 대로 결제 실패 처리 이어서 해줘”</b>&nbsp;<span style="color:#9C9C9C;">— 컨텍스트는 붙이지 않는다</span></div>
+
+          <div class="kstrip" style="left:4.2%; top:79%; width:91.6%; height:7.4%;"></div><div class="kstrip-t c" style="left:6%; top:81.2%; width:88%; text-align:center;"><b>볼 것</b> — 세션 A에서 확정한 정책이 세션 B에 남아 있는가</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">라이브 전환 직전 큐 — <b>두 세션의 입력</b>을 미리 보여준다. 세션 A는 컨텍스트를 충분히 주고 <b>잘 되는 장면</b>, 세션 B는 새 세션에서 <b>다음 작업</b>을 시킨다. 하단은 결론이 아니라 <b>관전 지시</b></div>
+        <div class="wf-spec"><b>제작 명세:</b> 큐 컴포넌트 공통 — 헤드라인 우측 <b>LIVE 필</b>(레드 채움 + 흰 텍스트). <b>D1만 2행(바+카드) 구조</b>로 예외를 둔다 — 데모 ①만 세션이 둘이고 D2~D4는 단발이므로 형식 차이가 내용 차이를 반영한다. 바는 <b>세션 라벨</b>(A 회색 / B 레드), 카드에는 <b>실제 입력 문장</b>만. 레드는 <b>세션 B 바 하나</b> — 소멸이 이 데모의 결론이다. 결과(무엇이 나오는지)는 <b>큐에 쓰지 않는다</b> — 05b에서 캡처로 회수한다.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy">
+          <div class="t">데모 1 — 두 번의 세션</div>
+          <ul>
+            <li>[세션 A — 컨텍스트를 주고 요청] <b>1,500자 컨텍스트 설명</b>(repo 구조 · 상태 5개 · 정책 3줄 · 완료 조건) + "주문 상태 처리 개선해줘"</li>
+            <li>[세션 B — 새 세션에서 다음 작업] <span style="color:#FC1C49"><b>"이전에 정한 대로 결제 실패 처리 이어서 해줘"</b></span> — 컨텍스트는 붙이지 않는다</li>
+            <li>[하단] 볼 것 — 세션 A에서 확정한 정책이 세션 B에 남아 있는가</li>
+          </ul>
+        </div>
+        <h4>발표 포인트</h4>
+        <ul class="pts">
+          <li>두 줄을 <b>빠르게</b> 읽습니다(20초). "한 세션에서 잘 해놓고, 세션을 새로 열어서 이어서 시킵니다. 그게 전부예요."</li>
+          <li>세션 A가 <b>성공 장면</b>임을 미리 못박습니다: "A는 잘 됩니다. 문제 없어요. 볼 건 B입니다."</li>
+          <li>하단 스트립은 <b>관전 지시로만</b> 읽고 결론은 말하지 않습니다 — 05b·05c에서 회수.</li>
+        </ul>
+        <h4>v3 재설계 사유 (리허설 반영)</h4>
+        <p class="memo red"><b>리허설에서 전제가 깨졌다.</b> "컨텍스트 없이 요청하면 일반론이 나온다"를 전제로 짰는데, Codex CLI는 repo 안에서 돌기 때문에 <b>파일을 전부 읽고</b> orders/payments/admin/store를 정확히 짚었다. 게다가 구현하지 않고 <b>정책 결정 질문 3개</b>를 던지고 멈췄다. 「일반론 vs 파일명」 대비는 성립하지 않는다.<br>
+        → 축을 <b>"컨텍스트 유무"에서 "세션 경계"</b>로 옮겼다. 세션 A에서 컨텍스트를 충분히 주고 <b>잘 되는 장면</b>을 만든 뒤, 세션 B에서 <b>다음 작업</b>을 시킨다. <b>"모른다"는 100% 재현된다</b> — 세션에 없는 정보는 없기 때문. 라이브 데모가 실패할 수 없는 구조이며, 이는 녹화 강의에서 결정적이다.<br>
+        <b>세션 B를 "기억 테스트"로 만들지 않는다.</b> "아까 그 정책 뭐였지?"로 물으면 "세션 끝나면 잊는 거 당연하지"로 소비된다. <b>업무 상황</b>("이전에 정한 대로 이어서 해줘")으로 던져야 손실이 체감된다. 이 문장은 슬라이드 02 우측 세 번째 항목이라 앞장 회수도 된다.</p>
+        <h4>⚠︎ 비결정성은 여기서 다루지 않는다</h4>
+        <p class="memo">"규칙이 없으면 같은 요청에도 결과가 매번 다르다"(어떤 날은 질문, 어떤 날은 임의 구현)는 <b>사실이지만 패턴 1의 논지가 아니다.</b> 1강 패턴 1의 축은 <b>매번 재설명</b>이다. 비결정성은 <b>06c(패턴 2)의 부속 근거</b>로 옮긴다 — "아무도 정하지 않았으니 시킬 때마다 다르게 정한다".<br>
+        <b>결과는 어느 쪽이든 성립한다:</b> 세션 B가 되물어도, 정책과 다르게 구현해도 논지는 같다. 강사는 나오는 대로 받아 읽으면 된다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05b -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">05b</span><span class="chip demo">데모</span><span class="chip p1">패턴 1</span><span class="chip lay">템플릿 49 · 비교형</span><span class="s-time">8:30–12:30 · 약 4분 · <b style="color:#FC1C49">데모 ① · v3 재설계</b></span></div>
+    <h3>세션이 바뀌면 결정이 사라진다</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">패턴 01 · 데모</div>
+          <div class="h" style="left:3.43%; top:16.8%;">세션이 바뀌면 결정이 사라진다</div>
+          <div class="t sm" style="left:4.2%; top:25.2%; font-weight:700;">세션 A</div>
+          <div class="t sm" style="left:51.04%; top:25.2%; font-weight:700; color:#FC1C49;">세션 B — 새 세션</div>
+          <div class="shot" style="left:4.2%; top:29.5%; width:44.76%; height:36.5%;"><img src="assets/demo1-sessA.png" style="width:100%; height:100%; object-fit:cover; object-position:top; display:block; border-radius:3px;"></div>
+          <div class="shot" style="left:51.04%; top:29.5%; width:44.76%; height:36.5%;"><img src="assets/demo1-sessB.png" style="width:100%; height:100%; object-fit:cover; object-position:top; display:block; border-radius:3px;"></div>
+          <div class="kchip" style="left:4.2%; top:68%; font-size:6.2px;">&gt; 1,500자 컨텍스트 + 주문 상태 처리 개선해줘</div>
+          <div class="kchip" style="left:51.04%; top:68%; font-size:6.2px;">&gt; 이전에 정한 대로 결제 실패 처리 이어서 해줘</div>
+          <div class="t sm" style="left:4.2%; top:74.2%; width:44%; color:#5B5B5B;">규칙 3줄이 <b>그대로 반영됨</b> · 테스트까지 통과</div>
+          <div class="t sm" style="left:51.04%; top:74.2%; width:44%;"><b style="color:#FC1C49">이전 세션을 모른다</b> — 같은 질문을 다시 한다</div>
+          <div class="kstrip" style="left:4.2%; top:81%; width:91.6%; height:7.4%;"></div><div class="kstrip-t c" style="left:6%; top:83.2%; width:88%; text-align:center;"><b>같은 repo, 같은 모델 — 달라진 건 세션 하나뿐.</b> 대화만 사라진 게 아니라, 그 안의 결정까지 같이 사라졌다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">캡처 2장 좌우 대칭 — 같은 crop 폭으로 맞춰 <b>차이가 내용이지 크기가 아니게</b> 한다. 좌측은 <b>성공 장면</b>이라는 것이 중요하다</div>
+        <div class="wf-spec"><b>제작 명세:</b> 캡처는 같은 크기·같은 crop 폭. 캡처 아래 <b>실제 입력 프롬프트를 코드 칩</b>으로, 그 아래 <b>결과 한 줄</b>(좌: 파일 지목 + 결정 확정 / 우: 모른다 + 질문 반복 — 우측만 레드). 하단 지식 스트립이 이 장의 결론. 캡처 안 강조는 <code>#FFE5EB</code> 형광펜 박스 — <b>우측은 “이전 대화 내용은 확인할 수 없습니다” 문장에 건다.</b></div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy">
+          <div class="t">세션이 바뀌면 결정이 사라진다</div>
+          <ul>
+            <li>[좌 · <b>세션 A</b>] 1,500자 컨텍스트 + "주문 상태 처리 개선해줘" → 규칙 3줄이 <b>그대로 반영됨</b>, 테스트까지 통과</li>
+            <li>[우 · <span style="color:#FC1C49"><b>세션 B — 새 세션</b></span>] "이전에 정한 대로 결제 실패 처리 이어서 해줘" → <b>이전 세션을 모른다</b>, 같은 질문을 다시 한다</li>
+            <li>[하단] 같은 repo, 같은 모델 — 달라진 건 세션 하나뿐. 대화만 사라진 게 아니라, 그 안의 결정까지 같이 사라졌다</li>
+          </ul>
+        </div>
+        <h4>데모 시나리오</h4>
+        <ul class="pts">
+          <li>① <b>세션 A</b>: 컨텍스트 1,500자 + "주문 상태 처리 개선해줘" → 답변 확인 → <b>"보존으로 갑니다" 결정 확정</b></li>
+          <li>② <b>세션 B</b>(완전 새 세션): "이전에 정한 대로 결제 실패 처리 이어서 해줘" → 되묻거나 정책과 다르게 처리</li>
+          <li>③ 두 화면을 나란히 놓고 <b>앞 세션에서 정한 게 남았는지</b>만 짚기</li>
+        </ul>
+        <h4>발표 포인트</h4>
+        <ul class="pts">
+          <li>좌측이 <b>성공</b>이라는 걸 먼저 인정합니다: "앞 세션 작업은 잘 끝났어요. 여기까진 문제가 없습니다."</li>
+          <li>"그런데 이 결정, 매일 아침 다시 만드실 건가요?" → 05c로 연결.</li>
+        </ul>
+        <h4>v3 재설계 사유</h4>
+        <p class="memo red">구 버전은 <b>「설명 없이 vs 설명 붙여서」</b>였다. 리허설에서 <b>Codex CLI가 컨텍스트 없이도 repo 파일을 전부 읽는다</b>는 것이 확인되어(파일명 0개가 나오지 않음) 좌측 전제가 무너졌다. 축을 <b>세션 경계</b>로 옮겨 「세션 A vs 세션 B」 대비로 교체. <b>날짜(어제/오늘) 표현은 쓰지 않는다</b> — 세션은 5분 만에도 바뀌므로 시간 간격이 조건이 아니다.<br>
+        이 구조는 <b>100% 재현된다</b> — 세션에 없는 정보는 없으므로. 우측이 되묻든, 정책과 다르게 구현하든 <b>결론은 동일</b>하다.</p>
+        <h4>제작 메모</h4>
+        <p class="memo"><b>좌·우 캡처 모두 리허설 실물로 교체 완료</b>(<code>assets/demo1-sessA.png</code> · <code>assets/demo1-sessB.png</code>). 세션 B 답변이 짧아 세로가 낮으므로 <b>흰 여백을 덧대 좌측과 같은 비율</b>로 맞춘 뒤 상단 정렬했다 — 두 캡처의 크기가 같아야 "차이는 내용이지 크기가 아니다"가 성립한다. 폐기: <code>mock-noctx</code> · <code>mock-ctx</code> · <code>mock-sessb</code>. 리허설에서 실제 세션 A·B 화면을 잡아 교체한다. 폐기: <code>mock-noctx</code>(일반론·파일명 0개) — 더 이상 성립하지 않는 장면.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05c -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">05c</span><span class="chip p1">패턴 1</span><span class="chip lay">템플릿 69 · 축 그래프 → 톱니</span><span class="s-time">12:30–15:00 · 약 2.5분</span></div>
+    <h3>세션이 바뀌면 원점</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">패턴 01 · 진단</div>
+          <div class="h" style="left:3.43%; top:16.8%;">세션이 바뀌면 원점</div>
+          <div class="t sm" style="left:2.2%; top:31%; width:10.6%; line-height:1.45; text-align:right;">Codex가<br>아는 것</div>
+          <svg viewBox="0 0 818 400" preserveAspectRatio="none" style="left:14%; top:32%; width:81.8%; height:40%; overflow:visible;">
+            <polygon points="0,400 262,0 262,400" fill="#FFE5EB"/>
+            <polygon points="279,400 541,0 541,400" fill="#FFE5EB"/>
+            <polygon points="558,400 818,0 818,400" fill="#FFE5EB"/>
+            <path d="M0,400 L262,0 M279,400 L541,0 M558,400 L818,0" fill="none" stroke="#FC1C49" stroke-width="2" vector-effect="non-scaling-stroke"/>
+            <path d="M262,0 L262,400 M541,0 L541,400 M818,0 L818,400" fill="none" stroke="#FC1C49" stroke-width="2" vector-effect="non-scaling-stroke"/>
+          </svg>
+          <div style="left:12.8%; top:72%; width:83%; border-top:1.4px solid #5B5B5B;"></div>
+          <div style="left:14%; top:29.5%; width:0; height:42.5%; border-left:1.2px solid #5B5B5B;"></div>
+          <div style="left:39.75%; top:31.2%; width:5.5px; height:5.5px; border-radius:50%; background:#FC1C49;"></div><div style="left:67.65%; top:31.2%; width:5.5px; height:5.5px; border-radius:50%; background:#FC1C49;"></div><div style="left:95.55%; top:31.2%; width:5.5px; height:5.5px; border-radius:50%; background:#FC1C49;"></div>
+          <div class="t sm" style="left:0.4%; top:70.7%; width:12.4%; text-align:right;">repo에 남은 것&nbsp; <b style="color:#FC1C49; font-size:9.5px;">0</b></div>
+          <div class="t mut c" style="left:14%; top:74.2%; width:26.2%;">세션 1</div>
+          <div class="t mut c" style="left:41.9%; top:74.2%; width:26.2%;">세션 2</div>
+          <div class="t mut c" style="left:69.6%; top:74.2%; width:26.2%;">세션 3</div>
+          <div class="kstrip" style="left:4.2%; top:80%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.6%; width:88%; text-align:center;"><b>해법의 방향</b> — 이 설명을 AGENTS.md로 옮겨두면, 다음 세션부터는 알아서 읽는다 (4강)</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap"><b>톱니 그래프</b> — 세션 안에서는 Codex가 아는 것이 쌓이지만 <b>세션이 끝나는 순간 0으로 떨어진다</b>. 바닥의 회색 선(repo)은 처음부터 끝까지 0. 「원점」이라는 제목이 그래프 모양 그대로다</div>
+        <div class="wf-spec"><b>제작 명세:</b> 세션 3개의 <b>삼각형 톱니</b> — 각 세션은 바닥에서 시작해 우상향으로 쌓이고, 세션 경계에서 <b>수직으로 바닥까지 떨어진다</b>. 면은 <code>#FFE5EB</code> <b>채움만</b>(테두리 없음), 그 위에 <b>우상향 사면과 수직 낙하선을 각각 별도 선</b>으로 <code>#FC1C49</code> 2.25pt. 삼각형 테두리를 쓰면 바닥변까지 빨개져 0선과 충돌한다. 꼭짓점에 <b>레드 원점</b>. 세션 경계 점선과 세로 축선은 <b>넣지 않는다</b> — 수직 낙하선 자체가 경계다. 바닥선은 <code>#5B5B5B</code> 1pt — 이게 <b>repo 라인이자 0선</b>이다. 축 라벨은 좌측에 두 개만: 위 <code>Codex가 아는 것</code>, 아래 <code>repo에 남은 것 0</code>. <b>눈금·수치는 넣지 않는다</b>(측정치가 아니라 개념). <b>하단 보조 줄은 두지 않는다</b> — 그래프 자체가 진단이다. "세션이 끝날 때마다 0으로 리셋"은 구두로 말한다.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy">
+          <div class="t">세션이 바뀌면 원점</div>
+          <ul>
+            <li>[세로축 위] Codex가 아는 것 &nbsp;/&nbsp; [세로축 아래] repo에 남은 것 <span style="color:#FC1C49"><b>0</b></span></li>
+            <li>[가로축] 세션 1 · 세션 2 · 세션 3</li>
+          </ul>
+        </div>
+        <h4>발표 포인트</h4>
+        <ul class="pts">
+          <li>해법 예고는 구두로만: "이 설명을 4강에서 AGENTS.md로 옮깁니다." 슬라이드에는 쓰지 않는다.</li>
+          <li>첫 번째 톱니를 손으로 따라 올라갔다가 <b>수직으로 떨어지는 지점에서 멈춥니다.</b> "세션이 끝나는 순간 여기로 돌아옵니다."</li>
+          <li>바닥선을 가로로 훑습니다. "그동안 <b>repo는 처음부터 끝까지 0입니다.</b>"</li>
+          <li>구두로만: "세션이 끝날 때마다 0으로 리셋됩니다."</li>
+          <li>"프롬프트를 더 잘 쓰는 걸로는 안 풀립니다. <b>설명이 있어야 할 자리가 틀린 것</b>입니다."</li>
+          <li>해법은 한 줄만 예고하고 넘어갑니다. 자세한 건 4강.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 패턴 2 ═══════════ -->
+  <div class="sec-head"><span class="num">패턴 2</span><h2>06–06c · 바로 구현</h2><span class="time">15–23분 · 목표: 정책 결정이 코드에 섞이는 장면 보이기</span></div>
+
+  <!-- C2 클립 디바이더 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">C2</span><span class="chip demo">클립 2 시작</span><span class="chip lay">디바이더 · 리캡</span></div>
+    <h3>패턴 ② 바로 구현</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">1강 · 클립 2</div>
+          <div class="h" style="left:3.43%; top:16.8%;">패턴 ② 바로 구현</div>
+          <div class="t" style="left:3.43%; top:26.5%; color:#5B5B5B;">정책 결정이 코드에 섞이는 순간</div>
+          <div class="kstrip" style="left:4.2%; top:40%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:42.6%; width:88%; text-align:center;"><b>지난 클립 ✓</b> — 실습 저장소 소개 · 패턴 ① 매번 재설명 — 설명은 세션과 함께 사라진다</div>
+          <div class="card" style="left:4.2%; top:54%; width:91.6%; height:9.5%; background:#FFE5EB;"></div><div class="t mid c" style="left:4.2%; top:56.7%; width:91.6%; color:#FC1C49; font-weight:700;">이번 클립 — 정의 → 라이브 데모 ② → 진단 「diff에서 찾아야 할 세 가지」</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">클립 2 시작 카드 — 지난 클립 리캡 1줄 + 이번 클립 예고. 플랫폼 클립 단위 시청을 위한 디바이더</div>
+        <div class="wf-spec"><b>제작 명세:</b> 디바이더 공통 — 헤드라인 + 회색 서브 + 지난 클립 kstrip + 이번 클립 핑크 바. 10초 안에 지나가는 장 — 정보를 더 얹지 않는다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">06</span><span class="chip p2">패턴 2</span><span class="chip lay">템플릿 19 · 알약 3행 + ▼</span><span class="s-time">15:00–16:30 · 약 1.5분</span></div>
+    <h3>패턴2 바로 구현</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">패턴 02 · 정의</div>
+          <div class="n" style="left:3.43%; top:17.6%;">02</div>
+          <div class="h" style="left:9.6%; top:16.8%;">바로 구현</div>
+          <svg viewBox="0 0 970 400" preserveAspectRatio="none" style="left:0; top:33.5%; width:97%; height:41%;">
+            <polygon points="0,84 828,84 828,0 970,200 828,400 828,316 0,316" fill="#FFE5EB"/>
+          </svg>
+          <div style="left:4.2%; top:37%; width:26.9%; height:33%; background:#fff; border:1px solid #FC1C49; border-radius:4px;"></div>
+          <div class="t big c" style="left:4.2%; top:45.5%; width:26.9%; color:#000;">요청</div>
+          <div class="t sm c" style="left:4.2%; top:53.5%; width:26.9%; color:#5B5B5B;">“결제 실패 상태 처리해줘”</div>
+          <div style="left:33.28%; top:37%; width:26.9%; height:33%; background:#F5F5F5; border:1.3px dashed #B3B3B3; border-radius:4px;"></div>
+          <div class="t big c" style="left:33.28%; top:45.5%; width:26.9%; color:#9C9C9C;">계획</div>
+          <div class="t sm c" style="left:33.28%; top:53.5%; width:26.9%; color:#B3B3B3;">묻지 않고 건너뜀</div>
+          <div style="left:62.36%; top:37%; width:26.9%; height:33%; background:#fff; border:1px solid #FC1C49; border-radius:4px;"></div>
+          <div class="t big c" style="left:62.36%; top:45.5%; width:26.9%; color:#000;">코드</div>
+          <div class="t sm c" style="left:62.36%; top:52.5%; width:26.9%; color:#5B5B5B; line-height:1.5;">어디까지 수정할지 예측 불가<br>묻지 않은 결정 다수</div>
+          <div class="card" style="left:4.2%; top:82%; width:91.6%; height:9.5%; background:#FFE5EB;"></div>
+          <div class="t mid c" style="left:4.2%; top:84.7%; width:91.6%; color:#FC1C49; font-weight:700;">사람이 정해야 할 것을, agent가 정해버린다</div>
+          <div class="kstrip" style="left:4.2%; top:71.5%; width:91.6%; height:7.6%;"></div><div class="kstrip-t c" style="left:6%; top:74.1%; width:88%; text-align:center;"><b>무엇을 할지가 분명해 보이면, agent는 되묻지 않는다</b> — 어떻게 할지는 요청에 없어도 스스로 정한다. 어디서 멈출지는 사람이 설계해야 한다 (3강)</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap"><b>화살표 프로세스 3단</b> — 요청 → [빈 칸] → 코드. 가운데 칸이 <b>배경색 + 회색 점선</b>이라 흐름에 구멍이 뚫린 것처럼 보인다</div>
+        <div class="wf-spec"><b>제작 명세:</b> 템플릿 45(분홍 화살표 위 3카드). 좌·우 카드는 <b>흰 채움 + 레드 테두리</b>(템플릿 기본), 가운데 카드만 <b>배경색 #F5F5F5 채움 + #B3B3B3 점선</b>으로 바꾼다 — 화살표의 분홍이 가려져 <b>흐름에 구멍이 난 것처럼</b> 보이는 게 핵심. 내용은 「요청 / 결제 실패 상태 처리해줘」·「계획 / 묻지 않고 건너뜀」·「코드 / 어디까지 수정할지 예측 불가 · 묻지 않은 결정 다수」, 하단 레드 틴트 바로 닫는다. <b>3강·9강에서 이 가운데 칸이 채워지는 그림으로 다시 등장</b>하므로 같은 레이아웃 유지. <b>수치는 박지 않는다</b>(파일 몇 개·결정 몇 개) — 실행마다 달라지므로 숫자를 쓰면 데모와 어긋난다.</div>
+
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy">
+          <div class="t">패턴2 · 바로 구현</div>
+          <ul>
+            <li>요청 → <b>(계획 없음)</b> → 코드</li>
+            <li><b>사람이 정해야 할 것을, agent가 정해버린다</b></li>
+          </ul>
+        </div>
+        <h4>발표 포인트</h4>
+        <ul class="pts">
+          <li>구두 정의: "<b>뭘 할지는 말했지만, 어떻게 할지는 말하지 않았다.</b> 그 빈칸을 agent가 채웁니다."</li>
+          <li>데모 ①과의 대비를 씁니다: "아까 <b>'개선해줘'</b>라고 했을 땐 되물었죠. 이번엔 <b>'결제 실패 상태 처리해줘'</b> — 안 묻고 그냥 합니다. <b>할 일이 분명해 보이면 확인 안 받고 그냥 갑니다.</b>"</li>
+          <li>"그런데 <b>결정할 게 줄어든 게 아닙니다.</b> 실패 주문을 남길지 지울지, 요청 어디에도 안 적혀 있어요. 그래도 코드는 하나를 골라야 하고 — agent가 골랐습니다."</li>
+          <li>"빠른 게 문제가 아닙니다. <b>정해진 게 어디에도 안 적혀 있는 게</b> 문제입니다."</li>
+        </ul>
+        <h4>리허설 반영 기록</h4>
+        <p class="memo red"><b>리허설 2회에서 행동이 갈렸다.</b> ①「주문 상태 처리 개선해줘」 → <b>정책 질문 3개를 던지고 멈춤.</b> ②「결제 실패 상태 처리해줘」 → <b>묻지 않고 바로 구현.</b><br>
+        원인은 <b>요청이 할 일을 특정하느냐</b>다. "개선"은 평가어라 착수 지점이 안 잡히고 관습적 정답도 없다 → 묻는다. "결제 실패 상태 처리"는 대상·범위가 특정되고 <code>payment_failed</code> 추가라는 관습적 정답이 있으며, repo의 <code>orders.delete</code> 결함과 1:1로 붙는다 → 실행한다.<br>
+        <b>결론: 데모 ②의 요청에서는 「묻지 않고 건너뜀」이 재현되므로 원 문구를 유지한다.</b> 다만 「agent는 시키지 않으면 묻지 않는다」는 일반 주장은 데모 ①과 모순되므로 <b>스트립을 「무엇을 할지가 분명해 보이면 되묻지 않는다」로 교체</b>했다 — 두 리허설 결과를 모두 설명하는 문장이다.<br>
+        <b>강의적 가치:</b> "요청을 잘 쓰면 되잖아요"에 대한 반박이 여기서 나온다 — <b>또렷하게 쓸수록 agent는 더 확신을 갖고 혼자 정한다.</b> 요청이 정하는 건 <b>무엇을 할지</b>일 뿐, <b>어떻게 할지</b>는 여전히 비어 있다. 3강(경계)·7강(정책 문서)으로 넘어가는 다리.</p>
+      </div>
+    </div>
+  </section>
+
+  
+  <!-- D2 데모 큐 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">D2</span><span class="chip demo">데모 큐</span><span class="chip p2">라이브 전환</span><span class="chip lay">템플릿 72 셸 · 큐 컴포넌트</span></div>
+    <h3>데모 2</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">패턴 02 · 데모</div>
+          <div class="h" style="left:3.43%; top:16.8%;">데모 2</div>
+          <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">LIVE</div>
+          <div class="t sm c" style="left:4.2%; top:44%; width:91.6%; font-weight:700; color:#9C9C9C;">핵심 포인트</div>
+          <div class="t c" style="left:4.2%; top:51%; width:91.6%; font-weight:700; font-size:11.5px;">어디서 멈추는가 · 그리고 <span style="color:#FC1C49;">무엇을 대신 정했는가</span></div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">라이브 전환 직전에 띄워두는 큐 장 — <b>핵심 포인트만</b>. 입력은 강사가 라이브에서 직접 친다. 데모가 끝나면 다음 결과 장으로 복귀</div>
+        <div class="wf-spec"><b>제작 명세:</b> 큐 컴포넌트 공통 — 헤드라인 우측 <b>LIVE 필</b>(레드 채움 + 흰 텍스트), <b>핵심 포인트 한 줄만</b>(블랙 Bold · 중앙 · 크게). 입력 칩은 두지 않는다 — 입력은 라이브에서 보여준다. <b>후반부만 레드</b> — 이 데모의 무게중심이 "대신 정해진 것"에 있음을 큐에서 이미 정한다.<br>
+        「어디서 멈추는가」는 <b>답이 "안 멈춘다"로 나오는 질문</b>이라 데모 직후 바로 회수되고, 06의 스트립(어디서 멈출지는 사람이 설계해야 한다)과 3강으로 그대로 이어진다. 만약 질문이 오면 "여기서 멈췄네요"로 받고 답한 뒤 후반부로 넘어가면 되므로 <b>어느 쪽이든 성립</b>한다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06b 삭제됨 (v3) — 라이브 diff로 대체 -->
+  <div class="sec-head" style="background:#FFF3F5;"><span class="num">삭제</span><h2>06b「물어보지 않고 정해진 것들」— 슬라이드 삭제</h2><span class="time">데모 ② 직후 <b>GitHub diff 화면</b>에서 직접 회수</span></div>
+  <p class="note-inline"><b>삭제 사유:</b> 이 장은 <b>라이브 결과를 미리 적어둔 슬라이드</b>였다. 수정된 파일·변경 내용은 물론, <b>무엇을 물었고 무엇을 묻지 않았는지조차 실행마다 달라진다.</b> 어떻게 다시 써도 라이브 화면과 어긋날 위험이 남는다.<br>
+  → <b>제작 원칙:</b> 라이브 결과에 의존하는 내용은 슬라이드에 넣지 않는다. 데모 ② 직후 <b>실제 diff를 GitHub에서 열어</b> 그 자리에서 짚는다 — 무엇이 정해졌는지는 화면이 증거다. 정리는 다음 장 <b>06c(diff에서 찾아야 할 세 가지)</b>가 맡는다 — 06c는 구체적 결정이 아니라 <b>렌즈 3개</b>(범위·호환·누락)라 실행과 무관하게 참이다.<br>
+  <b>시간:</b> 06b에 배정됐던 3.5분은 데모 ② 구간(라이브 diff 회수 포함)으로 흡수 — 클립 2 분량 변화 없음.<br>
+  <b>점검 결과:</b> 같은 위험이 있는 장은 06b뿐. 07b(답변에 없는 4가지)는 "없는 것"을 세므로 실행 무관, 08b(5군데 빈 슬롯)는 repo 상태라 고정.</p>
+
+  <!-- 06c -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">06c</span><span class="chip p2">패턴 2</span><span class="chip lay">템플릿 27 · 텍스트 3단</span><span class="s-time">20:00–23:00 · 약 3분 · <b style="color:#FC1C49">이 강의 최다 인용 · v2 재설계</b></span></div>
+    <h3>diff에서 찾아야 할 세 가지</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">패턴 02 · 진단</div>
+          <div class="h" style="left:3.43%; top:16.8%;">diff에서 찾아야 할 세 가지</div>
+
+          <div class="card" style="left:4.2%; top:28%; width:29.2%; height:44%;"></div>
+          <div class="tag" style="left:6.6%; top:31.5%; width:6.4%; height:5.2%; border-radius:999px;">01</div>
+          <div class="t big" style="left:6.6%; top:39.5%; width:24.4%; line-height:1.35;">요청에 없던 게<br>생겼나</div>
+          <div style="left:6.6%; top:56%; width:24.4%; border-top:1px solid #E3E3E7;"></div>
+          <div class="t sm" style="left:6.6%; top:59%; width:24.4%; line-height:1.5; color:#5B5B5B;">시킨 적 없는데 늘어난 것</div>
+          <div class="kchip" style="left:6.6%; top:66.5%; font-size:6.2px;">범위</div>
+
+          <div class="card" style="left:35.4%; top:28%; width:29.2%; height:44%;"></div>
+          <div class="tag" style="left:37.8%; top:31.5%; width:6.4%; height:5.2%; border-radius:999px;">02</div>
+          <div class="t big" style="left:37.8%; top:39.5%; width:24.4%; line-height:1.35;">밖에서 쓰던 동작이<br>바뀌었나</div>
+          <div style="left:37.8%; top:56%; width:24.4%; border-top:1px solid #E3E3E7;"></div>
+          <div class="t sm" style="left:37.8%; top:59%; width:24.4%; line-height:1.5; color:#5B5B5B;">API 응답이나 상태 값처럼 남이 의존하던 것</div>
+          <div class="kchip" style="left:37.8%; top:66.5%; font-size:6.2px;">호환</div>
+
+          <div class="card" style="left:66.6%; top:28%; width:29.2%; height:44%;"></div>
+          <div class="tag" style="left:69.0%; top:31.5%; width:6.4%; height:5.2%; border-radius:999px;">03</div>
+          <div class="t big" style="left:69.0%; top:39.5%; width:24.4%; line-height:1.35;">같이 고쳤어야 할 곳은<br>없나</div>
+          <div style="left:69.0%; top:56%; width:24.4%; border-top:1px solid #E3E3E7;"></div>
+          <div class="t sm" style="left:69.0%; top:59%; width:24.4%; line-height:1.5; color:#5B5B5B;">그대로 둬서 앞뒤가 안 맞게 된 것</div>
+          <div class="kchip" style="left:69.0%; top:66.5%; font-size:6.2px;">누락</div>
+
+          <div class="card" style="left:4.2%; top:77%; width:91.6%; height:9.5%; background:#FFE5EB;"></div>
+          <div class="t mid c" style="left:4.2%; top:79.7%; width:91.6%; color:#FC1C49; font-weight:700;">이건 코드로 정할 일이 아니라, 사람이 정해야 할 규칙입니다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">3카드 동일 스타일 — 번호 필 + <b>질문</b> + 구분선 + 부연 + 분류 칩(범위 · 호환 · 누락). <b>늘었나 / 바뀌었나 / 빠졌나</b> 세 동사가 갈려 외우기 쉽다</div>
+        <div class="wf-spec"><b>제작 명세:</b> 카드 제목은 <b>질문문</b>으로 — "이건 누가 정해야 하나?"라는 감각을 만든다. 3카드 흰 카드 동일 스타일(우열 없음). 카드 구조(위→아래): 번호 필 → 질문(2행) → 얇은 구분선 → 부연 → <b>분류 칩</b>(범위/호환/누락). <b>구체적인 결정 사례·코드 한 줄·선택지 칩은 넣지 않는다</b> — 실행마다 달라지므로 라이브 화면과 어긋난다. 하단 레드 틴트 바 1개.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy">
+          <div class="t">diff에서 찾아야 할 세 가지</div>
+          <ul>
+            <li><b>① 요청에 없던 게 생겼나</b> — 시킨 적 없는데 늘어난 것 <span class="small">(범위)</span></li>
+            <li><b>② 밖에서 쓰던 동작이 바뀌었나</b> — API 응답이나 상태 값처럼 남이 의존하던 것 <span class="small">(호환)</span></li>
+            <li><b>③ 같이 고쳤어야 할 곳은 없나</b> — 그대로 둬서 앞뒤가 안 맞게 된 것 <span class="small">(누락)</span></li>
+          </ul>
+          <div class="small">[하단 레드 틴트 바] 이건 코드로 정할 일이 아니라, 사람이 정해야 할 규칙입니다</div>
+        </div>
+        <h4>발표 포인트</h4>
+        <ul class="pts">
+          <li><b>세 질문을 방금 본 diff에 즉석에서 적용합니다.</b> 슬라이드는 렌즈고, 사례는 화면에 있습니다 — 미리 적어둔 답을 읽지 않습니다.</li>
+          <li>구두 보강: "agent가 잘못 정한 게 아니라, <b>아무도 정하지 않았습니다.</b>"</li>
+          <li><b>불일치를 논지로 흡수합니다</b>: "여러분이 같은 요청을 돌리면 다른 결과가 나올 겁니다. <b>그게 바로 문제예요</b> — 기준이 어디에도 없으니까요."</li>
+          <li>강의 전체를 관통하는 문장: <b>"정책은 사람이, 실행은 agent가."</b> 여기서 처음 심고 17강·20강에서 회수.</li>
+        </ul>
+        <h4>v2 재설계 사유</h4>
+        <p class="memo red">구 버전은 <b>구체적 결정 3개</b>(실패 주문 보존 / 재고 차단 시점 / 실패 사유 노출)를 카드로 박고, agent가 고른 쪽 칩을 핑크로 표시했다. <b>리허설에서 셋 다 어긋났다</b> — 실제로는 주문을 <b>남겼고</b>(칩은 "지운다"), 재고는 <b>손도 안 댔으며</b>, 실패 사유 노출 대신 <b>admin 표시 판정 로직</b>을 바꿨다.<br>
+        더 중요한 건 <b>상위 3개를 다시 골라도 같은 문제가 반복된다</b>는 점이다. 어떤 결정이 나올지는 실행마다 다르다. → 카드를 <b>구체적 결정에서 「찾는 렌즈」로</b> 전환했다. 세 질문은 어떤 diff에도 적용되므로 실행과 무관하게 참이다.<br>
+        <b>부가 이득:</b> 수강생이 자기 repo에서 재사용할 수 있는 도구가 된다. "402가 나왔다"는 그 화면에서 끝나지만 "밖에서 쓰던 동작이 바뀌었는지 봐라"는 다음 날 회사에서 쓴다. 그리고 세 렌즈가 강의 뒷부분과 1:1로 이어진다 — <b>범위→3강(경계) · 호환→7강(정책 문서) · 누락→16강(preflight)</b>.</p>
+        <h4>⚠︎ 7강 연동 메모</h4>
+        <p class="memo">구 버전은 이 세 카드가 <b>그대로 7강 정책 문서의 항목</b>이 되는 구조였다. 렌즈로 바뀌었으므로 7강의 정책 항목(재고 차감 시점 · 실패 주문 보존 · 관리자 실패 정보)은 <b>커리큘럼 정본에서 직접 가져온다.</b> 1강은 "무슨 일이 벌어지나", 7강은 "그래서 뭘 정해둬야 하나" — 목록이 달라도 된다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- C3 클립 디바이더 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">C3</span><span class="chip demo">클립 3 시작</span><span class="chip lay">디바이더 · 리캡 + 캡처</span></div>
+    <h3>패턴 ③ 검수 불가</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">1강 · 클립 3</div>
+          <div class="h" style="left:3.43%; top:16.8%;">패턴 ③ 검수 불가</div>
+          <div class="t" style="left:3.43%; top:26.5%; color:#5B5B5B;">3분이면 될 확인이 30분 걸리는 이유</div>
+          <div class="shot" style="left:24%; top:33%; width:52%; height:34%;"><img src="assets/demo2-result.png" style="width:100%; height:100%; object-fit:cover; display:block; border-radius:3px;"></div>
+          <div class="t mut c" style="left:24%; top:68.5%; width:52%;">데모 ②의 마지막 답변</div>
+          <div class="kstrip" style="left:4.2%; top:74%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:76.6%; width:88%; text-align:center;"><b>지난 클립 ✓</b> — 패턴 ② 바로 구현. 이번 클립은 <b>그 답변을 다시 띄워</b> 검수 가능성을 따진다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">클립 3 시작 카드 — 클립 경계로 끊긴 <b>데모 ② 화면을 캡처로 리캡</b>하고 시작 (데모 ③이 이 화면을 재사용하므로)</div>
+        <div class="wf-spec"><b>제작 명세:</b> 디바이더 공통 문법 + 중앙에 데모 ② 마지막 답변 캡처. <b>리허설 실물 캡처로 교체 완료</b>(<code>assets/demo2-result.png</code> — 목업 <code>mock-demo2</code> 폐기). 캡처는 <b>요약 5줄 + 변경 파일 + 검증 완료 줄</b> 밴드만 남기고 미리 크롭해 둔다(1328×512) — 디바이더에서 읽히는 건 "완료했습니다 + 검증 완료" 두 줄이면 충분하다. 이 장 덕분에 클립 3을 단독 시청해도 데모 ③이 성립한다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">07</span><span class="chip p3">패턴 3</span><span class="chip lay">템플릿 19 · 2카드 비교</span><span class="s-time">23:00–24:30 · 약 1.5분 · <b style="color:#FC1C49">v2 재설계 — 리허설 반영</b></span></div>
+    <h3>패턴3 검수 불가</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">패턴 03 · 정의</div>
+          <div class="n" style="left:3.43%; top:17.6%;">03</div>
+          <div class="h" style="left:9.6%; top:16.8%;">검수 불가</div>
+
+          <div class="bar" style="left:4.2%; top:31%; width:35.8%; height:5.5%;">agent가 보고한 것</div>
+          <div class="card g" style="left:4.2%; top:36.5%; width:35.8%; height:31.5%;"></div>
+          <div class="t sm" style="left:7.2%; top:40.5%; width:2.5%; color:#B3B3B3; font-weight:700;">✓</div>
+          <div class="t sm" style="left:10%; top:40.5%; width:27%;"><b style="color:#000;">완료했다고 말한다</b></div>
+          <div class="t sm" style="left:7.2%; top:47.6%; width:2.5%; color:#B3B3B3; font-weight:700;">✓</div>
+          <div class="t sm" style="left:10%; top:47.6%; width:27%;"><b style="color:#000;">고친 파일을 알려준다</b></div>
+          <div class="t sm" style="left:7.2%; top:54.7%; width:2.5%; color:#B3B3B3; font-weight:700;">✓</div>
+          <div class="t sm" style="left:10%; top:54.7%; width:27%;"><b style="color:#000;">테스트가 통과했다고 한다</b></div>
+          <div class="t sm" style="left:7.2%; top:61.8%; width:2.5%; color:#B3B3B3; font-weight:700;">✓</div>
+          <div class="t sm" style="left:10%; top:61.8%; width:27%;"><b style="color:#000;">lint · typecheck도 통과</b></div>
+
+          <div class="t c" style="left:41%; top:45.5%; width:18%; color:#FC1C49; font-weight:700; font-size:8.4px; line-height:1.5;">다 통과했다는데,<br>왜 다시 확인해야 할까</div>
+
+          <div class="bar r" style="left:60%; top:31%; width:35.8%; height:5.5%;">그래도 여전히 모르는 것</div>
+          <div class="card" style="left:60%; top:36.5%; width:35.8%; height:31.5%;"></div>
+          <div class="t sm" style="left:63%; top:40%; width:2.5%; color:#FC1C49; font-weight:700;">✕</div>
+          <div class="t sm" style="left:65.8%; top:40%; width:28%; line-height:1.35;"><b style="color:#FC1C49;">그 테스트를 누가 썼나</b><br><span style="color:#9C9C9C; font-size:6.2px;">agent가 쓴 테스트로 agent를 채점했다</span></div>
+          <div class="t sm" style="left:63%; top:49.3%; width:2.5%; color:#FC1C49; font-weight:700;">✕</div>
+          <div class="t sm" style="left:65.8%; top:49.3%; width:28%; line-height:1.35;"><b style="color:#FC1C49;">무엇을 통과했나</b><br><span style="color:#9C9C9C; font-size:6.2px;">통과했다는 말만 있고 항목은 없다</span></div>
+          <div class="t sm" style="left:63%; top:58.6%; width:2.5%; color:#FC1C49; font-weight:700;">✕</div>
+          <div class="t sm" style="left:65.8%; top:58.6%; width:28%; line-height:1.35;"><b style="color:#FC1C49;">우리 기준이 그 안에 있나</b><br><span style="color:#9C9C9C; font-size:6.2px;">지켜야 할 것이 테스트에 없으면 통과해도 미검증</span></div>
+
+          <div class="kstrip" style="left:4.2%; top:74%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:76.6%; width:88%; text-align:center;"><b>통과했다는 말은 있는데, 무엇을 통과해야 하는지는 아무도 정하지 않았다</b> — 검증 기준을 지정해서 받는 법은 13강에서 다룬다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap"><b>초록불 vs 여전히 모르는 것</b> — 좌측이 <b>전부 ✓</b>인 것이 이 장의 반전이다. 부실해서가 아니라, <b>충분히 보고했는데도</b> 확인이 안 된다</div>
+        <div class="wf-spec"><b>제작 명세:</b> 흰 카드 2장 — 좌 「agent가 보고한 것」은 <b>회색 카드 + ✓ 4행</b>(레드 없음, 부연 없음 — 짧게 끊어 초록불 느낌을 만든다), 우 「그래도 여전히 모르는 것」은 <b>흰 카드 + ✕ 3행</b>(레드 제목 + 6.2px 그레이 부연). 가운데 레드 2행이 두 카드를 잇는다. <b>수치는 쓰지 않는다</b>(파일 몇 개·테스트 몇 개) — 실행마다 달라져 라이브 화면과 어긋난다. 05와 같은 2카드 문법.</div>
+
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy">
+          <div class="t">패턴3 · 검수 불가</div>
+          <ul>
+            <li>[좌 · <b>agent가 보고한 것</b>] 완료했다고 말한다 / 고친 파일을 알려준다 / 테스트가 통과했다고 한다 / lint · typecheck도 통과</li>
+            <li>[우 · <span style="color:#FC1C49"><b>그래도 여전히 모르는 것</b></span>] 그 테스트를 누가 썼나 / 무엇을 통과했나 / 우리 기준이 그 안에 있나</li>
+            <li>[가운데] <b>다 통과했다는데, 왜 다시 확인해야 할까</b></li>
+            <li>[하단] 통과했다는 말은 있는데, 무엇을 통과해야 하는지는 아무도 정하지 않았다</li>
+          </ul>
+        </div>
+        <h4>발표 포인트</h4>
+        <ul class="pts">
+          <li><b>좌측을 먼저 칭찬합니다</b>: "보고가 부실한 게 아니에요. 파일도 알려주고, 테스트도 돌리고, lint까지 통과했다고 합니다. <b>여기까지는 흠잡을 데가 없어요</b>."</li>
+          <li>전환: "그런데도 저는 코드를 열어봅니다. <b>왜일까요?</b>"</li>
+          <li>핵심: "저 테스트, <b>agent가 방금 직접 쓴 겁니다.</b> 자기가 문제 내고, 자기가 풀고, 자기가 채점한 거예요. 통과 안 하면 그게 이상하죠"</li>
+          <li>구두 정의: "틀렸다는 게 아닙니다. <b>맞는지 알 수가 없다</b>는 거예요. 이게 더 위험합니다."</li>
+        </ul>
+        <h4>v2 재설계 사유 (리허설 반영)</h4>
+        <p class="memo red">구 버전은 <b>「근거 파일 없음 / 실행 기록 없음 / 테스트 결과 없음」</b>이었다. 리허설 실물 답변에는 <b>셋 다 있었다</b> — 변경 파일 4개 명시, <code>npm run lint</code>·<code>npm run typecheck</code>·<code>npm test</code> 실행, 테스트 통과까지 보고. 「없다」 전제가 통째로 무너졌다.<br>
+        → 축을 <b>「보고가 없다」에서 「검증 기준이 우리 것이 아니다」</b>로 옮겼다. <b>agent가 테스트를 직접 쓰고 스스로 통과시킨다</b>는 것이 핵심 — 자기채점이다. 그리고 우리 기준(예: 실패 시 재고 롤백)은 애초에 그 테스트에 없으므로 초록불이어도 미검증이다.<br>
+        <b>이 축이 더 강한 이유:</b> "AI 답변이 부실하다"는 2023년 프레임이라 실물을 아는 수강생에게 신뢰를 잃는다. "충분히 보고했는데도 확인이 안 된다"는 지금 실제로 벌어지는 일이고, 5강(검증 계획)·8강(Acceptance Criteria)·14강(얕은 테스트 교정)·16강(preflight)으로 전부 이어진다.</p>
+      </div>
+    </div>
+  </section>
+
+    <!-- D3 데모 큐 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">D3</span><span class="chip demo">데모 큐</span><span class="chip p3">라이브 전환</span><span class="chip lay">템플릿 72 셸 · 큐 컴포넌트</span></div>
+    <h3>데모 3</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">패턴 03 · 데모</div>
+          <div class="h" style="left:3.43%; top:16.8%;">데모 3</div>
+          <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">LIVE</div>
+          <div class="t sm c" style="left:4.2%; top:44%; width:91.6%; font-weight:700; color:#9C9C9C;">핵심 포인트</div>
+          <div class="t c" style="left:4.2%; top:51%; width:91.6%; font-weight:700; font-size:11.5px;">누가 채점했는가 · 그리고 <span style="color:#FC1C49;">우리 기준은 그 안에 있는가</span></div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">라이브 전환 직전에 띄워두는 큐 장 — <b>핵심 포인트만</b>. 입력은 강사가 라이브에서 직접 친다. 데모가 끝나면 다음 결과 장으로 복귀</div>
+        <div class="wf-spec"><b>제작 명세:</b> 큐 컴포넌트 공통 — 헤드라인 우측 <b>LIVE 필</b>(레드 채움 + 흰 텍스트), <b>핵심 포인트 한 줄만</b>(블랙 Bold · 중앙 · 크게). 입력 칩은 두지 않는다. <b>새 입력 없음</b> — 데모 ②의 화면을 다시 띄우는 구성이라 실패 리스크 0. <b>후반부만 레드</b> — 07b 네 질문 중 ③(우리 기준)이 이 데모의 무게중심이다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07b -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">07b</span><span class="chip demo">데모</span><span class="chip p3">패턴 3</span><span class="chip lay">템플릿 21 · 체크 필 4행</span><span class="s-time">24:30–28:00 · 약 3.5분 · <b style="color:#FC1C49">데모 ③ · v2 재설계</b></span></div>
+    <h3>통과했다고 할 때 꼭 확인할 것</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">패턴 03 · 데모</div>
+          <div class="h" style="left:3.43%; top:16.8%;">통과했다고 할 때 꼭 확인할 것</div>
+
+          <div class="card" style="left:4.2%; top:29%; width:91.6%; height:11.5%;"></div>
+          <div class="tag" style="left:6.6%; top:32.2%; width:5.4%; height:5.2%; border-radius:999px;">01</div>
+          <div class="t sm" style="left:14%; top:29%; width:34%; height:11.5%; display:flex; align-items:center;"><b style="color:#000;">테스트는 누가 썼나</b></div>
+          <div class="t sm" style="left:50%; top:29%; width:44%; height:11.5%; display:flex; align-items:center; color:#5B5B5B;">agent가 직접 썼다면, 자기 답을 자기가 채점한 것</div>
+
+          <div class="card" style="left:4.2%; top:42.5%; width:91.6%; height:11.5%;"></div>
+          <div class="tag" style="left:6.6%; top:45.7%; width:5.4%; height:5.2%; border-radius:999px;">02</div>
+          <div class="t sm" style="left:14%; top:42.5%; width:34%; height:11.5%; display:flex; align-items:center;"><b style="color:#000;">어떤 경우를 확인했나</b></div>
+          <div class="t sm" style="left:50%; top:42.5%; width:44%; height:11.5%; display:flex; align-items:center; color:#5B5B5B;">통과 개수 말고, 무엇을 검사했는지</div>
+
+          <div class="card" style="left:4.2%; top:56%; width:91.6%; height:11.5%;"></div>
+          <div class="tag" style="left:6.6%; top:59.2%; width:5.4%; height:5.2%; border-radius:999px;">03</div>
+          <div class="t sm" style="left:14%; top:56%; width:34%; height:11.5%; display:flex; align-items:center;"><b style="color:#FC1C49;">우리가 지켜야 할 게 빠지진 않았나</b></div>
+          <div class="t sm" style="left:50%; top:56%; width:44%; height:11.5%; display:flex; align-items:center; color:#5B5B5B;">테스트에 없으면, 통과해도 확인된 게 아니다</div>
+
+          <div class="card" style="left:4.2%; top:69.5%; width:91.6%; height:11.5%;"></div>
+          <div class="tag" style="left:6.6%; top:72.7%; width:5.4%; height:5.2%; border-radius:999px;">04</div>
+          <div class="t sm" style="left:14%; top:69.5%; width:34%; height:11.5%; display:flex; align-items:center;"><b style="color:#000;">통과했으면 맞는 건가</b></div>
+          <div class="t sm" style="left:50%; top:69.5%; width:44%; height:11.5%; display:flex; align-items:center; color:#5B5B5B;">lint · typecheck는 문법만 본다 — 정책은 안 본다</div>
+
+          <div class="t c" style="left:4.2%; top:84%; width:91.6%; color:#FC1C49; font-weight:700; font-size:8.6px;">이 네 가지가 확인 안 되면, 검증된 게 아니라 검증했다는 말을 들은 것이다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">4행 리스트 — 번호 필 + 질문 + 부연. <b>03만 레드</b>(우리 기준이 빠졌다는 것이 이 장의 핵심). 데모 ③에서 이 네 질문을 방금 받은 답변에 직접 적용한다</div>
+        <div class="wf-spec"><b>제작 명세:</b> 4행 카드 리스트(흰 카드 · 동일 높이). 각 행: 번호 필 → <b>질문</b>(좌, Bold) → <b>부연</b>(우, 그레이). 좌우 2단이라 질문만 훑어도 읽힌다. <b>03만 레드 제목</b> — 네 질문 중 유일하게 "빠진 것"을 묻는 항목이고 5강·8강(Acceptance Criteria)의 씨앗이다. 하단 레드 한 줄로 닫는다.<br>
+        <b>구체적 사례·수치는 넣지 않는다</b>(테스트 몇 개·어떤 항목) — 실행마다 달라져 라이브 화면과 어긋난다. 06c와 같은 <b>렌즈 문법</b>이다.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy">
+          <div class="t">통과했다고 할 때 꼭 확인할 것</div>
+          <ul>
+            <li><b>① 테스트는 누가 썼나</b> — agent가 직접 썼다면, 자기 답을 자기가 채점한 것</li>
+            <li><b>② 어떤 경우를 확인했나</b> — 통과 개수 말고, 무엇을 검사했는지</li>
+            <li><span style="color:#FC1C49"><b>③ 우리가 지켜야 할 게 빠지진 않았나</b></span> — 테스트에 없으면, 통과해도 확인된 게 아니다</li>
+            <li><b>④ 통과했으면 맞는 건가</b> — lint · typecheck는 문법만 본다, 정책은 안 본다</li>
+            <li>[하단] 이 네 가지가 확인 안 되면, 검증된 게 아니라 검증했다는 말을 들은 것이다</li>
+          </ul>
+        </div>
+        <h4>데모 시나리오</h4>
+        <ul class="pts">
+          <li>① 데모 ②의 답변 화면을 그대로 다시 띄운다 (새 요청 없음 — C3 캡처와 같은 화면)</li>
+          <li>② <b>네 질문을 그 화면에 하나씩 적용</b>한다. 미리 적어둔 답을 읽지 않는다</li>
+          <li>③ <b>③에서 멈춘다</b>: 우리 기준(예: 실패 시 재고 롤백)이 테스트에 있는지 실제로 찾아본다 — 없으면 그게 결론</li>
+        </ul>
+        <h4>발표 포인트</h4>
+        <ul class="pts">
+          <li>① 앵커: "이 테스트, <b>방금 agent가 직접 썼습니다.</b> 자기가 문제 내고 자기가 채점했어요. 통과 안 하면 그게 이상하죠"</li>
+          <li>③ 앵커: "우리가 지켜야 할 게 테스트에 없으면, <b>통과했다는 말은 우리 기준에 대해 아무 말도 안 한 겁니다</b>"</li>
+          <li>닫기: "그래서 다음 강의부터 <b>기준을 먼저 적습니다.</b> 통과 여부를 agent가 정하지 않게요"</li>
+        </ul>
+        <h4>v2 재설계 사유 (리허설 반영)</h4>
+        <p class="memo red">구 버전은 <b>「답변에 없는 4가지 — 어느 파일을? 무엇을 근거로? 뭘 실행했나? 결과는?」</b>이었다. 리허설 실물 답변에 <b>네 개가 전부 있었다</b>(변경 파일 명시 · lint/typecheck/test 실행 · 통과 보고). 「없다」 전제가 무너졌다.<br>
+        → <b>「빠진 것을 세는 장」에서 「검증 주장을 검증하는 장」</b>으로 전환. 네 질문은 실행과 무관하게 성립하고, 수강생이 자기 repo에서 그대로 재사용한다.<br>
+        <b>후속 연결:</b> ①③ → 14강(얕은 테스트 교정) · ②④ → 5강·8강(검증 계획 · Acceptance Criteria) · 전체 → 16강(PR preflight).</p>
+        <h4>⚠︎ 13강 연결 변경</h4>
+        <p class="memo">구 하단 스트립은 「이 네 줄을 <b>달라고 하면 준다</b> → 13강에서 자동으로 받는 법」이었다. <b>이제 안 시켜도 준다.</b> 13강 연결을 「받는 법」에서 <b>「우리 검증 기준을 지정해서 받는 법」</b>으로 바꾼다 — 07(정의) 하단 스트립에 이미 반영됨.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07c -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">07c</span><span class="chip p3">패턴 3</span><span class="chip lay">템플릿 63 · 가로 막대 TYPE 2</span><span class="s-time">28:00–31:00 · 약 3분</span></div>
+    <h3>3분 생성, 30분 검수</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">패턴 03 · 진단</div>
+          <div class="h" style="left:3.43%; top:16.8%;">3분 생성, 30분 검수</div>
+          <div class="t sm" style="left:3.43%; top:42.6%; width:14.5%; text-align:right; font-weight:700;">만드는 시간</div>
+          <div style="left:20%; top:40%; width:75.8%; height:9%; background:#E6E6E6; border-radius:3px;"></div>
+          <div style="left:20%; top:40%; width:7.6%; height:9%; background:#5B5B5B; border-radius:3px;"></div>
+          <div class="t sm" style="left:29%; top:42.6%; font-weight:700; color:#5B5B5B;">3분</div>
+          <div class="t sm" style="left:3.43%; top:59.6%; width:14.5%; text-align:right; font-weight:700;">확인하는 시간</div>
+          <div style="left:20%; top:57%; width:75.8%; height:9%; background:#FFE5EB; border-radius:3px;"></div>
+          <div style="left:20%; top:57%; width:75.8%; height:9%; background:#FC1C49; border-radius:3px;"></div>
+          <div class="t sm" style="left:20%; top:59.6%; width:74.2%; text-align:right; color:#fff; font-weight:700;">30분</div>
+          <div style="left:50.3%; top:57%; width:1px; height:9%; background:#fff; opacity:.7;"></div><div style="left:75.6%; top:57%; width:1px; height:9%; background:#fff; opacity:.7;"></div><div class="t mut c" style="left:20%; top:67.5%; width:30.3%;">diff 읽기 12분</div><div class="t mut c" style="left:50.3%; top:67.5%; width:25.3%;">동작 추적 10분</div><div class="t mut c" style="left:75.6%; top:67.5%; width:20.2%;">수동 테스트 8분</div><div class="kstrip" style="left:4.2%; top:79%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:81.6%; width:88%; text-align:center;"><b>왜 늘어나는가</b> — 근거가 없으면, 확인하는 일이 전부 내 몫이 된다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap"><b>가로 막대 2행(TYPE 2)</b> — 3분 vs 30분. 막대 길이 차이가 곧 메시지, 헤드라인의 숫자를 그대로 시각화</div>
+        <div class="wf-spec"><b>제작 명세:</b> 템플릿 그래프 <b>TYPE 2(가로 막대)</b> — 위 막대 회색 #5B5B5B(만드는 시간 · 3분, 트랙 #E6E6E6), 아래 막대 레드 #FC1C49(확인하는 시간 · 30분, 트랙 #FFE5EB). 값 라벨은 짧은 회색 막대는 <b>막대 밖</b> 회색 Bold, 레드 막대는 <b>막대 안</b> 우측 흰색 Bold — 디자인 시스템 그래프 문법 그대로. 두 숫자는 데모 ②에서 실측한 값을 쓴다(3/30은 자리값). 레드 막대는 <b>흰 세로선 2개로 3분할</b>하고 아래에 diff 읽기 12 · 동작 추적 10 · 수동 테스트 8을 라벨링 — 30분의 구조를 보여준다. 하단 지식 스트립: 근거가 없으면 검증 비용이 사람에게 전가된다. 축·눈금 없음. Sub(#FFA71B) 금지.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy">
+          <div class="t">3분 생성, 30분 검수</div>
+          <ul>
+            <li>만드는 시간은 줄었다</li>
+            <li><b>확인하는 시간은 늘었다</b></li>
+          </ul>
+        </div>
+        <h4>발표 포인트</h4>
+        <ul class="pts">
+          <li>"그래서 <b>일이 줄었다는 느낌이 안 드는</b> 겁니다. 총량은 그대로거나 늘었으니까요."</li>
+          <li>수치는 예시임을 분명히 — 측정 데이터가 아니라 체감 구조 설명입니다.</li>
+        </ul>
+        <h4>제작 메모</h4>
+        <p class="memo">그래프는 코드로 생성(matplotlib)해 PNG 삽입. 브랜드 컬러 고정, 배경 흰색, 범례는 곡선 끝 직접 라벨.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 패턴 4 ═══════════ -->
+  <div class="sec-head"><span class="num">패턴 4</span><h2>08–08c · 대화창에만 남음</h2><span class="time">31–38분 · 목표: 좋은 결과도 자산이 아니면 사라진다</span></div>
+
+  <!-- C4 클립 디바이더 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">C4</span><span class="chip demo">클립 4 시작</span><span class="chip lay">디바이더 · 리캡</span></div>
+    <h3>패턴 ④ 대화창에만 남음</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">1강 · 클립 4</div>
+          <div class="h" style="left:3.43%; top:16.8%;">패턴 ④ 대화창에만 남음</div>
+          <div class="t" style="left:3.43%; top:26.5%; color:#5B5B5B;">그리고 4가지 패턴의 진단</div>
+          <div class="kstrip" style="left:4.2%; top:40%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:42.6%; width:88%; text-align:center;"><b>지난 클립 ✓</b> — 패턴 ③ 검수 불가 — 빠진 세 가지는 결국 내가 확인한다</div>
+          <div class="card" style="left:4.2%; top:54%; width:91.6%; height:9.5%; background:#FFE5EB;"></div><div class="t mid c" style="left:4.2%; top:56.7%; width:91.6%; color:#FC1C49; font-weight:700;">이번 클립 — 정의 → 라이브 데모 ④ → 진단 · 1강 전체 정리와 로드맵</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">클립 4 시작 카드 — 지난 클립 리캡 1줄 + 이번 클립 예고. 플랫폼 클립 단위 시청을 위한 디바이더</div>
+        <div class="wf-spec"><b>제작 명세:</b> 디바이더 공통 — 헤드라인 + 회색 서브 + 지난 클립 kstrip + 이번 클립 핑크 바. 10초 안에 지나가는 장 — 정보를 더 얹지 않는다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">08</span><span class="chip p4">패턴 4</span><span class="chip lay">템플릿 19 · 알약 3행 + ▼</span><span class="s-time">31:00–32:30 · 약 1.5분</span></div>
+    <h3>패턴4 대화창에만 남음</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">패턴 04 · 정의</div>
+          <div class="n" style="left:3.43%; top:17.6%;">04</div>
+          <div class="h" style="left:9.6%; top:16.8%;">대화창에만 남음</div>
+          <div class="card" style="left:35%; top:27.5%; width:30%; height:9%;"></div>
+          <div class="t sm c" style="left:35%; top:30.2%; width:30%; font-weight:700;">이전 세션의 좋은 답변</div>
+          <svg viewBox="0 0 400 90" preserveAspectRatio="none" style="left:30%; top:36%; width:40%; height:9%; overflow:visible;">
+            <path d="M200,4 L64,86" fill="none" stroke="#9C9C9C" stroke-width="1.4" vector-effect="non-scaling-stroke"/>
+            <path d="M200,4 L336,86" fill="none" stroke="#FC1C49" stroke-width="1.4" stroke-dasharray="4 4" vector-effect="non-scaling-stroke"/>
+          </svg>
+          <div class="t mut" style="left:29.5%; top:38.5%;">지금 남아 있는 곳</div>
+          <div class="t sm" style="left:59.5%; top:38.5%; color:#FC1C49;">남겼어야 할 곳</div>
+          <div class="card" style="left:4.2%; top:46%; width:44.6%; height:26%;"></div>
+          <div class="t sm c" style="left:4.2%; top:49%; width:44.6%; font-weight:700; color:#5B5B5B;">대화 로그 — 세션 스크롤 저편</div>
+          <div class="t sm" style="left:9%; top:55.5%; width:36%; color:#FC1C49;"><b style="color:#FC1C49; margin-right:4px;">✕</b>검색이 안 된다</div>
+          <div class="t sm" style="left:9%; top:60.5%; width:36%; color:#FC1C49;"><b style="color:#FC1C49; margin-right:4px;">✕</b>git에 안 남아 리뷰도 못 한다</div>
+          <div class="t sm" style="left:9%; top:65.5%; width:36%; color:#FC1C49;"><b style="color:#FC1C49; margin-right:4px;">✕</b>3일 뒤엔 스크롤로 못 찾는다</div>
+          <div style="left:51.2%; top:46%; width:44.6%; height:26%; border:1.3px dashed #C9C9CF; border-radius:4px;"></div>
+          <div class="t sm c" style="left:51.2%; top:49%; width:44.6%; font-weight:700; color:#5B5B5B;">repo 파일 — 검색 · 리뷰 · 자동 로드</div>
+          <div style="left:51.2%; top:56%; width:44.6%; display:flex; justify-content:center;"><span class="kchip" style="font-size:6.2px;">notes/order-status-request.md</span></div>
+          <div class="t sm c" style="left:51.2%; top:64%; width:44.6%; color:#FC1C49;">존재하지 않음 — 아무도 기록하지 않았다</div>
+          <div class="kstrip" style="left:4.2%; top:78%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:80.6%; width:88%; text-align:center;"><b>저장 ≠ 기록</b> — 로그에 남아 있는 것과 자산은 다르다. 답변을 자산으로 만드는 건 <b>구조화해서 파일로 옮기는 행위</b>다 (2강 4칸 노트)</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap"><b>답변의 행선지 분기</b> — 위 「이전 세션의 좋은 답변」에서 두 갈래: 실선(지금 남아 있는 곳 = 대화 로그, ✕3) / 점선(남겼어야 할 곳 = repo 파일, 존재하지 않음)</div>
+        <div class="wf-spec"><b>제작 명세:</b> 상단 중앙에 작은 흰 카드 「이전 세션의 좋은 답변」, 아래로 <b>분기 화살표 2개</b> — 좌 실선 회색(지금 남아 있는 곳), 우 <b>레드 점선</b>(남겼어야 하지만 아무도 안 간 길). 좌 흰 카드 「대화 로그」: ✕ grep 안 됨 · ✕ git 밖 · ✕ 3일 뒤 못 찾음. 우 <b>점선 빈 슬롯</b> 「repo 파일」: 모노 경로 칩 + "존재하지 않음 — 아무도 기록하지 않았다"(레드). 경로 칩은 <b>카드 중앙 정렬</b>(flex 래퍼) — 텍스트 길이가 바뀌어도 중앙을 유지한다. <b>경로는 실습 정본과 일치시킨다</b> — <code>notes/order-status-request.md</code>는 수강생이 <b>2강에서 실제로 만드는 첫 파일</b>이다. 임의 경로를 쓰면 다음 강의와 어긋난다. 08b의 5칸 빈 슬롯이 이 우측 카드의 확장판이다. 하단 지식 스트립: <b>저장 ≠ 기록</b> — 로그와 자산의 구분이 이 장의 가져갈 지식.</div>
+        
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy">
+          <div class="t">패턴4 · 대화창에만 남음</div>
+          <ul>
+            <li>이전 세션의 좋은 답변 → <b>지금 남아 있는 곳</b>: 대화 로그 (✕ grep · ✕ git · ✕ 3일 뒤)</li>
+            <li><b>남겼어야 할 곳</b>: repo 파일 — <code>notes/order-status-request.md</code> · <b>존재하지 않음</b></li>
+            <li>스트립: <b>저장 ≠ 기록</b></li>
+          </ul>
+        </div>
+        <h4>발표 포인트</h4>
+        <ul class="pts">
+          <li>구두 정의: "잘 나온 정리가, 어디에도 없다."</li>
+          <li>"앞의 셋은 결과가 나빴던 경우고, 이건 <b>결과가 좋았는데도</b> 생기는 문제입니다."</li>
+          <li>우측 빈 슬롯의 경로를 짚습니다: "이 파일, <b>다음 강의에서 여러분이 직접 만듭니다.</b> 오늘은 비어 있다는 것만 확인하고 갑니다."</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  
+  <!-- D4 데모 큐 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">D4</span><span class="chip demo">데모 큐</span><span class="chip p4">라이브 전환</span><span class="chip lay">템플릿 72 셸 · 큐 컴포넌트</span></div>
+    <h3>데모 4</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">패턴 04 · 데모</div>
+          <div class="h" style="left:3.43%; top:16.8%;">데모 4</div>
+          <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">LIVE</div>
+          <div class="t sm c" style="left:4.2%; top:44%; width:91.6%; font-weight:700; color:#9C9C9C;">핵심 포인트</div>
+          <div class="t c" style="left:4.2%; top:51%; width:91.6%; font-weight:700; font-size:11.5px;">issue · ADR · AGENTS.md · TODO · PR — 몇 군데가 비어 있는가</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">라이브 전환 직전에 띄워두는 큐 장 — <b>핵심 포인트만</b>. 입력은 강사가 라이브에서 직접 친다. 데모가 끝나면 다음 결과 장으로 복귀</div>
+        <div class="wf-spec"><b>제작 명세:</b> 큐 컴포넌트 공통 — 헤드라인 우측 <b>LIVE 필</b>(레드 채움 + 흰 텍스트), <b>핵심 포인트 한 줄만</b>(블랙 Bold · 중앙 · 크게). 입력 칩은 두지 않는다 — 입력은 라이브 화면에서 보여준다. 다섯 칩이 결과 장의 빈 슬롯 5칸과 같은 순서 — 큐와 결과가 같은 지도를 쓴다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08b -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">08b</span><span class="chip demo">데모</span><span class="chip p4">패턴 4</span><span class="chip lay">템플릿 36 · 5단 빈 슬롯</span><span class="s-time">32:30–35:30 · 약 3분 · <b style="color:#FC1C49">데모 ④</b></span></div>
+    <h3>5군데 모두 비어 있음</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">패턴 04 · 데모</div>
+          <div class="h" style="left:3.43%; top:16.8%;">5군데 모두 비어 있음</div>
+          <div style="left:4.2%; top:34%; width:17.1%; height:24%; border:1.3px dashed #C9C9CF; border-radius:6px;"></div>
+          <div class="t mid c" style="left:4.2%; top:40%; width:17.1%; font-weight:700;">issue</div>
+          <div class="t sm c" style="left:4.2%; top:47.5%; width:17.1%; color:#FC1C49;">비어 있음</div>
+          <div style="left:22.82%; top:34%; width:17.1%; height:24%; border:1.3px dashed #C9C9CF; border-radius:6px;"></div>
+          <div class="t mid c" style="left:22.82%; top:40%; width:17.1%; font-weight:700;">ADR</div>
+          <div class="t sm c" style="left:22.82%; top:47.5%; width:17.1%; color:#FC1C49;">비어 있음</div>
+          <div style="left:41.440000000000005%; top:34%; width:17.1%; height:24%; border:1.3px dashed #C9C9CF; border-radius:6px;"></div>
+          <div class="t mid c" style="left:41.440000000000005%; top:40%; width:17.1%; font-weight:700;">AGENTS.md</div>
+          <div class="t sm c" style="left:41.440000000000005%; top:47.5%; width:17.1%; color:#FC1C49;">파일 없음</div>
+          <div style="left:60.06%; top:34%; width:17.1%; height:24%; border:1.3px dashed #C9C9CF; border-radius:6px;"></div>
+          <div class="t mid c" style="left:60.06%; top:40%; width:17.1%; font-weight:700;">TODO</div>
+          <div class="t sm c" style="left:60.06%; top:47.5%; width:17.1%; color:#FC1C49;">비어 있음</div>
+          <div style="left:78.68%; top:34%; width:17.1%; height:24%; border:1.3px dashed #C9C9CF; border-radius:6px;"></div>
+          <div class="t mid c" style="left:78.68%; top:40%; width:17.1%; font-weight:700;">PR 설명</div>
+          <div class="t sm c" style="left:78.68%; top:47.5%; width:17.1%; color:#FC1C49;">비어 있음</div>
+          <div class="t mut c" style="left:4.2%; top:63.5%; width:91.6%; font-size:6.5px; font-weight:700; letter-spacing:.06em;">본래 있어야 했던 것 ▼</div>
+          <div class="t sm c" style="left:4.2%; top:69%; width:17.1%; color:#5B5B5B; font-weight:700;">결정 배경</div><div class="t sm c" style="left:22.82%; top:69%; width:17.1%; color:#5B5B5B; font-weight:700;">선택지와 근거</div><div class="t sm c" style="left:41.440000000000005%; top:69%; width:17.1%; color:#5B5B5B; font-weight:700;">작업 규칙 · 검증 명령</div><div class="t sm c" style="left:60.06%; top:69%; width:17.1%; color:#5B5B5B; font-weight:700;">다음 작업</div><div class="t sm c" style="left:78.68%; top:69%; width:17.1%; color:#5B5B5B; font-weight:700;">변경 요약 · 근거</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">5칸이 전부 비어 있는 그림 — <b>"없음"이 콘텐츠</b>. 6강·11강에서 이 5칸이 채워진 그림으로 회수</div>
+        <div class="wf-spec"><b>제작 명세:</b> 5칸을 <b>흰 카드가 아니라 "빈 슬롯"</b>으로 — 배경색 그대로 두고 <b>점선 테두리(#C9C9CF)</b>만. 흰 카드를 쓰면 "채워짐"으로 읽혀 메시지가 죽는다. 이름은 블랙 Bold, 상태 텍스트("비어 있음"/"파일 없음")만 레드(작게), 슬롯 밖 하단에 <b>「본래 있어야 했던 것 ▼」 헤더 한 줄</b> + 칸별 내용(결정 배경 · 선택지와 근거 · 작업 규칙·검증 명령 · 다음 작업 · 변경 요약·근거)을 분리 배치 — 빈 상태와 기대 내용이 층으로 구분된다. 6강 미니 프로젝트에서 <b>같은 5칸이 흰 카드 + 내용으로 채워지는 버전</b>으로 회수되므로 좌표·순서 고정.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy">
+          <div class="t">5군데 모두 비어 있음</div>
+          <ul>
+            <li>issue · ADR · AGENTS.md · TODO · PR 설명 — <span style="color:#FC1C49">전부 비어 있음</span></li>
+          </ul>
+        </div>
+        <h4>데모 시나리오</h4>
+        <ul class="pts">
+          <li>① 앞서 나온 좋은 정리 하나를 고른다</li>
+          <li>② repo와 GitHub에서 다섯 군데를 실제로 열어본다 — 전부 비어 있음을 확인</li>
+          <li>구두 마무리: "남은 곳은 대화창 스크롤뿐입니다. 검색도, 공유도 안 됩니다."</li>
+          <li>③ "이 정리는 오늘 저녁이면 없어집니다."</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08c -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">08c</span><span class="chip p4">패턴 4</span><span class="chip lay">템플릿 19 · 알약 3행 + ▼</span><span class="s-time">35:30–38:00 · 약 2.5분</span></div>
+    <h3>대화는 소비, 파일은 자산</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">패턴 04 · 진단</div>
+          <div class="h" style="left:3.43%; top:16.8%;">대화는 소비, 파일은 자산</div>
+          <div class="bar" style="left:4.2%; top:28%; width:44.6%; height:5.5%;">대화 — 소비된다</div>
+ <div class="card g" style="left:4.2%; top:33.5%; width:44.6%; height:36.5%;"></div>
+          
+          
+          
+          
+          
+          <div class="bar r" style="left:51.2%; top:28%; width:44.6%; height:5.5%;">파일 — 쌓인다</div>
+ <div class="card" style="left:51.2%; top:33.5%; width:44.6%; height:36.5%;"></div>
+          
+          
+          
+          
+          
+          <div class="card" style="left:4.2%; top:78.5%; width:91.6%; height:9.5%; background:#FFE5EB;"></div>
+          <div class="t mid c" style="left:4.2%; top:81.2%; width:91.6%; color:#FC1C49; font-weight:700;">다음 작업으로 이어지려면, 파일이어야 한다</div>
+          <div class="t c" style="left:8%; top:40.5%; width:37%; color:#5B5B5B; opacity:0.85; font-size:8.6px;">검색이 안 된다</div><div class="t c" style="left:8%; top:49%; width:37%; color:#5B5B5B; opacity:0.55; font-size:8.6px;">공유도 안 되고</div><div class="t c" style="left:8%; top:57.5%; width:37%; color:#5B5B5B; opacity:0.3; font-size:8.6px;">세션이 끝나면 사라진다</div><div class="t c" style="left:55%; top:40.5%; width:37%; font-size:8.6px;"><b style="color:#FC1C49">✓</b> git 이력에 남고</div><div class="t c" style="left:55%; top:49%; width:37%; font-size:8.6px;"><b style="color:#FC1C49">✓</b> PR로 리뷰할 수 있고</div><div class="t c" style="left:55%; top:57.5%; width:37%; font-size:8.6px;"><b style="color:#FC1C49">✓</b> 다음 세션에 자동으로 로드된다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">대비 2칸(회색 대화 / 흰 카드 + 레드 파일) + 결론 한 줄</div>
+        <div class="wf-spec"><b>제작 명세:</b> "파일" 쪽을 <b>흰 카드 + 레드 텍스트</b>로 — 회색(대화)과 대비를 만들되 다크 블록은 쓰지 않는다. 카드 안에 <b>근거 3행씩</b>: 좌(대화) — grep·검색 안 됨 / 공유도 안 되고 / 세션이 끝나면 사라진다, 아래로 갈수록 옅어지는 opacity 램프(소멸의 시각화). 우(파일) — ✓ git 이력에 남고 / ✓ PR로 리뷰할 수 있고 / ✓ 다음 세션에 자동으로 로드된다, 체크만 레드. 추상 막대 대신 <b>각 행이 검증 가능한 사실</b>이다. "vs" 텍스트는 쓰지 않는다.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy">
+          <div class="t">대화는 소비, 파일은 자산</div>
+          <div class="st">[하단] 다음 작업으로 이어지려면, 파일이어야 한다</div>
+          <ul>
+            <li><b>대화</b> — 소비된다</li>
+            <li><b>파일</b> — 쌓인다</li>
+          </ul>
+        </div>
+        <h4>발표 포인트</h4>
+        <ul class="pts">
+          <li>2강 전체가 이 문장 하나를 실습으로 푸는 시간이라고 예고합니다.</li>
+          <li>"repo에 남는 게 없으면, 앞 세션의 나와 지금의 나가 협업을 못 합니다."</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 마무리 ═══════════ -->
+  <div class="sec-head"><span class="num">CLOSING</span><h2>09–13 · 마무리 7분</h2><span class="time">38–45분 · 목표: 4패턴 각인 + 강의 전체 로드맵 + 첫 산출물</span></div>
+
+  <!-- 09 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">09</span><span class="chip cl">마무리</span><span class="chip lay">템플릿 33 · 텍스트 4단</span><span class="s-time">38:00–39:30 · 약 1.5분</span></div>
+    <h3>4패턴 한 장 요약</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">정리</div>
+          <div class="h" style="left:3.43%; top:16.8%;">4패턴 한 장 요약</div>
+          <div class="card" style="left:4.2%; top:30.0%; width:44.6%; height:26.5%;"></div>
+          <div class="n" style="left:7.4%; top:35.0%; font-size:12.5px;">01</div>
+          <div class="t big" style="left:13.600000000000001%; top:34.4%;">매번 재설명</div>
+          <div class="t sm" style="left:7.4%; top:44.5%; color:#5B5B5B;">설명이 머릿속에만 있다</div>
+          <div class="card" style="left:51.2%; top:30.0%; width:44.6%; height:26.5%;"></div>
+          <div class="n" style="left:54.400000000000006%; top:35.0%; font-size:12.5px;">02</div>
+          <div class="t big" style="left:60.6%; top:34.4%;">바로 구현</div>
+          <div class="t sm" style="left:54.400000000000006%; top:44.5%; color:#5B5B5B;">정책이 코드에 섞인다</div>
+          <div class="card" style="left:4.2%; top:59.5%; width:44.6%; height:26.5%;"></div>
+          <div class="n" style="left:7.4%; top:64.5%; font-size:12.5px;">03</div>
+          <div class="t big" style="left:13.600000000000001%; top:63.9%;">검수 불가</div>
+          <div class="t sm" style="left:7.4%; top:74.0%; color:#5B5B5B;">근거가 없다</div>
+          <div class="card" style="left:51.2%; top:59.5%; width:44.6%; height:26.5%;"></div>
+          <div class="n" style="left:54.400000000000006%; top:64.5%; font-size:12.5px;">04</div>
+          <div class="t big" style="left:60.6%; top:63.9%;">대화창에만 남음</div>
+          <div class="t sm" style="left:54.400000000000006%; top:74.0%; color:#5B5B5B;">기록이 없다</div>
+          <div class="t sm" style="left:7.4%; top:50.5%; color:#FC1C49; font-weight:700;">→ AGENTS.md · 4강</div><div class="t sm" style="left:54.400000000000006%; top:50.5%; color:#FC1C49; font-weight:700;">→ plan-first · 3 · 9강</div><div class="t sm" style="left:7.4%; top:80.0%; color:#FC1C49; font-weight:700;">→ preflight · 13 · 16강</div><div class="t sm" style="left:54.400000000000006%; top:80.0%; color:#FC1C49; font-weight:700;">→ repo 문서 · 2 · 8강</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">2×2 — 패턴명(크게) + 한 줄 진단. 03과 같은 번호·순서·색</div>
+        <div class="wf-spec"><b>제작 명세:</b> 03의 4칸을 2×2로 재배치하되 카드마다 <b>해법 키워드 + 강 번호</b>(레드 소형)를 붙인다 — 요약이 로드맵을 겸한다. 카드 간 우열 강조는 없음.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy">
+          <div class="t">4패턴 한 장 요약</div>
+          <ul>
+            <li><b>01 매번 재설명</b> — 설명이 머릿속에만 있다</li>
+            <li><b>02 바로 구현</b> — 정책이 코드에 섞인다</li>
+            <li><b>03 검수 불가</b> — 근거가 없다</li>
+            <li><b>04 대화창에만 남음</b> — 기록이 없다</li>
+          </ul>
+        </div>
+        <h4>발표 포인트</h4>
+        <ul class="pts">
+          <li>네 개를 빠르게 되짚고 바로 다음 장으로 — 여기서 멈추지 않습니다.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">10</span><span class="chip cl">마무리</span><span class="chip lay">템플릿 72 · 텍스트&amp;이미지 1단</span><span class="s-time">39:30–40:30 · 약 1분 · <b style="color:#FC1C49">이 강의의 결론</b></span></div>
+    <h3>기준·경계·증거·기록</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">정리 · 핵심</div>
+          <div class="h big" style="left:3.43%; top:36%; line-height:1.5;">답변은 있는데<br><em>기준 · 경계 · 증거 · 기록이 없다</em></div>
+          <div class="kstrip" style="left:4.2%; top:62%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:64.6%; width:88%; text-align:center;">기준 — 무엇이 맞는가 &nbsp;·&nbsp; 경계 — 어디까지인가 &nbsp;·&nbsp; 증거 — 왜 믿을 수 있는가 &nbsp;·&nbsp; 기록 — 무엇이 남는가</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">2행 대형 헤드라인만 — 이 강의에서 <b>가장 단순한 슬라이드</b></div>
+        <div class="wf-spec"><b>제작 명세:</b> 카드 없이 배경 위 텍스트만 두는 것도 가능(템플릿 72 계열). 2행 38pt Bold, 2행만 레드. <b>아이콘·도형 일절 금지</b> — 문장 하나가 남아야 함. 4개 단어(기준·경계·증거·기록)는 각각 11의 해법 4개와 1:1.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy">
+          <div class="t">답변은 있는데, <span style="color:#FC1C49">기준 · 경계 · 증거 · 기록이 없다</span></div>
+        </div>
+        <h4>발표 포인트</h4>
+        <ul class="pts">
+          <li>구두 마무리: "도구의 문제가 아니라, 흐름의 문제입니다."</li>
+          <li>이 강의 전체에서 가장 중요한 한 문장입니다. 천천히 읽고 <b>3초 정도 멈춥니다.</b></li>
+          <li>네 단어는 각각 패턴 1·2·3·4와 순서대로 대응합니다 — 그 대응을 다음 장에서 그림으로 보여줍니다.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">11</span><span class="chip cl">마무리</span><span class="chip lay">템플릿 54 · 표 유형</span><span class="s-time">40:30–42:30 · 약 2분 · <b style="color:#FC1C49">강의 전체 로드맵</b></span></div>
+    <h3>패턴 → 해법 → 강의</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">강의 로드맵</div>
+          <div class="h" style="left:3.43%; top:16.8%;">패턴 → 해법 → 강의</div>
+          <table style="left:4.20%; top:30%; width:91.6%;">
+            <tr><th style="width:24%">패턴</th><th style="width:30%">해법</th><th style="width:32%">산출물</th><th>강의</th></tr>
+            <tr><td>01 매번 재설명</td><td class="k" style="width:auto; text-align:left; padding-left:8px;">AGENTS.md</td><td>AGENTS.md 파일</td><td style="text-align:center; color:#5B5B5B;">4강</td></tr>
+            <tr><td>02 바로 구현</td><td class="k" style="width:auto; text-align:left; padding-left:8px;">Human gate · plan-first</td><td>plan 승인 게이트 템플릿</td><td style="text-align:center; color:#5B5B5B;">3·9강</td></tr>
+            <tr><td>03 검수 불가</td><td class="k" style="width:auto; text-align:left; padding-left:8px;">검증 명령 · PR preflight</td><td>preflight 스크립트</td><td style="text-align:center; color:#5B5B5B;">13·16강</td></tr>
+            <tr><td>04 대화창에만 남음</td><td class="k" style="width:auto; text-align:left; padding-left:8px;">repo 문서 · issue</td><td>4칸 노트 템플릿</td><td style="text-align:center; color:#5B5B5B;">2·8강</td></tr>
+          </table>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">3열 표 — 패턴 / 해법(강조 열) / 다루는 강. 템플릿 54 표 스타일</div>
+        <div class="wf-spec"><b>제작 명세:</b> 템플릿 표 문법 그대로 — <b>헤더 행 #FC1C49 + 흰 글씨</b>, 해법 열은 <b>#FFE5EB 배경</b>으로 강조, 나머지는 흰 셀. 행 구분선 레드 헤어라인. "강의" 열은 12pt 회색(보조). 이 표는 <b>2·3·4강 도입부에서 다시 등장</b>하므로 재사용 가능한 형태로 제작.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy">
+          <div class="t">패턴 → 해법 → 강의</div>
+          <ul>
+            <li>01 매번 재설명 → <b>AGENTS.md</b> (4강)</li>
+            <li>02 바로 구현 → <b>Human gate · plan-first</b> (3·9강)</li>
+            <li>03 검수 불가 → <b>검증 명령 · PR preflight</b> (13·16강)</li>
+            <li>04 대화창에만 남음 → <b>repo 문서 · issue</b> (2·8강)</li>
+          </ul>
+        </div>
+        <h4>발표 포인트</h4>
+        <ul class="pts">
+          <li>구두: "네 가지 패턴에는, 네 가지 답이 있습니다."</li>
+          <li>"오늘 본 네 장면이 <b>이 강의의 목차</b>입니다. 강의가 끝나면 네 칸이 전부 채워집니다."</li>
+          <li>수강생이 "이 강의를 왜 듣는지"를 여기서 확정합니다. 시간을 충분히 씁니다.</li>
+        </ul>
+        <h4>제작 메모</h4>
+        <p class="memo">6강(미니 프로젝트 1) 회고 슬라이드가 이 표의 <b>"완료 버전"</b>입니다. 동일 표에 체크만 채우는 형태로 재사용.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">12</span><span class="chip cl">마무리</span><span class="chip lay">템플릿 55 · 표 유형</span><span class="s-time">42:30–44:00 · 약 1.5분 · <b style="color:#FC1C49">첫 산출물</b></span></div>
+    <h3>실패 패턴 진단표</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">산출물</div>
+          <div class="h" style="left:3.43%; top:16.8%;">실패 패턴 진단표</div>
+          <table style="left:4.20%; top:30%; width:91.6%;">
+            <tr><th style="width:70%; text-align:left; padding-left:8px;">확인 항목</th><th style="width:15%">예</th><th>아니오</th></tr>
+            <tr><td>새 세션마다 프로젝트를 다시 설명한다</td><td style="text-align:center;">○</td><td style="text-align:center;">✕</td></tr>
+            <tr><td>계획 없이 바로 코드가 나온다</td><td style="text-align:center;">○</td><td style="text-align:center;">✕</td></tr>
+            <tr><td>결과가 맞는지 직접 다시 읽어야 한다</td><td style="text-align:center;">○</td><td style="text-align:center;">✕</td></tr>
+            <tr><td>좋은 정리가 repo에 남지 않는다</td><td style="text-align:center;">○</td><td style="text-align:center;">✕</td></tr>
+          </table>
+          <div class="kstrip" style="left:4.2%; top:80%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.6%; width:88%; text-align:center;"><b>사용법</b> — “예”가 2개 넘으면, 그 패턴을 다루는 강부터 들으면 된다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">4행 체크 표 — 수강생이 그대로 복사해 쓰는 <b>Chapter 1 첫 산출물</b></div>
+        <div class="wf-spec"><b>제작 명세:</b> 템플릿 55(3열 비교표) 구조 차용. 문항은 <b>패턴 순서와 동일</b>. 체크 칸은 비워 두고, 배포용 파일(<code>docs/codex-failure-patterns.md</code>)로도 함께 제공.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy">
+          <div class="t">실패 패턴 진단표</div>
+          <ul>
+            <li>새 세션마다 프로젝트를 다시 설명한다</li>
+            <li>계획 없이 바로 코드가 나온다</li>
+            <li>결과가 맞는지 직접 다시 읽어야 한다</li>
+            <li>좋은 정리가 repo에 남지 않는다</li>
+          </ul>
+        </div>
+        <h4>발표 포인트</h4>
+        <ul class="pts">
+          <li>구두 질문: "내 repo·내 업무에 어떤 패턴이 있나요?"</li>
+          <li>"수업 끝나고 각자 repo에 대고 체크해보세요. <b>2강은 여기서 '예'가 나온 항목부터 시작합니다.</b>"</li>
+          <li>커리큘럼상 Chapter 1의 산출물 "Codex 업무 적용 실패 패턴 진단표"가 이 표입니다.</li>
+        </ul>
+        <h4>제작 메모</h4>
+        <p class="memo">배포 파일 함께 제작: <code>docs/codex-failure-patterns.md</code> (4문항 + 메모란). 강의자료 다운로드에 포함.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">13</span><span class="chip cl">마무리</span><span class="chip lay">템플릿 71 · 텍스트&amp;이미지 1단</span><span class="s-time">44:00–45:00 · 약 1분</span></div>
+    <h3>다음: 답변을 자산으로</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">다음 강</div>
+          <div class="t mut" style="left:3.43%; top:31%; font-weight:700;">2강</div>
+          <div class="h big" style="left:3.43%; top:36%;">답변을 자산으로</div>
+          <div class="t sm" style="left:3.43%; top:49%; width:44%; line-height:1.7; color:#5B5B5B;">확인된 사실 · 추정 · 결정 질문 · 다음 작업 —<br>네 칸으로 나눕니다</div>
+          <div class="card" style="left:55.4%; top:25%; width:40.4%; height:56%;"></div>
+          <div style="left:75.6%; top:29%; width:0; height:48%; border-left:1px solid #E6E6E9;"></div>
+          <div style="left:58.4%; top:53%; width:34.4%; border-top:1px solid #E6E6E9;"></div>
+          <div class="t sm c" style="left:57.4%; top:37.5%; width:16.4%; font-weight:700; color:#5B5B5B;">확인된 사실</div>
+          <div class="t sm c" style="left:77.6%; top:37.5%; width:16.4%; font-weight:700; color:#5B5B5B;">추정</div>
+          <div class="t sm c" style="left:57.4%; top:63%; width:16.4%; font-weight:700; color:#5B5B5B;">결정 질문</div>
+          <div class="t sm c" style="left:77.6%; top:63%; width:16.4%; font-weight:700; color:#5B5B5B;">다음 작업</div>
+          <div class="t mut c" style="left:57.4%; top:44%; width:16.4%;">코드로 확인한 것</div><div class="t mut c" style="left:77.6%; top:44%; width:16.4%;">아직 가설인 것</div><div class="t mut c" style="left:57.4%; top:69.5%; width:16.4%;">내가 정해야 할 것</div><div class="t mut c" style="left:77.6%; top:69.5%; width:16.4%;">이어서 할 일</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">강 번호 + 제목 + 한 줄 예고. 짧게</div>
+        <div class="wf-spec"><b>제작 명세:</b> 강조 없음(레드 0개) — 마무리는 담백하게. "2강" 라벨은 11pt Bold #B3B3B3. 우측에 <b>2강에서 만들 4칸 노트의 미리보기</b>(흰 카드 + 십자 헤어라인 + 라벨 4개 + <b>칸마다 정의 한 줄</b>: 확인된 사실=코드로 확인한 것 · 추정=아직 가설 · 결정 질문=내가 정해야 할 것 · 다음 작업=이어서 할 일)를 전부 무채색으로 — 다음 강의 산출물을 형태로 보여주되 레드 0개 유지.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy">
+          <div class="t">2강 · 답변을 자산으로</div>
+          <div class="st">대화창 답변을 작업 자산으로 바꾸기</div>
+          <div class="small">확인된 사실 · 추정 · 결정 질문 · 다음 작업 — 네 칸으로 나눕니다</div>
+        </div>
+        <h4>발표 포인트</h4>
+        <ul class="pts">
+          <li>"오늘 본 네 번째 패턴을 바로 다음 시간에 풉니다. 오늘 받은 그 답변을 그대로 씁니다."</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 제작 체크리스트 -->
+  <div class="panel" style="margin-top:40px;">
+    <h2>제작 전 확정·준비 체크리스트</h2>
+    <table class="idx">
+      <tr><th>구분</th><th>항목</th><th>관련 슬라이드</th></tr>
+      <tr><td>제작 완료</td><td><b>01·02·03</b> — Pretendard 적용 · 카드 균형형 · validate PASS</td><td>01–03</td></tr>
+      <tr><td>재제작</td><td><b>04</b> — 3행 라벨형(템플릿 58) 폐기, <b>repo 트리 코드 카드</b> 구조로 새로 제작</td><td>04</td></tr>
+      <tr><td>데모 캡처</td><td>세션 A / 세션 B 답변 2장 · 5군데 빈 상태 캡처 <span style="color:#9C9C9C">(diff는 라이브 GitHub 화면으로 대체)</span></td><td>05b, 08b</td></tr>
+      <tr><td>그래프</td><td>「만드는 시간 ↓ / 확인하는 시간 ↑」 2선 개념 그래프 — matplotlib 코드 생성, 브랜드 컬러 고정, 눈금 없음</td><td>07c</td></tr>
+      <tr><td>repo 준비</td><td>주문/결제/재고 sandbox — <b>AGENTS.md·정책 문서·검증 기준이 없는 상태</b>로 고정(패턴 재현 조건)</td><td>04, 05b, 08b</td></tr>
+      <tr><td>데모 리허설</td><td>4개 데모가 각 3~4분 안에 끝나는지 · 실패 재현이 매번 동일하게 나오는지 사전 검증</td><td>05b, 07b, 08b</td></tr>
+      <tr><td>배포 파일</td><td><code>docs/codex-failure-patterns.md</code> 진단표 4문항</td><td>12</td></tr>
+      <tr><td>재사용 자산</td><td>4패턴 4칸 레이아웃(03→09→11→12) · 패턴↔해법 표(2·3·4·6강 재등장) · 5칸 산출물 그림(6·11강 채움 버전)</td><td>03, 08b, 09, 11</td></tr>
+      <tr><td>디자인 검수</td><td>PDF 렌더 후 팔레트 이탈·레드 2개 이상·폰트 대체 여부 확인 — <code>soffice --headless --convert-to pdf</code> → <code>pdftoppm</code></td><td>전체</td></tr>
+    </table>
+    <p class="note-inline"><b>시간 리스크</b> — 데모 4개(약 14분)가 45분에 빠듯합니다. 리허설에서 초과하면 <b>05b(패턴 1)와 08b(패턴 4) 데모를 캡처 설명으로 대체</b>하는 것을 1순위로 검토합니다. 데모 ②·③은 이 강의의 핵심이므로 라이브 유지.</p>
+  </div>
+
+</div>
+</body>
+</html>
