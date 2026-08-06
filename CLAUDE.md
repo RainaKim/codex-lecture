@@ -42,6 +42,17 @@ for n in 8 9; do
 done
 ```
 
+macOS에는 보통 `chromium` 바이너리가 없다. Chrome을 직접 가리키면 플래그는 그대로 쓸 수 있다.
+
+```bash
+CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+for n in 8 9; do
+  "$CHROME" --headless --disable-gpu --force-prefers-reduced-motion \
+    --window-size=1600,1000 --virtual-time-budget=3000 \
+    --screenshot=/tmp/lec00-s$n.png "file://$PWD/lec00.html#$n"
+done
+```
+
 `--force-prefers-reduced-motion`은 필수다. 이 플래그가 없으면 진입 애니메이션 중간에 찍혀서 빈
 화면이 나온다. 찍은 이미지는 눈으로 열어서 문구를 확인한다.
 
