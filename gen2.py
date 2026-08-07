@@ -8,7 +8,7 @@ PLANS = [
          sub='강의 소개 · 전체 지도 · 준비물', dur='약 15~20분',
          src=os.path.join(ROOT, 'ref/lecture00-orientation-plan-v1.html'), cover='assets/cover00.png'),
     dict(id='lec01', num='1강', title='Codex를 써도 일이 안 줄어드는 4가지 패턴',
-         sub='실패 재현 · 라이브 데모 4회 · 원인 진단', dur='약 45분',
+         sub='실패 재현 · 라이브 데모 3회 · 원인 진단', dur='약 45분',
          src=os.path.join(ROOT, 'ref/lecture01-slide-plan-v1.html'), cover='assets/cover01.png'),
     dict(id='lec02', num='2강', title='대화창 답변을 작업 자산으로 바꾸기',
          sub='사실/추정 분리 · 결정 질문 · 실습 4회', dur='약 45분',
