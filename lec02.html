@@ -128,7 +128,8 @@
 <i>lecture01-transcript.md</i>
 
 <s># 1강 데모 ①·② 대화 로그</s>
-<s># 약 1,500자 · 답변 2개</s></div>
+<s># 우리가 쓴 컨텍스트 1,500자</s>
+<s># + 요청 3개 · 답변 3개</s></div>
           <div class="n c" style="left:44.5%; top:44%; width:9%;">→</div>
           <div class="kchip" style="left:55.5%; top:31%; width:40%; text-align:center; font-size:7px;">order-status-request.md</div>
           <div class="t mut" style="left:55.5%; top:38.6%; width:40%; text-align:center;">요청 원문 · 확인된 사실 · 추정</div>
@@ -164,24 +165,25 @@
 <section class="mk anim">
           <div class="lbl">CHAPTER 1</div>
           <div class="kick" style="left:3.43%; top:12.18%;">실습 준비</div>
-          <div class="h" style="left:3.43%; top:16.8%;">재료는 1강의 실패한 대화</div>
-          <div class="code" style="left:4.2%; top:28%; width:42%; height:44%;"><i>lecture01-transcript.md</i>
-
-<s># 데모 ① — 설명 없이</s>
+          <div class="h" style="left:3.43%; top:16.8%;">재료는 1강에서 사라진 대화</div>
+          <div class="code" style="left:4.2%; top:28%; width:42%; height:50%;"><i>lecture01-transcript.md</i>
+<s># 데모 ① 세션 A</s>
+<b>&gt; [컨텍스트 1,500자]</b>
 <b>&gt; 주문 상태 처리 개선해줘</b>
-enum으로 정의하세요…
-상태 머신 패턴을 권장…
+store.ts의 OrderStatus부터…
 
-<s># 데모 ② — 바로 구현</s>
-<b>&gt; 결제 실패 상태 처리해줘</b>
-구현했습니다. +187줄…</div>
+<s># 데모 ① 세션 B — 새 세션</s>
+<b>&gt; 이전에 정한 대로 이어서 해줘</b>
+이전 대화 내용은 확인할 수 없습니다…
+
+<s># 데모 ② — 바로 구현 …</s></div>
           <div class="t mut" style="left:56.6%; top:24%; font-size:6.5px; font-weight:700; letter-spacing:.05em;">실습하며 기억할 것</div>
           <div style="left:52%; top:29.2%; width:2.35%; aspect-ratio:1; border:1.3px solid #FC1C49; border-radius:50%; background:#FFE5EB;"></div>
           <div class="card" style="left:56.6%; top:28%; width:39.2%; height:9.5%; border-radius:999px;"></div>
           <div class="t sm" style="left:60%; top:30.8%;"><b>가정하지 말고 무조건 확인하기</b> <span style="color:#9C9C9C; font-size:6.3px;">— 확인 전까지는 전부 추정</span></div>
           <div style="left:52%; top:41.7%; width:2.35%; aspect-ratio:1; border:1.3px solid #FC1C49; border-radius:50%; background:#FFE5EB;"></div>
           <div class="card" style="left:56.6%; top:40.5%; width:39.2%; height:9.5%; border-radius:999px;"></div>
-          <div class="t sm" style="left:60%; top:43.3%;"><b>일반론은 아까워하지 말고 지우기</b></div>
+          <div class="t sm" style="left:60%; top:43.3%;"><b>줄글은 버리고 옮겨 적을 문장만 남기기</b></div>
           <div style="left:52%; top:54.2%; width:2.35%; aspect-ratio:1; border:1.3px solid #FC1C49; border-radius:50%; background:#FFE5EB;"></div>
           <div class="card" style="left:56.6%; top:53%; width:39.2%; height:9.5%; border-radius:999px;"></div>
           <div class="t sm" style="left:60%; top:55.8%;"><b>결정하지 말고 질문으로 남기기</b> <span style="color:#9C9C9C; font-size:6.3px;">— 답은 7강에서</span></div>
@@ -213,25 +215,25 @@ enum으로 정의하세요…
           <div class="h" style="left:3.43%; top:16.8%;">실습 1</div>
           <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
           <div class="t sm c" style="left:4.2%; top:44%; width:91.6%; font-weight:700; color:#9C9C9C;">핵심 포인트</div>
-          <div class="t c" style="left:4.2%; top:51%; width:91.6%; font-weight:700; font-size:11.5px;">일반론을 지운다 — 남는 문장이 몇 개인가</div>
+          <div class="t c" style="left:4.2%; top:51%; width:91.6%; font-weight:700; font-size:11.5px;">줄글을 걷어낸다 — 옮겨 적을 문장만 남긴다</div>
           <div class="mark"></div>
         </section>
 <section class="mk anim">
           <div class="lbl">CHAPTER 1</div>
           <div class="kick" style="left:3.43%; top:12.18%;">실습 ① 결과</div>
-          <div class="h" style="left:3.43%; top:16.8%;">1,500자에서 6문장으로</div>
-          <div class="bar" style="left:4.2%; top:31%; width:38%; height:5.5%;">원문 — 약 1,500자</div>
+          <div class="h" style="left:3.43%; top:16.8%;">1,500자를 세 칸으로</div>
+          <div class="bar" style="left:4.2%; top:31%; width:38%; height:5.5%;">원문 — 줄글 1,500자</div>
           <div class="card g" style="left:4.2%; top:36.5%; width:38%; height:30%;"></div>
-          <div class="t sm" style="left:8.2%; top:40%; width:30%; color:#5B5B5B; opacity:.85;">enum으로 정의하세요…</div>
-          <div class="t sm" style="left:8.2%; top:45.5%; width:30%; color:#5B5B5B; opacity:.65;">상태 머신 패턴을 권장…</div>
-          <div class="t sm" style="left:8.2%; top:51%; width:30%; color:#5B5B5B; opacity:.45;">에러 핸들링과 로깅을…</div>
-          <div class="t sm" style="left:8.2%; top:56.5%; width:30%; color:#5B5B5B; opacity:.3;">모범 사례에 따르면…</div>
-          <div class="bar r" style="left:57.6%; top:31%; width:38%; height:5.5%;">남은 것 — 6문장</div>
+          <div class="t sm" style="left:8.2%; top:40%; width:30%; color:#5B5B5B; opacity:.85;">order-ops는 소규모 이커머스의…</div>
+          <div class="t sm" style="left:8.2%; top:45.5%; width:30%; color:#5B5B5B; opacity:.65;">주문 상태는 사업 기준으로 다섯…</div>
+          <div class="t sm" style="left:8.2%; top:51%; width:30%; color:#5B5B5B; opacity:.45;">지켜야 할 정책: 1) 재고는…</div>
+          <div class="t sm" style="left:8.2%; top:56.5%; width:30%; color:#5B5B5B; opacity:.3;">이 전제로 수정이 필요한 파일을…</div>
+          <div class="bar r" style="left:57.6%; top:31%; width:38%; height:5.5%;">남은 것 — 옮겨 적을 문장</div>
           <div class="card" style="left:57.6%; top:36.5%; width:38%; height:30%;"></div>
-          <div class="t sm" style="left:61%; top:40%; width:31%; line-height:1.4;"><b>요청 원문 — 1문장</b><br><span style="color:#9C9C9C; font-size:6.3px;">주문 상태 처리 개선해줘</span></div>
-          <div class="t sm" style="left:61%; top:48.5%; width:31%; line-height:1.4;"><b>우리 repo를 짚은 문장 — 2개</b><br><span style="color:#9C9C9C; font-size:6.3px;">파일명이 들어간 문장만 남는다</span></div>
-          <div class="t sm" style="left:61%; top:57%; width:31%; line-height:1.4;"><b style="color:#FC1C49;">확인 안 된 단정 — 3개</b><br><span style="color:#9C9C9C; font-size:6.3px;">다음 실습의 재료</span></div>
-          <div class="kstrip" style="left:4.2%; top:76%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:78.6%; width:88%; text-align:center;"><b>지운 분량이 곧 일반론의 부피다</b> — 원문 대부분은 어느 프로젝트에 줘도 맞는 말이었다</div>
+          <div class="t sm" style="left:61%; top:40%; width:31%; line-height:1.4;"><b>요청 원문</b><br><span style="color:#9C9C9C; font-size:6.3px;">주문 상태 처리 개선해줘 + 완료 조건</span></div>
+          <div class="t sm" style="left:61%; top:48.5%; width:31%; line-height:1.4;"><b>repo를 짚은 문장</b><br><span style="color:#9C9C9C; font-size:6.3px;">파일명과 현재 동작이 들어간 문장</span></div>
+          <div class="t sm" style="left:61%; top:57%; width:31%; line-height:1.4;"><b style="color:#FC1C49;">확인 안 된 단정</b><br><span style="color:#9C9C9C; font-size:6.3px;">다음 실습의 재료</span></div>
+          <div class="kstrip" style="left:4.2%; top:76%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:78.6%; width:88%; text-align:center;"><b>줄인 게 아니라 옮긴 것이다</b> — 같은 내용이라도 칸에 들어가야 다음 세션이 읽는다</div>
           <div class="mark"></div>
         </section>
 <section class="mk anim">
@@ -418,7 +420,7 @@ enum으로 정의하세요…
 <div id="toc"><div class="list" id="tocList"></div></div>
 <script>
 var slides = Array.prototype.slice.call(document.querySelectorAll('#stage .mk'));
-var TITLES = [["01", "표지"], ["02", "지난 강의 — 4가지 실패 패턴"], ["03", "대화 로그 하나를, 파일 세 개로"], ["04", "agent 답변의 3층 구조"], ["05", "재료는 1강의 실패한 대화"], ["06", "분류 기준"], ["E1", "실습 1"], ["06b", "1,500자에서 6문장으로"], ["C2", "추정과 사실 분리"], ["E2", "실습 2"], ["07", "추정이 사실 행세를 할 때"], ["C3", "결정 필요 사항 기록"], ["08", "사람이 정할 것은 질문으로 남긴다"], ["E3", "실습 3"], ["C4", "다음 작업 후보 작성"], ["09", "다음 세션이 이어받을 수 있게"], ["E4", "실습 4"], ["10", "대화창에서 repo로"], ["11", "루프에서 오늘의 위치"], ["12", "기록을 남겼으니, 이제 경계를 정할 차례"]];
+var TITLES = [["01", "표지"], ["02", "지난 강의 — 4가지 실패 패턴"], ["03", "대화 로그 하나를, 파일 세 개로"], ["04", "agent 답변의 3층 구조"], ["05", "재료는 1강에서 사라진 대화"], ["06", "분류 기준"], ["E1", "실습 1"], ["06b", "1,500자를 세 칸으로"], ["C2", "추정과 사실 분리"], ["E2", "실습 2"], ["07", "추정이 사실 행세를 할 때"], ["C3", "결정 필요 사항 기록"], ["08", "사람이 정할 것은 질문으로 남긴다"], ["E3", "실습 3"], ["C4", "다음 작업 후보 작성"], ["09", "다음 세션이 이어받을 수 있게"], ["E4", "실습 4"], ["10", "대화창에서 repo로"], ["11", "루프에서 오늘의 위치"], ["12", "기록을 남겼으니, 이제 경계를 정할 차례"]];
 var N = slides.length, cur = -1, hudT = null;
 var ctr = document.getElementById('ctr'), toc = document.getElementById('toc');
 
