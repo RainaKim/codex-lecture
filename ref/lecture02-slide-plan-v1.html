@@ -298,6 +298,37 @@ enum으로 정의하세요…
     </div>
   </section>
 
+  <!-- 06 판별 기준 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">06</span><span class="chip op">이론</span><span class="chip lay">질문 카드 + 분기 2카드</span></div>
+    <h3>분류 기준</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">사실 vs 추정</div>
+          <div class="h" style="left:3.43%; top:16.8%;">분류 기준</div>
+          <div class="card" style="left:20%; top:27.5%; width:60%; height:10.5%;"></div>
+          <div class="t mid c" style="left:20%; top:30.5%; width:60%; font-weight:700;">코드나 실행을 통해 확인되었는가?</div>
+          <div class="card" style="left:4.2%; top:43%; width:44.9%; height:17%;"></div>
+          <div class="t sm c" style="left:4.2%; top:46.5%; width:44.9%; font-weight:700; font-size:8.5px;">YES → 사실</div>
+          <div class="t sm c" style="left:4.2%; top:52.5%; width:44.9%; color:#5B5B5B;">order-status-request에 그대로 기록한다</div>
+          <div class="card" style="left:50.9%; top:43%; width:44.9%; height:17%; background:#FFE5EB;"></div>
+          <div class="t sm c" style="left:50.9%; top:46.5%; width:44.9%; font-weight:700; font-size:8.5px; color:#FC1C49;">NO → 추정</div>
+          <div class="t sm c" style="left:50.9%; top:52.5%; width:44.9%; color:#5B5B5B;">추정 라벨을 붙이고, 질문으로 바꾼다</div>
+          <div class="kchip" style="left:4.2%; top:65%; width:29.2%; text-align:center;">payment_failed가 있다?</div>
+          <div class="kchip" style="left:35.4%; top:65%; width:29.2%; text-align:center;">재고는 생성 시 차감된다?</div>
+          <div class="kchip" style="left:66.6%; top:65%; width:29.2%; text-align:center;">실패 사유가 노출된다?</div>
+          <div class="t mut c" style="left:4.2%; top:71.5%; width:91.6%;">transcript의 이 세 문장 — 코드를 열어보기 전까지는 전부 추정이다</div>
+          <div class="kstrip" style="left:4.2%; top:79%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:81.6%; width:88%; text-align:center;"><b>그럴듯함은 기준이 아니다</b> — 확인 여부만이 기준이다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">질문 카드 1 + YES/NO 분기 2카드(NO만 핑크) + 판별 연습 칩 3개</div>
+        <div class="wf-spec"><b>제작 명세:</b> 분기 구조가 한눈에 — 위 질문, 아래 좌우 결과. 칩 3개는 1강 데모에서 나온 실제 문장.</div>
+      </div>
+    </div>
+  </section>
+
   <!-- E1 실습 1 큐 -->
   <section class="slide">
     <div class="s-top"><span class="s-num">E1</span><span class="chip demo">실습 큐</span><span class="chip lay">큐 컴포넌트</span></div>
@@ -360,43 +391,12 @@ enum으로 정의하세요…
           <div class="kick" style="left:3.43%; top:12.18%;">2강 · 클립 2</div>
           <div class="h" style="left:3.43%; top:16.8%;">추정과 사실 분리</div>
           <div class="t" style="left:3.43%; top:26.5%; color:#5B5B5B;">확인한 것만 사실로 남긴다</div>
-          <div class="kstrip" style="left:4.2%; top:40%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:42.6%; width:88%; text-align:center;"><b>지난 클립 ✓</b> — 실습 ① — 일반론을 지우니 1,500자가 6문장으로 줄었다</div>
-          <div class="card" style="left:4.2%; top:54%; width:91.6%; height:9.5%; background:#FFE5EB;"></div><div class="t mid c" style="left:4.2%; top:56.7%; width:91.6%; color:#FC1C49; font-weight:700;">이번 클립 — 분류 기준 → 실습 ② → order-status-request.md</div>
+          <div class="kstrip" style="left:4.2%; top:40%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:42.6%; width:88%; text-align:center;"><b>지난 클립 ✓</b> — 일반론을 지우니 6문장이 남았다 · 판별 기준은 「코드로 확인되었는가」</div>
+          <div class="card" style="left:4.2%; top:54%; width:91.6%; height:9.5%; background:#FFE5EB;"></div><div class="t mid c" style="left:4.2%; top:56.7%; width:91.6%; color:#FC1C49; font-weight:700;">이번 클립 — 남은 6문장 태깅 → 실습 ② → order-status-request.md</div>
           <div class="mark"></div>
         </div>
         <div class="cap">클립 2 시작 카드 — 지난 클립 리캡 1줄 + 이번 클립 예고. 커리큘럼 4단계 중 2단계</div>
         <div class="wf-spec"><b>제작 명세:</b> 1강 디바이더 공통 문법 그대로 — 헤드라인 + 회색 서브 + 지난 클립 kstrip + 이번 클립 핑크 바. 10초 안에 지나가는 장 — 정보를 더 얹지 않는다. 헤드라인은 커리큘럼 상세 항목명을 그대로 쓴다.</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 06 판별 기준 -->
-  <section class="slide">
-    <div class="s-top"><span class="s-num">06</span><span class="chip op">이론</span><span class="chip lay">질문 카드 + 분기 2카드</span></div>
-    <h3>분류 기준</h3>
-    <div class="s-body">
-      <div class="wf">
-        <div class="mk">
-          <div class="lbl">CHAPTER 1</div>
-          <div class="kick" style="left:3.43%; top:12.18%;">사실 vs 추정</div>
-          <div class="h" style="left:3.43%; top:16.8%;">분류 기준</div>
-          <div class="card" style="left:20%; top:27.5%; width:60%; height:10.5%;"></div>
-          <div class="t mid c" style="left:20%; top:30.5%; width:60%; font-weight:700;">코드나 실행을 통해 확인되었는가?</div>
-          <div class="card" style="left:4.2%; top:43%; width:44.9%; height:17%;"></div>
-          <div class="t sm c" style="left:4.2%; top:46.5%; width:44.9%; font-weight:700; font-size:8.5px;">YES → 사실</div>
-          <div class="t sm c" style="left:4.2%; top:52.5%; width:44.9%; color:#5B5B5B;">order-status-request에 그대로 기록한다</div>
-          <div class="card" style="left:50.9%; top:43%; width:44.9%; height:17%; background:#FFE5EB;"></div>
-          <div class="t sm c" style="left:50.9%; top:46.5%; width:44.9%; font-weight:700; font-size:8.5px; color:#FC1C49;">NO → 추정</div>
-          <div class="t sm c" style="left:50.9%; top:52.5%; width:44.9%; color:#5B5B5B;">추정 라벨을 붙이고, 질문으로 바꾼다</div>
-          <div class="kchip" style="left:4.2%; top:65%; width:29.2%; text-align:center;">payment_failed가 있다?</div>
-          <div class="kchip" style="left:35.4%; top:65%; width:29.2%; text-align:center;">재고는 생성 시 차감된다?</div>
-          <div class="kchip" style="left:66.6%; top:65%; width:29.2%; text-align:center;">실패 사유가 노출된다?</div>
-          <div class="t mut c" style="left:4.2%; top:71.5%; width:91.6%;">transcript의 이 세 문장 — 코드를 열어보기 전까지는 전부 추정이다</div>
-          <div class="kstrip" style="left:4.2%; top:79%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:81.6%; width:88%; text-align:center;"><b>그럴듯함은 기준이 아니다</b> — 확인 여부만이 기준이다</div>
-          <div class="mark"></div>
-        </div>
-        <div class="cap">질문 카드 1 + YES/NO 분기 2카드(NO만 핑크) + 판별 연습 칩 3개</div>
-        <div class="wf-spec"><b>제작 명세:</b> 분기 구조가 한눈에 — 위 질문, 아래 좌우 결과. 칩 3개는 1강 데모에서 나온 실제 문장.</div>
       </div>
     </div>
   </section>
