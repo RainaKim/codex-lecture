@@ -519,30 +519,30 @@ store.ts의 OrderStatus부터…
           <div class="h" style="left:3.43%; top:16.8%;">사람이 정할 것은 질문으로 남긴다</div>
           <div class="card" style="left:4.2%; top:28%; width:29.2%; height:42%;"></div>
           <div class="tag" style="left:6.6%; top:31%; width:6.4%; height:5.2%; border-radius:999px;">01</div>
-          <div class="t big" style="left:6.6%; top:38%; width:24.4%;">실패 주문을 남길까?</div>
-          <div class="chip5" style="left:6.6%; top:47%; width:10.6%; height:6%;">남긴다</div>
+          <div class="t big" style="left:6.6%; top:38%; width:24.4%;">실패 응답, 어떤 코드로?</div>
+          <div class="chip5" style="left:6.6%; top:47%; width:10.6%; height:6%;">200</div>
           <div class="t mut c" style="left:17.4%; top:48.5%; width:2.6%;">vs</div>
-          <div class="chip5" style="left:20.2%; top:47%; width:10.6%; height:6%;">지운다</div>
-          <div class="t mut" style="left:6.6%; top:56%; width:24.4%; line-height:1.45;">CS와 정산이 걸려 있다 —<br>아직 아무도 고르지 않았다</div>
+          <div class="chip5" style="left:20.2%; top:47%; width:10.6%; height:6%;">402</div>
+          <div class="t mut" style="left:6.6%; top:56%; width:24.4%; line-height:1.45;">지금 코드는 200을 준다 —<br>바꾸면 쓰던 쪽이 깨진다</div>
           <div class="card" style="left:35.4%; top:28%; width:29.2%; height:42%;"></div>
           <div class="tag" style="left:37.8%; top:31%; width:6.4%; height:5.2%; border-radius:999px;">02</div>
-          <div class="t big" style="left:37.8%; top:38%; width:24.4%;">재고는 언제 차단할까?</div>
-          <div class="chip5" style="left:37.8%; top:47%; width:10.6%; height:6%;">생성 전</div>
+          <div class="t big" style="left:37.8%; top:38%; width:24.4%;">재결제를 허용할까?</div>
+          <div class="chip5" style="left:37.8%; top:47%; width:10.6%; height:6%;">허용 안 함</div>
           <div class="t mut c" style="left:48.6%; top:48.5%; width:2.6%;">vs</div>
-          <div class="chip5" style="left:51.4%; top:47%; width:10.6%; height:6%;">결제 후</div>
-          <div class="t mut" style="left:37.8%; top:56%; width:24.4%; line-height:1.45;">정책 ③이 될 자리 —<br>지금은 질문으로만</div>
+          <div class="chip5" style="left:51.4%; top:47%; width:10.6%; height:6%;">새 토큰으로</div>
+          <div class="t mut" style="left:37.8%; top:56%; width:24.4%; line-height:1.45;">요청에 없던 기능 —<br>결제 가능 조건이 바뀐다</div>
           <div class="card" style="left:66.6%; top:28%; width:29.2%; height:42%;"></div>
           <div class="tag" style="left:69%; top:31%; width:6.4%; height:5.2%; border-radius:999px;">03</div>
-          <div class="t big" style="left:69%; top:38%; width:24.4%;">실패 사유, 어디까지?</div>
-          <div class="chip5" style="left:69%; top:47%; width:10.6%; height:6%;">관리자만</div>
+          <div class="t big" style="left:69%; top:38%; width:24.4%;">실패 정보, 어디까지?</div>
+          <div class="chip5" style="left:69%; top:47%; width:10.6%; height:6%;">상태만</div>
           <div class="t mut c" style="left:79.8%; top:48.5%; width:2.6%;">vs</div>
-          <div class="chip5" style="left:82.6%; top:47%; width:10.6%; height:6%;">고객까지</div>
-          <div class="t mut" style="left:69%; top:56%; width:24.4%; line-height:1.45;">보안과 CX 사이 —<br>노출 범위는 사람의 결정</div>
+          <div class="chip5" style="left:82.6%; top:47%; width:10.6%; height:6%;">금액·시각까지</div>
+          <div class="t mut" style="left:69%; top:56%; width:24.4%; line-height:1.45;">정책엔 실패 정보뿐 —<br>어떤 필드인지는 안 정했다</div>
           <div class="kstrip" style="left:4.2%; top:78%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:80.6%; width:88%; text-align:center;"><b>오늘은 정하지 않는다</b> — 질문으로 남기는 것까지가 오늘 몫. 답은 7강에서 정책 문서가 된다</div>
           <div class="mark"></div>
         </div>
         <div class="cap">1강 06c와 같은 3카드 문법 — 단, 이번엔 <b>어느 칩도 선택되지 않은 상태</b>(전부 흰색)가 포인트</div>
-        <div class="wf-spec"><b>제작 명세:</b> 1강 06c의 수미상관. 1강에선 agent가 고른 쪽이 핑크였지만, 여기선 둘 다 흰색 — "아직 아무도 정하지 않았다"가 시각 메시지.</div>
+        <div class="wf-spec"><b>제작 명세:</b> 1강 06c의 수미상관. 1강에선 agent가 고른 쪽이 핑크였지만, 여기선 둘 다 흰색 — "아직 아무도 정하지 않았다"가 시각 메시지. <b>세 질문은 리허설 실물에서 가져왔다</b> — 컨텍스트 정책 3줄에 이미 답이 있는 항목(실패 주문 보존 여부·재고 차감 시점)은 결정 질문이 아니므로 쓰지 않는다.</div>
       </div>
     </div>
   </section>
