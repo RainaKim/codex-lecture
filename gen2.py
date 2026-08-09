@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """플랜 HTML의 .mk 목업을 풀사이즈 HTML 슬라이드로 변환 — 애니메이션 + 키보드 내비"""
-import os, re
+import os, re, json
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 PLANS = [
@@ -13,6 +13,9 @@ PLANS = [
     dict(id='lec02', num='2강', title='대화창 답변을 작업 자산으로 바꾸기',
          sub='사실/추정 분리 · 결정 질문 · 실습 4회', dur='약 45분',
          src=os.path.join(ROOT, 'ref/lecture02-slide-plan-v1.html'), cover='assets/cover02.png'),
+    dict(id='lec03', num='3강', title='작업 경계 잡기: 어디까지 맡기고 어디서 멈출지',
+         sub='요청 분해 · 금지 조건 · human gate · 멈춤 조건', dur='약 40분',
+         src=os.path.join(ROOT, 'ref/lecture03-slide-plan-v1.html'), cover=None),
 ]
 FONT = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">'
 
@@ -179,7 +182,7 @@ for L in PLANS:
     html = (VIEWER
             .replace('__MK_CSS__', MK_CSS)
             .replace('__SLIDES__', '\n'.join(parts))
-            .replace('__TITLES__', repr(titles).replace("'", '"'))
+            .replace('__TITLES__', json.dumps(titles, ensure_ascii=False))
             .replace('__NUM__', L['num']).replace('__TITLE__', L['title'])
             .replace('__N__', str(L['n'])).replace('__FONT__', FONT))
     open(os.path.join(ROOT, L['id'] + '.html'), 'w', encoding='utf-8').write(html)
