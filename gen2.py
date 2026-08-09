@@ -15,7 +15,7 @@ PLANS = [
          src=os.path.join(ROOT, 'ref/lecture02-slide-plan-v1.html'), cover='assets/cover02.png'),
     dict(id='lec03', num='3강', title='작업 경계 잡기: 어디까지 맡기고 어디서 멈출지',
          sub='요청 분해 · 금지 조건 · human gate · 멈춤 조건', dur='약 40분',
-         src=os.path.join(ROOT, 'ref/lecture03-slide-plan-v1.html'), cover=None),
+         src=os.path.join(ROOT, 'ref/lecture03-slide-plan-v1.html'), cover='assets/cover03.png'),
 ]
 FONT = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">'
 

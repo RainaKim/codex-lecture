@@ -98,13 +98,7 @@
 </head>
 <body class="hud-on">
 <div id="wrap"><div id="stage">
-<section class="mk anim">
-          <div class="kick" style="left:3.43%; top:12.18%;">PART 1 · CHAPTER 1</div>
-          <div class="h cover" style="left:3.43%; top:30%;">어디까지 맡기고<br>어디서 멈출지</div>
-          <div class="t mid" style="left:3.43%; top:57%; color:#5B5B5B;">요청 분해 · 금지 조건 · human gate · 멈춤 조건</div>
-          <div class="t mut" style="left:3.43%; top:65%;">개발자를 위한 Codex — 3강 · 이론 + 실습 · 약 40분</div>
-          <div class="mark"></div>
-        </section>
+<section class="mk cover-img anim"><img src="assets/cover03.png" alt="표지"></section>
 <section class="mk anim">
           <div class="lbl">CHAPTER 1</div>
           <div class="kick" style="left:3.43%; top:12.18%;">지난 강의 리캡</div>
@@ -394,7 +388,7 @@
 <div id="toc"><div class="list" id="tocList"></div></div>
 <script>
 var slides = Array.prototype.slice.call(document.querySelectorAll('#stage .mk'));
-var TITLES = [["01", "작업 경계 잡기"], ["02", "파일 세 개까지 왔다"], ["03", "한 줄 요청을, 멈출 줄 아는 계획으로"], ["04", "한 요청에 네 가지가 섞여 있다"], ["05", "경계는 네 조각으로 만든다"], ["E1", "실습 1"], ["06", "한 줄이 네 행으로"], ["C2", "아직 하지 말 것 명시"], ["07", "“아직”이 없으면 거기까지 해버린다"], ["E2", "실습 2"], ["08", "안 적은 것은 agent의 몫이 된다"], ["C3", "Human gate 설정"], ["09", "되돌리기 비싼 지점 앞에 둔다"], ["E3", "실습 3"], ["C4", "멈춤 조건"], ["10", "스스로 서게 하는 세 가지"], ["E4", "실습 4"], ["11", "경계가 파일이 됐다"], ["12", "루프에서 오늘의 위치"], ["13", "경계를 정했으니, 이제 기준을 파일로"]];
+var TITLES = [["01", "표지"], ["02", "파일 세 개까지 왔다"], ["03", "한 줄 요청을, 멈출 줄 아는 계획으로"], ["04", "한 요청에 네 가지가 섞여 있다"], ["05", "경계는 네 조각으로 만든다"], ["E1", "실습 1"], ["06", "한 줄이 네 행으로"], ["C2", "아직 하지 말 것 명시"], ["07", "“아직”이 없으면 거기까지 해버린다"], ["E2", "실습 2"], ["08", "안 적은 것은 agent의 몫이 된다"], ["C3", "Human gate 설정"], ["09", "되돌리기 비싼 지점 앞에 둔다"], ["E3", "실습 3"], ["C4", "멈춤 조건"], ["10", "스스로 서게 하는 세 가지"], ["E4", "실습 4"], ["11", "경계가 파일이 됐다"], ["12", "루프에서 오늘의 위치"], ["13", "경계를 정했으니, 이제 기준을 파일로"]];
 var N = slides.length, cur = -1, hudT = null;
 var ctr = document.getElementById('ctr'), toc = document.getElementById('toc');
 
