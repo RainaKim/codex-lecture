@@ -338,14 +338,22 @@
           <div class="t sm c" style="left:4.2%; top:49.5%; width:29%; color:#5B5B5B;">주문 상태 처리 개선해줘</div>
           <div class="bar r" style="left:37%; top:31%; width:58.8%; height:5.5%;">나눈 것 — 각 행에 목적 · 입력 · 종료 상태</div>
           <div class="card" style="left:37%; top:36.5%; width:58.8%; height:30%;"></div>
-          <div class="t sm" style="left:39.8%; top:39.5%; width:53.2%;"><b>01 관련 파일 후보 찾기</b><span style="color:#9C9C9C;"> — 종료: 후보와 이유 목록</span></div>
-          <div class="t sm" style="left:39.8%; top:46%; width:53.2%;"><b>02 현재 동작 정리</b><span style="color:#9C9C9C;"> — 종료: 케이스별 상태</span></div>
-          <div class="t sm" style="left:39.8%; top:52.5%; width:53.2%;"><b>03 정책 질문 뽑기</b><span style="color:#9C9C9C;"> — 종료: 선택지 있는 질문</span></div>
-          <div class="t sm" style="left:39.8%; top:59%; width:53.2%;"><b>04 수정 계획 쓰기</b><span style="color:#9C9C9C;"> — 종료: 범위와 제외</span></div>
+          <div class="t sm" style="left:39.8%; top:39.5%; width:7%; color:#FC1C49; font-weight:700;">탐색</div>
+          <div class="t sm" style="left:47%; top:39.5%; width:26%;"><b>관련 파일 후보</b></div>
+          <div class="t sm" style="left:47%; top:39.5%; width:46%; text-align:right; color:#9C9C9C;">종료: 후보별 역할과 확인 항목</div>
+          <div class="t sm" style="left:39.8%; top:46%; width:7%; color:#FC1C49; font-weight:700;">탐색</div>
+          <div class="t sm" style="left:47%; top:46%; width:26%;"><b>현재 흐름과 테스트 공백</b></div>
+          <div class="t sm" style="left:47%; top:46%; width:46%; text-align:right; color:#9C9C9C;">종료: 흐름 기록과 공백 목록</div>
+          <div class="t sm" style="left:39.8%; top:52.5%; width:7%; color:#FC1C49; font-weight:700;">결정</div>
+          <div class="t sm" style="left:47%; top:52.5%; width:26%;"><b>미결정 정책</b></div>
+          <div class="t sm" style="left:47%; top:52.5%; width:46%; text-align:right; color:#9C9C9C;">종료: 질문마다 선택과 근거</div>
+          <div class="t sm" style="left:39.8%; top:59%; width:7%; color:#FC1C49; font-weight:700;">계획</div>
+          <div class="t sm" style="left:47%; top:59%; width:26%;"><b>변경 범위와 검증</b></div>
+          <div class="t sm" style="left:47%; top:59%; width:46%; text-align:right; color:#9C9C9C;">종료: 구현 전 계획서</div>
           <div class="mark"></div>
         </div>
         <div class="cap">좌(한 줄) vs 우(네 행) — 폭 차이가 곧 메시지. 종료 상태가 있어야 작업이 끝난 걸 안다</div>
-        <div class="wf-spec"><b>제작 명세:</b> 좌우 폭을 <b>일부러 비대칭</b>으로 — 한 줄이 네 행이 되는 부피 변화가 보여야 한다. 네 작업은 커리큘럼 정본의 네 항목 그대로다(관련 파일 후보 찾기 · 현재 동작 표 만들기 · 정책 질문 뽑기 · 수정 계획 작성). <b>개수는 적지 않는다</b> — 종료 상태 문구는 수강생마다 달라진다.</div>
+        <div class="wf-spec"><b>제작 명세:</b> 좌우 폭을 <b>일부러 비대칭</b>으로 — 한 줄이 네 행이 되는 부피 변화가 보여야 한다. 우 카드 각 행은 <b>층 라벨(레드) · 작업 이름 · 종료 상태(우측 정렬)</b> 3열로 카드 폭을 채운다 — 왼쪽에 몰리면 빈 카드로 보인다. 층 라벨은 화면 4의 네 층에서 그대로 온다(구현은 없다). 세 번째 행은 커리큘럼 문구가 「정책 질문 뽑기」인데 질문은 2강에서 이미 뽑았고 E3의 게이트가 「정책 선택 앞」에 서야 하므로 <b>「결정 — 미결정 정책」으로 둔다</b>. <b>개수는 적지 않는다</b> — 종료 상태 문구는 수강생마다 달라진다.</div>
       </div>
     </div>
   </section>
