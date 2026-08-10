@@ -292,20 +292,23 @@
 <section class="mk anim">
           <div class="lbl">CHAPTER 1</div>
           <div class="kick" style="left:3.43%; top:12.18%;">게이트 배치</div>
-          <div class="h" style="left:3.43%; top:16.8%;">human gate는 어디에 두는가</div>
-          <div class="card" style="left:4.2%; top:29%; width:29.2%; height:38%;"></div>
-          <div class="t sm c" style="left:4.2%; top:33%; width:29.2%; font-weight:700; font-size:8.5px;">정책 선택 앞</div>
-          <div class="t sm c" style="left:6.6%; top:40%; width:24.4%; color:#5B5B5B; line-height:1.5;">코드를 읽어도 답이 안 나온다.<br>사업 판단이 필요한 자리다</div>
-          <div class="kchip" style="left:6.6%; top:53%; width:24.4%; text-align:center;">pending-decisions.md</div>
-          <div class="card" style="left:35.4%; top:29%; width:29.2%; height:38%; background:#FFE5EB;"></div>
-          <div class="t sm c" style="left:35.4%; top:33%; width:29.2%; font-weight:700; font-size:8.5px; color:#FC1C49;">구현 승인 앞</div>
-          <div class="t sm c" style="left:37.8%; top:40%; width:24.4%; color:#5B5B5B; line-height:1.5;">넘어가면 파일이 바뀐다.<br>되돌리는 것도 리뷰가 필요하다</div>
-          <div class="kchip" style="left:37.8%; top:53%; width:24.4%; text-align:center;">되돌리기 비용 급증</div>
-          <div class="card" style="left:66.6%; top:29%; width:29.2%; height:38%;"></div>
-          <div class="t sm c" style="left:66.6%; top:33%; width:29.2%; font-weight:700; font-size:8.5px;">검증 기준 앞</div>
-          <div class="t sm c" style="left:69%; top:40%; width:24.4%; color:#5B5B5B; line-height:1.5;">기준을 안 정하면<br>통과했다는 말을 확인할 수 없다</div>
-          <div class="kchip" style="left:69%; top:53%; width:24.4%; text-align:center;">1강 패턴 ③이 막히는 자리</div>
-          <div class="kstrip" style="left:4.2%; top:76%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:78.6%; width:88%; text-align:center;"><b>모든 단계에 두면 게이트가 아니다</b> — 판단이 필요한 곳에만 둔다</div>
+          <div class="h" style="left:3.43%; top:16.8%;">human gate를 걸 세 지점</div>
+          <div class="card" style="left:4.2%; top:27%; width:29.2%; height:38%;"></div>
+          <div class="t sm c" style="left:4.2%; top:30.3%; width:29.2%; font-weight:700; font-size:8.5px;">정책 확정 전</div>
+          <div class="t sm c" style="left:5.8%; top:37.2%; width:26%; color:#B3B3B3; font-size:6.4px; font-weight:700; letter-spacing:.04em;">멈추는 이유</div>
+          <div class="t sm c" style="left:5.8%; top:42.5%; width:26%; color:#5B5B5B; line-height:1.5;">코드에서 나오지 않는 선택.<br>business rule의 영역이라<br>사람이 정해야 함</div>
+          <div class="kchip" style="left:6.6%; top:56.5%; width:24.4%; text-align:center;">pending-decisions.md</div>
+          <div class="card" style="left:35.4%; top:27%; width:29.2%; height:38%; background:#FFE5EB;"></div>
+          <div class="t sm c" style="left:35.4%; top:30.3%; width:29.2%; font-weight:700; font-size:8.5px; color:#FC1C49;">코드 수정 전</div>
+          <div class="t sm c" style="left:37%; top:37.2%; width:26%; color:#B3B3B3; font-size:6.4px; font-weight:700; letter-spacing:.04em;">멈추는 이유</div>
+          <div class="t sm c" style="left:37%; top:42.5%; width:26%; color:#5B5B5B; line-height:1.5;">게이트가 없으면 계획에서 곧바로<br>코드 수정으로 진입.<br>되돌리려면 revert와 리뷰가 다시 필요함</div>
+          <div class="kchip" style="left:37.8%; top:56.5%; width:24.4%; text-align:center;">revert 비용이 가장 큰 지점</div>
+          <div class="card" style="left:66.6%; top:27%; width:29.2%; height:38%;"></div>
+          <div class="t sm c" style="left:66.6%; top:30.3%; width:29.2%; font-weight:700; font-size:8.5px;">통과 기준 확정 전</div>
+          <div class="t sm c" style="left:68.2%; top:37.2%; width:26%; color:#B3B3B3; font-size:6.4px; font-weight:700; letter-spacing:.04em;">멈추는 이유</div>
+          <div class="t sm c" style="left:68.2%; top:42.5%; width:26%; color:#5B5B5B; line-height:1.5;">통과 기준이 없으면<br>「테스트 통과」라는 보고를<br>신뢰할 수 없음</div>
+          <div class="kchip" style="left:69%; top:56.5%; width:24.4%; text-align:center;">1강 「검수 불가」 차단</div>
+          <div class="kstrip" style="left:4.2%; top:76%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:78.6%; width:88%; text-align:center;"><b>전 단계에 걸면 게이트가 아님</b> — 판단이 필요한 지점에만</div>
           <div class="mark"></div>
         </section>
 <section class="mk anim">
@@ -413,7 +416,7 @@
 <div id="toc"><div class="list" id="tocList"></div></div>
 <script>
 var slides = Array.prototype.slice.call(document.querySelectorAll('#stage .mk'));
-var TITLES = [["01", "표지"], ["02", "지난 시간에 만든 파일 세 개"], ["03", "한 줄 요청을, 멈출 줄 아는 계획으로"], ["04", "네 가지를 포함한 요청"], ["05", "작업 경계의 네 가지 구성"], ["E1", "실습 1"], ["06", "한 줄이 네 행으로"], ["C2", "아직 하지 말 것 명시"], ["07", "제한이 없으면 그다음 단계까지 진행된다"], ["E2", "실습 2"], ["08", "빈칸을 채우는 건 agent의 몫"], ["C3", "Human gate 설정"], ["09", "human gate는 어디에 두는가"], ["E3", "실습 3"], ["C4", "멈춤 조건"], ["10", "스스로 서게 하는 세 가지"], ["E4", "실습 4"], ["11", "작업 경계가 기록으로"], ["12", "루프에서 오늘의 위치"], ["13", "경계를 정했으니, 이제 기준을 파일로"]];
+var TITLES = [["01", "표지"], ["02", "지난 시간에 만든 파일 세 개"], ["03", "한 줄 요청을, 멈출 줄 아는 계획으로"], ["04", "네 가지를 포함한 요청"], ["05", "작업 경계의 네 가지 구성"], ["E1", "실습 1"], ["06", "한 줄이 네 행으로"], ["C2", "아직 하지 말 것 명시"], ["07", "제한이 없으면 그다음 단계까지 진행된다"], ["E2", "실습 2"], ["08", "빈칸을 채우는 건 agent의 몫"], ["C3", "Human gate 설정"], ["09", "human gate를 걸 세 지점"], ["E3", "실습 3"], ["C4", "멈춤 조건"], ["10", "스스로 서게 하는 세 가지"], ["E4", "실습 4"], ["11", "작업 경계가 기록으로"], ["12", "루프에서 오늘의 위치"], ["13", "경계를 정했으니, 이제 기준을 파일로"]];
 var N = slides.length, cur = -1, hudT = null;
 var ctr = document.getElementById('ctr'), toc = document.getElementById('toc');
 
