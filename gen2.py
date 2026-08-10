@@ -16,6 +16,9 @@ PLANS = [
     dict(id='lec03', num='3강', title='작업 경계 잡기: 어디까지 맡기고 어디서 멈출지',
          sub='요청 분해 · 금지 조건 · human gate · 멈춤 조건', dur='약 40분',
          src=os.path.join(ROOT, 'ref/lecture03-slide-plan-v1.html'), cover='assets/cover03.png'),
+    dict(id='lec04', num='4강', title='Codex가 먼저 읽어야 할 기준 만들기',
+         sub='AGENTS.md · 편집 전 기준 · 금지 규칙 · 도구 간 연결', dur='약 45분',
+         src=os.path.join(ROOT, 'ref/lecture04-slide-plan-v1.html'), cover='assets/cover04.png'),
 ]
 FONT = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">'
 

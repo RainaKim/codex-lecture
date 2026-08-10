@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4강 Codex가 먼저 읽어야 할 기준 만들기 — 개발자를 위한 Codex</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  *{margin:0; padding:0; box-sizing:border-box;}
+  html,body{height:100%;}
+  body{font-family:Pretendard,-apple-system,sans-serif; background:#1c1c1e; overflow:hidden;
+       -webkit-user-select:none; user-select:none;}
+  #wrap{position:fixed; inset:0; display:flex; align-items:center; justify-content:center;}
+  #stage{width:560px; height:315px; position:relative; box-shadow:0 18px 70px rgba(0,0,0,.45);}
+  /* ── 슬라이드 (플랜 목업 CSS 그대로) ── */
+  .mk{position:relative; width:100%; aspect-ratio:16/9; background:#F5F5F5;
+     border:1px solid #e3e3e7; overflow:hidden;
+     font-family:-apple-system,"Pretendard","Helvetica Neue",sans-serif; color:#000;}
+  .mk:before,.mk:after{content:""; position:absolute; left:4.204%; width:91.59%; border-top:1px solid #B3B3B3;}
+  .mk:before{top:7.42%;} .mk:after{top:92.51%;}
+  .mk > *{position:absolute; box-sizing:border-box;}
+  .mk .lbl{left:3.43%; top:2.67%; font-size:6.4px; font-weight:700; letter-spacing:.08em; color:#B3B3B3;}
+  .mk .mark{left:3%; bottom:2%; width:33px; height:5.1px; font-size:0; line-height:0;
+            background-image:url(data:image/png;base64,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);
+            background-size:contain; background-repeat:no-repeat; background-position:left bottom; opacity:.9;}
+  .mk .mark b{display:none;}
+  .mk .kick{font-size:9.3px; font-weight:700; color:#9C9C9C; letter-spacing:.02em;}
+  .mk .h{font-size:17.5px; font-weight:800; line-height:1.2; letter-spacing:-.02em;}
+  .mk .h.big{font-size:22.2px;} .mk .h.cover{font-size:25.7px; line-height:1.24;}
+  .mk .h em{color:#FC1C49; font-style:normal;}
+  .mk .card{background:#fff; border-radius:3px;}
+  .mk .card.g{background:#E6E6E6;}
+  .mk .card.k{background:#282828; color:#fff;}
+  .mk .bar{background:#5B5B5B; color:#fff; border-radius:3px 3px 0 0;
+          display:flex; align-items:center; justify-content:center; font-size:10.5px; font-weight:700;}
+  .mk .bar.r{background:#FC1C49;}
+  .mk .tag{background:#FFE5EB; color:#FC1C49; border-radius:3px; display:flex; align-items:center;
+          justify-content:center; font-size:8.2px; font-weight:700; border:.7px solid #FC1C49;}
+  .mk .n{font-size:16.3px; font-weight:800; color:#FC1C49; line-height:1;}
+  .mk .t{font-size:8.2px; line-height:1.5;}
+  .mk .t.mid{font-size:10.5px;} .mk .t.big{font-size:11.7px; font-weight:700;}
+  .mk .t.sm{font-size:7px; color:#5B5B5B;} .mk .t.mut{font-size:7px; color:#9C9C9C;}
+  .mk .t.r{color:#FC1C49;} .mk .t.c{text-align:center;}
+  .mk .shot{background:#EDEDF0; border-radius:3px;}
+  .mk .shot span{position:absolute; left:4px; top:3px; font-size:6px; color:#9A9AA5; letter-spacing:.04em;}
+  .mk .rule{border-top:1px solid #FC1C49;}
+  .mk .dash{border-top:1px dashed #c9c9cf;}
+  .mk table{position:absolute; border-collapse:collapse; font-size:8.2px;}
+  .mk table th{background:#FC1C49; color:#fff; font-weight:700; padding:3px 5px; text-align:center;}
+  .mk table td{background:#fff; padding:3px 6px; border-bottom:1px solid #FC1C49;}
+  .mk table td.k{background:#FFE5EB; color:#FC1C49; font-weight:700; text-align:center; width:16%;}
+  .mk .code{background:#1E1E1E; border-radius:3px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+            font-size:7.6px; line-height:1.62; color:#D8D8DE; padding:9px 11px; white-space:pre;}
+  .mk .code i{color:#569CD6; font-style:normal;}
+  .mk .code b{color:#CE9178; font-weight:400;}
+  .mk .code u{color:#FF5C7A; text-decoration:none;}
+  .mk .code s{color:#6A6A72; text-decoration:none;}
+  .mk .chip5{border:1px solid #C9C9CF; border-radius:999px; display:flex; align-items:center;
+             justify-content:center; font-size:7.4px; color:#5B5B5B; background:#fff;}
+  .mk .lead{border-top:1px solid #B3B3B3;} .mk .lead.r{border-color:#FC1C49;}
+  .mk .dot{width:3.5px; height:3.5px; border-radius:50%; background:#B3B3B3;} .mk .dot.r{background:#FC1C49;}
+  .mk .kchip{background:#EDEDF0; border-radius:3px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+            font-size:6.6px; color:#3c3c42; padding:2.5px 6px; white-space:nowrap;}
+  .mk .kstrip{background:#fafafb; border:1px solid #e3e3e7; border-radius:3px;}
+  .mk .kstrip-t{font-size:7.4px; color:#5B5B5B;} .mk .kstrip-t b{color:#000;}
+  .mk .anno{font-size:11.7px; font-weight:800; line-height:1.3; letter-spacing:-.01em;}
+  .mk .anno.r{color:#FC1C49;} .mk .anno span{display:block; font-size:7px; font-weight:400; color:#9C9C9C; margin-top:2px;}
+  .mk{display:none; position:absolute; inset:0; width:560px; height:315px; aspect-ratio:auto; border:none;}
+  .mk.on{display:block;}
+  .mk.cover-img img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;}
+  /* ── 진입 애니메이션 ── */
+  @media (prefers-reduced-motion: no-preference){
+    .mk.anim > *{opacity:0; transform:translateY(10px);
+      transition:opacity .55s cubic-bezier(.2,.6,.2,1), transform .55s cubic-bezier(.2,.6,.2,1);}
+    .mk.anim.go > *{opacity:1; transform:none;}
+    .mk.anim > .lbl, .mk.anim > .mark{transition-delay:0ms !important;}
+  }
+  /* ── HUD ── */
+  .hud{position:fixed; z-index:10; font-size:13px; color:rgba(255,255,255,.85);
+       background:rgba(28,28,30,.62); backdrop-filter:blur(8px); border-radius:8px;
+       padding:7px 12px; opacity:0; transition:opacity .25s;}
+  body.hud-on .hud{opacity:1;}
+  #ctr{right:16px; bottom:16px; cursor:pointer; font-variant-numeric:tabular-nums;}
+  #ttl{left:16px; bottom:16px; max-width:52vw; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  #home{right:16px; top:16px; cursor:pointer; text-decoration:none;}
+  .edge{position:fixed; top:0; bottom:0; width:30%; z-index:5; cursor:pointer;}
+  /* ── 목차 오버레이 ── */
+  #toc{position:fixed; inset:0; z-index:20; background:rgba(20,20,22,.97); overflow-y:auto;
+       display:none; padding:56px 24px;}
+  #toc.on{display:block;}
+  #toc .list{max-width:640px; margin:0 auto;}
+  #toc .row{display:flex; gap:14px; align-items:baseline; padding:11px 14px; border-radius:8px;
+            cursor:pointer; color:#d8d8de; font-size:15px;}
+  #toc .row:hover{background:rgba(255,255,255,.06);}
+  #toc .row.cur{background:rgba(252,28,73,.14); color:#fff;}
+  #toc .row .n{font-size:12px; font-weight:700; color:#FC1C49; min-width:34px; font-variant-numeric:tabular-nums;}
+</style>
+</head>
+<body class="hud-on">
+<div id="wrap"><div id="stage">
+<section class="mk cover-img anim"><img src="assets/cover04.png" alt="표지"></section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">지난 강의 리캡</div>
+          <div class="h" style="left:3.43%; top:16.8%;">지난 시간에 만든 기준</div>
+          <div class="kchip" style="left:32%; top:29%; width:36%; text-align:center;">notes/task-boundary.md</div>
+          <div class="card" style="left:4.2%; top:36.5%; width:91.6%; height:11%;"></div>
+          <div class="kchip" style="left:6.6%; top:39.7%; width:19.9%; text-align:center;">요청 분해</div>
+          <div class="kchip" style="left:28.9%; top:39.7%; width:19.9%; text-align:center;">아직 하지 말 것</div>
+          <div class="kchip" style="left:51.2%; top:39.7%; width:19.9%; text-align:center;">Human Gate</div>
+          <div class="kchip" style="left:73.5%; top:39.7%; width:19.9%; text-align:center;">멈춤 조건</div>
+          <div class="card" style="left:4.2%; top:54%; width:91.6%; height:11%; border-radius:999px; background:#FFE5EB;"></div>
+          <div class="t mid c" style="left:4.2%; top:57.2%; width:91.6%; color:#FC1C49; font-weight:700;">새 세션은 이 파일을 스스로 읽지 않음 — 매번 사람이 찾아서 붙여야 함</div>
+          <div class="kstrip" style="left:4.2%; top:76%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:78.6%; width:88%; text-align:center;"><b>경계를 정했으니, 이제 기준을 파일로</b> — 3강 마지막 문장이 오늘의 출발점</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">오늘의 목표</div>
+          <div class="h" style="left:3.43%; top:16.8%;">대화에서 반복하던 기준을 파일로</div>
+          <div class="code" style="left:4.2%; top:30%; width:38%; height:38.5%;"><s># 1강 — 채팅으로 다시 설명</s>
+<b>&gt; 미정 정책은 정하지 말고…</b>
+<s># 2강 — 파일로 기록, 첨부는 사람</s>
+<b>&gt; pending-decisions.md 먼저 읽고…</b>
+<s># 3강 — 경계도 기록, 첨부는 또 사람</s>
+<b>&gt; task-boundary.md 기준으로…</b></div>
+          <div class="n" style="left:42.2%; top:30%; width:13.3%; height:38.5%; display:flex; align-items:center; justify-content:center;">→</div>
+          <div class="kchip" style="left:55.5%; top:30%; width:40%; text-align:center;">AGENTS.md</div>
+          <div class="card" style="left:55.5%; top:36.5%; width:40%; height:5.6%;"></div>
+          <div class="t sm" style="left:58.5%; top:37.7%; width:22%;"><b>Project Overview</b></div>
+          <div class="t sm" style="left:58.5%; top:37.7%; width:34%; text-align:right; color:#9C9C9C;">이 repo가 무엇인지</div>
+          <div class="card" style="left:55.5%; top:43%; width:40%; height:5.6%;"></div>
+          <div class="t sm" style="left:58.5%; top:44.2%; width:22%;"><b>Before Editing</b></div>
+          <div class="t sm" style="left:58.5%; top:44.2%; width:34%; text-align:right; color:#9C9C9C;">수정 전에 읽을 것</div>
+          <div class="card" style="left:55.5%; top:49.5%; width:40%; height:5.6%;"></div>
+          <div class="t sm" style="left:58.5%; top:50.7%; width:22%;"><b>Commands</b></div>
+          <div class="t sm" style="left:58.5%; top:50.7%; width:34%; text-align:right; color:#9C9C9C;">무엇으로 검증하는지</div>
+          <div class="card" style="left:55.5%; top:56%; width:40%; height:5.6%;"></div>
+          <div class="t sm" style="left:58.5%; top:57.2%; width:22%;"><b>Rules</b></div>
+          <div class="t sm" style="left:58.5%; top:57.2%; width:34%; text-align:right; color:#9C9C9C;">항상 하면 안 되는 것</div>
+          <div class="card" style="left:55.5%; top:62.5%; width:40%; height:5.6%;"></div>
+          <div class="t sm" style="left:58.5%; top:63.7%; width:22%;"><b>Before Final Response</b></div>
+          <div class="t sm" style="left:58.5%; top:63.7%; width:34%; text-align:right; color:#9C9C9C;">보고 전에 확인할 것</div>
+          <div class="kstrip" style="left:4.2%; top:79%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:81.6%; width:88%; text-align:center;"><b>오늘이 끝나면 새 세션이 시키지 않아도 이 기준을 먼저 읽는다</b></div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">핵심 개념</div>
+          <div class="h" style="left:3.43%; top:16.8%;">프롬프트는 오늘 할 일, AGENTS.md는 늘 지킬 일</div>
+          <div class="bar" style="left:4.2%; top:29%; width:28.6%; height:5.5%;">프롬프트</div>
+          <div class="t sm c" style="left:34.8%; top:30.2%; width:22%; color:#9C9C9C; font-weight:700; letter-spacing:.04em;">비교 축</div>
+          <div class="bar r" style="left:58.8%; top:29%; width:37%; height:5.5%;">AGENTS.md</div>
+          <div class="card g" style="left:4.2%; top:37%; width:28.6%; height:9.5%;"></div>
+          <div class="t sm c" style="left:4.2%; top:40%; width:28.6%;">사람이 붙여 준 세션에서만</div>
+          <div class="t sm c" style="left:34.8%; top:40%; width:22%; font-weight:700; color:#5B5B5B;">읽히는 시점</div>
+          <div class="card" style="left:58.8%; top:37%; width:37%; height:9.5%;"></div>
+          <div class="t sm c" style="left:58.8%; top:40%; width:37%;"><b>매 세션 시작 때, 시키지 않아도</b></div>
+          <div class="card g" style="left:4.2%; top:49.5%; width:28.6%; height:9.5%;"></div>
+          <div class="t sm c" style="left:4.2%; top:52.5%; width:28.6%;">사람 — 빠뜨린 날은 없는 규칙</div>
+          <div class="t sm c" style="left:34.8%; top:52.5%; width:22%; font-weight:700; color:#5B5B5B;">전달하는 주체</div>
+          <div class="card" style="left:58.8%; top:49.5%; width:37%; height:9.5%;"></div>
+          <div class="t sm c" style="left:58.8%; top:52.5%; width:37%;"><b>repo — 커밋에 실려 함께 감</b></div>
+          <div class="card g" style="left:4.2%; top:62%; width:28.6%; height:9.5%;"></div>
+          <div class="t sm c" style="left:4.2%; top:65%; width:28.6%;">사람마다 문장이 조금씩 다름</div>
+          <div class="t sm c" style="left:34.8%; top:65%; width:22%; font-weight:700; color:#5B5B5B;">바꾸는 방법</div>
+          <div class="card" style="left:58.8%; top:62%; width:37%; height:9.5%;"></div>
+          <div class="t sm c" style="left:58.8%; top:65%; width:37%;"><b>커밋으로만 수정 — 이력이 남음</b></div>
+          <div class="kstrip" style="left:4.2%; top:78%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:80.6%; width:88%; text-align:center;"><b>둘이 섞이면 오늘 지시는 길어지고, 늘 지킬 규칙은 흔들린다</b></div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">오늘의 지도</div>
+          <div class="h" style="left:3.43%; top:16.8%;">다섯 섹션, 실습 네 번</div>
+          <div class="t sm" style="left:4.2%; top:30%; width:7.3%; text-align:right; color:#9C9C9C; font-weight:700;">실습 ①</div>
+          <div style="left:12.6%; top:27.5%; width:0; height:8.2%; border-left:1px solid #C9C9CF;"></div>
+          <div class="t sm" style="left:4.2%; top:45%; width:7.3%; text-align:right; color:#9C9C9C; font-weight:700;">실습 ②</div>
+          <div style="left:12.6%; top:37.5%; width:0; height:18.2%; border-left:1px solid #C9C9CF;"></div>
+          <div class="t sm" style="left:4.2%; top:60%; width:7.3%; text-align:right; color:#9C9C9C; font-weight:700;">실습 ③</div>
+          <div style="left:12.6%; top:57.5%; width:0; height:8.2%; border-left:1px solid #C9C9CF;"></div>
+          <div class="t sm" style="left:4.2%; top:70%; width:7.3%; text-align:right; color:#9C9C9C; font-weight:700;">실습 ④</div>
+          <div style="left:12.6%; top:67.5%; width:0; height:8.2%; border-left:1px solid #C9C9CF;"></div>
+          <div class="card" style="left:14.6%; top:27.5%; width:81.2%; height:8.2%;"></div>
+          <div style="left:16.1%; top:28.43%; width:3.571%; height:6.35%; background:#FFE5EB; border-radius:999px; display:flex; align-items:center; justify-content:center; color:#FC1C49; font-weight:800; font-size:9.5px;">01</div>
+          <div class="kchip" style="left:23%; top:29.6%; width:22%; text-align:center;">## Project Overview</div>
+          <div class="t sm" style="left:47.5%; top:29.9%; width:46%; color:#5B5B5B;">무엇을 하는 repo인지 — 확인된 사실만</div>
+          <div class="card" style="left:14.6%; top:37.5%; width:81.2%; height:8.2%;"></div>
+          <div style="left:16.1%; top:38.43%; width:3.571%; height:6.35%; background:#FFE5EB; border-radius:999px; display:flex; align-items:center; justify-content:center; color:#FC1C49; font-weight:800; font-size:9.5px;">02</div>
+          <div class="kchip" style="left:23%; top:39.6%; width:22%; text-align:center;">## Before Editing</div>
+          <div class="t sm" style="left:47.5%; top:39.9%; width:46%; color:#5B5B5B;">수정 전에 읽을 것과 계획 기준</div>
+          <div class="card" style="left:14.6%; top:47.5%; width:81.2%; height:8.2%;"></div>
+          <div style="left:16.1%; top:48.43%; width:3.571%; height:6.35%; background:#FFE5EB; border-radius:999px; display:flex; align-items:center; justify-content:center; color:#FC1C49; font-weight:800; font-size:9.5px;">03</div>
+          <div class="kchip" style="left:23%; top:49.6%; width:22%; text-align:center;">## Commands</div>
+          <div class="t sm" style="left:47.5%; top:49.9%; width:46%; color:#5B5B5B;">검증 명령 — package.json에 있는 것만</div>
+          <div class="card" style="left:14.6%; top:57.5%; width:81.2%; height:8.2%;"></div>
+          <div style="left:16.1%; top:58.43%; width:3.571%; height:6.35%; background:#FFE5EB; border-radius:999px; display:flex; align-items:center; justify-content:center; color:#FC1C49; font-weight:800; font-size:9.5px;">04</div>
+          <div class="kchip" style="left:23%; top:59.6%; width:22%; text-align:center;">## Rules</div>
+          <div class="t sm" style="left:47.5%; top:59.9%; width:46%; color:#5B5B5B;">항상 걸리는 금지 규칙 — 3강 경계가 재료</div>
+          <div class="card" style="left:14.6%; top:67.5%; width:81.2%; height:8.2%;"></div>
+          <div style="left:16.1%; top:68.42%; width:3.571%; height:6.35%; background:#FFE5EB; border-radius:999px; display:flex; align-items:center; justify-content:center; color:#FC1C49; font-weight:800; font-size:9.5px;">05</div>
+          <div class="kchip" style="left:23%; top:69.6%; width:22%; text-align:center;">## Before Final Response</div>
+          <div class="t sm" style="left:47.5%; top:69.9%; width:46%; color:#5B5B5B;">보고에 담을 검증 근거</div>
+          <div class="kstrip" style="left:4.2%; top:80%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.6%; width:88%; text-align:center;"><b>실습 네 번이 이 파일 하나를 완성한다</b> — 순서대로, 같은 파일에 얹는다</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 1 · 실습</div>
+          <div class="h" style="left:3.43%; top:16.8%;">실습 1</div>
+          <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
+          <div class="t sm c" style="left:4.2%; top:44%; width:91.6%; font-weight:700; color:#9C9C9C;">핵심 포인트</div>
+          <div class="t c" style="left:4.2%; top:51%; width:91.6%; font-weight:700; font-size:11.5px;">다섯 헤딩 뼈대 + Project Overview — 확인된 사실만</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">실습 ① 결과</div>
+          <div class="h" style="left:3.43%; top:16.8%;">확인된 것만 Overview에 들어간다</div>
+          <div class="bar" style="left:4.2%; top:29%; width:44.9%; height:5.5%;">미정 정책과 계획 — 기준이 못 됨</div>
+          <div class="card g" style="left:4.2%; top:34.5%; width:44.9%; height:33%;"></div>
+          <div class="t sm" style="left:7%; top:37.5%; width:39.3%; line-height:1.4;"><b>✕ 결제 실패 주문은 pending으로 돌아간다</b><br><span style="color:#9C9C9C; font-size:6.3px;">아직 결정되지 않은 정책 — 질문으로만 있음</span></div>
+          <div class="t sm" style="left:7%; top:46.5%; width:39.3%; line-height:1.4;"><b>✕ 실패한 결제는 재시도할 수 있다</b><br><span style="color:#9C9C9C; font-size:6.3px;">재결제 허용 여부도 아직 질문 단계</span></div>
+          <div class="t sm" style="left:7%; top:55.5%; width:39.3%; line-height:1.4;"><b>✕ 곧 실제 결제를 연동할 예정이다</b><br><span style="color:#9C9C9C; font-size:6.3px;">계획이지 현재 사실이 아님</span></div>
+          <div class="bar r" style="left:50.9%; top:29%; width:44.9%; height:5.5%;">현재 코드로 확인되는 것</div>
+          <div class="card" style="left:50.9%; top:34.5%; width:44.9%; height:33%;"></div>
+          <div class="t sm" style="left:53.7%; top:37.5%; width:39.3%; line-height:1.4;"><b style="color:#FC1C49;">✓ 주문·결제·재고·관리자 조회가 연결된 작은 API</b><br><span style="color:#9C9C9C; font-size:6.3px;">Express + TypeScript</span></div>
+          <div class="t sm" style="left:53.7%; top:46.5%; width:39.3%; line-height:1.4;"><b style="color:#FC1C49;">✓ 저장은 메모리뿐</b><br><span style="color:#9C9C9C; font-size:6.3px;">서버를 다시 켜면 주문과 결제 기록이 사라짐</span></div>
+          <div class="t sm" style="left:53.7%; top:55.5%; width:39.3%; line-height:1.4;"><b style="color:#FC1C49;">✓ 결제는 cardToken 문자열 흉내</b><br><span style="color:#9C9C9C; font-size:6.3px;">외부 결제 연동 없음</span></div>
+          <div class="kstrip" style="left:4.2%; top:76%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:78.6%; width:88%; text-align:center;"><b>확인된 것과 정하고 싶은 것을 섞지 않는다</b> — 기준 문서의 첫 번째 규칙</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">4강 · 클립 2</div>
+          <div class="h" style="left:3.43%; top:16.8%;">편집 전 기준</div>
+          <div class="t" style="left:3.43%; top:26.5%; color:#5B5B5B;">코드를 고치기 전에 무엇을 읽고, 계획부터 쓰게 한다</div>
+          <div class="kstrip" style="left:4.2%; top:40%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:42.6%; width:88%; text-align:center;"><b>지난 클립 ✓</b> — AGENTS.md 뼈대를 세우고 확인된 사실만으로 Overview를 채웠다</div>
+          <div class="card" style="left:4.2%; top:54%; width:91.6%; height:9.5%; background:#FFE5EB;"></div><div class="t mid c" style="left:4.2%; top:56.7%; width:91.6%; color:#FC1C49; font-weight:700;">이번 클립 — 편집 전에 읽을 것 → 실습 ② → Before Editing과 Commands</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">편집 전 기준</div>
+          <div class="h" style="left:3.43%; top:16.8%;">수정 전에 읽을 것 셋, 그리고 계획</div>
+          <div class="tag" style="left:4.2%; top:29%; width:16.6%; height:10%; border-radius:3px;">README</div>
+          <div class="card" style="left:23.1%; top:29%; width:72.7%; height:10%;"></div>
+          <div class="t sm" style="left:26%; top:32.33%; width:40%;"><b>현재 동작과 알려진 결함 정리</b></div>
+          <div class="t sm" style="left:66%; top:32.33%; width:27%; color:#9C9C9C; text-align:right;">무엇이 사실인지</div>
+          <div class="tag" style="left:4.2%; top:41%; width:16.6%; height:10%; border-radius:3px;">관련 테스트</div>
+          <div class="card" style="left:23.1%; top:41%; width:72.7%; height:10%;"></div>
+          <div class="t sm" style="left:26%; top:44.33%; width:40%;"><b>고치려는 코드의 검증된 곳과 빈 곳</b></div>
+          <div class="t sm" style="left:66%; top:44.33%; width:27%; color:#9C9C9C; text-align:right;">무엇이 지켜지는지</div>
+          <div class="tag" style="left:4.2%; top:53%; width:16.6%; height:10%; border-radius:3px;">notes/ 기록</div>
+          <div class="card" style="left:23.1%; top:53%; width:72.7%; height:10%;"></div>
+          <div class="t sm" style="left:26%; top:56.33%; width:40%;"><b>2·3강에서 남긴 미결정 질문과 작업 경계</b></div>
+          <div class="t sm" style="left:66%; top:56.33%; width:27%; color:#9C9C9C; text-align:right;">무엇을 정하면 안 되는지</div>
+          <div class="tag" style="left:4.2%; top:65%; width:16.6%; height:10%; border-radius:3px;">계획 작성</div>
+          <div class="card" style="left:23.1%; top:65%; width:72.7%; height:10%; background:#FFE5EB;"></div>
+          <div class="t sm" style="left:26%; top:68.33%; width:40%;"><b style="color:#FC1C49;">읽기가 끝나면 코드가 아니라 계획부터</b></div>
+          <div class="t sm" style="left:66%; top:68.33%; width:27%; color:#FC1C49; text-align:right; font-weight:700;">수정은 그다음</div>
+          <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;"><b>「알아서 파악해」는 기준이 아니다</b> — 읽을 것과 순서까지 적어야 기준이다</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 2 · 실습</div>
+          <div class="h" style="left:3.43%; top:16.8%;">실습 2</div>
+          <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
+          <div class="t sm c" style="left:4.2%; top:44%; width:91.6%; font-weight:700; color:#9C9C9C;">핵심 포인트</div>
+          <div class="t c" style="left:4.2%; top:51%; width:91.6%; font-weight:700; font-size:11.5px;">Before Editing과 Commands — 읽을 것, 그리고 있는 명령만</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">실습 ② 결과</div>
+          <div class="h" style="left:3.43%; top:16.8%;">명령은 만들지 않고 옮겨 적는다</div>
+          <div class="bar" style="left:4.2%; top:36.5%; width:41%; height:5.5%;">지어낸 명령</div>
+          <div class="card g" style="left:4.2%; top:42%; width:41%; height:25.5%;"></div>
+          <div class="t sm" style="left:7%; top:45.5%; width:35.5%; line-height:1.4;"><b>✕ npm run preflight</b><br><span style="color:#9C9C9C; font-size:6.3px;">package.json에 없음 — 실행하는 순간 깨짐</span></div>
+          <div class="t sm" style="left:7%; top:55.5%; width:35.5%; line-height:1.4;"><b>✕ 검증은 알아서 돌려 줘</b><br><span style="color:#9C9C9C; font-size:6.3px;">무엇을 돌렸는지 아무도 알 수 없음</span></div>
+          <div class="bar r" style="left:47.6%; top:28%; width:48.2%; height:5.5%;">옮겨 적은 명령 — package.json scripts 그대로</div>
+          <div class="card" style="left:47.6%; top:33.5%; width:48.2%; height:34%;"></div>
+          <div class="kchip" style="left:50.4%; top:37.5%; width:20%; text-align:center;">npm test</div>
+          <div class="t sm" style="left:72%; top:38%; width:21%; color:#9C9C9C; text-align:right;">동작 검증</div>
+          <div class="kchip" style="left:50.4%; top:48%; width:20%; text-align:center;">npm run lint</div>
+          <div class="t sm" style="left:72%; top:48.5%; width:21%; color:#9C9C9C; text-align:right;">정적 검사</div>
+          <div class="kchip" style="left:50.4%; top:58.5%; width:20%; text-align:center;">npm run typecheck</div>
+          <div class="t sm" style="left:72%; top:59%; width:21%; color:#9C9C9C; text-align:right;">타입 검사</div>
+          <div class="kstrip" style="left:4.2%; top:76%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:78.6%; width:88%; text-align:center;"><b>기준 문서에는 소망이 아니라 사실이 들어간다</b> — Overview에서 지킨 규칙이 Commands에도 그대로</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">4강 · 클립 3</div>
+          <div class="h" style="left:3.43%; top:16.8%;">금지 규칙</div>
+          <div class="t" style="left:3.43%; top:26.5%; color:#5B5B5B;">이번 작업이 아니라 repo 전체에 항상 적용되는 금지 규칙을 만든다</div>
+          <div class="kstrip" style="left:4.2%; top:40%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:42.6%; width:88%; text-align:center;"><b>지난 클립 ✓</b> — 수정 전에 읽을 것과 검증 명령을 기준에 넣었다</div>
+          <div class="card" style="left:4.2%; top:54%; width:91.6%; height:9.5%; background:#FFE5EB;"></div><div class="t mid c" style="left:4.2%; top:56.7%; width:91.6%; color:#FC1C49; font-weight:700;">이번 클립 — 금지 규칙 네 가지 → 실습 ③ → Rules</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">금지 규칙</div>
+          <div class="h" style="left:3.43%; top:16.8%;">항상 걸리는 금지 규칙 네 가지</div>
+          <table style="left:4.2%; top:28.5%; width:91.6%;">
+            <tr><th style="width:22%;">금지</th><th style="width:42%;">막는 행동</th><th style="width:36%;">이유</th></tr>
+            <tr><td class="k" style="width:22%; padding:7px 8px;">미결정 정책 확정</td><td style="padding:7px 8px;">질문으로 남은 정책을 코드나 문서에서 확정하는 것</td><td style="padding:7px 8px; color:#5B5B5B;">결정은 사람 몫 — 1강 「바로 구현」 차단</td></tr>
+            <tr><td class="k" style="width:22%; padding:7px 8px;">silent fallback</td><td style="padding:7px 8px;">오류를 삼켜 정상 응답으로 바꾸는 것</td><td style="padding:7px 8px; color:#5B5B5B;">실패가 숨으면 원인을 찾을 수 없음</td></tr>
+            <tr><td class="k" style="width:22%; padding:7px 8px;">테스트 없는 상태 변경</td><td style="padding:7px 8px;">검증 없이 주문 상태 전환을 바꾸는 것</td><td style="padding:7px 8px; color:#5B5B5B;">현재 테스트는 응답 존재만 확인</td></tr>
+            <tr><td class="k" style="width:22%; padding:7px 8px;">실제 결제 연동</td><td style="padding:7px 8px;">외부 결제 시스템을 붙이는 것</td><td style="padding:7px 8px; color:#5B5B5B;">이 repo의 결제는 cardToken 흉내 — scope 밖</td></tr>
+          </table>
+          <div class="kstrip" style="left:4.2%; top:80%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.6%; width:88%; text-align:center;"><b>3강의 「아직 하지 말 것」은 이번 작업에 걸렸고, Rules는 repo 전체에 걸린다</b></div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 3 · 실습</div>
+          <div class="h" style="left:3.43%; top:16.8%;">실습 3</div>
+          <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
+          <div class="t sm c" style="left:4.2%; top:44%; width:91.6%; font-weight:700; color:#9C9C9C;">핵심 포인트</div>
+          <div class="t c" style="left:4.2%; top:51%; width:91.6%; font-weight:700; font-size:11.5px;">Rules 네 가지 — 규칙마다 금지 행동과 이유를 한 줄에</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">4강 · 클립 4</div>
+          <div class="h" style="left:3.43%; top:16.8%;">도구 간 연결</div>
+          <div class="t" style="left:3.43%; top:26.5%; color:#5B5B5B;">마지막 섹션을 채워 커밋하고, 도구가 바뀌어도 기준이 남는 구조를 확인한다</div>
+          <div class="kstrip" style="left:4.2%; top:40%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:42.6%; width:88%; text-align:center;"><b>지난 클립 ✓</b> — 이번 작업에만 걸던 금지 조건을 repo 전체 규칙으로 올렸다</div>
+          <div class="card" style="left:4.2%; top:54%; width:91.6%; height:9.5%; background:#FFE5EB;"></div><div class="t mid c" style="left:4.2%; top:56.7%; width:91.6%; color:#FC1C49; font-weight:700;">이번 클립 — Before Final Response → 실습 ④ → 도구가 바뀌어도 남는 기준</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">Before Final Response</div>
+          <div class="h" style="left:3.43%; top:16.8%;">최종 보고에 담을 세 가지</div>
+          <div class="card" style="left:4.2%; top:29%; width:29.2%; height:38%; background:#FFE5EB;"></div>
+          <div class="t sm c" style="left:4.2%; top:33%; width:29.2%; font-weight:700; font-size:8.5px; color:#FC1C49;">무엇을 돌렸나</div>
+          <div class="t sm c" style="left:6.6%; top:40%; width:24.4%; color:#5B5B5B; line-height:1.5;">실행한 검증 명령과<br>그 결과까지 보고에 포함</div>
+          <div class="kchip" style="left:6.6%; top:53%; width:24.4%; text-align:center;">1강 「검수 불가」 차단</div>
+          <div class="card" style="left:35.4%; top:29%; width:29.2%; height:38%;"></div>
+          <div class="t sm c" style="left:35.4%; top:33%; width:29.2%; font-weight:700; font-size:8.5px;">무엇이 바뀌었나</div>
+          <div class="t sm c" style="left:37.8%; top:40%; width:24.4%; color:#5B5B5B; line-height:1.5;">바꾼 파일 목록을<br>보고에 포함</div>
+          <div class="kchip" style="left:37.8%; top:53%; width:24.4%; text-align:center;">diff 검토의 입구</div>
+          <div class="card" style="left:66.6%; top:29%; width:29.2%; height:38%;"></div>
+          <div class="t sm c" style="left:66.6%; top:33%; width:29.2%; font-weight:700; font-size:8.5px;">무엇에 걸렸나</div>
+          <div class="t sm c" style="left:69%; top:40%; width:24.4%; color:#5B5B5B; line-height:1.5;">Rules에 걸려 멈췄다면<br>그 지점까지 보고</div>
+          <div class="kchip" style="left:69%; top:53%; width:24.4%; text-align:center;">3강 멈춤 보고와 같은 원리</div>
+          <div class="card" style="left:4.2%; top:71%; width:91.6%; height:9.5%; background:#FFE5EB;"></div><div class="t mid c" style="left:4.2%; top:73.7%; width:91.6%; color:#FC1C49; font-weight:700;">「통과했다」는 검증이 아니다 — 무엇을 실행해 무엇이 나왔는지가 검증이다</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 4 · 실습</div>
+          <div class="h" style="left:3.43%; top:16.8%;">실습 4</div>
+          <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
+          <div class="t sm c" style="left:4.2%; top:44%; width:91.6%; font-weight:700; color:#9C9C9C;">핵심 포인트</div>
+          <div class="t c" style="left:4.2%; top:51%; width:91.6%; font-weight:700; font-size:11.5px;">Before Final Response 채우고 커밋 — 새 세션이 읽는지 확인까지</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">도구 간 연결</div>
+          <div class="h" style="left:3.43%; top:16.8%;">같은 역할, 세 가지 이름</div>
+          <div class="card" style="left:4.2%; top:29%; width:29.2%; height:32%; background:#FFE5EB;"></div>
+          <div class="t sm c" style="left:4.2%; top:33%; width:29.2%; font-weight:700; font-size:8.5px; color:#FC1C49;">Codex</div>
+          <div class="kchip" style="left:6.6%; top:40%; width:24.4%; text-align:center;">AGENTS.md</div>
+          <div class="t mut c" style="left:6.6%; top:48%; width:24.4%;">오늘 만든 기준 문서</div>
+          <div class="card" style="left:35.4%; top:29%; width:29.2%; height:32%;"></div>
+          <div class="t sm c" style="left:35.4%; top:33%; width:29.2%; font-weight:700; font-size:8.5px;">Claude Code</div>
+          <div class="kchip" style="left:37.8%; top:40%; width:24.4%; text-align:center;">CLAUDE.md</div>
+          <div class="t mut c" style="left:37.8%; top:48%; width:24.4%;">같은 질문에 답하는 파일</div>
+          <div class="card" style="left:66.6%; top:29%; width:29.2%; height:32%;"></div>
+          <div class="t sm c" style="left:66.6%; top:33%; width:29.2%; font-weight:700; font-size:8.5px;">Cursor</div>
+          <div class="kchip" style="left:69%; top:40%; width:24.4%; text-align:center;">Cursor rules</div>
+          <div class="t mut c" style="left:69%; top:48%; width:24.4%;">같은 질문에 답하는 규칙</div>
+          <div class="card" style="left:4.2%; top:66%; width:91.6%; height:9.5%; background:#FFE5EB;"></div><div class="t mid c" style="left:4.2%; top:68.7%; width:91.6%; color:#FC1C49; font-weight:700;">이름이 달라도 답하는 질문은 같다 — 무엇을 먼저 읽고, 무엇을 하면 안 되는가</div>
+          <div class="kstrip" style="left:4.2%; top:80%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.6%; width:88%; text-align:center;"><b>도구를 갈아타도 오늘 쓴 문장은 옮겨 적으면 된다</b> — 기준은 도구가 아니라 repo에 남는다</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">루프 엔지니어링</div>
+          <div class="h" style="left:3.43%; top:16.8%;">루프에서 오늘의 위치</div>
+          <div class="kchip" style="left:4.2%; top:38%; width:13%; text-align:center;">조사</div>
+          <div class="t mut c" style="left:17.6%; top:39%; width:3.5%;">→</div>
+          <div class="kchip" style="left:21.5%; top:38%; width:13%; text-align:center;">계획</div>
+          <div class="t mut c" style="left:34.9%; top:39%; width:3.5%;">→</div>
+          <div class="kchip" style="left:38.8%; top:38%; width:13%; text-align:center; opacity:.45;">구현</div>
+          <div class="t mut c" style="left:52.2%; top:39%; width:3.5%;">→</div>
+          <div class="kchip" style="left:56.1%; top:38%; width:13%; text-align:center; opacity:.45;">검증</div>
+          <div class="t mut c" style="left:69.5%; top:39%; width:3.5%;">→</div>
+          <div class="kchip" style="left:73.4%; top:38%; width:13%; text-align:center;">기록</div>
+          <div class="t mut c" style="left:86.8%; top:39%; width:3.5%;">→</div>
+          <div class="card" style="left:4.2%; top:52%; width:91.6%; height:9.5%; background:#FFE5EB;"></div>
+          <div class="t sm c" style="left:4.2%; top:54.8%; width:91.6%; color:#FC1C49; font-weight:700;">AGENTS.md — 매 세션, 루프가 돌기 전에 먼저 읽힘</div>
+          <div class="kstrip" style="left:4.2%; top:76%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:78.6%; width:88%; text-align:center;"><b>오늘은 새 칸을 켜지 않았다</b> — 루프 전체가 밟고 서는 기준을 깔았다</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 1</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">정리 · 다음 강</div>
+          <div class="t mut" style="left:3.43%; top:27%; font-weight:700;">5강</div>
+          <div class="h big" style="left:3.43%; top:32%;">기준을 세웠으니,<br>이제 계획부터 통과시킨다</div>
+          <div class="t sm" style="left:3.43%; top:56%; width:32%; color:#5B5B5B; line-height:1.55;">작은 요청 하나를 구현 전에 계획으로 완성한다 —<br>오늘 커밋한 AGENTS.md가 처음으로 먼저 읽힌다</div>
+          <div class="card" style="left:57%; top:30%; width:38.8%; height:9.5%; border-radius:999px;"></div>
+          <div class="t sm" style="left:60%; top:32.8%;"><b style="color:#FC1C49">01</b>&nbsp;&nbsp;<b>plan-first — 구현 전 계획 완성</b></div>
+          <div class="card" style="left:57%; top:42%; width:38.8%; height:9.5%; border-radius:999px;"></div>
+          <div class="t sm" style="left:60%; top:44.8%;"><b style="color:#FC1C49">02</b>&nbsp;&nbsp;<b>수정 범위와 제외 범위 구분</b></div>
+          <div class="card" style="left:57%; top:54%; width:38.8%; height:9.5%; border-radius:999px;"></div>
+          <div class="t sm" style="left:60%; top:56.8%;"><b style="color:#FC1C49">03</b>&nbsp;&nbsp;<b>AGENTS.md — 오늘 것이 첫 기준</b></div>
+          <div class="mark"></div>
+        </section>
+</div></div>
+<div class="edge" style="left:0" onclick="go(-1)"></div>
+<div class="edge" style="right:0" onclick="go(1)"></div>
+<a class="hud" id="home" href="index.html">목차</a>
+<div class="hud" id="ttl">4강 · Codex가 먼저 읽어야 할 기준 만들기</div>
+<div class="hud" id="ctr" onclick="toggleToc()" title="클릭: 슬라이드 목록">1 / 20</div>
+<div id="toc"><div class="list" id="tocList"></div></div>
+<script>
+var slides = Array.prototype.slice.call(document.querySelectorAll('#stage .mk'));
+var TITLES = [["01", "표지"], ["02", "지난 시간에 만든 기준"], ["03", "대화에서 반복하던 기준을 파일로"], ["04", "프롬프트는 오늘 할 일, AGENTS.md는 늘 지킬 일"], ["05", "다섯 섹션, 실습 네 번"], ["E1", "실습 1"], ["06", "확인된 것만 Overview에 들어간다"], ["C2", "편집 전 기준"], ["07", "수정 전에 읽을 것 셋, 그리고 계획"], ["E2", "실습 2"], ["08", "명령은 만들지 않고 옮겨 적는다"], ["C3", "금지 규칙"], ["09", "항상 걸리는 금지 규칙 네 가지"], ["E3", "실습 3"], ["C4", "도구 간 연결"], ["10", "최종 보고에 담을 세 가지"], ["E4", "실습 4"], ["11", "같은 역할, 세 가지 이름"], ["12", "루프에서 오늘의 위치"], ["13", "기준을 세웠으니, 이제 계획부터 통과시킨다"]];
+var N = slides.length, cur = -1, hudT = null;
+var ctr = document.getElementById('ctr'), toc = document.getElementById('toc');
+
+function fit(){
+  var z = Math.min(innerWidth / 560, innerHeight / 315);
+  var st = document.getElementById('stage');
+  if ('zoom' in st.style) st.style.zoom = z;
+  else { st.style.transform = 'scale(' + z + ')'; st.style.transformOrigin = 'center'; }
+}
+addEventListener('resize', fit); fit();
+
+function show(i){
+  i = Math.max(0, Math.min(N - 1, i));
+  if (i === cur) return;
+  if (cur >= 0) slides[cur].classList.remove('on', 'go');
+  cur = i;
+  var s = slides[cur];
+  var kids = s.children;
+  for (var k = 0; k < kids.length; k++)
+    kids[k].style.transitionDelay = Math.min(80 + k * 65, 1150) + 'ms';
+  s.classList.add('on');
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ s.classList.add('go'); }); });
+  ctr.textContent = (cur + 1) + ' / ' + N;
+  location.replace('#' + (cur + 1));
+  wake();
+}
+function go(d){ if (toc.classList.contains('on')) return; show(cur + d); }
+function wake(){
+  document.body.classList.add('hud-on');
+  clearTimeout(hudT);
+  hudT = setTimeout(function(){ document.body.classList.remove('hud-on'); }, 2600);
+}
+var tocList = document.getElementById('tocList');
+function toggleToc(){
+  if (!tocList.childElementCount){
+    TITLES.forEach(function(t, i){
+      var r = document.createElement('div'); r.className = 'row';
+      r.innerHTML = '<span class="n">' + t[0] + '</span><span>' + t[1] + '</span>';
+      r.onclick = function(){ toggleToc(); show(i); };
+      tocList.appendChild(r);
+    });
+  }
+  toc.classList.toggle('on');
+  if (toc.classList.contains('on')){
+    var rows = tocList.children;
+    for (var j = 0; j < rows.length; j++) rows[j].classList.toggle('cur', j === cur);
+    if (rows[cur]) rows[cur].scrollIntoView({block: 'center'});
+  }
+}
+document.addEventListener('keydown', function(e){
+  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); go(1); }
+  else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(-1); }
+  else if (e.key === 'Home') show(0);
+  else if (e.key === 'End') show(N - 1);
+  else if (e.key === 'f') { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }
+  else if (e.key === 'o' || e.key === 'g') toggleToc();
+  else if (e.key === 'Escape') { if (toc.classList.contains('on')) toggleToc(); else location.href = 'index.html'; }
+});
+var tx = null;
+document.addEventListener('touchstart', function(e){ tx = e.touches[0].clientX; }, {passive: true});
+document.addEventListener('touchend', function(e){
+  if (tx === null) return;
+  var dx = e.changedTouches[0].clientX - tx;
+  if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1);
+  tx = null;
+}, {passive: true});
+document.addEventListener('mousemove', wake);
+show(Math.max(0, (parseInt(location.hash.slice(1)) || 1) - 1));
+</script>
+</body>
+</html>
