@@ -232,16 +232,120 @@
           <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;"><b>전환 표가 있어야 다음 클립의 결제·재고 규칙이 여기에 얹힌다</b></div>
           <div class="mark"></div>
         </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 2</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 2 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:16.8%;">결제/재고 원칙</div>
+          <div class="card" style="left:4.2%; top:32%; width:91.6%; height:12%;"></div>
+          <div class="t big" style="left:7%; top:36%; width:24%;">결제 성공</div>
+          <div class="n" style="left:31%; top:32%; width:9%; height:12%; display:flex; align-items:center; justify-content:center;">→</div>
+          <div class="t mid" style="left:42%; top:36.2%; width:51%; color:#5B5B5B;">그때 재고를 줄인다</div>
+          <div class="card" style="left:4.2%; top:47%; width:91.6%; height:12%;"></div>
+          <div class="t big" style="left:7%; top:51%; width:24%;">결제 실패</div>
+          <div class="n" style="left:31%; top:47%; width:9%; height:12%; display:flex; align-items:center; justify-content:center;">→</div>
+          <div class="t mid" style="left:42%; top:51.2%; width:51%; color:#5B5B5B;">재고를 건드리지 않는다</div>
+          <div class="card" style="left:4.2%; top:62%; width:91.6%; height:12%;"></div>
+          <div class="t big" style="left:7%; top:66%; width:24%;">재고 부족</div>
+          <div class="n" style="left:31%; top:62%; width:9%; height:12%; display:flex; align-items:center; justify-content:center;">→</div>
+          <div class="t mid" style="left:42%; top:66.2%; width:51%; color:#5B5B5B;">주문을 만들기 전에 막는다</div>
+          <div class="kstrip" style="left:4.2%; top:80%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.6%; width:88%; text-align:center;"><b>재고는 결제가 성공한 뒤에만 줄어든다</b> — 실패한 주문은 재고를 건드리지 않는다</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 2</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 2 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:16.8%;">결제와 재고는 다른 판단</div>
+          <div class="bar" style="left:4.2%; top:31%; width:44.5%; height:6.5%;">payment-policy.md</div>
+          <div class="card" style="left:4.2%; top:39.5%; width:44.5%; height:33%;"></div>
+          <div class="t sm" style="left:7.5%; top:44%; width:38%; color:#5B5B5B;">· 결제 성공·실패를 어떻게 판단하나</div>
+          <div class="t sm" style="left:7.5%; top:53.5%; width:38%; color:#5B5B5B;">· 실패했을 때 무엇을 남기나</div>
+          <div class="t sm" style="left:7.5%; top:63%; width:38%; color:#5B5B5B;">· 재시도를 허용하나</div>
+          <div class="bar" style="left:51.3%; top:31%; width:44.5%; height:6.5%;">inventory-policy.md</div>
+          <div class="card" style="left:51.3%; top:39.5%; width:44.5%; height:33%;"></div>
+          <div class="t sm" style="left:54.6%; top:44%; width:38%; color:#5B5B5B;">· 재고를 언제 줄이나</div>
+          <div class="t sm" style="left:54.6%; top:53.5%; width:38%; color:#5B5B5B;">· 부족하면 어디서 막나</div>
+          <div class="t sm" style="left:54.6%; top:63%; width:38%; color:#5B5B5B;">· 음수 재고를 허용하나</div>
+          <div class="kstrip" style="left:4.2%; top:80%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.6%; width:88%; text-align:center;"><b>한 파일에 몰면 결제 규칙을 고칠 때 재고까지 흔들린다</b> — 책임을 나눈다</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 2</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 2 · 실습</div>
+          <div class="h" style="left:3.43%; top:16.8%;">실습 2 — 결제·재고 원칙 분리</div>
+          <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
+          <div class="t sm c" style="left:4.2%; top:44%; width:91.6%; font-weight:700; color:#9C9C9C;">핵심 포인트</div>
+          <div class="t c" style="left:4.2%; top:51%; width:91.6%; font-weight:700; font-size:11.5px;">결제 판단은 payment-policy.md, 재고 판단은 inventory-policy.md — 두 문서가 충돌하지 않게</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 2</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 3 · 실습</div>
+          <div class="h" style="left:3.43%; top:16.8%;">실습 3 — 관리자 조회 기준</div>
+          <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
+          <div class="t sm c" style="left:4.2%; top:44%; width:91.6%; font-weight:700; color:#9C9C9C;">핵심 포인트</div>
+          <div class="t c" style="left:4.2%; top:51%; width:91.6%; font-weight:700; font-size:11.5px;">실패 주문에 무엇을 보여줄지 — 필요한 필드와 제외할 필드를 order-policy.md에</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 2</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 4 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:16.8%;">정책 문서를 AGENTS.md에 연결</div>
+          <div class="card k" style="left:33%; top:29%; width:34%; height:8%;"></div>
+          <div class="t sm c" style="left:33%; top:31.3%; width:34%; color:#fff;">AGENTS.md · Before Editing</div>
+          <div style="left:50%; top:37%; height:6%; border-left:1px solid #C9C9CF;"></div>
+          <div style="left:18%; top:43%; width:64%; border-top:1px solid #C9C9CF;"></div>
+          <div style="left:18%; top:43%; height:7%; border-left:1px solid #C9C9CF;"></div>
+          <div style="left:50%; top:43%; height:7%; border-left:1px solid #C9C9CF;"></div>
+          <div style="left:82%; top:43%; height:7%; border-left:1px solid #C9C9CF;"></div>
+          <div class="card" style="left:4.2%; top:50%; width:27.6%; height:15%;"></div>
+          <div class="kchip" style="left:6.6%; top:52.5%; width:22.8%; text-align:center;">order-policy.md</div>
+          <div class="t sm c" style="left:4.2%; top:59%; width:27.6%; color:#9C9C9C;">주문 상태 바꾸기 전</div>
+          <div class="card" style="left:36.2%; top:50%; width:27.6%; height:15%;"></div>
+          <div class="kchip" style="left:38.6%; top:52.5%; width:22.8%; text-align:center;">payment-policy.md</div>
+          <div class="t sm c" style="left:36.2%; top:59%; width:27.6%; color:#9C9C9C;">결제 로직 바꾸기 전</div>
+          <div class="card" style="left:68.2%; top:50%; width:27.6%; height:15%;"></div>
+          <div class="kchip" style="left:70.6%; top:52.5%; width:22.8%; text-align:center;">inventory-policy.md</div>
+          <div class="t sm c" style="left:68.2%; top:59%; width:27.6%; color:#9C9C9C;">재고 로직 바꾸기 전</div>
+          <div class="t sm c" style="left:4.2%; top:69.5%; width:91.6%; color:#FC1C49; font-weight:700;">문서가 없거나 서로 충돌하면 — 멈추고 사람에게 확인</div>
+          <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;"><b>이제 어느 세션이든, 코드를 건드리기 전에 정책부터 읽는다</b></div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 2</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 4 · 실습</div>
+          <div class="h" style="left:3.43%; top:16.8%;">실습 4 — AGENTS.md에 정책 연결</div>
+          <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
+          <div class="t sm c" style="left:4.2%; top:44%; width:91.6%; font-weight:700; color:#9C9C9C;">핵심 포인트</div>
+          <div class="t c" style="left:4.2%; top:51%; width:91.6%; font-weight:700; font-size:11.5px;">Before Editing에 세 정책을 연결 + 충돌 시 멈춤 규칙 — 새 세션에서 참조 확인 후 커밋</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 2</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">7강 마무리</div>
+          <div class="h" style="left:3.43%; top:16.8%;">도메인 결정을 repo에 고정했다</div>
+          <div class="t sm c" style="left:4.2%; top:31%; width:91.6%; color:#9C9C9C; font-weight:700;">이번 강의 산출물</div>
+          <div class="card" style="left:4.2%; top:36%; width:91.6%; height:10.5%;"></div>
+          <div class="kchip" style="left:6.6%; top:39.2%; width:20.5%; text-align:center;">order-policy.md</div>
+          <div class="kchip" style="left:28.9%; top:39.2%; width:20.5%; text-align:center;">payment-policy.md</div>
+          <div class="kchip" style="left:51.2%; top:39.2%; width:20.5%; text-align:center;">inventory-policy.md</div>
+          <div class="kchip" style="left:73.5%; top:39.2%; width:20.5%; text-align:center;">AGENTS.md 연결</div>
+          <div class="t mid c" style="left:4.2%; top:52.5%; width:91.6%; color:#5B5B5B;">다음 요청부터 Codex는 추측이 아니라 이 문서를 먼저 읽는다</div>
+          <div class="t sm c" style="left:4.2%; top:62%; width:91.6%; color:#9C9C9C; font-weight:700;">다음 강의</div>
+          <div class="card k" style="left:22%; top:66.5%; width:56%; height:8%;"></div>
+          <div class="t sm c" style="left:22%; top:68.8%; width:56%; color:#fff;">8강 — 애매한 요청을 작업 가능한 Issue로</div>
+          <div class="kstrip" style="left:4.2%; top:80%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.6%; width:88%; text-align:center;"><b>정책을 세웠으니, 다음은 요청을 Issue로 구조화한다</b></div>
+          <div class="mark"></div>
+        </section>
 </div></div>
 <div class="edge" style="left:0" onclick="go(-1)"></div>
 <div class="edge" style="right:0" onclick="go(1)"></div>
 <a class="hud" id="home" href="index.html">목차</a>
 <div class="hud" id="ttl">7강 · 도메인 정책 문서 만들기</div>
-<div class="hud" id="ctr" onclick="toggleToc()" title="클릭: 슬라이드 목록">1 / 7</div>
+<div class="hud" id="ctr" onclick="toggleToc()" title="클릭: 슬라이드 목록">1 / 14</div>
 <div id="toc"><div class="list" id="tocList"></div></div>
 <script>
 var slides = Array.prototype.slice.call(document.querySelectorAll('#stage .mk'));
-var TITLES = [["01", "표지"], ["02", "지금까지 만든 것과 만들어야 할 것"], ["03", "도메인 판단을 세 개의 정책 문서로"], ["04", "네 번의 실습으로 만드는 것"], ["05", "주문 상태 원칙"], ["E1", "실습 1 — 상태 정의와 전환 표"], ["06", "이름보다 전환이 먼저"]];
+var TITLES = [["01", "표지"], ["02", "지금까지 만든 것과 만들어야 할 것"], ["03", "도메인 판단을 세 개의 정책 문서로"], ["04", "네 번의 실습으로 만드는 것"], ["05", "주문 상태 원칙"], ["E1", "실습 1 — 상태 정의와 전환 표"], ["06", "이름보다 전환이 먼저"], ["07", "결제/재고 원칙"], ["08", "결제와 재고는 다른 판단"], ["E2", "실습 2 — 결제·재고 원칙 분리"], ["E3", "실습 3 — 관리자 조회 기준"], ["09", "정책 문서를 AGENTS.md에 연결"], ["E4", "실습 4 — AGENTS.md에 정책 연결"], ["10", "도메인 결정을 repo에 고정했다"]];
 var N = slides.length, cur = -1, hudT = null;
 var ctr = document.getElementById('ctr'), toc = document.getElementById('toc');
 
