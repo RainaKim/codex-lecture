@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><title>7강 도메인 정책 문서 만들기 — 슬라이드 구성안 v1</title>
+<style>
+  :root{
+    --ink:#111114; --sub:#6b6b73; --line:#e6e6e9;
+    --main:#FC1C49; --main-lt:#FFE5EB; --sub-o:#FFA71B;
+    --g1:#F5F5F5; --g2:#E6E6E6; --d1:#282828; --d2:#5B5B5B;
+    --wf-line:#b3b3b3; --wf-dash:#c9c9cf; --wf-fill:#fafafb; --wf-txt:#6b6b73;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Segoe UI","Noto Sans KR","Apple SD Gothic Neo",sans-serif;
+    background:#f0f0f2; color:var(--ink); line-height:1.55; padding:40px 20px 80px; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1180px; margin:0 auto;}
+
+  /* ── 문서 헤더 ── */
+  .doc-head{background:#0f0f12; color:#fff; border-radius:16px; padding:36px 40px; margin-bottom:28px;}
+  .doc-head .tag{display:inline-block; background:var(--main); border:none;
+    border-radius:999px; padding:4px 15px; font-size:12.5px; letter-spacing:.2px; margin-bottom:14px; font-weight:700;}
+  .doc-head h1{font-size:27px; font-weight:800; letter-spacing:-.4px;}
+  .doc-head p.sub{margin-top:8px; color:#c9c9d2; font-size:14.5px;}
+  .doc-head .meta{display:flex; flex-wrap:wrap; gap:10px 26px; margin-top:18px; font-size:13px; color:#e2e2e8;}
+  .doc-head .meta b{color:#fff; font-weight:700;}
+
+  /* ── 패널 ── */
+  .panel{background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 30px; margin-bottom:28px;}
+  .panel h2{font-size:17px; font-weight:800; margin-bottom:14px; letter-spacing:-.2px;}
+  .flow{display:flex; gap:8px; flex-wrap:wrap;}
+  .flow .blk{flex:1 1 150px; border-radius:10px; padding:12px 14px; border:1px solid var(--line); background:#fafafb;}
+  .flow .blk .t{font-size:11.5px; color:var(--sub); font-weight:600;}
+  .flow .blk .n{font-size:14px; font-weight:800; margin:2px 0;}
+  .flow .blk .s{font-size:12px; color:var(--sub);}
+  .flow .blk.hl{background:var(--main-lt); border-color:#ffc7d4;}
+  table.idx{width:100%; border-collapse:collapse; font-size:13.5px; margin-top:6px;}
+  table.idx th{background:#fafafb; text-align:left; padding:8px 12px; border-bottom:2px solid var(--line); font-size:12.5px; color:var(--sub);}
+  table.idx td{padding:7px 12px; border-bottom:1px solid #f2f2f4; vertical-align:top;}
+  table.idx td.no{color:var(--main); font-weight:800; width:46px;}
+  table.idx td.lay{color:var(--sub); font-size:12px; width:132px;}
+  .note-inline{font-size:12.5px; color:var(--sub); margin-top:12px;}
+  .sw{display:inline-flex; align-items:center; gap:6px; font-size:12px; margin:0 14px 6px 0;}
+  .sw i{width:13px; height:13px; border-radius:3px; display:inline-block; border:1px solid rgba(0,0,0,.12);}
+
+  /* ── 섹션 헤더 ── */
+  .sec-head{display:flex; align-items:center; gap:14px; margin:44px 0 18px; flex-wrap:wrap;}
+  .sec-head .num{background:var(--main); color:#fff; font-weight:800; font-size:13px; border-radius:8px; padding:5px 12px;}
+  .sec-head h2{font-size:20px; font-weight:800; letter-spacing:-.3px;}
+  .sec-head .time{font-size:13px; color:var(--sub);}
+
+  /* ── 슬라이드 카드 ── */
+  .slide{background:#fff; border:1px solid var(--line); border-radius:14px; padding:24px 28px 28px; margin-bottom:22px;}
+  .s-top{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:6px;}
+  .s-num{font-size:12px; font-weight:800; color:#fff; background:#111114; border-radius:6px; padding:3px 9px;}
+  .chip{font-size:11.5px; font-weight:700; border-radius:999px; padding:3px 11px;}
+  .chip.op{background:#f0f0f2; color:#3c3c42;}
+  .chip.p1{background:var(--main-lt); color:#b8143a;}
+  .chip.p2{background:#FFF1DA; color:#9a5b00;}
+  .chip.p3{background:#EDEDF0; color:#3c3c42;}
+  .chip.p4{background:#E4E4E8; color:#282828;}
+  .chip.cl{background:#111114; color:#fff;}
+  .chip.demo{background:var(--main); color:#fff;}
+  .chip.lay{background:#fff; color:var(--sub); border:1px solid var(--line);}
+  .s-time{font-size:12px; color:var(--sub); margin-left:auto;}
+  .slide h3{font-size:18px; font-weight:800; letter-spacing:-.2px; margin-bottom:16px;}
+  .s-body{display:flex; gap:26px; align-items:flex-start; flex-wrap:wrap;}
+  .wf{flex:0 0 560px; max-width:100%;}
+  .wf .cap{font-size:11.5px; color:var(--sub); margin-top:7px;}
+  .txt{flex:1 1 400px; min-width:320px;}
+  .txt h4{font-size:12px; font-weight:800; color:var(--main); letter-spacing:.5px; margin:0 0 7px;}
+  .txt h4:not(:first-child){margin-top:16px;}
+  .copy{background:#fafafb; border:1px solid var(--line); border-left:3px solid var(--main); border-radius:8px; padding:12px 16px; font-size:13.5px;}
+  .copy .t{font-weight:800; font-size:14.5px; margin-bottom:6px;}
+  .copy .st{color:var(--sub); font-size:12.5px; margin-bottom:8px;}
+  .copy ul{margin:4px 0 0 18px;} .copy li{margin:3px 0;}
+  .copy .small{font-size:12px; color:var(--sub); margin-top:8px;}
+  .txt ul.pts{margin-left:18px; font-size:13px; color:#333;}
+  .txt ul.pts li{margin:4px 0;}
+  .memo{font-size:12.5px; color:#4a4a52; background:#fffdf5; border:1px solid #ffe2b0; border-radius:8px; padding:9px 13px;}
+  .memo.red{background:#fff5f7; border-color:#ffc7d4;}
+
+  /* ── 슬라이드 목업: 실제 EMU 좌표를 %로 환산, 실제 팔레트·타입스케일(0.4375×) ──
+     x% = EMU / 12192000 × 100   ·   y% = EMU / 6858000 × 100
+     pt → px = pt × (96/72) × 0.4375                                              */
+  .mk{position:relative; width:100%; aspect-ratio:16/9; background:#F5F5F5;
+     border:1px solid #e3e3e7; overflow:hidden;
+     font-family:-apple-system,"Pretendard","Helvetica Neue",sans-serif; color:#000;}
+  .mk:before,.mk:after{content:""; position:absolute; left:4.204%; width:91.59%; border-top:1px solid #B3B3B3;}
+  .mk:before{top:7.42%;} .mk:after{top:92.51%;}
+  .mk > *{position:absolute; box-sizing:border-box;}
+  .mk .lbl{left:3.43%; top:2.67%; font-size:6.4px; font-weight:700; letter-spacing:.08em; color:#B3B3B3;}
+  .mk .mark{left:3%; bottom:2%; width:33px; height:5.1px; font-size:0; line-height:0;
+            background-image:url(data:image/png;base64,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);
+            background-size:contain; background-repeat:no-repeat; background-position:left bottom; opacity:.9;}
+  .mk .mark b{display:none;}
+  .mk .kick{font-size:9.3px; font-weight:700; color:#9C9C9C; letter-spacing:.02em;}
+  .mk .h{font-size:17.5px; font-weight:800; line-height:1.2; letter-spacing:-.02em;}
+  .mk .h.big{font-size:22.2px;} .mk .h.cover{font-size:25.7px; line-height:1.24;}
+  .mk .h em{color:#FC1C49; font-style:normal;}
+  .mk .card{background:#fff; border-radius:3px;}
+  .mk .card.g{background:#E6E6E6;}
+  .mk .card.k{background:#282828; color:#fff;}
+  .mk .bar{background:#5B5B5B; color:#fff; border-radius:3px 3px 0 0;
+          display:flex; align-items:center; justify-content:center; font-size:10.5px; font-weight:700;}
+  .mk .bar.r{background:#FC1C49;}
+  .mk .tag{background:#FFE5EB; color:#FC1C49; border-radius:3px; display:flex; align-items:center;
+          justify-content:center; font-size:8.2px; font-weight:700; border:.7px solid #FC1C49;}
+  .mk .n{font-size:16.3px; font-weight:800; color:#FC1C49; line-height:1;}
+  .mk .t{font-size:8.2px; line-height:1.5;}
+  .mk .t.mid{font-size:10.5px;} .mk .t.big{font-size:11.7px; font-weight:700;}
+  .mk .t.sm{font-size:7px; color:#5B5B5B;} .mk .t.mut{font-size:7px; color:#9C9C9C;}
+  .mk .t.r{color:#FC1C49;} .mk .t.c{text-align:center;}
+  .mk .shot{background:#EDEDF0; border-radius:3px;}
+  .mk .shot span{position:absolute; left:4px; top:3px; font-size:6px; color:#9A9AA5; letter-spacing:.04em;}
+  .mk .rule{border-top:1px solid #FC1C49;}
+  .mk .dash{border-top:1px dashed #c9c9cf;}
+  .mk table{position:absolute; border-collapse:collapse; font-size:8.2px;}
+  .mk table th{background:#FC1C49; color:#fff; font-weight:700; padding:3px 5px; text-align:center;}
+  .mk table td{background:#fff; padding:3px 6px; border-bottom:1px solid #FC1C49;}
+  .mk table td.k{background:#FFE5EB; color:#FC1C49; font-weight:700; text-align:center; width:16%;}
+  .mk .code{background:#1E1E1E; border-radius:3px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+            font-size:7.6px; line-height:1.62; color:#D8D8DE; padding:9px 11px; white-space:pre;}
+  .mk .code i{color:#569CD6; font-style:normal;}
+  .mk .code b{color:#CE9178; font-weight:400;}
+  .mk .code u{color:#FF5C7A; text-decoration:none;}
+  .mk .code s{color:#6A6A72; text-decoration:none;}
+  .mk .chip5{border:1px solid #C9C9CF; border-radius:999px; display:flex; align-items:center;
+             justify-content:center; font-size:7.4px; color:#5B5B5B; background:#fff;}
+  .mk .lead{border-top:1px solid #B3B3B3;} .mk .lead.r{border-color:#FC1C49;}
+  .mk .dot{width:3.5px; height:3.5px; border-radius:50%; background:#B3B3B3;} .mk .dot.r{background:#FC1C49;}
+  .mk .kchip{background:#EDEDF0; border-radius:3px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+            font-size:6.6px; color:#3c3c42; padding:2.5px 6px; white-space:nowrap;}
+  .mk .kstrip{background:#fafafb; border:1px solid #e3e3e7; border-radius:3px;}
+  .mk .kstrip-t{font-size:7.4px; color:#5B5B5B;} .mk .kstrip-t b{color:#000;}
+  .mk .anno{font-size:11.7px; font-weight:800; line-height:1.3; letter-spacing:-.01em;}
+  .mk .anno.r{color:#FC1C49;} .mk .anno span{display:block; font-size:7px; font-weight:400; color:#9C9C9C; margin-top:2px;}
+  .wf-spec{font-size:11.5px; color:#4a4a52; margin-top:7px; background:#fafafb; border:1px solid var(--line);
+           border-radius:7px; padding:8px 10px; line-height:1.5;}
+</style>
+</head><body><div class="wrap">
+  <div class="doc-head">
+    <span class="tag">PLAN v1.0</span>
+    <h1>7강 — 도메인 정책 문서 만들기</h1>
+    <p class="sub">이론 + 실습 · 약 45분 · 4클립 · v1.0 (클립 1 작성 중)</p>
+    <div class="meta"><span>정렬: 커리큘럼 정본 7강 4항목 · Lab 07 E1~E4와 1:1</span><span>산출물: <b>docs/order-policy.md · payment-policy.md · inventory-policy.md</b> + AGENTS.md 연결</span><span>입력: 5강 notes/pending-decisions.md · 4강 AGENTS.md</span></div>
+  </div>
+
+  <!-- 01 표지 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">01</span><span class="chip op">표지</span><span class="chip lay">텍스트 표지 · 클립 1</span><span class="s-time">30초</span></div>
+    <h3>도메인 정책 문서 만들기</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="kick" style="left:3.43%; top:12.18%;">PART 1 · CHAPTER 2</div>
+          <div class="h cover" style="left:3.43%; top:30%;">도메인 정책 문서 만들기</div>
+          <div class="t mid" style="left:3.43%; top:57%; color:#5B5B5B;">주문 상태 · 결제/재고 원칙 · 관리자 조회 · AGENTS.md 연결</div>
+          <div class="t mut" style="left:3.43%; top:65%;">개발자를 위한 Codex — 7강 · 이론 + 실습 · 약 45분</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">텍스트 표지 — 0~4강 표지와 같은 톤. 커리큘럼 제목을 커버 타이포로. Chapter 2의 첫 강의</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 30초. 템플릿 유형: 01 표지. 커버 타이포만. 헤드라인은 커리큘럼 제목 「도메인 정책 문서 만들기」 그대로. kicker는 Chapter 2 진입이므로 <code>PART 1 · CHAPTER 2</code>. 실제 렌더는 <code>assets/cover07.png</code> 예정 — 0~4강과 같은 템플릿 배경에 이 텍스트를 얹어 만든다. 이 섹션은 <b>문구 정본</b> 역할이고, 커버 PNG가 준비되면 gen2.py가 첫 섹션을 이미지로 갈아끼운다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 리캡 · Chapter 2 진입 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">02</span><span class="chip op">리캡 · 챕터 진입</span><span class="chip lay">칩 카드 3 + 핑크 바</span><span class="s-time">1.5분</span></div>
+    <h3>지금까지 만든 것과 만들어야 할 것</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 2</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">지난 챕터 리캡 · Chapter 2 시작</div>
+          <div class="h" style="left:3.43%; top:16.8%;">지금까지 만든 것과 만들어야 할 것</div>
+          <div class="t sm c" style="left:4.2%; top:30.5%; width:91.6%; color:#9C9C9C; font-weight:700;">지금까지 만든 작업 틀</div>
+          <div class="card" style="left:4.2%; top:35.5%; width:91.6%; height:10.5%;"></div>
+          <div class="kchip" style="left:6.6%; top:38.6%; width:27.9%; text-align:center;">notes/ 요청·결정·경계</div>
+          <div class="kchip" style="left:36.05%; top:38.6%; width:27.9%; text-align:center;">AGENTS.md</div>
+          <div class="kchip" style="left:65.5%; top:38.6%; width:27.9%; text-align:center;">workflow skeleton</div>
+          <div class="t sm c" style="left:4.2%; top:51%; width:91.6%; color:#FC1C49; font-weight:700;">그런데 아직 파일에 없는 것</div>
+          <div class="card" style="left:4.2%; top:56%; width:91.6%; height:11%; border-radius:999px; background:#FFE5EB;"></div>
+          <div class="t sm c" style="left:4.2%; top:59.6%; width:91.6%; color:#FC1C49; font-weight:700;">주문이 어떤 상태를 거치는지 · 결제 실패 때 무엇을 남기는지 · 재고를 언제 줄이는지</div>
+          <div class="kstrip" style="left:4.2%; top:78%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:80.6%; width:88%; text-align:center;"><b>Chapter 2 — Agent가 헤매지 않는 repo</b>, 그 출발점이 도메인 정책 문서다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">Chapter 1 산출물(작업 틀)은 있지만 도메인 판단은 비어 있음 — 핑크 바가 오늘 채울 빈칸을 연다</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1.5분. 템플릿 유형: 04 텍스트 1단 변형 (클립 1 리캡 문법 — 0~4강과 동일). 위 회색 라벨 + 흰 카드 안 칩 세 개 = Chapter 1이 만든 작업 틀(요청 자산·AGENTS.md·workflow skeleton). 아래 핑크 알약 = 아직 파일에 없는 <b>도메인 판단</b> 세 가지. lbl이 이제 <code>CHAPTER 2</code>로 바뀐다(챕터 전환의 첫 신호). 문구는 개조식. 하단 스트립이 챕터 제목을 회수한다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 오늘의 목표 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">03</span><span class="chip op">오늘의 목표</span><span class="chip lay">코드 카드 → 문서 3행</span><span class="s-time">1.5분</span></div>
+    <h3>도메인 판단을 세 개의 정책 문서로</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 2</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">오늘의 목표</div>
+          <div class="h" style="left:3.43%; top:16.8%;">도메인 판단을 세 개의 정책 문서로</div>
+          <div class="code" style="left:4.2%; top:31%; width:38%; height:37%;"><s># 상태를 몇 개로 두지?</s>
+<b>&gt; 대충 정해서 진행…</b>
+<s># 결제 실패는 어떻게?</s>
+<b>&gt; 재시도 되게 할게요…</b>
+<s># 재고는 언제 줄이지?</s>
+<b>&gt; 주문 만들 때쯤…?</b></div>
+          <div class="n" style="left:42.2%; top:31%; width:13.3%; height:37%; display:flex; align-items:center; justify-content:center;">→</div>
+          <div class="kchip" style="left:55.5%; top:31%; width:40%; text-align:center;">docs/ 정책 문서</div>
+          <div class="card" style="left:55.5%; top:37.5%; width:40%; height:7.4%;"></div>
+          <div class="t sm" style="left:58%; top:39.2%; width:20%;"><b>order-policy.md</b></div>
+          <div class="t sm" style="left:58%; top:39.2%; width:35%; text-align:right; color:#9C9C9C;">상태·전환·관리자 조회</div>
+          <div class="card" style="left:55.5%; top:46%; width:40%; height:7.4%;"></div>
+          <div class="t sm" style="left:58%; top:47.7%; width:22%;"><b>payment-policy.md</b></div>
+          <div class="t sm" style="left:58%; top:47.7%; width:35%; text-align:right; color:#9C9C9C;">결제 판단</div>
+          <div class="card" style="left:55.5%; top:54.5%; width:40%; height:7.4%;"></div>
+          <div class="t sm" style="left:58%; top:56.2%; width:23%;"><b>inventory-policy.md</b></div>
+          <div class="t sm" style="left:58%; top:56.2%; width:35%; text-align:right; color:#9C9C9C;">재고 변경</div>
+          <div class="card k" style="left:55.5%; top:63.5%; width:40%; height:5.4%;"></div>
+          <div class="t sm c" style="left:55.5%; top:64.6%; width:40%; color:#fff;">AGENTS.md가 먼저 읽음</div>
+          <div class="kstrip" style="left:4.2%; top:79%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:81.6%; width:88%; text-align:center;"><b>오늘이 끝나면 도메인 결정이 대화가 아니라 repo에 있다</b></div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">좌: Codex가 도메인을 추측하던 자리(1강 실패 ② 콜백) → 우: 정책 3문서, 그리고 AGENTS.md가 먼저 읽음</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1.5분. 템플릿 유형: 09 텍스트 연결 (좌 문제 → 우 산출물 — 4강 03과 같은 시리즈 문법). 좌 코드 카드는 <b>Codex가 도메인 결정을 임의로 하던 세 장면</b>(회색 질문 + 주황 추측 답). 우측은 <code>docs/</code> 칩 아래 정책 3문서 행 + 맨 아래 검은 카드 「AGENTS.md가 먼저 읽음」. 좌우 위끝(31%) 맞춤. 화살표는 갭(42.2~55.5%)을 덮는 flex 박스. 파일명은 Lab 07 산출물 그대로. 문구 개조식.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 오늘의 지도 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">04</span><span class="chip op">오늘의 지도</span><span class="chip lay">번호 필 4행 + 실습 브래킷</span><span class="s-time">1.5분</span></div>
+    <h3>네 번의 실습으로 만드는 것</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 2</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">오늘의 지도</div>
+          <div class="h" style="left:3.43%; top:16.8%;">네 번의 실습으로 만드는 것</div>
+          <div class="t sm" style="left:4.2%; top:31.5%; width:7.3%; text-align:right; color:#9C9C9C; font-weight:700;">실습 ①</div>
+          <div class="t sm" style="left:4.2%; top:43.5%; width:7.3%; text-align:right; color:#9C9C9C; font-weight:700;">실습 ②</div>
+          <div class="t sm" style="left:4.2%; top:55.5%; width:7.3%; text-align:right; color:#9C9C9C; font-weight:700;">실습 ③</div>
+          <div class="t sm" style="left:4.2%; top:67.5%; width:7.3%; text-align:right; color:#9C9C9C; font-weight:700;">실습 ④</div>
+          <div class="card" style="left:14.6%; top:29.5%; width:81.2%; height:9%;"></div>
+          <div style="left:16.1%; top:30.55%; width:3.571%; height:6.9%; background:#FFE5EB; border-radius:999px; display:flex; align-items:center; justify-content:center; color:#FC1C49; font-weight:800; font-size:9.5px;">01</div>
+          <div class="t big" style="left:22.5%; top:31.4%; width:34%;">주문 상태 원칙</div>
+          <div class="t sm" style="left:22.5%; top:31.9%; width:69.5%; text-align:right; color:#5B5B5B;">다섯 상태와 전환 → order-policy.md</div>
+          <div class="card" style="left:14.6%; top:41.5%; width:81.2%; height:9%;"></div>
+          <div style="left:16.1%; top:42.55%; width:3.571%; height:6.9%; background:#FFE5EB; border-radius:999px; display:flex; align-items:center; justify-content:center; color:#FC1C49; font-weight:800; font-size:9.5px;">02</div>
+          <div class="t big" style="left:22.5%; top:43.4%; width:34%;">결제 / 재고 원칙</div>
+          <div class="t sm" style="left:22.5%; top:43.9%; width:69.5%; text-align:right; color:#5B5B5B;">성공 후 차감·실패 미차감·부족 차단 → payment / inventory</div>
+          <div class="card" style="left:14.6%; top:53.5%; width:81.2%; height:9%;"></div>
+          <div style="left:16.1%; top:54.55%; width:3.571%; height:6.9%; background:#FFE5EB; border-radius:999px; display:flex; align-items:center; justify-content:center; color:#FC1C49; font-weight:800; font-size:9.5px;">03</div>
+          <div class="t big" style="left:22.5%; top:55.4%; width:34%;">관리자 조회 기준</div>
+          <div class="t sm" style="left:22.5%; top:55.9%; width:69.5%; text-align:right; color:#5B5B5B;">실패 주문 표시 필드 → order-policy.md</div>
+          <div class="card" style="left:14.6%; top:65.5%; width:81.2%; height:9%;"></div>
+          <div style="left:16.1%; top:66.55%; width:3.571%; height:6.9%; background:#FFE5EB; border-radius:999px; display:flex; align-items:center; justify-content:center; color:#FC1C49; font-weight:800; font-size:9.5px;">04</div>
+          <div class="t big" style="left:22.5%; top:67.4%; width:34%;">정책 문서 연결</div>
+          <div class="t sm" style="left:22.5%; top:67.9%; width:69.5%; text-align:right; color:#5B5B5B;">AGENTS.md가 먼저 읽게 → AGENTS.md</div>
+          <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;"><b>같은 repo에 순서대로 얹는다</b> — 클립 하나가 정책 문서 한 조각</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">번호 필 4행 — 실습 ①~④가 정책 문서 세트를 조각조각 완성. 우측에 각 조각이 어느 파일로 가는지</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1.5분. 템플릿 유형: 09 텍스트 연결 — 번호 필 그룹 (4강 05와 같은 문법, 이번엔 4행·1:1). 알약 번호는 레드 볼드, 실습 라벨은 회색. 각 행: 왼쪽 굵은 제목(t big) + 오른쪽 끝 회색 부연에 <b>산출 파일</b>을 화살표로. 4강과 달리 실습 하나가 한 조각이라 브래킷 묶음 없이 1:1. 문구 개조식.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 핵심 개념 — 주문 상태 전이도 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">05</span><span class="chip op">핵심 개념</span><span class="chip lay">상태 전이도 (5 노드)</span><span class="s-time">3분</span></div>
+    <h3>주문 상태 원칙</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 2</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">핵심 개념</div>
+          <div class="h" style="left:3.43%; top:16.8%;">주문 상태 원칙</div>
+          <!-- pending (시작) -->
+          <div class="t mut c" style="left:4.2%; top:41%; width:15%;">주문 생성</div>
+          <div class="card" style="left:4.2%; top:45%; width:15%; height:9%; border:1px solid #C9C9CF;"></div>
+          <div class="kchip" style="left:4.9%; top:47.4%; width:13.6%; text-align:center;">pending</div>
+          <!-- branch bus -->
+          <div style="left:19.2%; top:49.5%; width:5%; border-top:1px solid #C9C9CF;"></div>
+          <div style="left:24.2%; top:31.5%; height:36%; border-left:1px solid #C9C9CF;"></div>
+          <!-- three horizontals -->
+          <div style="left:24.2%; top:31.5%; width:14%; border-top:1px solid #C9C9CF;"></div>
+          <div style="left:24.2%; top:49.5%; width:14%; border-top:1px solid #C9C9CF;"></div>
+          <div style="left:24.2%; top:67.5%; width:14%; border-top:1px solid #C9C9CF;"></div>
+          <div class="t mut c" style="left:24.7%; top:27.5%; width:13%; color:#5B5B5B;">결제 성공</div>
+          <div class="t mut c" style="left:24.7%; top:45.5%; width:13%; color:#5B5B5B;">결제 실패</div>
+          <div class="t mut c" style="left:24.7%; top:63.5%; width:13%; color:#5B5B5B;">취소</div>
+          <!-- paid -->
+          <div class="card" style="left:38.2%; top:27%; width:17%; height:9%; border:1px solid #C9C9CF;"></div>
+          <div class="kchip" style="left:38.9%; top:29.4%; width:15.6%; text-align:center;">paid</div>
+          <!-- payment_failed -->
+          <div class="card" style="left:38.2%; top:45%; width:20%; height:9%; border:1px solid #FC1C49; background:#FFF5F7;"></div>
+          <div class="kchip" style="left:38.9%; top:47.4%; width:18.6%; text-align:center; color:#B8143A;">payment_failed</div>
+          <!-- cancelled -->
+          <div class="card" style="left:38.2%; top:63%; width:17%; height:9%; border:1px solid #C9C9CF;"></div>
+          <div class="kchip" style="left:38.9%; top:65.4%; width:15.6%; text-align:center;">cancelled</div>
+          <!-- paid -> refunded -->
+          <div style="left:55.2%; top:31.5%; width:14%; border-top:1px solid #C9C9CF;"></div>
+          <div class="t mut c" style="left:55.7%; top:27.5%; width:13%; color:#5B5B5B;">환불</div>
+          <div class="card" style="left:69.2%; top:27%; width:17%; height:9%; border:1px solid #C9C9CF;"></div>
+          <div class="kchip" style="left:69.9%; top:29.4%; width:15.6%; text-align:center;">refunded</div>
+          <!-- terminal note -->
+          <div class="t mut" style="left:60%; top:47%; width:34%; color:#9C9C9C;">payment_failed · cancelled · refunded 는<br>다시 이전 상태로 되돌아가지 않음</div>
+          <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;"><b>상태 이름만 나열하면 전환은 여전히 추측</b> — 언제·왜 넘어가는가를 표로 고정한다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">상태 전이도 — pending에서 세 갈래(결제 성공/실패/취소), paid에서 환불. 되돌릴 수 없는 종료 상태를 명시</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 3분. 이 클립의 이론 앵커. 다섯 상태를 노드로, 전환을 화살표+트리거 라벨(레드)로 — pending이 시작, paid·payment_failed·cancelled가 pending의 세 갈래, refunded는 paid에서. <b>payment_failed는 레드 테두리</b>(오늘 도메인의 초점 — v0에는 이 상태가 없다). 트리거 라벨(결제 성공·실패·취소·환불)이 정책의 핵심 — 이름이 아니라 <b>전환 조건</b>이 order-policy.md에 들어간다. 오른쪽 회색 주석 = 종료 상태는 되돌아가지 않음(허용하지 않는 전환). 라이브 수치 없음. 실제 전환 표는 E1에서 문서에 채운다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- E1 실습 큐 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">E1</span><span class="chip demo">실습 큐</span><span class="chip lay">큐 컴포넌트</span><span class="s-time">6분 (+README 훑기 1.5분)</span></div>
+    <h3>실습 1 — 상태 정의와 전환 표</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 2</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 1 · 실습</div>
+          <div class="h" style="left:3.43%; top:16.8%;">실습 1 — 상태 정의와 전환 표</div>
+          <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
+          <div class="t sm c" style="left:4.2%; top:44%; width:91.6%; font-weight:700; color:#9C9C9C;">핵심 포인트</div>
+          <div class="t c" style="left:4.2%; top:51%; width:91.6%; font-weight:700; font-size:11.5px;">다섯 상태 정의 + 전환 표를 order-policy.md에 — 허용·불가·사람 결정 전환을 구분</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">실습 큐 — 핵심 포인트 한 줄. 계약(목표/문맥/제약/완료조건)은 강사가 터미널에서 직접 친다</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 6분. 템플릿 유형: 04 텍스트 1단 변형 (큐 공통 컴포넌트, 2~6강과 동일). <b>네 줄 계약은 슬라이드에 싣지 않는다</b> — 강사가 라이브로 친다(전문은 스피커 노트). 직전에 Lab 07 README를 화면 공유로 1.5분 훑는다(§1 시작 상태 · §2 표만). 계약을 치며 멈춰 말할 자리: <b>다섯 상태 이름 고정</b>(자동 검증이 찾는다), <b>전환 표에 시작 상태·이벤트·종료 상태</b>, <b>5강 pending-decisions의 미결정을 여기서 사람이 확정</b>(재시도·환불 등은 정본 값대로), 코드 구현은 시작하지 않음.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 실습 1 결과 · 클립 1 마무리 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">06</span><span class="chip op">실습 ① 결과</span><span class="chip lay">비교형 · ✕/✓ 3행</span><span class="s-time">2분</span></div>
+    <h3>이름보다 전환이 먼저</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 2</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">실습 ① 결과 · 클립 1 마무리</div>
+          <div class="h" style="left:3.43%; top:16.8%;">이름보다 전환이 먼저</div>
+          <div class="bar" style="left:4.2%; top:29.5%; width:44%; height:5.5%;">이름만 나열하면</div>
+          <div class="bar r" style="left:51.8%; top:29.5%; width:44%; height:5.5%;">전환까지 적으면</div>
+          <div class="card g" style="left:4.2%; top:37.5%; width:44%; height:11%;"></div>
+          <div class="t sm" style="left:6.6%; top:41.3%; width:39%; color:#5B5B5B;">✕ 상태 이름 다섯 개만 적음</div>
+          <div class="card" style="left:51.8%; top:37.5%; width:44%; height:11%;"></div>
+          <div class="t sm" style="left:54.2%; top:41.3%; width:39%;"><b>✓ 시작 상태·이벤트·종료 상태 표</b></div>
+          <div class="card g" style="left:4.2%; top:50.5%; width:44%; height:11%;"></div>
+          <div class="t sm" style="left:6.6%; top:54.3%; width:39%; color:#5B5B5B;">✕ paid를 다시 pending으로도 허용</div>
+          <div class="card" style="left:51.8%; top:50.5%; width:44%; height:11%;"></div>
+          <div class="t sm" style="left:54.2%; top:54.3%; width:39%;"><b>✓ 되돌릴 수 없는 전환을 명시</b></div>
+          <div class="card g" style="left:4.2%; top:63.5%; width:44%; height:11%;"></div>
+          <div class="t sm" style="left:6.6%; top:67.3%; width:39%; color:#5B5B5B;">✕ 실패 주문은 그냥 삭제</div>
+          <div class="card" style="left:51.8%; top:63.5%; width:44%; height:11%;"></div>
+          <div class="t sm" style="left:54.2%; top:67.3%; width:39%;"><b>✓ payment_failed로 남겨 사유를 보존</b></div>
+          <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;"><b>전환 표가 있어야 다음 클립의 결제·재고 규칙이 여기에 얹힌다</b></div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">비교형 3행 — 좌 회색(이름만, ✕) / 우 흰색+볼드(전환까지, ✓). 상태 원칙이 왜 전환 중심인지</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 2분. 템플릿 유형: 10 텍스트 비교 (4강 06과 같은 ✕/✓ 3행). 좌 회색 셀은 흔한 실수(이름만·되돌림 허용·실패 삭제 — 마지막은 v0 실제 동작), 우 흰 셀+볼드는 기준. 레드는 우측 헤더 바 하나 + ✕ 표식만. 문구 개조식. 클립 1을 닫으며 다음 클립(결제/재고)으로 연결.</div>
+      </div>
+    </div>
+  </section>
+
+</div></body></html>

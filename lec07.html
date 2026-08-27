@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7강 도메인 정책 문서 만들기 — 개발자를 위한 Codex</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  *{margin:0; padding:0; box-sizing:border-box;}
+  html,body{height:100%;}
+  body{font-family:Pretendard,-apple-system,sans-serif; background:#1c1c1e; overflow:hidden;
+       -webkit-user-select:none; user-select:none;}
+  #wrap{position:fixed; inset:0; display:flex; align-items:center; justify-content:center;}
+  #stage{width:560px; height:315px; position:relative; box-shadow:0 18px 70px rgba(0,0,0,.45);}
+  /* ── 슬라이드 (플랜 목업 CSS 그대로) ── */
+  .mk{position:relative; width:100%; aspect-ratio:16/9; background:#F5F5F5;
+     border:1px solid #e3e3e7; overflow:hidden;
+     font-family:-apple-system,"Pretendard","Helvetica Neue",sans-serif; color:#000;}
+  .mk:before,.mk:after{content:""; position:absolute; left:4.204%; width:91.59%; border-top:1px solid #B3B3B3;}
+  .mk:before{top:7.42%;} .mk:after{top:92.51%;}
+  .mk > *{position:absolute; box-sizing:border-box;}
+  .mk .lbl{left:3.43%; top:2.67%; font-size:6.4px; font-weight:700; letter-spacing:.08em; color:#B3B3B3;}
+  .mk .mark{left:3%; bottom:2%; width:33px; height:5.1px; font-size:0; line-height:0;
+            background-image:url(data:image/png;base64,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);
+            background-size:contain; background-repeat:no-repeat; background-position:left bottom; opacity:.9;}
+  .mk .mark b{display:none;}
+  .mk .kick{font-size:9.3px; font-weight:700; color:#9C9C9C; letter-spacing:.02em;}
+  .mk .h{font-size:17.5px; font-weight:800; line-height:1.2; letter-spacing:-.02em;}
+  .mk .h.big{font-size:22.2px;} .mk .h.cover{font-size:25.7px; line-height:1.24;}
+  .mk .h em{color:#FC1C49; font-style:normal;}
+  .mk .card{background:#fff; border-radius:3px;}
+  .mk .card.g{background:#E6E6E6;}
+  .mk .card.k{background:#282828; color:#fff;}
+  .mk .bar{background:#5B5B5B; color:#fff; border-radius:3px 3px 0 0;
+          display:flex; align-items:center; justify-content:center; font-size:10.5px; font-weight:700;}
+  .mk .bar.r{background:#FC1C49;}
+  .mk .tag{background:#FFE5EB; color:#FC1C49; border-radius:3px; display:flex; align-items:center;
+          justify-content:center; font-size:8.2px; font-weight:700; border:.7px solid #FC1C49;}
+  .mk .n{font-size:16.3px; font-weight:800; color:#FC1C49; line-height:1;}
+  .mk .t{font-size:8.2px; line-height:1.5;}
+  .mk .t.mid{font-size:10.5px;} .mk .t.big{font-size:11.7px; font-weight:700;}
+  .mk .t.sm{font-size:7px; color:#5B5B5B;} .mk .t.mut{font-size:7px; color:#9C9C9C;}
+  .mk .t.r{color:#FC1C49;} .mk .t.c{text-align:center;}
+  .mk .shot{background:#EDEDF0; border-radius:3px;}
+  .mk .shot span{position:absolute; left:4px; top:3px; font-size:6px; color:#9A9AA5; letter-spacing:.04em;}
+  .mk .rule{border-top:1px solid #FC1C49;}
+  .mk .dash{border-top:1px dashed #c9c9cf;}
+  .mk table{position:absolute; border-collapse:collapse; font-size:8.2px;}
+  .mk table th{background:#FC1C49; color:#fff; font-weight:700; padding:3px 5px; text-align:center;}
+  .mk table td{background:#fff; padding:3px 6px; border-bottom:1px solid #FC1C49;}
+  .mk table td.k{background:#FFE5EB; color:#FC1C49; font-weight:700; text-align:center; width:16%;}
+  .mk .code{background:#1E1E1E; border-radius:3px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+            font-size:7.6px; line-height:1.62; color:#D8D8DE; padding:9px 11px; white-space:pre;}
+  .mk .code i{color:#569CD6; font-style:normal;}
+  .mk .code b{color:#CE9178; font-weight:400;}
+  .mk .code u{color:#FF5C7A; text-decoration:none;}
+  .mk .code s{color:#6A6A72; text-decoration:none;}
+  .mk .chip5{border:1px solid #C9C9CF; border-radius:999px; display:flex; align-items:center;
+             justify-content:center; font-size:7.4px; color:#5B5B5B; background:#fff;}
+  .mk .lead{border-top:1px solid #B3B3B3;} .mk .lead.r{border-color:#FC1C49;}
+  .mk .dot{width:3.5px; height:3.5px; border-radius:50%; background:#B3B3B3;} .mk .dot.r{background:#FC1C49;}
+  .mk .kchip{background:#EDEDF0; border-radius:3px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+            font-size:6.6px; color:#3c3c42; padding:2.5px 6px; white-space:nowrap;}
+  .mk .kstrip{background:#fafafb; border:1px solid #e3e3e7; border-radius:3px;}
+  .mk .kstrip-t{font-size:7.4px; color:#5B5B5B;} .mk .kstrip-t b{color:#000;}
+  .mk .anno{font-size:11.7px; font-weight:800; line-height:1.3; letter-spacing:-.01em;}
+  .mk .anno.r{color:#FC1C49;} .mk .anno span{display:block; font-size:7px; font-weight:400; color:#9C9C9C; margin-top:2px;}
+  .mk{display:none; position:absolute; inset:0; width:560px; height:315px; aspect-ratio:auto; border:none;}
+  .mk.on{display:block;}
+  .mk.cover-img img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;}
+  /* ── 진입 애니메이션 ── */
+  @media (prefers-reduced-motion: no-preference){
+    .mk.anim > *{opacity:0; transform:translateY(10px);
+      transition:opacity .55s cubic-bezier(.2,.6,.2,1), transform .55s cubic-bezier(.2,.6,.2,1);}
+    .mk.anim.go > *{opacity:1; transform:none;}
+    .mk.anim > .lbl, .mk.anim > .mark{transition-delay:0ms !important;}
+  }
+  /* ── HUD ── */
+  .hud{position:fixed; z-index:10; font-size:13px; color:rgba(255,255,255,.85);
+       background:rgba(28,28,30,.62); backdrop-filter:blur(8px); border-radius:8px;
+       padding:7px 12px; opacity:0; transition:opacity .25s;}
+  body.hud-on .hud{opacity:1;}
+  #ctr{right:16px; bottom:16px; cursor:pointer; font-variant-numeric:tabular-nums;}
+  #ttl{left:16px; bottom:16px; max-width:52vw; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  #home{right:16px; top:16px; cursor:pointer; text-decoration:none;}
+  .edge{position:fixed; top:0; bottom:0; width:30%; z-index:5; cursor:pointer;}
+  /* ── 목차 오버레이 ── */
+  #toc{position:fixed; inset:0; z-index:20; background:rgba(20,20,22,.97); overflow-y:auto;
+       display:none; padding:56px 24px;}
+  #toc.on{display:block;}
+  #toc .list{max-width:640px; margin:0 auto;}
+  #toc .row{display:flex; gap:14px; align-items:baseline; padding:11px 14px; border-radius:8px;
+            cursor:pointer; color:#d8d8de; font-size:15px;}
+  #toc .row:hover{background:rgba(255,255,255,.06);}
+  #toc .row.cur{background:rgba(252,28,73,.14); color:#fff;}
+  #toc .row .n{font-size:12px; font-weight:700; color:#FC1C49; min-width:34px; font-variant-numeric:tabular-nums;}
+</style>
+</head>
+<body class="hud-on">
+<div id="wrap"><div id="stage">
+<section class="mk cover-img anim"><img src="assets/cover07.png" alt="표지"></section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 2</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">지난 챕터 리캡 · Chapter 2 시작</div>
+          <div class="h" style="left:3.43%; top:16.8%;">지금까지 만든 것과 만들어야 할 것</div>
+          <div class="t sm c" style="left:4.2%; top:30.5%; width:91.6%; color:#9C9C9C; font-weight:700;">지금까지 만든 작업 틀</div>
+          <div class="card" style="left:4.2%; top:35.5%; width:91.6%; height:10.5%;"></div>
+          <div class="kchip" style="left:6.6%; top:38.6%; width:27.9%; text-align:center;">notes/ 요청·결정·경계</div>
+          <div class="kchip" style="left:36.05%; top:38.6%; width:27.9%; text-align:center;">AGENTS.md</div>
+          <div class="kchip" style="left:65.5%; top:38.6%; width:27.9%; text-align:center;">workflow skeleton</div>
+          <div class="t sm c" style="left:4.2%; top:51%; width:91.6%; color:#FC1C49; font-weight:700;">그런데 아직 파일에 없는 것</div>
+          <div class="card" style="left:4.2%; top:56%; width:91.6%; height:11%; border-radius:999px; background:#FFE5EB;"></div>
+          <div class="t sm c" style="left:4.2%; top:59.6%; width:91.6%; color:#FC1C49; font-weight:700;">주문이 어떤 상태를 거치는지 · 결제 실패 때 무엇을 남기는지 · 재고를 언제 줄이는지</div>
+          <div class="kstrip" style="left:4.2%; top:78%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:80.6%; width:88%; text-align:center;"><b>Chapter 2 — Agent가 헤매지 않는 repo</b>, 그 출발점이 도메인 정책 문서다</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 2</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">오늘의 목표</div>
+          <div class="h" style="left:3.43%; top:16.8%;">도메인 판단을 세 개의 정책 문서로</div>
+          <div class="code" style="left:4.2%; top:31%; width:38%; height:37%;"><s># 상태를 몇 개로 두지?</s>
+<b>&gt; 대충 정해서 진행…</b>
+<s># 결제 실패는 어떻게?</s>
+<b>&gt; 재시도 되게 할게요…</b>
+<s># 재고는 언제 줄이지?</s>
+<b>&gt; 주문 만들 때쯤…?</b></div>
+          <div class="n" style="left:42.2%; top:31%; width:13.3%; height:37%; display:flex; align-items:center; justify-content:center;">→</div>
+          <div class="kchip" style="left:55.5%; top:31%; width:40%; text-align:center;">docs/ 정책 문서</div>
+          <div class="card" style="left:55.5%; top:37.5%; width:40%; height:7.4%;"></div>
+          <div class="t sm" style="left:58%; top:39.2%; width:20%;"><b>order-policy.md</b></div>
+          <div class="t sm" style="left:58%; top:39.2%; width:35%; text-align:right; color:#9C9C9C;">상태·전환·관리자 조회</div>
+          <div class="card" style="left:55.5%; top:46%; width:40%; height:7.4%;"></div>
+          <div class="t sm" style="left:58%; top:47.7%; width:22%;"><b>payment-policy.md</b></div>
+          <div class="t sm" style="left:58%; top:47.7%; width:35%; text-align:right; color:#9C9C9C;">결제 판단</div>
+          <div class="card" style="left:55.5%; top:54.5%; width:40%; height:7.4%;"></div>
+          <div class="t sm" style="left:58%; top:56.2%; width:23%;"><b>inventory-policy.md</b></div>
+          <div class="t sm" style="left:58%; top:56.2%; width:35%; text-align:right; color:#9C9C9C;">재고 변경</div>
+          <div class="card k" style="left:55.5%; top:63.5%; width:40%; height:5.4%;"></div>
+          <div class="t sm c" style="left:55.5%; top:64.6%; width:40%; color:#fff;">AGENTS.md가 먼저 읽음</div>
+          <div class="kstrip" style="left:4.2%; top:79%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:81.6%; width:88%; text-align:center;"><b>오늘이 끝나면 도메인 결정이 대화가 아니라 repo에 있다</b></div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 2</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">오늘의 지도</div>
+          <div class="h" style="left:3.43%; top:16.8%;">네 번의 실습으로 만드는 것</div>
+          <div class="t sm" style="left:4.2%; top:31.5%; width:7.3%; text-align:right; color:#9C9C9C; font-weight:700;">실습 ①</div>
+          <div class="t sm" style="left:4.2%; top:43.5%; width:7.3%; text-align:right; color:#9C9C9C; font-weight:700;">실습 ②</div>
+          <div class="t sm" style="left:4.2%; top:55.5%; width:7.3%; text-align:right; color:#9C9C9C; font-weight:700;">실습 ③</div>
+          <div class="t sm" style="left:4.2%; top:67.5%; width:7.3%; text-align:right; color:#9C9C9C; font-weight:700;">실습 ④</div>
+          <div class="card" style="left:14.6%; top:29.5%; width:81.2%; height:9%;"></div>
+          <div style="left:16.1%; top:30.55%; width:3.571%; height:6.9%; background:#FFE5EB; border-radius:999px; display:flex; align-items:center; justify-content:center; color:#FC1C49; font-weight:800; font-size:9.5px;">01</div>
+          <div class="t big" style="left:22.5%; top:31.4%; width:34%;">주문 상태 원칙</div>
+          <div class="t sm" style="left:22.5%; top:31.9%; width:69.5%; text-align:right; color:#5B5B5B;">다섯 상태와 전환 → order-policy.md</div>
+          <div class="card" style="left:14.6%; top:41.5%; width:81.2%; height:9%;"></div>
+          <div style="left:16.1%; top:42.55%; width:3.571%; height:6.9%; background:#FFE5EB; border-radius:999px; display:flex; align-items:center; justify-content:center; color:#FC1C49; font-weight:800; font-size:9.5px;">02</div>
+          <div class="t big" style="left:22.5%; top:43.4%; width:34%;">결제 / 재고 원칙</div>
+          <div class="t sm" style="left:22.5%; top:43.9%; width:69.5%; text-align:right; color:#5B5B5B;">성공 후 차감·실패 미차감·부족 차단 → payment / inventory</div>
+          <div class="card" style="left:14.6%; top:53.5%; width:81.2%; height:9%;"></div>
+          <div style="left:16.1%; top:54.55%; width:3.571%; height:6.9%; background:#FFE5EB; border-radius:999px; display:flex; align-items:center; justify-content:center; color:#FC1C49; font-weight:800; font-size:9.5px;">03</div>
+          <div class="t big" style="left:22.5%; top:55.4%; width:34%;">관리자 조회 기준</div>
+          <div class="t sm" style="left:22.5%; top:55.9%; width:69.5%; text-align:right; color:#5B5B5B;">실패 주문 표시 필드 → order-policy.md</div>
+          <div class="card" style="left:14.6%; top:65.5%; width:81.2%; height:9%;"></div>
+          <div style="left:16.1%; top:66.55%; width:3.571%; height:6.9%; background:#FFE5EB; border-radius:999px; display:flex; align-items:center; justify-content:center; color:#FC1C49; font-weight:800; font-size:9.5px;">04</div>
+          <div class="t big" style="left:22.5%; top:67.4%; width:34%;">정책 문서 연결</div>
+          <div class="t sm" style="left:22.5%; top:67.9%; width:69.5%; text-align:right; color:#5B5B5B;">AGENTS.md가 먼저 읽게 → AGENTS.md</div>
+          <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;"><b>같은 repo에 순서대로 얹는다</b> — 클립 하나가 정책 문서 한 조각</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 2</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">핵심 개념</div>
+          <div class="h" style="left:3.43%; top:16.8%;">주문 상태 원칙</div>
+          <!-- pending (시작) -->
+          <div class="t mut c" style="left:4.2%; top:41%; width:15%;">주문 생성</div>
+          <div class="card" style="left:4.2%; top:45%; width:15%; height:9%; border:1px solid #C9C9CF;"></div>
+          <div class="kchip" style="left:4.9%; top:47.4%; width:13.6%; text-align:center;">pending</div>
+          <!-- branch bus -->
+          <div style="left:19.2%; top:49.5%; width:5%; border-top:1px solid #C9C9CF;"></div>
+          <div style="left:24.2%; top:31.5%; height:36%; border-left:1px solid #C9C9CF;"></div>
+          <!-- three horizontals -->
+          <div style="left:24.2%; top:31.5%; width:14%; border-top:1px solid #C9C9CF;"></div>
+          <div style="left:24.2%; top:49.5%; width:14%; border-top:1px solid #C9C9CF;"></div>
+          <div style="left:24.2%; top:67.5%; width:14%; border-top:1px solid #C9C9CF;"></div>
+          <div class="t mut c" style="left:24.7%; top:27.5%; width:13%; color:#5B5B5B;">결제 성공</div>
+          <div class="t mut c" style="left:24.7%; top:45.5%; width:13%; color:#5B5B5B;">결제 실패</div>
+          <div class="t mut c" style="left:24.7%; top:63.5%; width:13%; color:#5B5B5B;">취소</div>
+          <!-- paid -->
+          <div class="card" style="left:38.2%; top:27%; width:17%; height:9%; border:1px solid #C9C9CF;"></div>
+          <div class="kchip" style="left:38.9%; top:29.4%; width:15.6%; text-align:center;">paid</div>
+          <!-- payment_failed -->
+          <div class="card" style="left:38.2%; top:45%; width:20%; height:9%; border:1px solid #FC1C49; background:#FFF5F7;"></div>
+          <div class="kchip" style="left:38.9%; top:47.4%; width:18.6%; text-align:center; color:#B8143A;">payment_failed</div>
+          <!-- cancelled -->
+          <div class="card" style="left:38.2%; top:63%; width:17%; height:9%; border:1px solid #C9C9CF;"></div>
+          <div class="kchip" style="left:38.9%; top:65.4%; width:15.6%; text-align:center;">cancelled</div>
+          <!-- paid -> refunded -->
+          <div style="left:55.2%; top:31.5%; width:14%; border-top:1px solid #C9C9CF;"></div>
+          <div class="t mut c" style="left:55.7%; top:27.5%; width:13%; color:#5B5B5B;">환불</div>
+          <div class="card" style="left:69.2%; top:27%; width:17%; height:9%; border:1px solid #C9C9CF;"></div>
+          <div class="kchip" style="left:69.9%; top:29.4%; width:15.6%; text-align:center;">refunded</div>
+          <!-- terminal note -->
+          <div class="t mut" style="left:60%; top:47%; width:34%; color:#9C9C9C;">payment_failed · cancelled · refunded 는<br>다시 이전 상태로 되돌아가지 않음</div>
+          <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;"><b>상태 이름만 나열하면 전환은 여전히 추측</b> — 언제·왜 넘어가는가를 표로 고정한다</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 2</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 1 · 실습</div>
+          <div class="h" style="left:3.43%; top:16.8%;">실습 1 — 상태 정의와 전환 표</div>
+          <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
+          <div class="t sm c" style="left:4.2%; top:44%; width:91.6%; font-weight:700; color:#9C9C9C;">핵심 포인트</div>
+          <div class="t c" style="left:4.2%; top:51%; width:91.6%; font-weight:700; font-size:11.5px;">다섯 상태 정의 + 전환 표를 order-policy.md에 — 허용·불가·사람 결정 전환을 구분</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 2</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">실습 ① 결과 · 클립 1 마무리</div>
+          <div class="h" style="left:3.43%; top:16.8%;">이름보다 전환이 먼저</div>
+          <div class="bar" style="left:4.2%; top:29.5%; width:44%; height:5.5%;">이름만 나열하면</div>
+          <div class="bar r" style="left:51.8%; top:29.5%; width:44%; height:5.5%;">전환까지 적으면</div>
+          <div class="card g" style="left:4.2%; top:37.5%; width:44%; height:11%;"></div>
+          <div class="t sm" style="left:6.6%; top:41.3%; width:39%; color:#5B5B5B;">✕ 상태 이름 다섯 개만 적음</div>
+          <div class="card" style="left:51.8%; top:37.5%; width:44%; height:11%;"></div>
+          <div class="t sm" style="left:54.2%; top:41.3%; width:39%;"><b>✓ 시작 상태·이벤트·종료 상태 표</b></div>
+          <div class="card g" style="left:4.2%; top:50.5%; width:44%; height:11%;"></div>
+          <div class="t sm" style="left:6.6%; top:54.3%; width:39%; color:#5B5B5B;">✕ paid를 다시 pending으로도 허용</div>
+          <div class="card" style="left:51.8%; top:50.5%; width:44%; height:11%;"></div>
+          <div class="t sm" style="left:54.2%; top:54.3%; width:39%;"><b>✓ 되돌릴 수 없는 전환을 명시</b></div>
+          <div class="card g" style="left:4.2%; top:63.5%; width:44%; height:11%;"></div>
+          <div class="t sm" style="left:6.6%; top:67.3%; width:39%; color:#5B5B5B;">✕ 실패 주문은 그냥 삭제</div>
+          <div class="card" style="left:51.8%; top:63.5%; width:44%; height:11%;"></div>
+          <div class="t sm" style="left:54.2%; top:67.3%; width:39%;"><b>✓ payment_failed로 남겨 사유를 보존</b></div>
+          <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;"><b>전환 표가 있어야 다음 클립의 결제·재고 규칙이 여기에 얹힌다</b></div>
+          <div class="mark"></div>
+        </section>
+</div></div>
+<div class="edge" style="left:0" onclick="go(-1)"></div>
+<div class="edge" style="right:0" onclick="go(1)"></div>
+<a class="hud" id="home" href="index.html">목차</a>
+<div class="hud" id="ttl">7강 · 도메인 정책 문서 만들기</div>
+<div class="hud" id="ctr" onclick="toggleToc()" title="클릭: 슬라이드 목록">1 / 7</div>
+<div id="toc"><div class="list" id="tocList"></div></div>
+<script>
+var slides = Array.prototype.slice.call(document.querySelectorAll('#stage .mk'));
+var TITLES = [["01", "표지"], ["02", "지금까지 만든 것과 만들어야 할 것"], ["03", "도메인 판단을 세 개의 정책 문서로"], ["04", "네 번의 실습으로 만드는 것"], ["05", "주문 상태 원칙"], ["E1", "실습 1 — 상태 정의와 전환 표"], ["06", "이름보다 전환이 먼저"]];
+var N = slides.length, cur = -1, hudT = null;
+var ctr = document.getElementById('ctr'), toc = document.getElementById('toc');
+
+function fit(){
+  var z = Math.min(innerWidth / 560, innerHeight / 315);
+  var st = document.getElementById('stage');
+  if ('zoom' in st.style) st.style.zoom = z;
+  else { st.style.transform = 'scale(' + z + ')'; st.style.transformOrigin = 'center'; }
+}
+addEventListener('resize', fit); fit();
+
+function show(i){
+  i = Math.max(0, Math.min(N - 1, i));
+  if (i === cur) return;
+  if (cur >= 0) slides[cur].classList.remove('on', 'go');
+  cur = i;
+  var s = slides[cur];
+  var kids = s.children;
+  for (var k = 0; k < kids.length; k++)
+    kids[k].style.transitionDelay = Math.min(80 + k * 65, 1150) + 'ms';
+  s.classList.add('on');
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ s.classList.add('go'); }); });
+  ctr.textContent = (cur + 1) + ' / ' + N;
+  location.replace('#' + (cur + 1));
+  wake();
+}
+function go(d){ if (toc.classList.contains('on')) return; show(cur + d); }
+function wake(){
+  document.body.classList.add('hud-on');
+  clearTimeout(hudT);
+  hudT = setTimeout(function(){ document.body.classList.remove('hud-on'); }, 2600);
+}
+var tocList = document.getElementById('tocList');
+function toggleToc(){
+  if (!tocList.childElementCount){
+    TITLES.forEach(function(t, i){
+      var r = document.createElement('div'); r.className = 'row';
+      r.innerHTML = '<span class="n">' + t[0] + '</span><span>' + t[1] + '</span>';
+      r.onclick = function(){ toggleToc(); show(i); };
+      tocList.appendChild(r);
+    });
+  }
+  toc.classList.toggle('on');
+  if (toc.classList.contains('on')){
+    var rows = tocList.children;
+    for (var j = 0; j < rows.length; j++) rows[j].classList.toggle('cur', j === cur);
+    if (rows[cur]) rows[cur].scrollIntoView({block: 'center'});
+  }
+}
+document.addEventListener('keydown', function(e){
+  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); go(1); }
+  else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(-1); }
+  else if (e.key === 'Home') show(0);
+  else if (e.key === 'End') show(N - 1);
+  else if (e.key === 'f') { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }
+  else if (e.key === 'o' || e.key === 'g') toggleToc();
+  else if (e.key === 'Escape') { if (toc.classList.contains('on')) toggleToc(); else location.href = 'index.html'; }
+});
+var tx = null;
+document.addEventListener('touchstart', function(e){ tx = e.touches[0].clientX; }, {passive: true});
+document.addEventListener('touchend', function(e){
+  if (tx === null) return;
+  var dx = e.changedTouches[0].clientX - tx;
+  if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1);
+  tx = null;
+}, {passive: true});
+document.addEventListener('mousemove', wake);
+show(Math.max(0, (parseInt(location.hash.slice(1)) || 1) - 1));
+</script>
+</body>
+</html>

@@ -19,6 +19,9 @@ PLANS = [
     dict(id='lec04', num='4강', title='Codex가 먼저 읽어야 할 기준 만들기',
          sub='AGENTS.md · 편집 전 기준 · 금지 규칙 · 도구 간 연결', dur='약 45분',
          src=os.path.join(ROOT, 'ref/lecture04-slide-plan-v1.html'), cover='assets/cover04.png'),
+    dict(id='lec07', num='7강', title='도메인 정책 문서 만들기',
+         sub='주문 상태 · 결제/재고 원칙 · 관리자 조회 · AGENTS.md 연결', dur='약 45분',
+         src=os.path.join(ROOT, 'ref/lecture07-slide-plan-v1.html'), cover='assets/cover07.png'),
 ]
 FONT = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">'
 
