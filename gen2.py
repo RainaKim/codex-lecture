@@ -22,6 +22,9 @@ PLANS = [
     dict(id='lec07', num='7강', title='도메인 정책 문서 만들기',
          sub='주문 상태 · 결제/재고 원칙 · 관리자 조회 · AGENTS.md 연결', dur='약 45분',
          src=os.path.join(ROOT, 'ref/lecture07-slide-plan-v1.html'), cover='assets/cover07.png'),
+    dict(id='lec08', num='8강', title='Issue template 만들기',
+         sub='나쁜 요청 진단 · 아홉 필드 · 완료 기준 · Issue 초안', dur='약 40분',
+         src=os.path.join(ROOT, 'ref/lecture08-slide-plan-v1.html'), cover='assets/cover08.png'),
 ]
 FONT = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">'
 
