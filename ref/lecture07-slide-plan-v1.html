@@ -508,6 +508,56 @@ def test_paid_to_pending_rejected():
     </div>
   </section>
 
+<!-- 네 시나리오 검증 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">10</span><span class="chip op">핵심 개념</span><span class="chip lay">텍스트 표 · 시나리오 4행</span><span class="s-time">2분</span></div>
+    <h3>네 시나리오로 검증</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 2</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 2 · 검증</div>
+          <div class="h" style="left:3.43%; top:18.8%;">네 시나리오로 검증</div>
+          <!-- 시나리오 표 (표 토큰의 레드 헤더·레드 행선은 회색으로 내림 — 레드는 「변하지 않음」 셀에만) -->
+          <table style="left:4.2%; top:29.5%; width:91.6%; table-layout:fixed;">
+            <tr>
+              <th style="background:#5B5B5B; font-size:10.5px; width:21%; padding:4px 7px; text-align:left;">시나리오</th>
+              <th style="background:#5B5B5B; font-size:10.5px; width:49%; padding:4px 7px; text-align:left; line-height:1.15;">주문 상태<span style="display:block; font-size:8.2px; font-weight:400; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; opacity:.85; margin-top:1px;">payment-policy.md</span></th>
+              <th style="background:#5B5B5B; font-size:10.5px; width:30%; padding:4px 7px; text-align:left; line-height:1.15;">재고<span style="display:block; font-size:8.2px; font-weight:400; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; opacity:.85; margin-top:1px;">inventory-policy.md</span></th>
+            </tr>
+            <tr>
+              <td style="border-bottom:1px solid #E6E6E6; padding:4px 7px; font-size:9.3px; font-weight:700; vertical-align:middle;">정상 결제</td>
+              <td style="border-bottom:1px solid #E6E6E6; padding:4px 7px; vertical-align:middle;"><span class="kchip">paid</span></td>
+              <td style="border-bottom:1px solid #E6E6E6; padding:4px 7px; vertical-align:middle; color:#000; font-weight:700;">한 번 차감</td>
+            </tr>
+            <tr>
+              <td style="border-bottom:1px solid #E6E6E6; padding:4px 7px; font-size:9.3px; font-weight:700; vertical-align:middle;">결제 실패</td>
+              <td style="border-bottom:1px solid #E6E6E6; padding:4px 7px; vertical-align:middle;"><span class="kchip">payment_failed</span> <span style="color:#5B5B5B;">· 실패 정보 보존</span></td>
+              <td class="k" style="border-bottom:1px solid #E6E6E6; padding:4px 7px; width:auto; text-align:left; vertical-align:middle;">변하지 않음</td>
+            </tr>
+            <tr>
+              <td style="border-bottom:1px solid #E6E6E6; padding:4px 7px; font-size:9.3px; font-weight:700; vertical-align:middle;">재고 부족</td>
+              <td style="border-bottom:1px solid #E6E6E6; padding:4px 7px; vertical-align:middle; line-height:1.75;"><span style="color:#9C9C9C;">생성 단계</span> 주문 저장 안 됨<br><span style="color:#9C9C9C;">결제 단계</span> <span class="kchip">paid</span> <span style="color:#5B5B5B;">전환도 차감도 없음</span></td>
+              <td class="k" style="border-bottom:1px solid #E6E6E6; padding:4px 7px; width:auto; text-align:left; vertical-align:middle;">변하지 않음</td>
+            </tr>
+            <tr>
+              <td style="border-bottom:1px solid #E6E6E6; padding:4px 7px; font-size:9.3px; font-weight:700; vertical-align:middle;">실패 주문 재결제</td>
+              <td style="border-bottom:1px solid #E6E6E6; padding:4px 7px; vertical-align:middle;"><span class="kchip">payment_failed</span> <span style="color:#5B5B5B;">그대로 유지 · 재결제 거부</span></td>
+              <td class="k" style="border-bottom:1px solid #E6E6E6; padding:4px 7px; width:auto; text-align:left; vertical-align:middle;">변하지 않음</td>
+            </tr>
+          </table>
+          <!-- 숨은 포인트: 재고는 결제 성공 때만 한 번 바뀐다 -->
+          <div class="t" style="left:4.2%; top:72.3%; width:91.6%; text-align:right; color:#5B5B5B;">재고가 바뀌는 건 <b style="color:#000;">결제 성공 한 번</b>뿐 — 나머지 셋은 모두 그대로</div>
+          <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;">네 시나리오가 두 문서에서 <b>같은 결과를 가리키고 서로 책임이 안 겹치면</b> 정책 분리가 잘 된 것</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">시나리오 4행 × (주문 상태 · 재고) 표. 헤더에 답하는 문서를 붙여 「주문 상태는 payment-policy, 재고는 inventory-policy」가 열로 보인다. 재고 열의 「변하지 않음」 세 개가 같은 핑크 셀로 반복 — 재고는 정상 결제에서만 한 번 움직인다</div>
+        <div class="wf-spec"><b>배치 제안:</b> 신규, <b>E2 큐 바로 뒤</b>(실습 결과 리뷰 자리). 09가 「두 문서는 다른 질문에 답한다」를 세웠고 E2에서 두 파일을 썼으니, 이 장은 두 파일을 <b>같은 시나리오에 통과시켜 맞물리는지</b> 확인하는 절차다. 지금은 강사가 말로만 네 경우를 훑는데, 표로 놓으면 「주문 상태 결과」와 「재고 결과」가 열로 대비된다. 재고 부족·재결제 거부의 HTTP 응답은 미정이라 표에 넣지 않는다(말로 「응답은 미정」이라고만 짚는다).<br>
+        <b>좌표 의도:</b> 헤드라인 <code>.h</code> top 18.8% 공통. 표는 <code>.mk table</code> 토큰을 쓰되 <b>헤더·행선의 레드를 회색(#5B5B5B · #E6E6E6)으로 내림</b> — 이 장의 레드는 <code>td.k</code> <b>「변하지 않음」 셀 세 개만</b>(같은 의미의 반복 마커 = 시맨틱 레드). left 4.2% · 폭 91.6% · top 29.5%, <code>table-layout:fixed</code>로 열 폭 21 / 49 / 30% 고정. 헤더는 10.5px 볼드 왼정렬, 둘째·셋째 열 헤더 아래에 답하는 문서 파일명을 8.2px 모노 두 번째 줄로 붙여 09의 두 문서가 열이 됐음을 보인다. 셀은 8.2px, 시나리오 열만 9.3px 볼드, 행 패딩 4px. 상태값은 <code>kchip</code>(정본 고정값). 셋째 행(재고 부족)은 두 줄(line-height 1.75) — 「생성 단계 / 결제 단계」를 회색 라벨로 앞세워 막히는 지점이 둘임을 보이되, 재고 열은 한 셀 「변하지 않음」으로 합친다. 첫 행 재고 「한 번 차감」은 검정 볼드(레드 아님 — 레드 의미는 「안 바뀜」 하나로 고정). 표 아래 72.3%에 오른정렬 <code>t</code> 한 줄로 숨은 포인트(「재고가 바뀌는 건 결제 성공 한 번뿐」)를 명시. 스트립 79.5~87.7% 공통 컴포넌트. 표 행 높이는 내용 기반이라 <b>아래 문장 y는 렌더 확인값이고, 문구가 바뀌면 다시 맞춘다</b>. 수치 없음, 라이브 의존 문구 없음.</div>
+      </div>
+    </div>
+  </section>
+
   <!-- E3 실습 큐 (클립 3 · 실습 전용) -->
   <section class="slide">
     <div class="s-top"><span class="s-num">E3</span><span class="chip demo">실습 큐</span><span class="chip lay">큐 컴포넌트 · 클립 3</span><span class="s-time">6분</span></div>
@@ -529,9 +579,9 @@ def test_paid_to_pending_rejected():
     </div>
   </section>
 
-  <!-- 10 AGENTS.md는 왜 시키지 않아도 읽히나 -->
+  <!-- 11 AGENTS.md는 왜 시키지 않아도 읽히나 -->
   <section class="slide">
-    <div class="s-top"><span class="s-num">10</span><span class="chip op">핵심 개념</span><span class="chip lay">로딩 기제 플로우 + 컨텍스트 예산</span><span class="s-time">2분</span></div>
+    <div class="s-top"><span class="s-num">11</span><span class="chip op">핵심 개념</span><span class="chip lay">로딩 기제 플로우 + 컨텍스트 예산</span><span class="s-time">2분</span></div>
     <h3>AGENTS.md는 왜 시키지 않아도 읽히나</h3>
     <div class="s-body">
       <div class="wf">
@@ -590,9 +640,9 @@ def test_paid_to_pending_rejected():
     </div>
   </section>
 
-  <!-- 11 정책 문서를 AGENTS.md에 연결 -->
+  <!-- 12 정책 문서를 AGENTS.md에 연결 -->
   <section class="slide">
-    <div class="s-top"><span class="s-num">11</span><span class="chip op">핵심 개념</span><span class="chip lay">라우터 구조도</span><span class="s-time">2.5분</span></div>
+    <div class="s-top"><span class="s-num">12</span><span class="chip op">핵심 개념</span><span class="chip lay">라우터 구조도</span><span class="s-time">2.5분</span></div>
     <h3>정책 문서를 AGENTS.md에 연결</h3>
     <div class="s-body">
       <div class="wf">
@@ -647,9 +697,9 @@ def test_paid_to_pending_rejected():
     </div>
   </section>
 
-  <!-- 12 마무리 · 8강 예고 -->
+  <!-- 13 마무리 · 8강 예고 -->
   <section class="slide">
-    <div class="s-top"><span class="s-num">12</span><span class="chip op">마무리</span><span class="chip lay">산출물 회수 + 예고</span><span class="s-time">1.5분</span></div>
+    <div class="s-top"><span class="s-num">13</span><span class="chip op">마무리</span><span class="chip lay">산출물 회수 + 예고</span><span class="s-time">1.5분</span></div>
     <h3>도메인 결정을 repo에 고정했다</h3>
     <div class="s-body">
       <div class="wf">
