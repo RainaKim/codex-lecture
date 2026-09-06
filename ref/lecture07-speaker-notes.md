@@ -572,10 +572,14 @@ payment-policy에는 결제 결과가 재고 정책을 호출하는 조건만 �
 - [src/payments.ts (line 88)](/Users/RainaKim/Documents/코덱스강의/order-ops/src/payments.ts:88) — 결제 실패 시 `orders.delete(orderId)`.
   실패하면 주문 자체가 삭제된다(E1에서 다룬 그 결정). 그래서 지금은 관리자 목록에서 실패 주문이 **아예
   사라진다.** 목표 정책(실패 주문을 남겨 운영자가 판단)과 현재 코드가 정면으로 어긋나는 지점.
-- [src/payments.ts (line 11)](/Users/RainaKim/Documents/코덱스강의/order-ops/src/payments.ts:11), [(line 96)](/Users/RainaKim/Documents/코덱스강의/order-ops/src/payments.ts:96) — `cardToken`과 `console.log(e)`.
-  카드 토큰은 결제 처리에만 쓰이고 관리자 응답 어디에도 실려 나가지 않는다. 내부 예외도 콘솔 로그로만
-  남는다. **둘 다 지금도 노출되지 않는다** — 정책에서 "제외"로 못 박아 앞으로도 새 필드로 새어 나가지
-  않게 하려는 것.
+- [src/payments.ts (line 11)](/Users/RainaKim/Documents/코덱스강의/order-ops/src/payments.ts:11) — 카드 토큰(`cardToken`),
+  [(line 96)](/Users/RainaKim/Documents/코덱스강의/order-ops/src/payments.ts:96) — 내부 예외(`console.log(e)`).
+  코드 안엔 이 둘이 분명히 있지만, 관리자 응답으로는 나가지 않는다.
+  > "마지막으로 카드 토큰이랑 내부 예외를 봅시다. 카드 토큰은 결제할 때만 쓰이고 관리자 응답엔 안 실려요.
+  > 예외도 콘솔에 로그로만 찍히고 화면엔 안 나가고요. 즉 지금은 둘 다 안 새고 있어요. 그런데 왜 굳이
+  > 정책에 적냐 — 이건 **'제외'라고 못 박아 두려는 거예요.** 나중에 관리자 화면에 필드를 하나 더 붙일 때,
+  > '카드 토큰도 같이 넣을까?' 하는 실수가 없도록, 정책 문서에 처음부터 '이 둘은 절대 노출하지 않는다'고
+  > 규칙으로 남겨두는 겁니다."
 
 코드를 다 봤으면 강사가 현재 상태와 목표의 차이를 말로 짚어준다.
 > "자, 지금 코드를 쭉 봤으니 정리해볼게요. **ID·상태·금액·생성 시각**, 이 네 개는 이미 관리자 응답에
