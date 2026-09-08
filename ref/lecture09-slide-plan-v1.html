@@ -136,15 +136,15 @@
 </style>
 </head><body><div class="wrap">
   <div class="doc-head">
-    <span class="tag">PLAN v1.3</span>
+    <span class="tag">PLAN v1.4</span>
     <h1>9강 — Plan-first template 만들기</h1>
-    <p class="sub">라이트 개념 덱 · 실습 45분 · 4클립 · 슬라이드 11장 · v1.3 (개정된 Lab 09 README에 맞춰 실습 다섯 장 재작성)</p>
+    <p class="sub">라이트 개념 덱 · 실습 45분 · 4클립 · 슬라이드 11장 · v1.4 (재개정된 Lab 09 README에 맞춰 실습 다섯 장 재작성 — 여덟 영역을 단계별로 채우는 흐름)</p>
     <div class="meta"><span>정렬: 커리큘럼 정본 9강 · Lab 09 E1~E4</span><span>산출물: <b>docs/templates/implementation-plan.md</b> — Lab 12에서 쓸 <b>계획 template(구조)</b>, 실제 계획이 아님</span><span>입력: 8강 Issue template · notes/issue-draft-l08.md · 앱 코드는 v0 유지</span><span>사상 축: <b>loop engineering</b> — 계획 template은 루프를 돌리기 전에 사람이 성공·검증·중단 기준을 설계하는 틀</span></div>
   </div>
 
   <div class="panel">
     <h2>덱 성격</h2>
-    <p class="note-inline">이 덱은 <b>라이트 개념 덱</b>이다. 슬라이드는 개념 앵커만 잡고 상세 설명은 스피커 노트가 맡는다. <b>9강 실습은 특정 Issue의 실제 계획을 쓰는 게 아니라 Lab 12에서 쓸 계획 template(구조)을 만드는 단계</b>라서, 슬라이드에서는 「Plan」이 아니라 「Plan template」으로 부르고, 종료 조건 네 갈래(성공 / 반복 한도 / 정체 / 사람 확인)와 「사람 승인 전에는 구현으로 넘어가지 않는다」를 명시한다. 구성은 표지·리캡(01·02) → 오늘의 지도(03) → 이론 앵커 04·05 → 실습 큐 06·07·08 → 이론 앵커 09 → 실습 큐 10 → 마무리(11). 실습 큐 네 장(06·07·08·10)은 8강 큐 컴포넌트(레드 「실습」 배지 + 헤드라인)를 따르되, 각 장에 <b>이번에 쓰는 기능 · 생각할 질문 · 확인할 것</b>을 담아 Lab 09 E1~E4와 1:1로 붙인다. <b>v1.3에서 실습 다섯 장(03·05·07·08·10)을 개정된 Lab 09 README에 맞춰 다시 썼다</b> — 실습은 「항목을 하나씩 추가」가 아니라 <b>Codex 기능을 단계별로 쓰는 흐름</b>이다(E1 <code>Plan mode</code> 설계·승인 → E2 <code>Default mode</code> 작성 → E3 <b>변경사항 diff</b> 범위 확인 → E4 <code>Review mode</code> 검토·최소 수정·검증). 사람 승인이 <b>두 번</b>(E1 설계 승인 · E4 지적 승인) 들어간다는 것이 03(오늘의 지도)에서 먼저 보인다. 8강 플랜과 같은 토큰·좌표 문법(킥커 12.18% · 헤드라인 18.8% · 스트립 79.5%)을 그대로 쓴다. 다이어그램 장(04)은 7강 05·07처럼 큰 토큰(<code>t mid</code> 10.5px · <code>t</code> 8.2px)만 쓴다.</p>
+    <p class="note-inline">이 덱은 <b>라이트 개념 덱</b>이다. 슬라이드는 개념 앵커만 잡고 상세 설명은 스피커 노트가 맡는다. <b>9강 실습은 특정 Issue의 실제 계획을 쓰는 게 아니라 Lab 12에서 쓸 계획 template(구조)을 만드는 단계</b>라서, 슬라이드에서는 「Plan」이 아니라 「Plan template」으로 부르고, 종료 조건 네 갈래(성공 / 반복 한도 / 정체 / 사람 확인)와 「사람 승인 전에는 구현으로 넘어가지 않는다」를 명시한다. 구성은 표지·리캡(01·02) → 오늘의 지도(03) → 이론 앵커 04 → 실습 큐 05 → 이론 앵커 06 → 실습 큐 07·08 → 이론 앵커 09 → 실습 큐 10 → 마무리(11). 실습 큐 네 장(05·07·08·10)은 8강 큐 컴포넌트(레드 「실습」 배지 + 헤드라인)를 따르되, 각 장에 <b>이번에 만드는 것(또는 구체화할 영역) · 생각할 질문 · 확인할 것</b>을 담아 Lab 09 E1~E4와 1:1로 붙인다. <b>v1.4에서 실습 다섯 장(03·05·07·08·10)을 재개정된 Lab 09 README에 맞춰 다시 썼다</b> — 실습은 Codex 기능을 단계별로 바꿔 쓰는 흐름이 아니라 <b>여덟 영역을 단계별로 채우는 흐름</b>이다(E1 빈 구조 → E2 파일·순서 안내 → E3 검증·위험·제외 범위 안내 → E4 중단·승인 기준과 review). <b>이번 lab에서는 Plan mode를 쓰지 않는다</b> — README §2가 「이번 lab에서는 Plan mode로 실제 구현 계획을 만들지 않습니다」라고 못 박고, 실제 Issue를 계획하고 승인받는 흐름은 Lab 12에 두었으므로 슬라이드 어디에도 그 mode 표기를 두지 않는다. <code>Review mode</code>는 E4에서만 쓰고, 사람 승인(Human Gate)도 E4의 지적 분류 한 번이다. 8강 플랜과 같은 토큰·좌표 문법(킥커 12.18% · 헤드라인 18.8% · 스트립 79.5%)을 그대로 쓴다. 다이어그램 장(04)은 7강 05·07처럼 큰 토큰(<code>t mid</code> 10.5px · <code>t</code> 8.2px)만 쓴다.</p>
   </div>
 
   <!-- 01 표지 -->
@@ -222,37 +222,37 @@
           <div class="lbl">CHAPTER 2</div>
           <div class="kick" style="left:3.43%; top:12.18%;">오늘의 지도</div>
           <div class="h" style="left:3.43%; top:18.8%;">네 번의 실습으로 만드는 것</div>
-          <!-- 한 파일 — 네 실습이 이 파일을 단계별로 완성한다 -->
+          <!-- 한 파일 — 네 실습이 이 파일의 여덟 영역을 단계별로 채운다 -->
           <div class="kchip" style="left:31%; top:27%; width:38%; text-align:center;">docs/templates/implementation-plan.md</div>
           <!-- 실습 ① -->
           <div class="t sm" style="left:4.2%; top:36.1%; width:7.3%; text-align:right; color:#9C9C9C; font-weight:700;">실습 ①</div>
           <div class="card" style="left:14.6%; top:33.5%; width:81.2%; height:8.8%;"></div>
           <div style="left:16.1%; top:34.45%; width:3.571%; height:6.9%; background:#FFE5EB; border-radius:999px; display:flex; align-items:center; justify-content:center; color:#FC1C49; font-weight:800; font-size:9.5px;">01</div>
-          <div class="t big" style="left:22.5%; top:35.1%; width:45%;">Plan mode로 설계하고 승인받기</div>
-          <div style="left:68%; top:35.5%; width:23.5%; display:flex; justify-content:flex-end; gap:5px;"><span class="kchip">Plan mode</span></div>
+          <div class="t big" style="left:22.5%; top:35.1%; width:40%; white-space:nowrap;">여덟 영역의 빈 구조 만들기</div>
+          <div style="left:49.5%; top:35.5%; width:42%; display:flex; justify-content:flex-end; gap:5px;"><span class="kchip">여덟 heading</span></div>
           <!-- 실습 ② -->
           <div class="t sm" style="left:4.2%; top:46.6%; width:7.3%; text-align:right; color:#9C9C9C; font-weight:700;">실습 ②</div>
           <div class="card" style="left:14.6%; top:44%; width:81.2%; height:8.8%;"></div>
           <div style="left:16.1%; top:44.95%; width:3.571%; height:6.9%; background:#FFE5EB; border-radius:999px; display:flex; align-items:center; justify-content:center; color:#FC1C49; font-weight:800; font-size:9.5px;">02</div>
-          <div class="t big" style="left:22.5%; top:45.6%; width:45%;">승인한 계획으로 template 작성</div>
-          <div style="left:68%; top:46%; width:23.5%; display:flex; justify-content:flex-end; gap:5px;"><span class="kchip">Default mode</span></div>
+          <div class="t big" style="left:22.5%; top:45.6%; width:40%; white-space:nowrap;">파일 후보와 작업 순서 연결</div>
+          <div style="left:49.5%; top:46%; width:42%; display:flex; justify-content:flex-end; gap:5px;"><span class="kchip">Files to Read First</span><span class="kchip">Files to Change</span><span class="kchip">Steps</span></div>
           <!-- 실습 ③ -->
           <div class="t sm" style="left:4.2%; top:57.1%; width:7.3%; text-align:right; color:#9C9C9C; font-weight:700;">실습 ③</div>
           <div class="card" style="left:14.6%; top:54.5%; width:81.2%; height:8.8%;"></div>
           <div style="left:16.1%; top:55.45%; width:3.571%; height:6.9%; background:#FFE5EB; border-radius:999px; display:flex; align-items:center; justify-content:center; color:#FC1C49; font-weight:800; font-size:9.5px;">03</div>
-          <div class="t big" style="left:22.5%; top:56.1%; width:45%;">변경사항 diff로 범위 확인</div>
-          <div style="left:68%; top:56.5%; width:23.5%; display:flex; justify-content:flex-end; gap:5px;"><span class="kchip">변경사항 diff</span></div>
+          <div class="t big" style="left:22.5%; top:56.1%; width:40%; white-space:nowrap;">검증·리스크·제외 범위 연결</div>
+          <div style="left:49.5%; top:56.5%; width:42%; display:flex; justify-content:flex-end; gap:5px;"><span class="kchip">Tests to Add or Update</span><span class="kchip">Risks</span><span class="kchip">Out of Scope</span></div>
           <!-- 실습 ④ -->
           <div class="t sm" style="left:4.2%; top:67.6%; width:7.3%; text-align:right; color:#9C9C9C; font-weight:700;">실습 ④</div>
           <div class="card" style="left:14.6%; top:65%; width:81.2%; height:8.8%;"></div>
           <div style="left:16.1%; top:65.95%; width:3.571%; height:6.9%; background:#FFE5EB; border-radius:999px; display:flex; align-items:center; justify-content:center; color:#FC1C49; font-weight:800; font-size:9.5px;">04</div>
-          <div class="t big" style="left:22.5%; top:66.6%; width:45%;">Review mode로 검토하고 최소 수정</div>
-          <div style="left:68%; top:67%; width:23.5%; display:flex; justify-content:flex-end; gap:5px;"><span class="kchip">Review mode</span></div>
-          <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;"><b>사람 승인이 두 번 들어간다</b> — 설계를 승인하고, 지적을 승인한다</div>
+          <div class="t big" style="left:22.5%; top:66.6%; width:40%; white-space:nowrap;">Stop Conditions와 사람 승인으로 완성</div>
+          <div style="left:49.5%; top:67%; width:42%; display:flex; justify-content:flex-end; gap:5px;"><span class="kchip">Stop Conditions</span><span class="kchip">Review mode</span></div>
+          <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;"><b>E1이 뼈대를 세우고</b>, 나머지 세 번이 각 영역의 작성 안내를 채운다</div>
           <div class="mark"></div>
         </div>
-        <div class="cap">상단 파일명 칩 하나 아래 번호 필 4행 — 실습 ①~④가 같은 파일을 어떤 Codex 기능으로 단계별로 완성하는지. 오른쪽 끝은 그때 쓰는 기능 이름 <code>kchip</code></div>
-        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1.5분. 09 텍스트 연결 — 번호 필 4행(7강 04·8강 03과 같은 문법). 이 장의 메시지는 <b>한 파일이 네 단계의 Codex 기능을 거쳐 완성된다</b>는 것이라, 27%에 파일명 <code>kchip</code>(<code>docs/templates/implementation-plan.md</code>)을 중앙에 하나만 두고 그 아래 네 행이 그 파일로 가는 단계임을 읽게 한다. 행은 33.5 / 44 / 54.5 / 65%(간격 10.5% · 카드 높이 8.8%), 좌측 <code>t sm</code> 회색 「실습 ①~④」 + 핑크 알약 번호(<b>반복 마커 — 한 의미의 시맨틱 레드</b>, 7강 04와 동일) + <code>t big</code> 제목. <b>제목은 Lab 09 E1~E4의 제목을 그대로 압축</b> — Plan mode로 설계하고 승인받기 / 승인한 계획으로 template 작성 / 변경사항 diff로 범위 확인 / Review mode로 검토하고 최소 수정. <b>오른쪽 끝은 그때 추가하는 항목이 아니라 그때 쓰는 Codex 기능을 <code>kchip</code>으로</b> — <code>Plan mode</code> · <code>Default mode</code> · <code>변경사항 diff</code> · <code>Review mode</code>(README §2 표의 「Codex 기능」 열, mode 이름은 영어 원문). 기능 칩이 하나씩이라 이전 항목 칩 묶음보다 짧아졌으므로 <b>제목 폭을 27 → 45%(22.5~67.5%)로 넓히고</b> 칩 묶음을 <code>left:68%; width:23.5%</code> flex 오른정렬로 옮겼다 — 카드 오른쪽 끝(95.8%)과의 <b>4.3% 안쪽 여백</b>은 그대로. 스트립 <b>「사람 승인이 두 번 들어간다 — 설계를 승인하고, 지적을 승인한다」</b>는 README의 Human Gate가 E1(설계 계획 승인)과 E4(지적 분류와 template 승인)에 하나씩 있다는 사실을 미리 심는다 — 05·10 두 실습 큐가 이 두 승인을 각각 받는다. 그 외 레드 없음. 수치 없음(「두 번」은 흐름의 구조라 라이브 결과에 따라 변하지 않는다).</div>
+        <div class="cap">상단 파일명 칩 하나 아래 번호 필 4행 — 실습 ①~④가 같은 파일의 여덟 영역을 어떤 순서로 채우는지. 오른쪽 끝은 그 단계에서 다루는 영역 이름 <code>kchip</code>(1행만 「여덟 heading」 한 칩)</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1.5분. 09 텍스트 연결 — 번호 필 4행(7강 04·8강 03과 같은 문법). 이 장의 메시지는 <b>한 파일의 여덟 영역이 네 단계에 걸쳐 채워진다</b>는 것이라, 27%에 파일명 <code>kchip</code>(<code>docs/templates/implementation-plan.md</code>)을 중앙에 하나만 두고 그 아래 네 행이 그 파일로 가는 단계임을 읽게 한다. 행은 33.5 / 44 / 54.5 / 65%(간격 10.5% · 카드 높이 8.8%), 좌측 <code>t sm</code> 회색 「실습 ①~④」 + 핑크 알약 번호(<b>반복 마커 — 한 의미의 시맨틱 레드</b>, 7강 04와 동일) + <code>t big</code> 제목. <b>제목은 Lab 09 E1~E4의 제목을 그대로 압축</b> — 여덟 영역의 빈 구조 만들기 / 파일 후보와 작업 순서 연결 / 검증·리스크·제외 범위 연결 / Stop Conditions와 사람 승인으로 완성. <b>v1.4에서 오른쪽 끝 칩을 「그때 쓰는 Codex 기능」에서 「그 단계에서 다루는 영역」으로 되돌렸다</b> — 1행은 영역 이름을 늘어놓지 않고 <code>여덟 heading</code> 한 칩, 2행 <code>Files to Read First</code> · <code>Files to Change</code> · <code>Steps</code>, 3행 <code>Tests to Add or Update</code> · <code>Risks</code> · <code>Out of Scope</code>, 4행 <code>Stop Conditions</code> · <code>Review mode</code>(이 단계에서만 쓰는 검토 기능이라 영역 칩 옆에 함께 둔다). 영역 이름과 mode 이름은 영어 원문. 칩 개수가 행마다 다르므로(1 · 3 · 3 · 2) <b>v1.3에서 45%로 넓혔던 제목 폭을 40%(22.5~62.5%)로 줄이고 <code>white-space:nowrap</code>으로 한 줄을 보장</b>, 칩 묶음은 <code>left:49.5%; width:42%</code> flex 오른정렬로 옮겼다 — 가장 긴 3행 칩 묶음이 왼쪽으로 뻗어도 3행 제목 텍스트가 끝나는 자리보다 오른쪽에서 시작하고, 가장 긴 4행 제목이 끝나는 자리보다 4행 칩 둘이 오른쪽에서 시작하므로 겹치지 않는다. 카드 오른쪽 끝(95.8%)과의 <b>4.3% 안쪽 여백</b>은 그대로. 스트립 <b>「E1이 뼈대를 세우고, 나머지 세 번이 각 영역의 작성 안내를 채운다」</b>는 README §2 표의 구조(E1 골격 → E2·E3·E4 작성 안내 추가)를 한 줄로 — 사람 승인은 E4의 Human Gate 한 번이라 v1.3의 「승인 두 번」 스트립은 제거했다. 그 외 레드 없음. 수치 없음(「여덟」은 template 구조의 이름이라 라이브 결과에 따라 변하지 않는다).</div>
       </div>
     </div>
   </section>
@@ -301,36 +301,36 @@
     </div>
   </section>
 
-  <!-- 05 핵심 개념 — 8개 항목 -->
+  <!-- 05 실습 큐 — 실습 1 -->
   <section class="slide">
-    <div class="s-top"><span class="s-num">05</span><span class="chip demo">실습 큐</span><span class="chip lay">큐 컴포넌트 · 기능 칩 + 질문/확인 2열</span><span class="s-time">8분 (+README 훑기 1분)</span></div>
-    <h3>실습 1 — Plan mode로 template 설계하기</h3>
+    <div class="s-top"><span class="s-num">05</span><span class="chip demo">실습 큐</span><span class="chip lay">큐 컴포넌트 · 만드는 것 한 줄 + 질문/확인 2열</span><span class="s-time">8분 (+README 훑기 1분)</span></div>
+    <h3>실습 1 — Plan template의 빈 구조 만들기</h3>
     <div class="s-body">
       <div class="wf">
         <div class="mk">
           <div class="lbl">CHAPTER 2</div>
           <div class="kick" style="left:3.43%; top:12.18%;">클립 1 · 실습</div>
-          <div class="h" style="left:3.43%; top:18.8%;">실습 1 — Plan mode로 template 설계하기</div>
+          <div class="h" style="left:3.43%; top:18.8%;">실습 1 — Plan template의 빈 구조 만들기</div>
           <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
-          <!-- 이번에 쓰는 기능 -->
+          <!-- 이번에 만드는 것 -->
           <div class="card" style="left:4.2%; top:30%; width:91.6%; height:13%;"></div>
-          <div class="t sm" style="left:6.6%; top:32.2%; width:20%; color:#9C9C9C; font-weight:700;">이번에 쓰는 기능</div>
-          <div style="left:27%; top:31.7%; display:flex; gap:5px;"><span class="kchip">Plan mode</span></div>
-          <div class="t" style="left:6.6%; top:37.4%; width:87%; color:#5B5B5B;"><b style="color:#000;">파일을 만들기 전에</b> 무엇을 만들 것인지 <b style="color:#000;">사람이 먼저 본다</b></div>
+          <div class="t sm" style="left:6.6%; top:32.2%; width:20%; color:#9C9C9C; font-weight:700;">이번에 만드는 것</div>
+          <div class="t" style="left:27%; top:31.6%; width:66%; font-weight:700;">여덟 영역의 heading과 짧은 목적 안내</div>
+          <div class="t" style="left:6.6%; top:37.4%; width:87%; color:#5B5B5B;"><b style="color:#000;">답이 아니라</b> 각 영역의 <b style="color:#000;">목적 안내만</b> 둔다</div>
           <!-- 생각할 질문 -->
           <div class="card" style="left:4.2%; top:47%; width:44%; height:31%;"></div>
           <div class="t sm" style="left:6.6%; top:49.3%; width:39%; color:#9C9C9C; font-weight:700;">생각할 질문</div>
-          <div class="t" style="left:6.6%; top:54.8%; width:39.2%;">「Goal이 구현 방법이 아니라 <b>무엇이 충족되면 성공인지</b>를 요구하나」</div>
-          <div class="t" style="left:6.6%; top:66%; width:39.2%;">「먼저 읽을 파일과 실제로 바꿀 파일을 구분하나」</div>
+          <div class="t" style="left:6.6%; top:54.8%; width:39.2%;">「Goal이 구현 방법이 아니라 <b>무엇이 충족되면 성공인지</b>를 묻나」</div>
+          <div class="t" style="left:6.6%; top:66%; width:39.2%;">「여덟 영역이 앞으로 필요한 판단을 빠짐없이 담나」</div>
           <!-- 확인할 것 — 이 장의 레드 1개 -->
           <div class="card" style="left:51.8%; top:47%; width:44%; height:31%;"></div>
           <div class="t sm" style="left:54.2%; top:49.3%; width:39%; color:#9C9C9C; font-weight:700;">확인할 것</div>
-          <div class="t" style="left:54.2%; top:54.8%; width:39.2%;">여덟 영역의 책임이 서로 겹치지 않는다</div>
-          <div class="t" style="left:54.2%; top:66%; width:39.2%; color:#FC1C49; font-weight:700;">이 Gate를 통과하기 전에는 Default mode로 전환하지 않는다</div>
+          <div class="t" style="left:54.2%; top:54.8%; width:39.2%;">여덟 heading이 모두 있다</div>
+          <div class="t" style="left:54.2%; top:66%; width:39.2%; color:#FC1C49; font-weight:700;">특정 Issue의 상태·응답·파일 목록이나 정책 답이 들어가지 않았다</div>
           <div class="mark"></div>
         </div>
-        <div class="cap">실습 큐 — 위 카드에 이번에 쓰는 기능 <code>Plan mode</code> 칩 하나와 원칙 한 줄, 아래 2열에 생각할 질문 둘 · 확인할 것 둘. 레드는 확인할 것 둘째 「이 Gate를 통과하기 전에는 Default mode로 전환하지 않는다」</div>
-        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 8분. 직전에 Lab 09 README §1·§2를 1분 훑는다 — 특히 §2의 흐름 도식(Plan mode로 설계 → 사람 승인 → Default mode → diff → Review mode → 사람 승인 → 최소 수정 → 검증)을 한 번 읽어 준다. 8강 E1~E4의 <b>큐 컴포넌트</b>(킥커 「클립 N · 실습」 · 헤드라인 · 우상단 88%/15.5% 레드 「실습」 배지)를 그대로 쓰고, 8강의 「핵심 포인트」 한 줄 자리에 세 블록을 넣는다 — <b>①이번에 쓰는 기능</b>(30~43% 흰 카드 · 좌 <code>t sm</code> 회색 라벨 + 27%부터 <code>kchip</code> flex · 37.4% <code>t</code> 회색 원칙 한 줄, 강조는 검정 볼드), <b>②생각할 질문</b>(좌 카드 4.2~48.2% · 47~78%) · <b>③확인할 것</b>(우 카드 51.8~95.8%, 09의 2열 좌표) — 각 카드는 <code>t sm</code> 회색 라벨 + <code>t</code> 8.2px 항목 둘(54.8 / 66%). 질문은 「」로 감싸 질문임을 표시. <b>v1.3에서 상단 카드의 라벨을 「이번에 추가할 항목」 → 「이번에 쓰는 기능」으로 바꿨다</b> — 개정된 Lab 09는 항목을 하나씩 더하는 실습이 아니라 Codex 기능을 단계별로 쓰는 흐름이라, 칩에는 섹션 이름이 아니라 그 단계의 기능(<code>Plan mode</code>)이 들어간다. 원칙 한 줄 「파일을 만들기 전에 무엇을 만들 것인지 사람이 먼저 본다」는 README E1 첫 문장의 요약 — Plan mode의 결과는 파일이 아니라 검토 가능한 계획이다. 질문 둘은 README E1 「설계 질문」의 첫째·셋째(Goal이 구현 방법이 아니라 성공 조건을 요구하나 · 읽을 파일과 바꿀 파일을 구분하나). 확인할 것 첫째 「여덟 영역의 책임이 서로 겹치지 않는다」는 Human Gate 체크리스트의 「Files to Read First / Files to Change의 책임이 다르다」 · 「Risks / Out of Scope / Stop Conditions의 역할이 겹치지 않는다」를 한 줄로 합친 것. <b>레드 1개 = 우 카드 「확인할 것」 둘째 <code>t</code> 볼드 「이 Gate를 통과하기 전에는 Default mode로 전환하지 않는다」</b>(README E1 마지막 문장 그대로 — 「자주 하는 실수」의 「계획을 사람이 확인하기 전에 Default mode로 전환합니다」를 막는 선이고, 03 스트립의 첫 번째 사람 승인이다). 큐 컴포넌트의 「실습」 배지는 05·07·08·10 공통 반복 마커라 강조로 세지 않는다. 8강 큐와 같이 스트립 없음. 산출물은 파일이 아니라 <b>사람이 승인한 설계 계획</b>. 수치 없음(「여덟 영역」은 template 구조의 이름이라 라이브 결과에 따라 변하는 수치가 아니다).</div>
+        <div class="cap">실습 큐 — 위 카드에 「이번에 만드는 것」 한 줄(여덟 영역의 heading과 짧은 목적 안내)과 원칙 한 줄, 아래 2열에 생각할 질문 둘 · 확인할 것 둘. 레드는 확인할 것 둘째 「특정 Issue의 상태·응답·파일 목록이나 정책 답이 들어가지 않았다」</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 8분. 직전에 Lab 09 README §1·§2를 1분 훑는다 — 특히 §2의 흐름 도식(E1 빈 구조 → E2 파일·순서 안내 → E3 검증·위험·제외 범위 안내 → E4 중단·승인 기준과 review)을 한 번 읽어 주고, <b>이번 lab에서는 실제 구현 계획을 만들지 않는다(그건 Lab 12)</b>는 §2 마지막 단락을 짚는다. 8강 E1~E4의 <b>큐 컴포넌트</b>(킥커 「클립 N · 실습」 · 헤드라인 · 우상단 88%/15.5% 레드 「실습」 배지)를 그대로 쓰고, 8강의 「핵심 포인트」 한 줄 자리에 세 블록을 넣는다 — <b>①이번에 만드는 것</b>(30~43% 흰 카드 · 좌 <code>t sm</code> 회색 라벨 + 27%부터 <code>t</code> 검정 볼드 한 줄 · 37.4% <code>t</code> 회색 원칙 한 줄, 강조는 검정 볼드), <b>②생각할 질문</b>(좌 카드 4.2~48.2% · 47~78%) · <b>③확인할 것</b>(우 카드 51.8~95.8%, 09의 2열 좌표) — 각 카드는 <code>t sm</code> 회색 라벨 + <code>t</code> 8.2px 항목 둘(54.8 / 66%). 질문은 「」로 감싸 질문임을 표시. <b>v1.4에서 상단 카드의 라벨을 「이번에 쓰는 기능」 → 「이번에 만드는 것」으로 바꾸고 v1.3의 mode 칩을 뺐다</b> — 재개정된 Lab 09 E1은 mode를 고르는 단계가 아니라 <code>workflow-skeleton.md</code>를 기준으로 <b>여덟 영역의 heading과 짧은 목적 안내</b>만 만드는 단계라, 칩 자리에는 기능 이름 대신 만드는 것 한 줄을 검정 볼드 <code>t</code>로 둔다(07·08·10처럼 영역 이름 칩이 아닌 것은 E1이 여덟 영역 전체를 한 번에 세우기 때문이고, 03의 1행 칩 「여덟 heading」과 같은 대상이다). 원칙 한 줄 「답이 아니라 각 영역의 목적 안내만 둔다」는 README E1 프롬프트의 「heading과 각 영역의 짧은 목적 안내만 둬라」와 사람 확인 둘째 항목의 요약. 질문 둘은 README E1 「설계 질문」의 첫째·둘째(Goal이 구현 방법이 아니라 무엇이 충족되면 성공인지를 묻나 · 여덟 영역이 앞으로 필요한 판단을 빠짐없이 담나). 확인할 것 첫째 「여덟 heading이 모두 있다」는 사람 확인 첫 항목 그대로. <b>레드 1개 = 우 카드 「확인할 것」 둘째 <code>t</code> 볼드 「특정 Issue의 상태·응답·파일 목록이나 정책 답이 들어가지 않았다」</b>(README E1 사람 확인 마지막 항목 그대로 — 「자주 하는 실수」 첫 항목 「E1에서 여덟 heading 대신 특정 Issue의 답을 채웁니다」를 막는 선이고, README §1의 「특정 Issue의 답이 들어가지 않은 재사용 template만 만듭니다」와 같은 원리). 큐 컴포넌트의 「실습」 배지는 05·07·08·10 공통 반복 마커라 강조로 세지 않는다. 8강 큐와 같이 스트립 없음. 산출물 <code>docs/templates/implementation-plan.md</code> 골격이 이 장에서 처음 생긴다. 수치 없음(「여덟 영역」은 template 구조의 이름이라 라이브 결과에 따라 변하는 수치가 아니다).</div>
       </div>
     </div>
   </section>
@@ -376,69 +376,69 @@
 
   <!-- 07 실습 큐 — 실습 2 -->
   <section class="slide">
-    <div class="s-top"><span class="s-num">07</span><span class="chip demo">실습 큐</span><span class="chip lay">큐 컴포넌트 · 기능 칩 + 질문/확인 2열</span><span class="s-time">8분</span></div>
-    <h3>실습 2 — 승인한 계획으로 빈 template 만들기</h3>
+    <div class="s-top"><span class="s-num">07</span><span class="chip demo">실습 큐</span><span class="chip lay">큐 컴포넌트 · 영역 칩 + 질문/확인 2열</span><span class="s-time">8분</span></div>
+    <h3>실습 2 — 파일 후보와 작업 순서 연결하기</h3>
     <div class="s-body">
       <div class="wf">
         <div class="mk">
           <div class="lbl">CHAPTER 2</div>
           <div class="kick" style="left:3.43%; top:12.18%;">클립 2 · 실습</div>
-          <div class="h" style="left:3.43%; top:18.8%;">실습 2 — 승인한 계획으로 빈 template 만들기</div>
+          <div class="h" style="left:3.43%; top:18.8%;">실습 2 — 파일 후보와 작업 순서 연결하기</div>
           <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
-          <!-- 이번에 쓰는 기능 -->
+          <!-- 이번에 구체화할 영역 -->
           <div class="card" style="left:4.2%; top:30%; width:91.6%; height:13%;"></div>
-          <div class="t sm" style="left:6.6%; top:32.2%; width:20%; color:#9C9C9C; font-weight:700;">이번에 쓰는 기능</div>
-          <div style="left:27%; top:31.7%; display:flex; gap:5px;"><span class="kchip">Default mode</span></div>
-          <div class="t" style="left:6.6%; top:37.4%; width:87%; color:#5B5B5B;">섹션마다 프롬프트를 반복하지 않고 <b style="color:#000;">승인한 계획을 한 번에 실행한다</b></div>
+          <div class="t sm" style="left:6.6%; top:32.2%; width:20%; color:#9C9C9C; font-weight:700;">이번에 구체화할 영역</div>
+          <div style="left:27%; top:31.7%; display:flex; gap:5px;"><span class="kchip">Files to Read First</span><span class="kchip">Files to Change</span><span class="kchip">Steps</span></div>
+          <div class="t" style="left:6.6%; top:37.4%; width:87%; color:#5B5B5B;">읽을 파일은 <b style="color:#000;">조사 근거와 읽는 이유</b>를, 바꿀 파일은 <b style="color:#000;">승인된 변경 후보와 책임</b>을 요구한다</div>
           <!-- 생각할 질문 -->
           <div class="card" style="left:4.2%; top:47%; width:44%; height:31%;"></div>
           <div class="t sm" style="left:6.6%; top:49.3%; width:39%; color:#9C9C9C; font-weight:700;">생각할 질문</div>
-          <div class="t" style="left:6.6%; top:54.8%; width:39.2%;">「각 영역에 <b>답이 아니라 작성 안내</b>가 들어갔나」</div>
-          <div class="t" style="left:6.6%; top:66%; width:39.2%;">「아직 실행하지 않은 검증을 통과했다고 가정하지 않았나」</div>
+          <div class="t" style="left:6.6%; top:54.8%; width:39.2%;">「Steps가 큰 작업 목록이 아니라 <b>작고 검토 가능한 변화</b>로 나뉘나」</div>
+          <div class="t" style="left:6.6%; top:66%; width:39.2%;">「단계가 끝났다는 것을 무엇으로 확인하나」</div>
           <!-- 확인할 것 -->
           <div class="card" style="left:51.8%; top:47%; width:44%; height:31%;"></div>
           <div class="t sm" style="left:54.2%; top:49.3%; width:39%; color:#9C9C9C; font-weight:700;">확인할 것</div>
-          <div class="t" style="left:54.2%; top:54.8%; width:39.2%;">여덟 영역이 모두 있다</div>
-          <div class="t" style="left:54.2%; top:66%; width:39.2%;"><b>특정 Issue의 답이 채워져 있지 않다</b></div>
+          <div class="t" style="left:54.2%; top:54.8%; width:39.2%;">Steps가 <b>입력 근거·허용된 변경·종료 상태·확인 방법</b>을 요구한다</div>
+          <div class="t" style="left:54.2%; top:66%; width:39.2%;">아직 계획에 없는 파일을 바꾸라고 요구하지 않는다</div>
           <div class="mark"></div>
         </div>
-        <div class="cap">실습 큐 — 이번에 쓰는 기능은 <code>Default mode</code> 칩 하나, 원칙 한 줄(승인한 계획을 한 번에 실행한다). 아래 2열에 질문 둘 · 확인 둘. 레드는 「실습」 배지만</div>
-        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 8분. 05와 같은 큐 컴포넌트·좌표(위 카드 30~43% · 아래 2열 47~78%). 이번에 쓰는 기능은 <code>Default mode</code> 칩 하나(README E2는 파일 <code>@</code> mention도 함께 쓰지만, 05에서 Plan mode 다음에 <b>전환하는 mode</b>가 이 장의 핵심이라 칩은 하나로 줄였다). 원칙 한 줄 「섹션마다 프롬프트를 반복하지 않고 승인한 계획을 한 번에 실행한다」는 README E2 첫 단락 그대로 — 여덟 영역을 하나씩 프롬프트로 더하던 옛 실습과의 결정적 차이라, 뒤쪽 「승인한 계획을 한 번에 실행한다」를 검정 볼드로 세웠다. 질문 둘은 README E2 「빠른 확인」에서 판단이 필요한 둘(각 영역에 답이 아니라 작성 안내가 있나 · Tests가 아직 실행하지 않은 검증을 통과했다고 가정하지 않나 — 「자주 하는 실수」의 「실행하지 않은 테스트를 통과했다고 가정합니다」). 확인할 것은 「여덟 영역이 모두 있다」 + 검정 볼드 「특정 Issue의 답이 채워져 있지 않다」(README §1 「특정 Issue의 답이 들어가지 않은 재사용 template만 만듭니다」 — 8강 E2의 「특정 요청 내용은 채우지 않는다」와 같은 원리). 스트립 없음. <b>레드는 「실습」 배지 하나</b>, 그 외 레드 없음. 산출물 <code>docs/templates/implementation-plan.md</code>가 이 장에서 처음 생긴다. 수치 없음(「여덟 영역」은 template 구조의 이름).</div>
+        <div class="cap">실습 큐 — 이번에 구체화할 영역은 <code>Files to Read First</code> · <code>Files to Change</code> · <code>Steps</code> 칩 셋, 원칙 한 줄(읽을 파일과 바꿀 파일이 요구하는 것이 다르다). 아래 2열에 질문 둘 · 확인 둘. 레드는 「실습」 배지만</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 8분. 05와 같은 큐 컴포넌트·좌표(위 카드 30~43% · 아래 2열 47~78%). <b>v1.4에서 상단 카드 라벨을 「이번에 쓰는 기능」 → 「이번에 구체화할 영역」으로 바꾸고 칩을 <code>Default mode</code> 하나에서 영역 이름 셋으로 되돌렸다</b> — <code>Files to Read First</code> · <code>Files to Change</code> · <code>Steps</code>(README E2 프롬프트가 구체화하는 세 영역, 영어 원문, 03의 2행 칩과 같다). 원칙 한 줄 「읽을 파일은 조사 근거와 읽는 이유를, 바꿀 파일은 승인된 변경 후보와 책임을 요구한다」는 README E2 프롬프트와 사람 확인 첫째·둘째 항목을 한 문장으로 — 두 영역에 <b>같은 목록을 복사</b>하는 「자주 하는 실수」를 막는 선이고, 06의 레드 「읽을 파일과 바꿀 파일은 다르다」를 실습 지시로 받는 자리라 요구 내용 둘을 검정 볼드로 세웠다. 질문 둘은 README E2 「설계 질문」의 둘째·셋째(Steps가 큰 작업 목록이 아니라 작고 검토 가능한 변화로 나뉘나 · 단계가 끝났다는 것을 무엇으로 확인하나). 확인할 것 첫째 「Steps가 입력 근거·허용된 변경·종료 상태·확인 방법을 요구한다」(README E2 사람 확인 셋째 — 네 요구 항목을 검정 볼드로, 「Steps를 코드 수정·테스트처럼 증거를 붙일 수 없는 큰 작업으로 둡니다」를 막는다), 둘째 「아직 계획에 없는 파일을 바꾸라고 요구하지 않는다」(사람 확인 넷째 그대로). 스트립 없음. <b>레드는 「실습」 배지 하나</b>, 그 외 레드 없음. 산출물은 파일과 단계의 경계가 적힌 template. 수치 없음.</div>
       </div>
     </div>
   </section>
 
   <!-- 08 실습 큐 — 실습 3 -->
   <section class="slide">
-    <div class="s-top"><span class="s-num">08</span><span class="chip demo">실습 큐</span><span class="chip lay">큐 컴포넌트 · 기능 칩 + 질문/확인 2열 · 클립 3</span><span class="s-time">8분</span></div>
-    <h3>실습 3 — 변경사항 diff로 범위 확인하기</h3>
+    <div class="s-top"><span class="s-num">08</span><span class="chip demo">실습 큐</span><span class="chip lay">큐 컴포넌트 · 영역 칩 + 질문/확인 2열 · 클립 3</span><span class="s-time">8분</span></div>
+    <h3>실습 3 — 검증·리스크·제외 범위 연결하기</h3>
     <div class="s-body">
       <div class="wf">
         <div class="mk">
           <div class="lbl">CHAPTER 2</div>
           <div class="kick" style="left:3.43%; top:12.18%;">클립 3 · 실습</div>
-          <div class="h" style="left:3.43%; top:18.8%;">실습 3 — 변경사항 diff로 범위 확인하기</div>
+          <div class="h" style="left:3.43%; top:18.8%;">실습 3 — 검증·리스크·제외 범위 연결하기</div>
           <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
-          <!-- 이번에 쓰는 기능 -->
+          <!-- 이번에 구체화할 영역 -->
           <div class="card" style="left:4.2%; top:30%; width:91.6%; height:13%;"></div>
-          <div class="t sm" style="left:6.6%; top:32.2%; width:20%; color:#9C9C9C; font-weight:700;">이번에 쓰는 기능</div>
-          <div style="left:27%; top:31.7%; display:flex; gap:5px;"><span class="kchip">변경사항 diff</span></div>
+          <div class="t sm" style="left:6.6%; top:32.2%; width:20%; color:#9C9C9C; font-weight:700;">이번에 구체화할 영역</div>
+          <div style="left:27%; top:31.7%; display:flex; gap:5px;"><span class="kchip">Tests to Add or Update</span><span class="kchip">Risks</span><span class="kchip">Out of Scope</span></div>
           <!-- 원칙 한 줄 — 이 장의 레드 1개 -->
-          <div class="t" style="left:6.6%; top:37.4%; width:87%; color:#FC1C49; font-weight:700;">Codex에게 요약을 다시 묻지 않고 사람이 diff에서 직접 확인한다</div>
+          <div class="t" style="left:6.6%; top:37.4%; width:87%; color:#FC1C49; font-weight:700;">Tests는 테스트 파일 이름이 아니라 각 Step의 종료 상태와 직접 연결된 증거를 요구한다</div>
           <!-- 생각할 질문 -->
           <div class="card" style="left:4.2%; top:47%; width:44%; height:31%;"></div>
           <div class="t sm" style="left:6.6%; top:49.3%; width:39%; color:#9C9C9C; font-weight:700;">생각할 질문</div>
-          <div class="t" style="left:6.6%; top:54.8%; width:39.2%;">「template 외에 바뀐 파일이 있나」</div>
-          <div class="t" style="left:6.6%; top:66%; width:39.2%;">「특정 주문 상태나 HTTP 응답이 template에 들어갔나」</div>
+          <div class="t" style="left:6.6%; top:54.8%; width:39.2%;">「Risks가 위험·영향·감지 방법을 함께 요구하나」</div>
+          <div class="t" style="left:6.6%; top:66%; width:39.2%;">「Out of Scope가 변경 경계를 실제로 제한하나」</div>
           <!-- 확인할 것 -->
           <div class="card" style="left:51.8%; top:47%; width:44%; height:31%;"></div>
           <div class="t sm" style="left:54.2%; top:49.3%; width:39%; color:#9C9C9C; font-weight:700;">확인할 것</div>
-          <div class="t" style="left:54.2%; top:54.8%; width:39.2%;"><span class="kchip">src</span>와 <span class="kchip">tests</span>에 변경이 없다</div>
-          <div class="t" style="left:54.2%; top:66%; width:39.2%;"><b>문제가 있으면 Review로 넘어가지 말고</b> 앞 단계 승인 범위부터 다시 본다</div>
+          <div class="t" style="left:54.2%; top:54.8%; width:39.2%;">변경사항 diff에서 <b>template만 바뀌었는지</b> 확인한다</div>
+          <div class="t" style="left:54.2%; top:66%; width:39.2%;"><span class="kchip">src</span>와 <span class="kchip">tests</span>에 변경이 없다</div>
           <div class="mark"></div>
         </div>
-        <div class="cap">실습 큐 — 이번에 쓰는 기능은 <code>변경사항 diff</code> 칩 하나. 원칙 한 줄 「Codex에게 요약을 다시 묻지 않고 사람이 diff에서 직접 확인한다」가 이 장의 레드. 아래 2열에 질문 둘 · 확인 둘</div>
-        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 8분. 05·07과 같은 큐 컴포넌트·좌표. 이번에 쓰는 기능은 <code>변경사항 diff</code> 칩 하나(README §2 표의 표기 그대로 — Codex 앱의 변경사항 보기). <b>레드 1개 = 위 카드 37.4% 원칙 한 줄 <code>t</code> 볼드 「Codex에게 요약을 다시 묻지 않고 사람이 diff에서 직접 확인한다」</b> — README E3 첫 단락 그대로이고, 「자주 하는 실수」의 「diff를 확인하지 않고 Codex의 완료 보고만 믿습니다」를 막는 선이다. 05·07·10에서는 원칙 한 줄이 회색 + 검정 볼드인데 이 장만 원칙 자체를 레드로 세웠으므로, 아래 「확인할 것」의 강조는 검정 볼드로 내려 레드가 둘이 되지 않게 했다. 질문 둘은 README E3 표의 「변경 파일」·「template 내용」 행을 질문으로 바꾼 것(template 외에 바뀐 파일이 있나 · 특정 주문 상태나 HTTP 응답이 template에 들어갔나). 확인할 것 첫째 「<code>src</code>와 <code>tests</code>에 변경이 없다」는 디렉터리 이름을 인라인 <code>kchip</code>으로(README의 <code>git diff -- src tests</code>와 같은 대상) — 이 두 이름은 09·11의 「앱 코드」를 실물로 가리킨다. 둘째 「문제가 있으면 Review로 넘어가지 말고 앞 단계 승인 범위부터 다시 본다」는 README E3 마지막 문장(E2의 승인 범위부터 다시 확인) — 04의 루프에서 「판단」이 다음 행동을 바꾸는 자리라 앞부분을 검정 볼드로. 큐 컴포넌트의 「실습」 배지는 05·07·10과 같은 공통 마커라 강조로 세지 않는다. 스트립 없음. 산출물은 파일이 아니라 <b>범위와 내용에 대한 사람 확인</b>. 수치 없음.</div>
+        <div class="cap">실습 큐 — 이번에 구체화할 영역은 <code>Tests to Add or Update</code> · <code>Risks</code> · <code>Out of Scope</code> 칩 셋. 원칙 한 줄 「Tests는 테스트 파일 이름이 아니라 각 Step의 종료 상태와 직접 연결된 증거를 요구한다」가 이 장의 레드. 아래 2열에 질문 둘 · 확인 둘</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 8분. 05·07과 같은 큐 컴포넌트·좌표. <b>v1.4에서 상단 카드 라벨을 「이번에 구체화할 영역」으로 바꾸고 칩을 <code>변경사항 diff</code> 하나에서 영역 이름 셋으로 되돌렸다</b> — <code>Tests to Add or Update</code> · <code>Risks</code> · <code>Out of Scope</code>(README E3 프롬프트가 구체화하는 세 영역, 영어 원문, 03의 3행 칩과 같다). <b>레드 1개 = 위 카드 37.4% 원칙 한 줄 <code>t</code> 볼드 「Tests는 테스트 파일 이름이 아니라 각 Step의 종료 상태와 직접 연결된 증거를 요구한다」</b> — README E3 「설계 질문」 첫째와 Self-check의 「Tests가 각 Steps 항목의 종료 상태와 직접 연결된 증거를 요구합니다」를 한 줄로 세운 것이고, 「자주 하는 실수」의 「Tests에 파일 이름만 적고 어떤 Step의 무엇을 확인하는지 적지 않습니다」를 막는 선이다. 05·07에서는 원칙 한 줄이 회색 + 검정 볼드인데 이 장은 원칙 자체를 레드로 세웠으므로, 아래 「확인할 것」의 강조는 검정 볼드로 내려 레드가 둘이 되지 않게 했다. 질문 둘은 README E3 「설계 질문」의 둘째·셋째(Risks가 위험·영향·감지 방법을 함께 요구하나 · Out of Scope가 변경 경계를 실제로 제한하나 — Risks와 Out of Scope를 같은 걱정 목록으로 만드는 실수를 가른다). 확인할 것 첫째 「변경사항 diff에서 template만 바뀌었는지 확인한다」는 README E3 「Codex에서 확인」 첫 문장 그대로(diff를 확인하지 않고 완료 보고만 믿는 실수를 막는다 — 「template만」을 검정 볼드로), 둘째 「<code>src</code>와 <code>tests</code>에 변경이 없다」는 디렉터리 이름을 인라인 <code>kchip</code>으로(README의 <code>git diff -- src tests</code>와 같은 대상) — 이 두 이름은 09·11의 「앱 코드」를 실물로 가리킨다. 큐 컴포넌트의 「실습」 배지는 05·07·10과 같은 공통 마커라 강조로 세지 않는다. 스트립 없음. 산출물은 검증·위험·제외 경계가 적힌 template과 <b>범위에 대한 사람 확인</b>. 수치 없음.</div>
       </div>
     </div>
   </section>
@@ -486,35 +486,35 @@
 
   <!-- 10 실습 큐 — 실습 4 -->
   <section class="slide">
-    <div class="s-top"><span class="s-num">10</span><span class="chip demo">실습 큐</span><span class="chip lay">큐 컴포넌트 · 기능 칩 3단 + 질문/확인 2열 · 클립 4</span><span class="s-time">8분</span></div>
-    <h3>실습 4 — Review mode로 검토하고 승인한 지적만 고치기</h3>
+    <div class="s-top"><span class="s-num">10</span><span class="chip demo">실습 큐</span><span class="chip lay">큐 컴포넌트 · 영역 칩 + Review mode 칩 + 질문/확인 2열 · 클립 4</span><span class="s-time">8분</span></div>
+    <h3>실습 4 — Stop Conditions와 사람 승인으로 완성하기</h3>
     <div class="s-body">
       <div class="wf">
         <div class="mk">
           <div class="lbl">CHAPTER 2</div>
           <div class="kick" style="left:3.43%; top:12.18%;">클립 4 · 실습</div>
-          <div class="h" style="left:3.43%; top:18.8%;">실습 4 — Review mode로 검토하고 승인한 지적만 고치기</div>
+          <div class="h" style="left:3.43%; top:18.8%;">실습 4 — Stop Conditions와 사람 승인으로 완성하기</div>
           <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
-          <!-- 이번에 쓰는 기능 — 세 단계 -->
+          <!-- 이번에 구체화할 영역 + 이 단계에서만 쓰는 Review mode -->
           <div class="card" style="left:4.2%; top:30%; width:91.6%; height:13%;"></div>
-          <div class="t sm" style="left:6.6%; top:32.2%; width:20%; color:#9C9C9C; font-weight:700;">이번에 쓰는 기능</div>
-          <div style="left:27%; top:31.7%; display:flex; align-items:center; gap:5px;"><span class="kchip">Review mode</span><span class="t" style="color:#9C9C9C; line-height:1;">→</span><span class="kchip">Default mode</span><span class="t" style="color:#9C9C9C; line-height:1;">→</span><span class="kchip">terminal</span></div>
+          <div class="t sm" style="left:6.6%; top:32.2%; width:20%; color:#9C9C9C; font-weight:700;">이번에 구체화할 영역</div>
+          <div style="left:27%; top:31.7%; display:flex; align-items:center; gap:5px;"><span class="kchip">Stop Conditions</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin-left:4px;">이 단계에서만</span><span class="kchip">Review mode</span></div>
           <!-- 원칙 한 줄 — 이 장의 레드 1개 -->
-          <div class="t" style="left:6.6%; top:37.4%; width:87%; color:#FC1C49; font-weight:700;">Review는 파일을 고치지 않는다 — 문제의 위치·영향·근거만 보고한다</div>
+          <div class="t" style="left:6.6%; top:37.4%; width:87%; color:#FC1C49; font-weight:700;">Review mode는 문제만 보고하고 파일을 고치지 않는다 — 이 단계에서만 쓴다</div>
           <!-- 생각할 질문 -->
           <div class="card" style="left:4.2%; top:47%; width:44%; height:31%;"></div>
           <div class="t sm" style="left:6.6%; top:49.3%; width:39%; color:#9C9C9C; font-weight:700;">생각할 질문</div>
-          <div class="t" style="left:6.6%; top:54.8%; width:39.2%;">「이 지적이 여덟 영역의 책임 안에서 고쳐지나」</div>
-          <div class="t" style="left:6.6%; top:66%; width:39.2%;">「특정 Issue의 답을 넣지 않고도 고칠 수 있나」</div>
+          <div class="t" style="left:6.6%; top:54.8%; width:39.2%;">「네 조건(성공·반복 한도·정체·사람 판단)을 모두 판정할 수 있나」</div>
+          <div class="t" style="left:6.6%; top:66%; width:39.2%;">「이 지적이 여덟 영역의 책임 안에서 고쳐지나」</div>
           <!-- 확인할 것 -->
           <div class="card" style="left:51.8%; top:47%; width:44%; height:31%;"></div>
           <div class="t sm" style="left:54.2%; top:49.3%; width:39%; color:#9C9C9C; font-weight:700;">확인할 것</div>
-          <div class="t" style="left:54.2%; top:54.8%; width:39.2%;"><b>승인한 지적만</b> 최소한으로 반영했다</div>
+          <div class="t" style="left:54.2%; top:54.8%; width:39.2%;">지적을 승인·보류·기각으로 나누고 <b>승인한 것만 최소한으로</b> 반영한다</div>
           <div class="t" style="left:54.2%; top:66%; width:39.2%;">처음과 같은 기준으로 다시 검증했고 <span class="kchip">src</span>·<span class="kchip">tests</span>가 그대로다</div>
           <div class="mark"></div>
         </div>
-        <div class="cap">실습 큐 — 이번에 쓰는 기능은 <code>Review mode</code> → <code>Default mode</code> → <code>terminal</code> 세 칩을 화살표 글리프로 이은 한 줄. 원칙 한 줄 「Review는 파일을 고치지 않는다 — 문제의 위치·영향·근거만 보고한다」가 이 장의 레드. 아래 2열에 질문 둘 · 확인 둘</div>
-        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 8분. 05·07·08과 같은 큐 컴포넌트·좌표. 이번에 쓰는 기능은 <b>칩 셋을 회색 「→」 글리프로 이은 한 줄</b>(<code>Review mode</code> → <code>Default mode</code> → <code>terminal</code>) — README E4의 실행 1·2·3(Review mode로 문제만 보고 → 사람이 지적 분류 → Default mode에서 최소 수정 → terminal에서 같은 기준으로 검증)이 한 실습 안에 순서대로 들어 있어 이 장만 칩이 셋이다. 화살표는 04·11과 같은 <code>t</code> 회색 문자 글리프(아이콘 아님), flex <code>align-items:center</code>로 칩 세로 중앙에 맞춘다. <b>레드 1개 = 위 카드 37.4% 원칙 한 줄 <code>t</code> 볼드 「Review는 파일을 고치지 않는다 — 문제의 위치·영향·근거만 보고한다」</b>(README E4 실행 1 마지막 문장 — 「자주 하는 실수」의 「Review mode에서 문제 보고와 파일 수정을 동시에 요청합니다」를 막는 선). 08과 같이 원칙을 레드로 세운 장이라 아래 「확인할 것」의 강조는 검정 볼드로 내렸다. 질문 둘은 README E4 Human Gate의 분류 기준 둘째·셋째(여덟 영역의 책임 안에서 고칠 수 있는가 · 특정 Issue의 답을 넣지 않고도 고칠 수 있는가) — 각 지적을 승인·보류·기각으로 나누는 기준이고, 03 스트립의 두 번째 사람 승인이다. 확인할 것 첫째 「승인한 지적만 최소한으로 반영했다」(앞부분 검정 볼드 — 「사람이 승인하지 않은 review 지적까지 모두 반영합니다」를 막는다), 둘째 「처음과 같은 기준으로 다시 검증했고 <code>src</code>·<code>tests</code>가 그대로다」(README E4 실행 3 — 08과 같은 인라인 <code>kchip</code>으로 08의 확인을 마감 절차에서 되받는다). 큐 컴포넌트의 「실습」 배지는 05·07·08과 같은 공통 마커라 강조로 세지 않는다. 스트립 없음. 산출물은 <b>완성된 plan template과 검증 결과</b> — 11의 4단계 흐름(검토 → 사람 승인 → 최소 수정 → 검증)이 바로 이 장이다. 수치 없음(「여덟 영역」은 template 구조의 이름).</div>
+        <div class="cap">실습 큐 — 이번에 구체화할 영역은 <code>Stop Conditions</code> 칩, 그 옆에 회색 「이 단계에서만」을 붙여 <code>Review mode</code> 칩. 원칙 한 줄 「Review mode는 문제만 보고하고 파일을 고치지 않는다 — 이 단계에서만 쓴다」가 이 장의 레드. 아래 2열에 질문 둘 · 확인 둘</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 8분. 05·07·08과 같은 큐 컴포넌트·좌표. <b>v1.4에서 상단 카드 라벨을 「이번에 구체화할 영역」으로 바꾸고, 칩 셋을 화살표로 이은 흐름(<code>Review mode</code> → <code>Default mode</code> → <code>terminal</code>)을 영역 칩 <code>Stop Conditions</code> + 회색 <code>t sm</code> 「이 단계에서만」 + <code>Review mode</code> 칩으로 바꿨다</b> — README E4가 구체화하는 영역은 Stop Conditions 하나이고, Review mode는 이 단계에서만 template 품질을 검토하는 데 쓰는 기능이라 영역 칩 옆에 한정어를 붙여 둔다(03의 4행 칩과 같은 조합). flex <code>align-items:center</code>로 한정어를 칩 세로 중앙에 맞춘다. <b>레드 1개 = 위 카드 37.4% 원칙 한 줄 <code>t</code> 볼드 「Review mode는 문제만 보고하고 파일을 고치지 않는다 — 이 단계에서만 쓴다」</b>(README E4 첫 단락 「이 단계에서만 Review mode를 사용해」와 실행 2 프롬프트 「파일은 수정하지 마라」 — 「자주 하는 실수」의 「Review mode에서 문제 보고와 파일 수정을 동시에 요청합니다」를 막는 선). 08과 같이 원칙을 레드로 세운 장이라 아래 「확인할 것」의 강조는 검정 볼드로 내렸다. 질문 첫째 「네 조건(성공·반복 한도·정체·사람 판단)을 모두 판정할 수 있나」는 README E4 「설계 질문」 첫 넷을 한 줄로 합친 것이고 09의 2×2 카드를 실습으로 되받는다, 둘째 「이 지적이 여덟 영역의 책임 안에서 고쳐지나」는 Human Gate 분류 기준 둘째 — 각 지적을 승인·보류·기각으로 나누는 기준이고, 이 lab의 사람 승인은 여기 한 번이다. 확인할 것 첫째 「지적을 승인·보류·기각으로 나누고 승인한 것만 최소한으로 반영한다」(Human Gate + 실행 3 — 「승인한 것만 최소한으로」를 검정 볼드로, 「사람이 승인하지 않은 review 지적까지 모두 반영합니다」를 막는다), 둘째 「처음과 같은 기준으로 다시 검증했고 <code>src</code>·<code>tests</code>가 그대로다」(README E4 실행 3의 <code>check.mjs 09</code>와 <code>git diff -- src tests</code> — 08과 같은 인라인 <code>kchip</code>으로 08의 확인을 마감 절차에서 되받는다). 큐 컴포넌트의 「실습」 배지는 05·07·08과 같은 공통 마커라 강조로 세지 않는다. 스트립 없음. 산출물은 <b>완성된 plan template과 검증 결과</b> — 11의 4단계 흐름(검토 → 사람 승인 → 최소 수정 → 검증)이 바로 이 장이다. 수치 없음(「여덟 영역」·「네 조건」은 template 구조의 이름).</div>
       </div>
     </div>
   </section>
