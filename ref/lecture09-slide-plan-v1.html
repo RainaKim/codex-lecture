@@ -303,7 +303,41 @@
 
   <!-- 05 핵심 개념 — 8개 항목 -->
   <section class="slide">
-    <div class="s-top"><span class="s-num">05</span><span class="chip op">핵심 개념</span><span class="chip lay">역할 라벨 + 항목 이름 7행</span><span class="s-time">3분</span></div>
+    <div class="s-top"><span class="s-num">05</span><span class="chip demo">실습 큐</span><span class="chip lay">큐 컴포넌트 · 항목 칩 + 질문/확인 2열</span><span class="s-time">8분 (+README 훑기 1분)</span></div>
+    <h3>실습 1 — 목표와 읽을 파일, 바꿀 파일 나누기</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 2</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 1 · 실습</div>
+          <div class="h" style="left:3.43%; top:18.8%;">실습 1 — 목표와 읽을 파일, 바꿀 파일 나누기</div>
+          <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
+          <!-- 이번에 추가할 항목 -->
+          <div class="card" style="left:4.2%; top:30%; width:91.6%; height:13%;"></div>
+          <div class="t sm" style="left:6.6%; top:32.2%; width:20%; color:#9C9C9C; font-weight:700;">이번에 추가할 항목</div>
+          <div style="left:27%; top:31.7%; display:flex; gap:5px;"><span class="kchip">Goal</span><span class="kchip">Files to Read First</span><span class="kchip">Files to Change</span></div>
+          <div class="t" style="left:6.6%; top:37.4%; width:87%; color:#5B5B5B;"><b style="color:#000;">Goal은 무엇이 충족되면 끝인지로</b> 적는다 · <b style="color:#000;">읽을 파일과 바꿀 파일은 따로</b> 적는다</div>
+          <!-- 생각할 질문 -->
+          <div class="card" style="left:4.2%; top:47%; width:44%; height:31%;"></div>
+          <div class="t sm" style="left:6.6%; top:49.3%; width:39%; color:#9C9C9C; font-weight:700;">생각할 질문</div>
+          <div class="t" style="left:6.6%; top:54.8%; width:39.2%;">「목표가 구현 방법이 아니라 <b>무엇이 충족되면 끝인지</b>로 적혀 있나」</div>
+          <div class="t" style="left:6.6%; top:66%; width:39.2%;">「읽을 파일과 바꿀 파일을 왜 나누나」</div>
+          <!-- 확인할 것 -->
+          <div class="card" style="left:51.8%; top:47%; width:44%; height:31%;"></div>
+          <div class="t sm" style="left:54.2%; top:49.3%; width:39%; color:#9C9C9C; font-weight:700;">확인할 것</div>
+          <div class="t" style="left:54.2%; top:54.8%; width:39.2%;">세 항목이 있고 각 항목의 목적이 설명돼 있다</div>
+          <div class="t" style="left:54.2%; top:66%; width:39.2%;"><b>특정 Issue의 파일 경로가 미리 채워져 있지 않다</b></div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">실습 큐 — 위 카드에 이번에 추가할 항목 셋(kchip)과 원칙 한 줄, 아래 2열에 생각할 질문 둘 · 확인할 것 둘. 레드는 큐 컴포넌트의 「실습」 배지만</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 8분. 직전에 Lab 09 README §1·§2를 1분 훑는다. 8강 E1~E4의 <b>큐 컴포넌트</b>(킥커 「클립 N · 실습」 · 헤드라인 · 우상단 88%/15.5% 레드 「실습」 배지)를 그대로 쓰고, 8강의 「핵심 포인트」 한 줄 자리에 세 블록을 넣는다 — <b>①이번에 추가할 항목</b>(30~43% 흰 카드 · 좌 <code>t sm</code> 회색 라벨 + 27%부터 원문 <code>kchip</code> flex · 37.4% <code>t</code> 회색 원칙 한 줄, 강조는 검정 볼드), <b>②생각할 질문</b>(좌 카드 4.2~48.2% · 47~78%) · <b>③확인할 것</b>(우 카드 51.8~95.8%, 09의 2열 좌표) — 각 카드는 <code>t sm</code> 회색 라벨 + <code>t</code> 8.2px 항목 둘(54.8 / 66%). 질문은 「」로 감싸 질문임을 표시. 원칙 한 줄은 이 장의 질문·확인을 한 문장으로 앞서 정리한 것 — Goal은 충족 조건으로, 파일은 읽을 것·바꿀 것으로. 확인할 것 둘째 「특정 Issue의 파일 경로가 미리 채워져 있지 않다」는 검정 볼드(template은 재사용 구조라 실제 경로를 비운다 — 8강 E2의 「특정 요청 내용은 채우지 않는다」와 같은 원리). 8강 큐와 같이 스트립 없음. <b>레드는 「실습」 배지 하나</b>(큐 컴포넌트 공통), 그 외 레드 없음. 산출물 <code>docs/templates/implementation-plan.md</code>의 첫 세 섹션. 수치 없음.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 실습 큐 — 실습 2 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">06</span><span class="chip op">핵심 개념</span><span class="chip lay">역할 라벨 + 항목 이름 7행</span><span class="s-time">3분</span></div>
     <h3>계획서의 8개 항목 = 루프 설계도</h3>
     <div class="s-body">
       <div class="wf">
@@ -341,40 +375,6 @@
   </section>
 
   <!-- 06 실습 큐 — 실습 1 -->
-  <section class="slide">
-    <div class="s-top"><span class="s-num">06</span><span class="chip demo">실습 큐</span><span class="chip lay">큐 컴포넌트 · 항목 칩 + 질문/확인 2열</span><span class="s-time">8분 (+README 훑기 1분)</span></div>
-    <h3>실습 1 — 목표와 읽을 파일, 바꿀 파일 나누기</h3>
-    <div class="s-body">
-      <div class="wf">
-        <div class="mk">
-          <div class="lbl">CHAPTER 2</div>
-          <div class="kick" style="left:3.43%; top:12.18%;">클립 1 · 실습</div>
-          <div class="h" style="left:3.43%; top:18.8%;">실습 1 — 목표와 읽을 파일, 바꿀 파일 나누기</div>
-          <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
-          <!-- 이번에 추가할 항목 -->
-          <div class="card" style="left:4.2%; top:30%; width:91.6%; height:13%;"></div>
-          <div class="t sm" style="left:6.6%; top:32.2%; width:20%; color:#9C9C9C; font-weight:700;">이번에 추가할 항목</div>
-          <div style="left:27%; top:31.7%; display:flex; gap:5px;"><span class="kchip">Goal</span><span class="kchip">Files to Read First</span><span class="kchip">Files to Change</span></div>
-          <div class="t" style="left:6.6%; top:37.4%; width:87%; color:#5B5B5B;"><b style="color:#000;">Goal은 무엇이 충족되면 끝인지로</b> 적는다 · <b style="color:#000;">읽을 파일과 바꿀 파일은 따로</b> 적는다</div>
-          <!-- 생각할 질문 -->
-          <div class="card" style="left:4.2%; top:47%; width:44%; height:31%;"></div>
-          <div class="t sm" style="left:6.6%; top:49.3%; width:39%; color:#9C9C9C; font-weight:700;">생각할 질문</div>
-          <div class="t" style="left:6.6%; top:54.8%; width:39.2%;">「목표가 구현 방법이 아니라 <b>무엇이 충족되면 끝인지</b>로 적혀 있나」</div>
-          <div class="t" style="left:6.6%; top:66%; width:39.2%;">「읽을 파일과 바꿀 파일을 왜 나누나」</div>
-          <!-- 확인할 것 -->
-          <div class="card" style="left:51.8%; top:47%; width:44%; height:31%;"></div>
-          <div class="t sm" style="left:54.2%; top:49.3%; width:39%; color:#9C9C9C; font-weight:700;">확인할 것</div>
-          <div class="t" style="left:54.2%; top:54.8%; width:39.2%;">세 항목이 있고 각 항목의 목적이 설명돼 있다</div>
-          <div class="t" style="left:54.2%; top:66%; width:39.2%;"><b>특정 Issue의 파일 경로가 미리 채워져 있지 않다</b></div>
-          <div class="mark"></div>
-        </div>
-        <div class="cap">실습 큐 — 위 카드에 이번에 추가할 항목 셋(kchip)과 원칙 한 줄, 아래 2열에 생각할 질문 둘 · 확인할 것 둘. 레드는 큐 컴포넌트의 「실습」 배지만</div>
-        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 8분. 직전에 Lab 09 README §1·§2를 1분 훑는다. 8강 E1~E4의 <b>큐 컴포넌트</b>(킥커 「클립 N · 실습」 · 헤드라인 · 우상단 88%/15.5% 레드 「실습」 배지)를 그대로 쓰고, 8강의 「핵심 포인트」 한 줄 자리에 세 블록을 넣는다 — <b>①이번에 추가할 항목</b>(30~43% 흰 카드 · 좌 <code>t sm</code> 회색 라벨 + 27%부터 원문 <code>kchip</code> flex · 37.4% <code>t</code> 회색 원칙 한 줄, 강조는 검정 볼드), <b>②생각할 질문</b>(좌 카드 4.2~48.2% · 47~78%) · <b>③확인할 것</b>(우 카드 51.8~95.8%, 09의 2열 좌표) — 각 카드는 <code>t sm</code> 회색 라벨 + <code>t</code> 8.2px 항목 둘(54.8 / 66%). 질문은 「」로 감싸 질문임을 표시. 원칙 한 줄은 이 장의 질문·확인을 한 문장으로 앞서 정리한 것 — Goal은 충족 조건으로, 파일은 읽을 것·바꿀 것으로. 확인할 것 둘째 「특정 Issue의 파일 경로가 미리 채워져 있지 않다」는 검정 볼드(template은 재사용 구조라 실제 경로를 비운다 — 8강 E2의 「특정 요청 내용은 채우지 않는다」와 같은 원리). 8강 큐와 같이 스트립 없음. <b>레드는 「실습」 배지 하나</b>(큐 컴포넌트 공통), 그 외 레드 없음. 산출물 <code>docs/templates/implementation-plan.md</code>의 첫 세 섹션. 수치 없음.</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 07 실습 큐 — 실습 2 -->
   <section class="slide">
     <div class="s-top"><span class="s-num">07</span><span class="chip demo">실습 큐</span><span class="chip lay">큐 컴포넌트 · 항목 칩 + 질문/확인 2열</span><span class="s-time">8분</span></div>
     <h3>실습 2 — Steps를 작은 단위로 나누기</h3>
