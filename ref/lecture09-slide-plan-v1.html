@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><title>9강 Plan-first template 만들기 — 슬라이드 구성안 v1</title>
+<style>
+  :root{
+    --ink:#111114; --sub:#6b6b73; --line:#e6e6e9;
+    --main:#FC1C49; --main-lt:#FFE5EB; --sub-o:#FFA71B;
+    --g1:#F5F5F5; --g2:#E6E6E6; --d1:#282828; --d2:#5B5B5B;
+    --wf-line:#b3b3b3; --wf-dash:#c9c9cf; --wf-fill:#fafafb; --wf-txt:#6b6b73;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Segoe UI","Noto Sans KR","Apple SD Gothic Neo",sans-serif;
+    background:#f0f0f2; color:var(--ink); line-height:1.55; padding:40px 20px 80px; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1180px; margin:0 auto;}
+
+  /* ── 문서 헤더 ── */
+  .doc-head{background:#0f0f12; color:#fff; border-radius:16px; padding:36px 40px; margin-bottom:28px;}
+  .doc-head .tag{display:inline-block; background:var(--main); border:none;
+    border-radius:999px; padding:4px 15px; font-size:12.5px; letter-spacing:.2px; margin-bottom:14px; font-weight:700;}
+  .doc-head h1{font-size:27px; font-weight:800; letter-spacing:-.4px;}
+  .doc-head p.sub{margin-top:8px; color:#c9c9d2; font-size:14.5px;}
+  .doc-head .meta{display:flex; flex-wrap:wrap; gap:10px 26px; margin-top:18px; font-size:13px; color:#e2e2e8;}
+  .doc-head .meta b{color:#fff; font-weight:700;}
+
+  /* ── 패널 ── */
+  .panel{background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 30px; margin-bottom:28px;}
+  .panel h2{font-size:17px; font-weight:800; margin-bottom:14px; letter-spacing:-.2px;}
+  .flow{display:flex; gap:8px; flex-wrap:wrap;}
+  .flow .blk{flex:1 1 150px; border-radius:10px; padding:12px 14px; border:1px solid var(--line); background:#fafafb;}
+  .flow .blk .t{font-size:11.5px; color:var(--sub); font-weight:600;}
+  .flow .blk .n{font-size:14px; font-weight:800; margin:2px 0;}
+  .flow .blk .s{font-size:12px; color:var(--sub);}
+  .flow .blk.hl{background:var(--main-lt); border-color:#ffc7d4;}
+  table.idx{width:100%; border-collapse:collapse; font-size:13.5px; margin-top:6px;}
+  table.idx th{background:#fafafb; text-align:left; padding:8px 12px; border-bottom:2px solid var(--line); font-size:12.5px; color:var(--sub);}
+  table.idx td{padding:7px 12px; border-bottom:1px solid #f2f2f4; vertical-align:top;}
+  table.idx td.no{color:var(--main); font-weight:800; width:46px;}
+  table.idx td.lay{color:var(--sub); font-size:12px; width:132px;}
+  .note-inline{font-size:12.5px; color:var(--sub); margin-top:12px;}
+  .sw{display:inline-flex; align-items:center; gap:6px; font-size:12px; margin:0 14px 6px 0;}
+  .sw i{width:13px; height:13px; border-radius:3px; display:inline-block; border:1px solid rgba(0,0,0,.12);}
+
+  /* ── 섹션 헤더 ── */
+  .sec-head{display:flex; align-items:center; gap:14px; margin:44px 0 18px; flex-wrap:wrap;}
+  .sec-head .num{background:var(--main); color:#fff; font-weight:800; font-size:13px; border-radius:8px; padding:5px 12px;}
+  .sec-head h2{font-size:20px; font-weight:800; letter-spacing:-.3px;}
+  .sec-head .time{font-size:13px; color:var(--sub);}
+
+  /* ── 슬라이드 카드 ── */
+  .slide{background:#fff; border:1px solid var(--line); border-radius:14px; padding:24px 28px 28px; margin-bottom:22px;}
+  .s-top{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:6px;}
+  .s-num{font-size:12px; font-weight:800; color:#fff; background:#111114; border-radius:6px; padding:3px 9px;}
+  .chip{font-size:11.5px; font-weight:700; border-radius:999px; padding:3px 11px;}
+  .chip.op{background:#f0f0f2; color:#3c3c42;}
+  .chip.p1{background:var(--main-lt); color:#b8143a;}
+  .chip.p2{background:#FFF1DA; color:#9a5b00;}
+  .chip.p3{background:#EDEDF0; color:#3c3c42;}
+  .chip.p4{background:#E4E4E8; color:#282828;}
+  .chip.cl{background:#111114; color:#fff;}
+  .chip.demo{background:var(--main); color:#fff;}
+  .chip.lay{background:#fff; color:var(--sub); border:1px solid var(--line);}
+  .s-time{font-size:12px; color:var(--sub); margin-left:auto;}
+  .slide h3{font-size:18px; font-weight:800; letter-spacing:-.2px; margin-bottom:16px;}
+  .s-body{display:flex; gap:26px; align-items:flex-start; flex-wrap:wrap;}
+  .wf{flex:0 0 560px; max-width:100%;}
+  .wf .cap{font-size:11.5px; color:var(--sub); margin-top:7px;}
+  .txt{flex:1 1 400px; min-width:320px;}
+  .txt h4{font-size:12px; font-weight:800; color:var(--main); letter-spacing:.5px; margin:0 0 7px;}
+  .txt h4:not(:first-child){margin-top:16px;}
+  .copy{background:#fafafb; border:1px solid var(--line); border-left:3px solid var(--main); border-radius:8px; padding:12px 16px; font-size:13.5px;}
+  .copy .t{font-weight:800; font-size:14.5px; margin-bottom:6px;}
+  .copy .st{color:var(--sub); font-size:12.5px; margin-bottom:8px;}
+  .copy ul{margin:4px 0 0 18px;} .copy li{margin:3px 0;}
+  .copy .small{font-size:12px; color:var(--sub); margin-top:8px;}
+  .txt ul.pts{margin-left:18px; font-size:13px; color:#333;}
+  .txt ul.pts li{margin:4px 0;}
+  .memo{font-size:12.5px; color:#4a4a52; background:#fffdf5; border:1px solid #ffe2b0; border-radius:8px; padding:9px 13px;}
+  .memo.red{background:#fff5f7; border-color:#ffc7d4;}
+
+  /* ── 슬라이드 목업: 실제 EMU 좌표를 %로 환산, 실제 팔레트·타입스케일(0.4375×) ──
+     x% = EMU / 12192000 × 100   ·   y% = EMU / 6858000 × 100
+     pt → px = pt × (96/72) × 0.4375                                              */
+  .mk{position:relative; width:100%; aspect-ratio:16/9; background:#F5F5F5;
+     border:1px solid #e3e3e7; overflow:hidden;
+     font-family:-apple-system,"Pretendard","Helvetica Neue",sans-serif; color:#000;}
+  .mk:before,.mk:after{content:""; position:absolute; left:4.204%; width:91.59%; border-top:1px solid #B3B3B3;}
+  .mk:before{top:7.42%;} .mk:after{top:92.51%;}
+  .mk > *{position:absolute; box-sizing:border-box;}
+  .mk .lbl{left:3.43%; top:2.67%; font-size:6.4px; font-weight:700; letter-spacing:.08em; color:#B3B3B3;}
+  .mk .mark{left:3%; bottom:2%; width:33px; height:5.1px; font-size:0; line-height:0;
+            background-image:url(data:image/png;base64,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);
+            background-size:contain; background-repeat:no-repeat; background-position:left bottom; opacity:.9;}
+  .mk .mark b{display:none;}
+  .mk .kick{font-size:9.3px; font-weight:700; color:#9C9C9C; letter-spacing:.02em;}
+  .mk .h{font-size:17.5px; font-weight:800; line-height:1.2; letter-spacing:-.02em;}
+  .mk .h.big{font-size:22.2px;} .mk .h.cover{font-size:25.7px; line-height:1.24;}
+  .mk .h em{color:#FC1C49; font-style:normal;}
+  .mk .card{background:#fff; border-radius:3px;}
+  .mk .card.g{background:#E6E6E6;}
+  .mk .card.k{background:#282828; color:#fff;}
+  .mk .bar{background:#5B5B5B; color:#fff; border-radius:3px 3px 0 0;
+          display:flex; align-items:center; justify-content:center; font-size:10.5px; font-weight:700;}
+  .mk .bar.r{background:#FC1C49;}
+  .mk .tag{background:#FFE5EB; color:#FC1C49; border-radius:3px; display:flex; align-items:center;
+          justify-content:center; font-size:8.2px; font-weight:700; border:.7px solid #FC1C49;}
+  .mk .n{font-size:16.3px; font-weight:800; color:#FC1C49; line-height:1;}
+  .mk .t{font-size:8.2px; line-height:1.5;}
+  .mk .t.mid{font-size:10.5px;} .mk .t.big{font-size:11.7px; font-weight:700;}
+  .mk .t.sm{font-size:7px; color:#5B5B5B;} .mk .t.mut{font-size:7px; color:#9C9C9C;}
+  .mk .t.r{color:#FC1C49;} .mk .t.c{text-align:center;}
+  .mk .shot{background:#EDEDF0; border-radius:3px;}
+  .mk .shot span{position:absolute; left:4px; top:3px; font-size:6px; color:#9A9AA5; letter-spacing:.04em;}
+  .mk .rule{border-top:1px solid #FC1C49;}
+  .mk .dash{border-top:1px dashed #c9c9cf;}
+  .mk table{position:absolute; border-collapse:collapse; font-size:8.2px;}
+  .mk table th{background:#FC1C49; color:#fff; font-weight:700; padding:3px 5px; text-align:center;}
+  .mk table td{background:#fff; padding:3px 6px; border-bottom:1px solid #FC1C49;}
+  .mk table td.k{background:#FFE5EB; color:#FC1C49; font-weight:700; text-align:center; width:16%;}
+  .mk .code{background:#1E1E1E; border-radius:3px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+            font-size:7.6px; line-height:1.62; color:#D8D8DE; padding:9px 11px; white-space:pre;}
+  .mk .code i{color:#569CD6; font-style:normal;}
+  .mk .code b{color:#CE9178; font-weight:400;}
+  .mk .code u{color:#FF5C7A; text-decoration:none;}
+  .mk .code s{color:#6A6A72; text-decoration:none;}
+  .mk .chip5{border:1px solid #C9C9CF; border-radius:999px; display:flex; align-items:center;
+             justify-content:center; font-size:7.4px; color:#5B5B5B; background:#fff;}
+  .mk .lead{border-top:1px solid #B3B3B3;} .mk .lead.r{border-color:#FC1C49;}
+  .mk .dot{width:3.5px; height:3.5px; border-radius:50%; background:#B3B3B3;} .mk .dot.r{background:#FC1C49;}
+  .mk .kchip{background:#EDEDF0; border-radius:3px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+            font-size:6.6px; color:#3c3c42; padding:2.5px 6px; white-space:nowrap;}
+  .mk .kstrip{background:#fafafb; border:1px solid #e3e3e7; border-radius:3px;}
+  .mk .kstrip-t{font-size:7.4px; color:#5B5B5B;} .mk .kstrip-t b{color:#000;}
+  .mk .anno{font-size:11.7px; font-weight:800; line-height:1.3; letter-spacing:-.01em;}
+  .mk .anno.r{color:#FC1C49;} .mk .anno span{display:block; font-size:7px; font-weight:400; color:#9C9C9C; margin-top:2px;}
+  .wf-spec{font-size:11.5px; color:#4a4a52; margin-top:7px; background:#fafafb; border:1px solid var(--line);
+           border-radius:7px; padding:8px 10px; line-height:1.5;}
+</style>
+</head><body><div class="wrap">
+  <div class="doc-head">
+    <span class="tag">PLAN v1.1</span>
+    <h1>9강 — Plan-first template 만들기</h1>
+    <p class="sub">라이트 개념 덱 · 실습 45분 · 4클립 · 슬라이드 6장 · v1.1 (Lab 09 정렬 수정)</p>
+    <div class="meta"><span>정렬: 커리큘럼 정본 9강 · Lab 09 E1~E4</span><span>산출물: <b>docs/templates/implementation-plan.md</b> — Lab 12에서 쓸 <b>계획 template(구조)</b>, 실제 계획이 아님</span><span>입력: 8강 Issue template · notes/issue-draft-l08.md · 앱 코드는 v0 유지</span><span>사상 축: <b>loop engineering</b> — 계획 template은 루프를 돌리기 전에 사람이 성공·검증·중단 기준을 설계하는 틀</span></div>
+  </div>
+
+  <div class="panel">
+    <h2>덱 성격</h2>
+    <p class="note-inline">이 덱은 <b>라이트 개념 덱</b>이다. 슬라이드는 개념 앵커만 잡고 상세 설명은 스피커 노트가 맡는다. <b>9강 실습은 특정 Issue의 실제 계획을 쓰는 게 아니라 Lab 12에서 쓸 계획 template(구조)을 만드는 단계</b>라서, 슬라이드에서는 「Plan」이 아니라 「Plan template」으로 부르고, 종료 조건 네 갈래(성공 / 반복 한도 / 정체 / 사람 확인)와 「사람 승인 전에는 구현으로 넘어가지 않는다」를 명시한다. 실습 큐 슬라이드는 두지 않고(실습 지시는 Lab 09 README), 이론 앵커 03·04·05 세 장이 실습 E1~E4 사이에 들어간다. 8강 플랜과 같은 토큰·좌표 문법(킥커 12.18% · 헤드라인 18.8% · 스트립 79.5%)을 그대로 쓴다. 다이어그램 장(03)은 7강 05·07처럼 큰 토큰(<code>t mid</code> 10.5px · <code>t</code> 8.2px)만 쓴다.</p>
+  </div>
+
+  <!-- 01 표지 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">01</span><span class="chip op">표지</span><span class="chip lay">텍스트 표지 · 클립 1</span><span class="s-time">30초</span></div>
+    <h3>바로 코딩하지 않는다</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="kick" style="left:3.43%; top:12.18%;">Chapter 2 · 9강 · Plan-first template 만들기</div>
+          <div class="h cover" style="left:3.43%; top:30%;">바로 코딩하지 않는다</div>
+          <div class="t mid" style="left:3.43%; top:57%; color:#5B5B5B;">루프를 먼저 설계한다</div>
+          <div class="t mut" style="left:3.43%; top:65%;">개발자를 위한 Codex — 9강 · 실습 · 약 45분</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">텍스트 표지 — 헤드라인은 메시지형, 커리큘럼 공식 강의명은 킥커에. Chapter 2 세 번째 강의</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 30초. 템플릿 유형: 01 표지. 8강 표지와 같은 좌표(kicker 12.18% · 커버 30% · 부제 57% · 메타 65%). 헤드라인 「바로 코딩하지 않는다」, 부제 「루프를 먼저 설계한다」. kicker는 커리큘럼 공식 강의명이 남도록 <code>Chapter 2 · 9강 · Plan-first template 만들기</code>. 실제 렌더는 <code>assets/cover09.png</code>(cover08 템플릿에 문구 교체). 이 섹션은 문구 정본. 레드 없음.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 리캡 · 도입 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">02</span><span class="chip op">리캡 · 도입</span><span class="chip lay">좌우 대조 2열 · 헤더 바</span><span class="s-time">1.5분</span></div>
+    <h3>Issue는 세웠으니, 이제 계획의 틀로</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 2</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">지난 강의 리캡 · 9강 시작</div>
+          <div class="h" style="left:3.43%; top:18.8%;">Issue는 세웠으니, 이제 계획의 틀로</div>
+          <!-- 좌: 8강에서 만든 것 -->
+          <div class="bar" style="left:4.2%; top:29.5%; width:38%; height:5.5%;">8강 — Issue</div>
+          <div class="card" style="left:4.2%; top:36.5%; width:38%; height:30%;"></div>
+          <div class="t" style="left:6.6%; top:40%; width:12%; font-weight:700;">무엇을</div>
+          <div class="t" style="left:18%; top:40%; width:23%; color:#5B5B5B;">요약 · 기대 동작</div>
+          <div class="t" style="left:6.6%; top:49%; width:12%; font-weight:700;">왜</div>
+          <div class="t" style="left:18%; top:49%; width:23%; color:#5B5B5B;">맥락 · 현재 동작</div>
+          <div class="t" style="left:6.6%; top:58%; width:12%; font-weight:700;">완료 기준</div>
+          <div class="t" style="left:18%; top:58%; width:23%; color:#5B5B5B;">판정 가능한 조건</div>
+          <div class="kchip" style="left:4.2%; top:69.5%; width:18%; text-align:center;">workflow-task.md</div>
+          <div class="kchip" style="left:23.4%; top:69.5%; width:18.8%; text-align:center;">issue-draft-l08.md</div>
+          <!-- 가운데 화살표 -->
+          <div class="t big c" style="left:42.2%; top:47.5%; width:7.8%; color:#9C9C9C;">→</div>
+          <!-- 우: 9강에서 만들 것 -->
+          <div class="bar" style="left:50%; top:29.5%; width:45.8%; height:5.5%;">9강 — Plan template</div>
+          <div class="card" style="left:50%; top:36.5%; width:45.8%; height:30%;"></div>
+          <div class="t" style="left:52.4%; top:38.7%; width:15%; font-weight:700;">어디를</div>
+          <div class="t" style="left:68%; top:38.7%; width:26%; color:#5B5B5B;">읽을 파일은? 바꿀 파일은?</div>
+          <div class="t" style="left:52.4%; top:45.7%; width:15%; font-weight:700;">어떤 순서로</div>
+          <div class="t" style="left:68%; top:45.7%; width:26%; color:#5B5B5B;">작은 단계와 종료 상태는?</div>
+          <div class="t" style="left:52.4%; top:52.7%; width:15%; font-weight:700;">무엇으로 검증</div>
+          <div class="t" style="left:68%; top:52.7%; width:26%; color:#5B5B5B;">테스트는? 위험 감지는?</div>
+          <div class="t" style="left:52.4%; top:59.7%; width:15%; font-weight:700;">언제 멈출지</div>
+          <div class="t" style="left:68%; top:59.7%; width:26%; color:#5B5B5B;">종료 조건은? 사람 확인은?</div>
+          <div class="kchip" style="left:50%; top:69.5%; width:36%; text-align:center;">docs/templates/implementation-plan.md</div>
+          <!-- 레드 1개: 승인 게이트 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:73.6%; width:91.6%; color:#FC1C49; font-weight:700;">사람이 계획을 승인하기 전에는 구현으로 넘어가지 않는다</div>
+          <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;"><b>재사용할 계획 구조는 repo에 남기고</b>, 실제 계획은 Lab 12에서 처음 작성한다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">좌(8강 Issue · 무엇을·왜·완료 기준을 정한다) → 우(9강 Plan template · 어디를·어떤 순서로·무엇으로 검증·언제 멈출지를 묻는다). 레드는 승인 게이트 한 줄</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1.5분. 10 텍스트 비교 변형 — 좌 열 4.2~42.2%(폭 38%) · 화살표 42.2~50% · 우 열 50~95.8%(폭 45.8%). 좌는 회색 <code>bar</code> 「8강 — Issue」 + 흰 카드 3행(무엇을·왜·완료 기준 = 8강 아홉 필드를 세 질문으로 압축, 부연은 <b>정해진 내용</b>) + 아래 8강 산출물 <code>kchip</code> 둘. 우는 회색 <code>bar</code> <b>「9강 — Plan template」</b>(구현 계획이 아니라 <b>계획의 틀</b>) + 흰 카드 4행(어디를·어떤 순서로·무엇으로 검증·언제 멈출지) — 부연은 전부 <b>물음 형태</b>(「읽을 파일은? 바꿀 파일은?」)로 써서 왼쪽이 <b>정하는 것</b>이라면 오른쪽은 <b>묻는 틀</b>이라는 대비를 만든다. 우측 바를 회색으로 내려 레드가 둘이 되지 않게 했다. 행은 <code>t</code> 8.2px(라벨 볼드 검정 · 부연 #5B5B5B)로 <code>t sm</code> 미사용. 가운데 화살표는 <code>t big</code> 회색 글리프(8강 04·7강 06과 같은 문자 화살표 — 아이콘 아님). <b>레드 1개 = 73.6% 중앙 <code>t mid</code> 볼드 「사람이 계획을 승인하기 전에는 구현으로 넘어가지 않는다」</b>(05·7강 12의 중앙 한 줄 문법). 스트립이 「구조는 repo에, 실제 계획은 Lab 12에서」로 template과 실제 계획을 분리한다. 수치 없음.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 이론 핵심 — 루프 다이어그램 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">03</span><span class="chip op">이론 핵심</span><span class="chip lay">루프 다이어그램 · 4 노드 순환 + 멈춤</span><span class="s-time">3분</span></div>
+    <h3>에이전트는 루프로 일한다</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 2</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 1 · 이론 핵심</div>
+          <div class="h" style="left:3.43%; top:18.8%;">에이전트는 루프로 일한다</div>
+          <!-- 상단 4 노드: 행동 → 관찰 → 판단 → 다음 행동 -->
+          <div class="card" style="left:4.2%; top:30%; width:16%; height:11%;"></div>
+          <div class="t mid c" style="left:4.2%; top:33.3%; width:16%; font-weight:700;">행동</div>
+          <div class="t mid c" style="left:20.2%; top:33.3%; width:9.2%; color:#9C9C9C;">→</div>
+          <div class="card" style="left:29.4%; top:30%; width:16%; height:11%;"></div>
+          <div class="t mid c" style="left:29.4%; top:33.3%; width:16%; font-weight:700;">관찰</div>
+          <div class="t mid c" style="left:45.4%; top:33.3%; width:9.2%; color:#9C9C9C;">→</div>
+          <div class="card" style="left:54.6%; top:30%; width:16%; height:11%;"></div>
+          <div class="t mid c" style="left:54.6%; top:33.3%; width:16%; font-weight:700;">판단</div>
+          <div class="t mid c" style="left:70.6%; top:33.3%; width:9.2%; color:#9C9C9C;">→</div>
+          <div class="card" style="left:79.8%; top:30%; width:16%; height:11%;"></div>
+          <div class="t mid c" style="left:79.8%; top:33.3%; width:16%; font-weight:700;">다음 행동</div>
+          <!-- 다음 행동에서 내려오는 버스 -->
+          <div style="left:87.8%; top:41%; height:17%; border-left:1px solid #C9C9CF;"></div>
+          <!-- 순환: 다음 행동 → 행동으로 되돌아가는 한 줄 -->
+          <div style="left:12.2%; top:50%; width:75.6%; border-top:1px solid #C9C9CF;"></div>
+          <div style="left:12.2%; top:41%; height:9%; border-left:1px solid #C9C9CF;"></div>
+          <div class="dot" style="left:11.89%; top:40.45%;"></div>
+          <div class="t" style="left:30%; top:44.6%; width:56%; text-align:right; color:#5B5B5B;">다음 행동은 다시 행동이 된다 — 루프는 스스로 닫히지 않는다</div>
+          <!-- 멈춤: 버스 끝 -->
+          <div class="card" style="left:79.8%; top:58%; width:16%; height:11%;"></div>
+          <div class="t mid c" style="left:79.8%; top:61.3%; width:16%; font-weight:700;">멈춤</div>
+          <div class="t" style="left:55%; top:61.6%; width:23%; text-align:right; color:#5B5B5B;">종료 조건에 닿으면</div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid" style="left:4.2%; top:58.5%; width:48%; color:#FC1C49; font-weight:700;">Plan-first는 루프를 실행하기 전에<br>사람이 성공·검증·중단 기준을 설계하는 것이다</div>
+          <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;"><b>종료 조건이 없으면</b> 범위가 샌다 · 같은 시도가 반복된다 · 되돌리기 비용이 커진다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">행동 → 관찰 → 판단 → 다음 행동 네 노드. 다음 행동에서 행동으로 되돌아가는 순환 한 줄, 버스 끝은 멈춤 카드. 레드는 「Plan-first는 … 설계하는 것이다」 두 줄 한 덩이</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 3분. 이 덱의 이론 앵커이자 가장 시각적인 장. 09 텍스트 연결(플로우) 변형. <b>좌표 의도:</b> 네 노드는 30~41% 한 줄, 폭 16%(4.2 / 29.4 / 54.6 / 79.8%, 간격 9.2%) 흰 <code>card</code>(테두리 없음), 이름은 <code>t mid</code> 볼드 중앙 — <b>행동 · 관찰 · 판단 · 다음 행동</b>. 노드 사이 화살표는 <code>t mid</code> 회색 「→」 글리프(8강 04·7강 06 문법 — 아이콘 아님). 「다음 행동」 노드 중심(87.8%)에서 7강 05·12와 같은 #C9C9CF 세로 버스가 41→58%로 내려오고, 50%에서 가로선이 「행동」 노드 중심(12.2%)까지 되돌아가 세로선(41→50%)으로 올라 행동 아래에 <code>.dot</code>로 닿는다 — <b>판단에서 다음 행동으로, 다음 행동이 다시 행동이 되는 순환</b>(7강 06 lead·dot 문법). 가로선 위에 회색 <code>t</code> 오른정렬 라벨 「다음 행동은 다시 행동이 된다 — 루프는 스스로 닫히지 않는다」. 버스 끝 58~69%에 「멈춤」 카드(다음 행동과 같은 폭·같은 열), 왼쪽에 회색 <code>t</code> 「종료 조건에 닿으면」. <b>레드 1개 = 58.5% 좌측 <code>t mid</code> 볼드 두 줄 「Plan-first는 루프를 실행하기 전에 / 사람이 성공·검증·중단 기준을 설계하는 것이다」</b>(7강 07의 좌측 한 덩이와 같은 자리·문법 — 기존 「검증이 루프를 닫는다」는 제거). 글자 크기는 <code>t mid</code>(10.5px)·<code>t</code>(8.2px)만, <code>t sm</code> 미사용. 스트립이 종료 조건 부재의 세 결과(범위가 샌다 · 같은 시도가 반복된다 · 되돌리기 비용이 커진다)를 명시한다. 수치 없음.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 핵심 개념 — 여덟 칸 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">04</span><span class="chip op">핵심 개념</span><span class="chip lay">역할 라벨 + 칸 이름 7행</span><span class="s-time">3분</span></div>
+    <h3>계획의 여덟 칸 = 루프 설계도</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 2</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 2 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:18.8%;">계획의 여덟 칸 = 루프 설계도</div>
+          <div class="kchip" style="left:31%; top:26.3%; width:38%; text-align:center;">docs/templates/implementation-plan.md</div>
+          <div class="card" style="left:4.2%; top:31.5%; width:91.6%; height:45%;"></div>
+          <div style="left:22.5%; top:33.5%; height:41%; border-left:1px solid #E6E6E6;"></div>
+          <div class="t mid" style="left:6.5%; top:34.2%; width:15%; font-weight:800;">성공 정의</div>
+          <div class="kchip" style="left:25%; top:34.5%;">Goal</div>
+          <div class="t mid" style="left:6.5%; top:40.3%; width:15%; font-weight:800;">읽을 근거</div>
+          <div class="kchip" style="left:25%; top:40.6%;">Files to Read First</div>
+          <div class="t mid" style="left:6.5%; top:46.4%; width:15%; font-weight:800;">변경 대상</div>
+          <div class="kchip" style="left:25%; top:46.7%;">Files to Change</div>
+          <div class="t mid" style="left:6.5%; top:52.5%; width:15%; font-weight:800;">진행 단위</div>
+          <div class="kchip" style="left:25%; top:52.8%;">Steps</div>
+          <div class="t mid" style="left:6.5%; top:58.6%; width:15%; font-weight:800;">검증 증거</div>
+          <div class="kchip" style="left:25%; top:58.9%;">Tests to Add or Update</div>
+          <div class="t mid" style="left:6.5%; top:64.7%; width:15%; font-weight:800;">경계</div>
+          <div style="left:25%; top:65%; display:flex; gap:5px;"><span class="kchip">Risks</span><span class="kchip">Out of Scope</span></div>
+          <div class="t mid" style="left:6.5%; top:70.8%; width:15%; font-weight:800;">종료</div>
+          <div class="kchip" style="left:25%; top:71.1%;">Stop Conditions</div>
+          <!-- 레드 1개: 읽을 파일 ↔ 바꿀 파일 브래킷 + 한 줄 -->
+          <div style="left:45.5%; top:41.2%; height:9.6%; border-left:1px solid #FC1C49;"></div>
+          <div class="t" style="left:48%; top:44.1%; width:34%; color:#FC1C49; font-weight:700;">읽을 파일과 바꿀 파일은 다르다</div>
+          <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;"><b>여덟 칸은 채우는 서식이 아니라 루프의 설계도</b> — 무엇을 성공으로 볼지부터 언제 멈출지까지</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">여덟 칸을 루프 역할 일곱(성공 정의·읽을 근거·변경 대상·진행 단위·검증 증거·경계·종료)으로 묶음. 칸 이름은 원문 kchip. 레드는 읽을 파일 ↔ 바꿀 파일 브래킷 한 줄</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 3분. 8강 05(아홉 필드를 네 역할로 묶은 장)와 같은 그룹핑 문법 — 좌측 역할 라벨(<code>t mid</code> 볼드, 한국어: 성공 정의 · 읽을 근거 · 변경 대상 · 진행 단위 · 검증 증거 · 경계 · 종료) + 세로 구분선(22.5%) + 우측 칸 이름. 칸 이름 여덟은 <b>실제 파일에 들어가는 섹션 이름이라 원문 그대로 <code>kchip</code></b>(Goal · Files to Read First · Files to Change · Steps · Tests to Add or Update · Risks · Out of Scope · Stop Conditions). 경계 행은 Risks · Out of Scope 두 칩을 flex 한 줄로. 7행이라 카드를 31.5~76.5%(높이 45%)로 키우고 행 간격 6.1%(34.2 / 40.3 / 46.4 / 52.5 / 58.6 / 64.7 / 70.8%). 상단 26.3%에 파일명 <code>kchip</code>(8강 05와 같은 자리). <b>레드 1개 = 읽을 근거·변경 대상 두 행을 묶는 세로 브래킷(45.5%, 41.2~50.8% — 칩 오른쪽에 붙여 배치) + <code>t</code> 볼드 「읽을 파일과 바꿀 파일은 다르다」</b> — 브래킷과 문장은 한 강조 단위(Lab 09 「자주 하는 실수」의 첫 항목). 그 외 레드 없음. 스트립이 「서식이 아니라 설계도」로 03의 루프와 연결한다. 수치 없음.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 핵심 개념 — 종료 조건 네 갈래 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">05</span><span class="chip op">핵심 개념</span><span class="chip lay">번호 카드 2×2</span><span class="s-time">2.5분</span></div>
+    <h3>종료 조건은 마지막이 아니라 설계다</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 2</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 4 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:18.8%;">종료 조건은 마지막이 아니라 설계다</div>
+          <!-- 1 성공 종료 -->
+          <div class="card" style="left:4.2%; top:29.5%; width:44%; height:17%;"></div>
+          <div class="chip5" style="left:6.6%; top:32.5%; width:4.3%; height:7.6%;">1</div>
+          <div class="t mid" style="left:12.7%; top:31.7%; width:33%; font-weight:700;">성공 종료</div>
+          <div class="t" style="left:12.7%; top:38.6%; width:33%; color:#5B5B5B;">검증을 통과하고 남은 문제가 없다</div>
+          <!-- 2 한도 종료 -->
+          <div class="card" style="left:51.8%; top:29.5%; width:44%; height:17%;"></div>
+          <div class="chip5" style="left:54.2%; top:32.5%; width:4.3%; height:7.6%;">2</div>
+          <div class="t mid" style="left:60.3%; top:31.7%; width:33%; font-weight:700;">한도 종료</div>
+          <div class="t" style="left:60.3%; top:38.6%; width:33%; color:#5B5B5B;">정해진 반복 횟수에 도달했다</div>
+          <!-- 3 정체 종료 -->
+          <div class="card" style="left:4.2%; top:49.5%; width:44%; height:17%;"></div>
+          <div class="chip5" style="left:6.6%; top:52.5%; width:4.3%; height:7.6%;">3</div>
+          <div class="t mid" style="left:12.7%; top:51.7%; width:33%; font-weight:700;">정체 종료</div>
+          <div class="t" style="left:12.7%; top:58.6%; width:33%; color:#5B5B5B;">직전 검증과 비교해 남은 문제가 줄지 않는다</div>
+          <!-- 4 사람 확인 -->
+          <div class="card" style="left:51.8%; top:49.5%; width:44%; height:17%;"></div>
+          <div class="chip5" style="left:54.2%; top:52.5%; width:4.3%; height:7.6%;">4</div>
+          <div class="t mid" style="left:60.3%; top:51.7%; width:33%; font-weight:700;">사람 확인</div>
+          <div class="t" style="left:60.3%; top:58.6%; width:33%; color:#5B5B5B;">정책·범위·승인이 필요하다</div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:70%; width:91.6%; color:#FC1C49; font-weight:700;">사람에게 넘기는 것도 계획된 종료다</div>
+          <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;"><b>Stop Conditions는 마지막 체크리스트가 아니라 구현 중 멈춤 기준</b> — 네 갈래 모두 판정 가능한 조건으로 적는다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">네 갈래(성공 종료·한도 종료·정체 종료·사람 확인 = Lab 09 README의 성공 / 반복 한도 / 정체 / 사람 확인)를 같은 크기 카드 2×2로, 각 카드에 판정 한 줄. 번호는 회색 chip5로 통일. 레드는 아래 한 줄</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 2.5분. 07 텍스트 4단 변형 — 2×2 흰 카드(4.2 / 51.8% · 폭 44% · 높이 17%, 행 29.5 / 49.5%). 네 카드는 <b>크기·토큰을 완전히 동일하게</b> 해서 어느 하나도 튀지 않는다. 번호는 <code>.chip5</code>(회색 테두리 원, 24px) — 레드 번호 필을 쓰지 않아 장식 레드와 충돌하지 않는다. 카드 안은 <code>t mid</code> 볼드 갈래 이름 + <code>t</code> 회색 판정 조건 한 줄(<code>t sm</code> 미사용). 갈래 이름·판정은 실습 README의 네 조건과 일치 — <b>성공 종료</b>(검증을 통과하고 남은 문제가 없다) · <b>한도 종료</b>(정해진 반복 횟수에 도달했다) · <b>정체 종료</b>(<b>직전 검증과 비교해</b> 남은 문제가 줄지 않는다 — 비교 대상이 있어야 판정 가능) · <b>사람 확인</b>(정책·범위·승인이 필요하다). <b>레드 1개 = 70% 중앙 <code>t mid</code> 볼드 「사람에게 넘기는 것도 계획된 종료다」</b>(7강 12의 멈춤 규칙 한 줄과 같은 문법 — 네 번째 갈래가 실패가 아님을 못 박는다). 스트립은 Lab 09 「자주 하는 실수」 셋째 항목(Stop Conditions를 마지막 체크리스트로 쓰는 것)을 지식으로 뒤집은 문장. 반복 횟수 같은 수치는 쓰지 않는다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 마무리 · 10강 예고 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">06</span><span class="chip op">마무리</span><span class="chip lay">4단계 흐름 + 이어지는 곳</span><span class="s-time">1.5분</span></div>
+    <h3>계획도 검토하고 고친다</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 2</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">9강 마무리</div>
+          <div class="h" style="left:3.43%; top:18.8%;">계획도 검토하고 고친다</div>
+          <div class="t sm c" style="left:4.2%; top:31%; width:91.6%; color:#9C9C9C; font-weight:700;">Lab 09에서 template을 완성하는 순서</div>
+          <!-- 4단계 흐름: 검토 → 사람 승인 → 최소 수정 → 검증 (03의 루프를 template 만들기에 적용) -->
+          <div class="card" style="left:4.2%; top:36%; width:19%; height:10.5%;"></div>
+          <div class="t mid c" style="left:4.2%; top:39.1%; width:19%; font-weight:700;">검토</div>
+          <div class="t mid c" style="left:23.2%; top:39.1%; width:5.2%; color:#9C9C9C;">→</div>
+          <div class="card" style="left:28.4%; top:36%; width:19%; height:10.5%;"></div>
+          <div class="t mid c" style="left:28.4%; top:39.1%; width:19%; font-weight:700;">사람 승인</div>
+          <div class="t mid c" style="left:47.4%; top:39.1%; width:5.2%; color:#9C9C9C;">→</div>
+          <div class="card" style="left:52.6%; top:36%; width:19%; height:10.5%;"></div>
+          <div class="t mid c" style="left:52.6%; top:39.1%; width:19%; font-weight:700;">최소 수정</div>
+          <div class="t mid c" style="left:71.6%; top:39.1%; width:5.2%; color:#9C9C9C;">→</div>
+          <div class="card" style="left:76.8%; top:36%; width:19%; height:10.5%;"></div>
+          <div class="t mid c" style="left:76.8%; top:39.1%; width:19%; font-weight:700;">검증</div>
+          <div class="t mid c" style="left:4.2%; top:51%; width:91.6%; color:#5B5B5B;">앱 코드는 수정하지 않는다 — 오늘 고치는 것은 template 문서 하나다</div>
+          <div class="t sm c" style="left:4.2%; top:57.5%; width:91.6%; color:#9C9C9C;">루프를 설계하는 문서도 같은 루프로 완성한다 — 승인이 가운데에 있다</div>
+          <div class="t sm c" style="left:4.2%; top:63%; width:91.6%; color:#9C9C9C; font-weight:700;">이어지는 곳</div>
+          <div class="card k" style="left:4.2%; top:67.5%; width:44%; height:8%;"></div>
+          <div class="t sm c" style="left:4.2%; top:69.8%; width:44%; color:#fff;">Lab 12 — 이 template으로 첫 실제 계획을 작성한다</div>
+          <div class="card k" style="left:51.8%; top:67.5%; width:44%; height:8%;"></div>
+          <div class="t sm c" style="left:51.8%; top:69.8%; width:44%; color:#fff;">10강 — 반복 작업의 prompt와 checklist를 고정한다</div>
+          <div class="kstrip" style="left:4.2%; top:80%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.6%; width:88%; text-align:center;"><b>계획도 코드처럼 검토하고 고친다</b> — 승인이 있어야 다음 단계로 간다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">4단계 흐름(검토 → 사람 승인 → 최소 수정 → 검증) + 앱 코드 무변경 한 문장 + 이어지는 곳 검은 카드 둘(Lab 12 첫 실제 계획 · 10강 prompt·checklist)</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1.5분. 8강 07과 같은 04 텍스트 1단 회수+예고 문법의 좌표(라벨 31% · 카드 행 36% · 한 문장 51% · 보조 57.5% · 예고 라벨 63% · 검은 카드 67.5% · 스트립 80%)를 유지하고, 36% 카드 행만 <b>흰 카드 넷</b>(폭 19% · 4.2 / 28.4 / 52.6 / 76.8%, 간격 5.2%)으로 나눠 <b>검토 → 사람 승인 → 최소 수정 → 검증</b> 흐름을 만든다 — Lab 09에서 template 자체를 완성하는 순서이고, 03의 루프(행동·관찰·판단·다음 행동)가 template 만들기에도 똑같이 적용된다는 회수. 카드 이름은 <code>t mid</code> 볼드 중앙, 사이 화살표는 <code>t mid</code> 회색 「→」 글리프(03·8강 04 문법 — 아이콘 아님). 51% <code>t mid</code> 회색 한 문장이 「앱 코드는 수정하지 않는다」(8강과 이어지는 v0 유지), 57.5% <code>t sm</code> 회색이 「승인이 가운데에 있다」로 02의 승인 게이트를 회수. 63% 「이어지는 곳」 아래 검은 카드 둘(4.2 / 51.8% · 폭 44% · 05의 2열 좌표) = <b>Lab 12에서 첫 실제 계획 작성</b> · <b>10강에서 반복 작업의 prompt와 checklist 고정</b>(커리큘럼 정본 10강 · Lab 09 §6). 스트립이 제목을 되받는다. 레드 없음(8강 07과 동일). 수치 없음.</div>
+      </div>
+    </div>
+  </section>
+
+</div></body></html>

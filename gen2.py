@@ -25,6 +25,9 @@ PLANS = [
     dict(id='lec08', num='8강', title='Issue template 만들기',
          sub='나쁜 요청 진단 · 아홉 필드 · 완료 기준 · Issue 초안', dur='약 40분',
          src=os.path.join(ROOT, 'ref/lecture08-slide-plan-v1.html'), cover='assets/cover08.png'),
+    dict(id='lec09', num='9강', title='Plan-first template 만들기',
+         sub='루프 설계 · 계획의 여덟 칸 · 종료 조건 · 승인 게이트', dur='약 45분',
+         src=os.path.join(ROOT, 'ref/lecture09-slide-plan-v1.html'), cover='assets/cover09.png'),
 ]
 FONT = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">'
 
