@@ -2,3 +2,4 @@ ref/
 gen2.py
 mockgen.py
 CLAUDE.md
+__pycache__/
