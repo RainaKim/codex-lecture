@@ -179,18 +179,38 @@ git log --oneline -3 -- src tests
 > "반대로 **최근 커밋이 여기 끼어 있으면** 우리가 아는 v0 상태가 아닐 수 있으니 **거기서 멈추고**
 > 확인해야 합니다."
 
-리허설 저장소의 실제 출력은 이렇다 — 위 세 줄은 문서·실습 자료 커밋이고, 아래는 **최초 커밋 하나뿐**이다.
+정본 저장소(`order-ops`, v0)의 실제 출력이다 — 위 세 줄은 문서·실습 자료 커밋이고, 아래는 **최초
+커밋 하나뿐**이다.
 ```text
+$ git branch --show-current
+main
+
 $ git log --oneline -3
-d73139a docs: refine lab 12 workflow
-74e9708 feat: add document relationship audit
-667d140 docs: expand Lab 11 handoff guidance
+6e64f11 docs: refine lab 12 workflow
+d26f90f feat: add document relationship audit
+57c8c56 docs: expand Lab 11 handoff guidance
 
 $ git log --oneline -3 -- src tests
 22b5de9 chore: initial commit
+
+$ git status --short --untracked-files=all
+(출력 없음)
+
+$ git diff --stat -- src tests
+$ git diff --cached --stat -- src tests
+(둘 다 출력 없음)
 ```
-⚠️ **해시와 메시지는 매번 달라진다.** 읽을 것은 값이 아니라 **「위쪽은 문서 커밋, 아래쪽은 최초 커밋
-하나」라는 모양**이다."
+⚠️ **해시는 매번 달라진다.** 읽을 것은 값이 아니라 **「위쪽은 문서 커밋, 아래쪽은 최초 커밋 하나,
+나머지 셋은 빈 출력」이라는 모양**이다.
+
+⚠️ **리허설용으로 구현을 넣어 둔 저장소로 찍지 않는다.** 그 저장소는 `src`·`tests`에 변경이 남아 있어
+**`status`와 `diff --stat`이 비어 있지 않게** 나온다. 지금 하는 말과 화면이 정반대가 된다.
+**촬영 전에 v0 상태인지 이 다섯 줄로 먼저 확인한다.**
+
+⚠️ **README와 한 군데 다르다.** README §1은 `git rev-parse --short HEAD`로 적혀 있는데, 여기서는
+`git log --oneline -3`을 쓴다. **해시 한 줄로는 「왜 달라졌는지」를 볼 수 없어서**다. 수강생이 README를
+보고 있으면 한마디 덧붙인다 — "README엔 해시 한 줄인데, **최근 세 개를 같이 보면 훨씬 빨리
+판단**됩니다."
 
 **셋째 줄 — `status --short --untracked-files=all`**
 > "**이미 있는 변경과 새 파일**입니다. `--untracked-files=all`을 붙인 이유가 있어요 — **기본 status는
