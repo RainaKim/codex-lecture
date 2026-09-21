@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><title>13강 환각 차단 — 슬라이드 구성안 v1</title>
+<style>
+  :root{
+    --ink:#111114; --sub:#6b6b73; --line:#e6e6e9;
+    --main:#FC1C49; --main-lt:#FFE5EB; --sub-o:#FFA71B;
+    --g1:#F5F5F5; --g2:#E6E6E6; --d1:#282828; --d2:#5B5B5B;
+    --wf-line:#b3b3b3; --wf-dash:#c9c9cf; --wf-fill:#fafafb; --wf-txt:#6b6b73;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Segoe UI","Noto Sans KR","Apple SD Gothic Neo",sans-serif;
+    background:#f0f0f2; color:var(--ink); line-height:1.55; padding:40px 20px 80px; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1180px; margin:0 auto;}
+
+  /* ── 문서 헤더 ── */
+  .doc-head{background:#0f0f12; color:#fff; border-radius:16px; padding:36px 40px; margin-bottom:28px;}
+  .doc-head .tag{display:inline-block; background:var(--main); border:none;
+    border-radius:999px; padding:4px 15px; font-size:12.5px; letter-spacing:.2px; margin-bottom:14px; font-weight:700;}
+  .doc-head h1{font-size:27px; font-weight:800; letter-spacing:-.4px;}
+  .doc-head p.sub{margin-top:8px; color:#c9c9d2; font-size:14.5px;}
+  .doc-head .meta{display:flex; flex-wrap:wrap; gap:10px 26px; margin-top:18px; font-size:13px; color:#e2e2e8;}
+  .doc-head .meta b{color:#fff; font-weight:700;}
+
+  /* ── 패널 ── */
+  .panel{background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 30px; margin-bottom:28px;}
+  .panel h2{font-size:17px; font-weight:800; margin-bottom:14px; letter-spacing:-.2px;}
+  .flow{display:flex; gap:8px; flex-wrap:wrap;}
+  .flow .blk{flex:1 1 150px; border-radius:10px; padding:12px 14px; border:1px solid var(--line); background:#fafafb;}
+  .flow .blk .t{font-size:11.5px; color:var(--sub); font-weight:600;}
+  .flow .blk .n{font-size:14px; font-weight:800; margin:2px 0;}
+  .flow .blk .s{font-size:12px; color:var(--sub);}
+  .flow .blk.hl{background:var(--main-lt); border-color:#ffc7d4;}
+  table.idx{width:100%; border-collapse:collapse; font-size:13.5px; margin-top:6px;}
+  table.idx th{background:#fafafb; text-align:left; padding:8px 12px; border-bottom:2px solid var(--line); font-size:12.5px; color:var(--sub);}
+  table.idx td{padding:7px 12px; border-bottom:1px solid #f2f2f4; vertical-align:top;}
+  table.idx td.no{color:var(--main); font-weight:800; width:46px;}
+  table.idx td.lay{color:var(--sub); font-size:12px; width:132px;}
+  .note-inline{font-size:12.5px; color:var(--sub); margin-top:12px;}
+  .sw{display:inline-flex; align-items:center; gap:6px; font-size:12px; margin:0 14px 6px 0;}
+  .sw i{width:13px; height:13px; border-radius:3px; display:inline-block; border:1px solid rgba(0,0,0,.12);}
+
+  /* ── 섹션 헤더 ── */
+  .sec-head{display:flex; align-items:center; gap:14px; margin:44px 0 18px; flex-wrap:wrap;}
+  .sec-head .num{background:var(--main); color:#fff; font-weight:800; font-size:13px; border-radius:8px; padding:5px 12px;}
+  .sec-head h2{font-size:20px; font-weight:800; letter-spacing:-.3px;}
+  .sec-head .time{font-size:13px; color:var(--sub);}
+
+  /* ── 슬라이드 카드 ── */
+  .slide{background:#fff; border:1px solid var(--line); border-radius:14px; padding:24px 28px 28px; margin-bottom:22px;}
+  .s-top{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:6px;}
+  .s-num{font-size:12px; font-weight:800; color:#fff; background:#111114; border-radius:6px; padding:3px 9px;}
+  .chip{font-size:11.5px; font-weight:700; border-radius:999px; padding:3px 11px;}
+  .chip.op{background:#f0f0f2; color:#3c3c42;}
+  .chip.p1{background:var(--main-lt); color:#b8143a;}
+  .chip.p2{background:#FFF1DA; color:#9a5b00;}
+  .chip.p3{background:#EDEDF0; color:#3c3c42;}
+  .chip.p4{background:#E4E4E8; color:#282828;}
+  .chip.cl{background:#111114; color:#fff;}
+  .chip.demo{background:var(--main); color:#fff;}
+  .chip.lay{background:#fff; color:var(--sub); border:1px solid var(--line);}
+  .s-time{font-size:12px; color:var(--sub); margin-left:auto;}
+  .slide h3{font-size:18px; font-weight:800; letter-spacing:-.2px; margin-bottom:16px;}
+  .s-body{display:flex; gap:26px; align-items:flex-start; flex-wrap:wrap;}
+  .wf{flex:0 0 560px; max-width:100%;}
+  .wf .cap{font-size:11.5px; color:var(--sub); margin-top:7px;}
+  .txt{flex:1 1 400px; min-width:320px;}
+  .txt h4{font-size:12px; font-weight:800; color:var(--main); letter-spacing:.5px; margin:0 0 7px;}
+  .txt h4:not(:first-child){margin-top:16px;}
+  .copy{background:#fafafb; border:1px solid var(--line); border-left:3px solid var(--main); border-radius:8px; padding:12px 16px; font-size:13.5px;}
+  .copy .t{font-weight:800; font-size:14.5px; margin-bottom:6px;}
+  .copy .st{color:var(--sub); font-size:12.5px; margin-bottom:8px;}
+  .copy ul{margin:4px 0 0 18px;} .copy li{margin:3px 0;}
+  .copy .small{font-size:12px; color:var(--sub); margin-top:8px;}
+  .txt ul.pts{margin-left:18px; font-size:13px; color:#333;}
+  .txt ul.pts li{margin:4px 0;}
+  .memo{font-size:12.5px; color:#4a4a52; background:#fffdf5; border:1px solid #ffe2b0; border-radius:8px; padding:9px 13px;}
+  .memo.red{background:#fff5f7; border-color:#ffc7d4;}
+
+  /* ── 슬라이드 목업: 실제 EMU 좌표를 %로 환산, 실제 팔레트·타입스케일(0.4375×) ──
+     x% = EMU / 12192000 × 100   ·   y% = EMU / 6858000 × 100
+     pt → px = pt × (96/72) × 0.4375                                              */
+  .mk{position:relative; width:100%; aspect-ratio:16/9; background:#F5F5F5;
+     border:1px solid #e3e3e7; overflow:hidden;
+     font-family:-apple-system,"Pretendard","Helvetica Neue",sans-serif; color:#000;}
+  .mk:before,.mk:after{content:""; position:absolute; left:4.204%; width:91.59%; border-top:1px solid #B3B3B3;}
+  .mk:before{top:7.42%;} .mk:after{top:92.51%;}
+  .mk > *{position:absolute; box-sizing:border-box;}
+  .mk .lbl{left:3.43%; top:2.67%; font-size:6.4px; font-weight:700; letter-spacing:.08em; color:#B3B3B3;}
+  .mk .mark{left:3%; bottom:2%; width:33px; height:5.1px; font-size:0; line-height:0;
+            background-image:url(data:image/png;base64,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);
+            background-size:contain; background-repeat:no-repeat; background-position:left bottom; opacity:.9;}
+  .mk .mark b{display:none;}
+  .mk .kick{font-size:9.3px; font-weight:700; color:#9C9C9C; letter-spacing:.02em;}
+  .mk .h{font-size:17.5px; font-weight:800; line-height:1.2; letter-spacing:-.02em;}
+  .mk .h.big{font-size:22.2px;} .mk .h.cover{font-size:25.7px; line-height:1.24;}
+  .mk .h em{color:#FC1C49; font-style:normal;}
+  .mk .card{background:#fff; border-radius:3px;}
+  .mk .card.g{background:#E6E6E6;}
+  .mk .card.k{background:#282828; color:#fff;}
+  .mk .bar{background:#5B5B5B; color:#fff; border-radius:3px 3px 0 0;
+          display:flex; align-items:center; justify-content:center; font-size:10.5px; font-weight:700;}
+  .mk .bar.r{background:#FC1C49;}
+  .mk .tag{background:#FFE5EB; color:#FC1C49; border-radius:3px; display:flex; align-items:center;
+          justify-content:center; font-size:8.2px; font-weight:700; border:.7px solid #FC1C49;}
+  .mk .n{font-size:16.3px; font-weight:800; color:#FC1C49; line-height:1;}
+  .mk .t{font-size:8.2px; line-height:1.5;}
+  .mk .t.mid{font-size:10.5px;} .mk .t.big{font-size:11.7px; font-weight:700;}
+  .mk .t.sm{font-size:7px; color:#5B5B5B;} .mk .t.mut{font-size:7px; color:#9C9C9C;}
+  .mk .t.r{color:#FC1C49;} .mk .t.c{text-align:center;}
+  .mk .shot{background:#EDEDF0; border-radius:3px;}
+  .mk .shot span{position:absolute; left:4px; top:3px; font-size:6px; color:#9A9AA5; letter-spacing:.04em;}
+  .mk .rule{border-top:1px solid #FC1C49;}
+  .mk .dash{border-top:1px dashed #c9c9cf;}
+  .mk table{position:absolute; border-collapse:collapse; font-size:8.2px;}
+  .mk table th{background:#FC1C49; color:#fff; font-weight:700; padding:3px 5px; text-align:center;}
+  .mk table td{background:#fff; padding:3px 6px; border-bottom:1px solid #FC1C49;}
+  .mk table td.k{background:#FFE5EB; color:#FC1C49; font-weight:700; text-align:center; width:16%;}
+  .mk .code{background:#1E1E1E; border-radius:3px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+            font-size:7.6px; line-height:1.62; color:#D8D8DE; padding:9px 11px; white-space:pre;}
+  .mk .code i{color:#569CD6; font-style:normal;}
+  .mk .code b{color:#CE9178; font-weight:400;}
+  .mk .code u{color:#FF5C7A; text-decoration:none;}
+  .mk .code s{color:#6A6A72; text-decoration:none;}
+  .mk .chip5{border:1px solid #C9C9CF; border-radius:999px; display:flex; align-items:center;
+             justify-content:center; font-size:7.4px; color:#5B5B5B; background:#fff;}
+  .mk .lead{border-top:1px solid #B3B3B3;} .mk .lead.r{border-color:#FC1C49;}
+  .mk .dot{width:3.5px; height:3.5px; border-radius:50%; background:#B3B3B3;} .mk .dot.r{background:#FC1C49;}
+  .mk .kchip{background:#EDEDF0; border-radius:3px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+            font-size:6.6px; color:#3c3c42; padding:2.5px 6px; white-space:nowrap;}
+  .mk .kstrip{background:#fafafb; border:1px solid #e3e3e7; border-radius:3px;}
+  .mk .kstrip-t{font-size:7.4px; color:#5B5B5B;} .mk .kstrip-t b{color:#000;}
+  .mk .anno{font-size:11.7px; font-weight:800; line-height:1.3; letter-spacing:-.01em;}
+  .mk .anno.r{color:#FC1C49;} .mk .anno span{display:block; font-size:7px; font-weight:400; color:#9C9C9C; margin-top:2px;}
+  .wf-spec{font-size:11.5px; color:#4a4a52; margin-top:7px; background:#fafafb; border:1px solid var(--line);
+           border-radius:7px; padding:8px 10px; line-height:1.5;}
+</style>
+</head><body><div class="wrap">
+  <div class="doc-head">
+    <span class="tag">PLAN v1.0</span>
+    <h1>13강 — 환각 차단</h1>
+    <p class="sub">이론 + 실습 40분 · 4클립 · 슬라이드 19장 · v1.0 (Lab 13 README E1~E4에 1:1로 붙인 실습 큐 네 장 + 이론 앵커 열네 장 + 표지)</p>
+    <div class="meta"><span>정렬: 커리큘럼 정본 13강 · Lab 13 E1~E4</span><span>산출물: <b>notes/error-log-l13.md · docs/checklists/hallucination-guard.md</b> — <code>src</code>·<code>tests</code>는 Lab 12 상태로 복귀</span><span>입력: 12강 계획·diff 대조 · 9강 Stop Conditions · 11강 사람 판단 요청 · root AGENTS.md의 <code>Before Editing</code></span><span>사상 축: <b>관찰의 신뢰성</b> — 9강의 루프(행동 → 관찰 → 판단 → 반복)에서 관찰이 모델의 자기 보고면 루프가 거짓 위에서 돈다. typecheck·test는 모델 바깥의 관찰자다</span></div>
+  </div>
+
+  <div class="panel">
+    <h2>덱 성격</h2>
+    <p class="note-inline">이 덱은 <b>이론 + 실습 덱</b>이다. 13강은 Chapter 3의 두 번째 강의로, 12강이 「계획과 diff를 대조해 계획에 없던 변경을 잡는다」였다면 13강은 한 겹 아래 — <b>계획대로 했고 파일도 맞고 설명도 그럴듯한데 부르는 것이 존재하지 않는 경우</b>를 다룬다. 12강의 diff 대조로는 잡히지 않는다. 환각을 「토큰 예측」이나 「확률 분포」로 설명하지 않는다(앞 강의에서 이미 두 번 썼다) — 이 덱은 <b>관례 완성</b>이라는 각도 하나로만 간다. 실제 코드 예시와 실제 에러 문자열은 슬라이드에 박지 않는다 — 실습에서 나온 것을 슬라이드의 분류·구조 위에 얹는 방식이다. 구성은 표지(01) → 환각의 정체(02~07) → 실습 큐 08 → 무엇이 잡는가(09~12) → 실습 큐 13 → 복구(14) → 실습 큐 15 → 기준으로 전환(16·17) → 실습 큐 18 → 마무리(19). <b>07 「존재는 무엇이 증명하나」가 이 덱의 중심</b>이다. 실습 큐 네 장(08·13·15·18)은 9강·10강 큐 컴포넌트(레드 「실습」 배지 + 헤드라인 + 위 카드 세 행 + 아래 2열)를 그대로 쓰고 네 장의 좌표를 동일하게 맞췄다(위 카드 30~46.5% · 아래 2열 50.5~78%). 클립 배분(<b>실습 N은 클립 N에 온다</b>): <b>클립 1 — 환각의 정체</b>(약 15.5분 · 01~08) / <b>클립 2 — 무엇이 잡는가</b>(약 9.5분 · 09~13) / <b>클립 3 — 복구</b>(약 6분 · 14·15) / <b>클립 4 — 기준으로 전환</b>(약 9.5분 · 16~19). 9강·10강 플랜과 같은 토큰·좌표 문법(킥커 12.18% · 헤드라인 18.8% · 스트립 79.5%)을 그대로 쓴다. 표 장(07·09)은 <code>.mk table</code> 토큰을 쓰되 헤더 배경을 인라인으로 #5B5B5B로 내려, 07의 반복 ✕(시맨틱 레드)와 장식 레드가 한 장에서 충돌하지 않게 했다.</p>
+  </div>
+
+  <!-- 01 표지 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">01</span><span class="chip op">표지</span><span class="chip cl">클립 1</span><span class="chip lay">텍스트 표지</span><span class="s-time">30초</span></div>
+    <h3>환각 차단</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="kick" style="left:3.43%; top:12.18%;">Chapter 3 · 13강 · 환각 차단</div>
+          <div class="h cover" style="left:3.43%; top:30%;">환각 차단</div>
+          <div class="t mid" style="left:3.43%; top:57%; color:#5B5B5B;">없는 함수, 틀린 import, 잘못된 API 잡기</div>
+          <div class="t mut" style="left:3.43%; top:65%;">개발자를 위한 Codex — 13강 · 이론 + 실습 · 약 40분</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">텍스트 표지 — 헤드라인 「환각 차단」, 부제 「없는 함수, 틀린 import, 잘못된 API 잡기」. Chapter 3 두 번째 강의</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 30초. 템플릿 유형: 01 표지. 10강 표지와 같은 좌표(kicker 12.18% · 커버 30% · 부제 57% · 메타 65%). <b>이 블록은 문구 정본이다 — 실제 렌더는 <code>gen2.py</code>가 표지 PNG로 교체한다.</b> 그래도 헤드라인 「환각 차단」 · 부제 「없는 함수, 틀린 import, 잘못된 API 잡기」 · kicker 「Chapter 3 · 13강 · 환각 차단」은 정확히 이 문구로 둔다. 레드 없음.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">환각 차단</div><div class="st">없는 함수, 틀린 import, 잘못된 API 잡기</div><div class="small">kicker: Chapter 3 · 13강 · 환각 차단 / meta: 개발자를 위한 Codex — 13강 · 이론 + 실습 · 약 40분</div></div>
+        <h4>연출 메모</h4>
+        <div class="memo">표지 위에서 한 문장만 — 「오늘은 계획대로 했는데도 실패하는 경우를 봅니다」. 12강 리캡은 02에서 한다.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="sec-head"><span class="num">클립 1</span><h2>환각의 정체</h2><span class="time">약 15.5분 · 01~08 · 실습 1</span></div>
+
+  <!-- 02 계획대로 했는데 존재하지 않는다 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">02</span><span class="chip op">리캡 · 도입</span><span class="chip cl">클립 1</span><span class="chip lay">좌우 대조 2열 · 헤더 바 + 레드 한 줄</span><span class="s-time">1분</span></div>
+    <h3>계획대로 했는데 존재하지 않는다</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">지난 강의 리캡 · 13강 시작</div>
+          <div class="h" style="left:3.43%; top:18.8%;">계획대로 했는데 존재하지 않는다</div>
+          <!-- 좌: 12강 -->
+          <div class="bar" style="left:4.2%; top:29.5%; width:44%; height:5.5%;">12강 — 계획과 다른 것</div>
+          <div class="card g" style="left:4.2%; top:35%; width:44%; height:27%;"></div>
+          <div class="t mid" style="left:6.6%; top:38.5%; width:39.2%; font-weight:700; color:#5B5B5B;">파일 이름은 맞는데, 안에 계획에 없던 변경이 들어간다</div>
+          <div class="t" style="left:6.6%; top:52%; width:39.2%; color:#5B5B5B;">계획과 diff를 <b style="color:#000;">대조하면 보인다</b></div>
+          <!-- 우: 13강 -->
+          <div class="bar" style="left:51.8%; top:29.5%; width:44%; height:5.5%;">13강 — 계획대로인데 없는 것</div>
+          <div class="card" style="left:51.8%; top:35%; width:44%; height:27%;"></div>
+          <div class="t mid" style="left:54.2%; top:38.5%; width:39.2%; font-weight:700;">계획에 있는 일을 했고, 파일도 맞고, 설명도 그럴듯한데 — 부르는 것이 없다</div>
+          <div class="t" style="left:54.2%; top:54%; width:39.2%; color:#5B5B5B;">diff에는 <b style="color:#000;">있어야 할 것처럼</b> 적혀 있다</div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:68%; width:91.6%; color:#FC1C49; font-weight:700;">diff 대조로는 잡히지 않는다 — 한 겹 아래의 실패다</div>
+          <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;"><b>존재하지 않는 것을 부른다</b> — 이름·파일·설명이 전부 그럴듯할 때 생긴다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">좌(12강 · 회색 카드 · 계획과 다른 것) ↔ 우(13강 · 흰 카드 · 계획대로인데 없는 것). 레드는 아래 한 줄 「diff 대조로는 잡히지 않는다 — 한 겹 아래의 실패다」</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1분. 10 텍스트 비교 — 좌 열 4.2~48.2% · 우 열 51.8~95.8%(10강 05 좌표). 두 열 모두 회색 <code>bar</code>(29.5~35%) + 카드(35~62%). 좌는 <code>card g</code>에 <code>t mid</code> #5B5B5B 볼드(12강 E3의 문제 — 지난 것이라 흐린다), 우는 흰 <code>card</code>에 <code>t mid</code> 검정 볼드(오늘의 문제). 우 인용이 세 줄로 접히므로 부연은 54%로 내렸다(좌는 52%). <b>레드 1개 = 68% 중앙 <code>t mid</code> 볼드</b>. 스트립은 오늘의 문제 정의. 수치 없음.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">계획대로 했는데 존재하지 않는다</div><ul><li>12강 — 계획과 다른 것: 파일 이름은 맞는데, 안에 계획에 없던 변경이 들어간다 / 계획과 diff를 대조하면 보인다</li><li>13강 — 계획대로인데 없는 것: 계획에 있는 일을 했고, 파일도 맞고, 설명도 그럴듯한데 — 부르는 것이 없다 / diff에는 있어야 할 것처럼 적혀 있다</li><li>레드: diff 대조로는 잡히지 않는다 — 한 겹 아래의 실패다</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo">12강 E3에서 diff와 계획을 대조했던 장면을 한 문장으로 되짚고, 「그 대조를 통과하는 실패가 있다」로 넘어간다. 왼쪽을 먼저 읽고 오른쪽으로.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 환각은 거짓말이 아니다 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">03</span><span class="chip op">핵심 개념</span><span class="chip cl">클립 1</span><span class="chip lay">플로우 3 노드 + 예시 카드 + 레드 한 줄</span><span class="s-time">1.5분</span></div>
+    <h3>환각은 거짓말이 아니다</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 1 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:18.8%;">환각은 거짓말이 아니다</div>
+          <!-- 흐름: 관례를 본다 → 있을 법한 이름을 만든다 → 부른다 -->
+          <div class="card" style="left:4.2%; top:30%; width:27.6%; height:13%;"></div>
+          <div class="t sm c" style="left:4.2%; top:32.3%; width:27.6%; color:#9C9C9C; font-weight:700;">본다</div>
+          <div class="t mid c" style="left:4.2%; top:36.8%; width:27.6%; font-weight:700;">저장소의 이름 짓는 방식</div>
+          <div class="t mid c" style="left:31.8%; top:35.3%; width:4.4%; color:#9C9C9C;">→</div>
+          <div class="card" style="left:36.2%; top:30%; width:27.6%; height:13%;"></div>
+          <div class="t sm c" style="left:36.2%; top:32.3%; width:27.6%; color:#9C9C9C; font-weight:700;">완성한다</div>
+          <div class="t mid c" style="left:36.2%; top:36.8%; width:27.6%; font-weight:700;">「여기라면 이런 이름이 있겠다」</div>
+          <div class="t mid c" style="left:63.8%; top:35.3%; width:4.4%; color:#9C9C9C;">→</div>
+          <div class="card" style="left:68.2%; top:30%; width:27.6%; height:13%;"></div>
+          <div class="t sm c" style="left:68.2%; top:32.3%; width:27.6%; color:#9C9C9C; font-weight:700;">부른다</div>
+          <div class="t mid c" style="left:68.2%; top:36.8%; width:27.6%; font-weight:700;">확인하지 않은 이름</div>
+          <!-- 예시 카드(회색) -->
+          <div class="card g" style="left:4.2%; top:48%; width:91.6%; height:13%;"></div>
+          <div class="t sm" style="left:6.6%; top:50.2%; width:30%; color:#9C9C9C; font-weight:700;">이 저장소라면</div>
+          <div class="t" style="left:6.6%; top:54.3%; width:87%; color:#5B5B5B;">상태 기계가 있는 코드베이스에서 <b style="color:#000;">상태 전이 helper</b>는 정말 있을 법한 이름이다 — 있을 법한 것과 있는 것은 다르다</div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:67%; width:91.6%; color:#FC1C49; font-weight:700;">속이는 게 아니라 관례를 완성한다</div>
+          <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;"><b>환각</b> — 존재를 확인하지 않은 모듈·메서드·속성·옵션을 있다고 가정해 변경에 쓴 것</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">위: 본다 → 완성한다 → 부른다 세 노드. 가운데: 회색 예시 카드(상태 전이 helper는 정말 있을 법한 이름이다). 레드는 「속이는 게 아니라 관례를 완성한다」. 스트립은 README E1의 환각 정의</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1.5분. 09 텍스트 연결 — 세 노드 폭 27.6%(4.2 / 36.2 / 68.2%), 사이 화살표 폭 4.4%는 <code>t mid</code> 회색 「→」 글리프(아이콘 아님). 각 노드는 <code>t sm</code> 회색 동사 라벨(본다 · 완성한다 · 부른다) + <code>t mid</code> 볼드 대상. 48~61% <code>card g</code> 예시 카드 — <b>실제 코드 이름을 박지 않는다.</b> 「상태 전이 helper」는 README E1 두 번째 갈래(저장 계층의 전용 상태 전환 helper)를 가리키는 일반 명사이고, 실습에서 실제 이름이 나오면 그때 구두로 잇는다. <b>레드 1개 = 67% 중앙 <code>t mid</code> 볼드 「속이는 게 아니라 관례를 완성한다」</b>. <b>토큰 예측·확률 분포 얘기는 쓰지 않는다</b> — 관례 완성 각도만. 스트립은 README E1 판단 기준의 정의 문장을 그대로 옮긴 것. 수치 없음.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">환각은 거짓말이 아니다</div><ul><li>본다: 저장소의 이름 짓는 방식 → 완성한다: 「여기라면 이런 이름이 있겠다」 → 부른다: 확인하지 않은 이름</li><li>이 저장소라면 — 상태 기계가 있는 코드베이스에서 상태 전이 helper는 정말 있을 법한 이름이다 — 있을 법한 것과 있는 것은 다르다</li><li>레드: 속이는 게 아니라 관례를 완성한다</li><li>스트립: 환각 — 존재를 확인하지 않은 모듈·메서드·속성·옵션을 있다고 가정해 변경에 쓴 것</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo red">「LLM이 다음 토큰을 예측해서…」로 가지 않는다. 앞 강의에서 두 번 했다. 여기서는 「우리 저장소의 관례를 잘 배웠기 때문에 생긴다」는 역설만 짚는다. 순서: 세 노드를 왼쪽부터 읽고, 예시 카드에서 order-ops의 상태 기계를 언급하고, 레드 한 줄로 닫는다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 그럴듯할수록 위험하다 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">04</span><span class="chip op">핵심 개념</span><span class="chip cl">클립 1</span><span class="chip lay">한 축 위 두 방향 + 레드 한 줄</span><span class="s-time">1.5분</span></div>
+    <h3>그럴듯할수록 위험하다</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 1 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:18.8%;">그럴듯할수록 위험하다</div>
+          <div class="t sm c" style="left:4.2%; top:29%; width:91.6%; color:#9C9C9C; font-weight:700;">코드 리뷰에서 눈에 띄는 것과 환각이 만들어지는 방향</div>
+          <!-- 축 -->
+          <div class="t mid c" style="left:4.2%; top:44.2%; width:14%; font-weight:700; color:#5B5B5B;">어색한 것</div>
+          <div class="lead" style="left:19.5%; top:47.8%; width:61%;"></div>
+          <div class="dot" style="left:19.2%; top:47.2%;"></div>
+          <div class="dot" style="left:80.1%; top:47.2%;"></div>
+          <div class="t mid c" style="left:81.8%; top:44.2%; width:14%; font-weight:700;">자연스러운 것</div>
+          <!-- 위: 사람의 탐지(왼쪽으로) -->
+          <div class="t" style="left:19.5%; top:36.5%; width:61%; color:#5B5B5B;">← 사람의 리뷰는 <b style="color:#000;">이쪽을 잡는다</b> — 낯선 이름, 튀는 스타일, 안 맞는 자리</div>
+          <!-- 아래: 환각의 생성(오른쪽으로) -->
+          <div class="t" style="left:19.5%; top:52%; width:61%; text-align:right; color:#5B5B5B;">환각은 <b style="color:#000;">이쪽으로 만들어진다</b> — 관례에 맞는 이름, 익숙한 자리 →</div>
+          <!-- 판정 문장 -->
+          <div class="t mid c" style="left:4.2%; top:61%; width:91.6%; color:#5B5B5B;">사람의 탐지 방향과 환각의 생성 방향이 <b style="color:#000;">정확히 반대다</b></div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:69%; width:91.6%; color:#FC1C49; font-weight:700;">존재 확인은 기억이 아니라 조회다</div>
+          <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;"><b>그럴듯함은 존재의 증거가 아니다</b> — 있어야 할 이름과 있는 이름은 다르다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">한 축(어색한 것 ↔ 자연스러운 것) 위에 두 방향 — 사람의 리뷰는 왼쪽을 잡고, 환각은 오른쪽으로 만들어진다. 아래 「정확히 반대다」, 레드는 「존재 확인은 기억이 아니라 조회다」</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1.5분. 이 덱에서 가장 도식적인 장. 가로 축은 <code>lead</code>(#B3B3B3 선, 19.5~80.5%) 양끝 <code>dot</code> 둘, 좌우 <code>t mid</code> 볼드 끝 라벨(어색한 것 = #5B5B5B / 자연스러운 것 = 검정 — 오른쪽이 오늘의 위험 지점이라 검정으로 세운다). 축 위 36.5% <code>t</code> 좌측 정렬 「← 사람의 리뷰는 이쪽을 잡는다 …」, 축 아래 52% <code>t</code> 우측 정렬 「환각은 이쪽으로 만들어진다 … →」 — 두 문장이 반대 방향을 가리키는 것 자체가 그림이다. 화살표는 글리프(아이콘 아님). 61% <code>t mid</code> 회색 판정 「사람의 탐지 방향과 환각의 생성 방향이 <b>정확히 반대다</b>」. <b>레드 1개 = 69% 중앙 <code>t mid</code> 볼드 「존재 확인은 기억이 아니라 조회다」</b> — 07의 표로 넘어가는 다리. 스트립은 03의 「있을 법한 것과 있는 것」을 되받는다. 수치 없음.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">그럴듯할수록 위험하다</div><ul><li>축: 어색한 것 ↔ 자연스러운 것</li><li>← 사람의 리뷰는 이쪽을 잡는다 — 낯선 이름, 튀는 스타일, 안 맞는 자리</li><li>환각은 이쪽으로 만들어진다 — 관례에 맞는 이름, 익숙한 자리 →</li><li>사람의 탐지 방향과 환각의 생성 방향이 정확히 반대다</li><li>레드: 존재 확인은 기억이 아니라 조회다</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo">「리뷰에서 우리가 잡는 건 어색한 것이다」를 먼저 수강생에게 묻는다(경험 회상). 그 다음 「환각은 어색하게 생기지 않는다」. 레드 한 줄은 다음 장들의 결론을 미리 던지는 자리라 천천히 읽는다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 네 가지 얼굴 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">05</span><span class="chip op">분류</span><span class="chip cl">클립 1</span><span class="chip lay">텍스트 4단 · 헤더 바 4</span><span class="s-time">1분</span></div>
+    <h3>네 가지 얼굴</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 1 · 분류</div>
+          <div class="h" style="left:3.43%; top:18.8%;">네 가지 얼굴</div>
+          <!-- 1 없는 모듈 -->
+          <div class="bar" style="left:4.2%; top:30%; width:21.1%; height:5.5%;">없는 모듈</div>
+          <div class="card" style="left:4.2%; top:35.5%; width:21.1%; height:22%;"></div>
+          <div class="t" style="left:6%; top:38.5%; width:17.5%; color:#5B5B5B;">설치되지 않은 라이브러리를 <b style="color:#000;">import</b>한다</div>
+          <!-- 2 없는 메서드·속성 -->
+          <div class="bar" style="left:27.7%; top:30%; width:21.1%; height:5.5%;">없는 메서드·속성</div>
+          <div class="card" style="left:27.7%; top:35.5%; width:21.1%; height:22%;"></div>
+          <div class="t" style="left:29.5%; top:38.5%; width:17.5%; color:#5B5B5B;">저장 계층에 없는 <b style="color:#000;">helper</b>를 부른다</div>
+          <!-- 3 없는 옵션 -->
+          <div class="bar" style="left:51.2%; top:30%; width:21.1%; height:5.5%;">없는 옵션</div>
+          <div class="card" style="left:51.2%; top:35.5%; width:21.1%; height:22%;"></div>
+          <div class="t" style="left:53%; top:38.5%; width:17.5%; color:#5B5B5B;">받지 않는 <b style="color:#000;">인자</b>를 넘긴다</div>
+          <!-- 4 잘못된 시그니처 -->
+          <div class="bar" style="left:74.7%; top:30%; width:21.1%; height:5.5%;">잘못된 시그니처</div>
+          <div class="card" style="left:74.7%; top:35.5%; width:21.1%; height:22%;"></div>
+          <div class="t" style="left:76.5%; top:38.5%; width:17.5%; color:#5B5B5B;">동기 함수에 <b style="color:#000;">await</b>, 인자의 개수·순서가 다르다</div>
+          <!-- 안내 -->
+          <div class="t c" style="left:4.2%; top:64%; width:91.6%; color:#5B5B5B;">실습에서 나온 패치를 <b style="color:#000;">이 네 칸 중 어디에 넣을지</b> 판정한다 — 예시는 실습이 만든다</div>
+          <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;">네 얼굴의 공통점 — <b>이름은 그럴듯하고 존재는 확인되지 않았다</b></div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">4단 — 없는 모듈 · 없는 메서드·속성 · 없는 옵션 · 잘못된 시그니처. 각 칸에 한 줄 설명만. 레드 없음</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1분. 07 텍스트 4단 — 네 열 4.2 / 27.7 / 51.2 / 74.7%(폭 21.1%, 10강 02 좌표). 회색 <code>bar</code>(30~35.5%) + 흰 <code>card</code>(35.5~57.5% — 첫 렌더에서 28% 높이가 두 줄 본문에 비해 비어 보여 22%로 줄였다). 카드 안은 <code>t</code> 회색 한 줄 + 검정 볼드 핵심어(import · helper · 인자 · await) — <b>실제 코드 예시를 박지 않는다.</b> 이 장은 분류표이고, 실습 1에서 나온 패치를 이 네 칸에 얹는 방식이다(64% 안내 줄이 그 사용법). 「없는 메서드·속성」 설명의 「저장 계층」은 README E1이 가리키는 <code>src/store.ts</code>를 일반 명사로 부른 것. 네 바 모두 회색 — 어느 한 얼굴이 더 중요하지 않다. <b>레드 없음.</b> 수치 없음(「네」는 분류 구조의 이름).</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">네 가지 얼굴</div><ul><li>없는 모듈 — 설치되지 않은 라이브러리를 import한다</li><li>없는 메서드·속성 — 저장 계층에 없는 helper를 부른다</li><li>없는 옵션 — 받지 않는 인자를 넘긴다</li><li>잘못된 시그니처 — 동기 함수에 await, 인자의 개수·순서가 다르다</li><li>실습에서 나온 패치를 이 네 칸 중 어디에 넣을지 판정한다 — 예시는 실습이 만든다</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo">빠르게 넘긴다. 실습 1 뒤에 「우리 패치는 몇 번 얼굴이었나」로 돌아올 장이다. README E1 세 갈래(틀린 import → 없는 helper → fixture)는 1번·2번 얼굴에 대응한다는 것만 짚는다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 우리는 이미 막고 있었다 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">06</span><span class="chip op">연결</span><span class="chip cl">클립 1</span><span class="chip lay">플로우 3 노드 + 칩 행 + 레드 한 줄</span><span class="s-time">1분</span></div>
+    <h3>우리는 이미 막고 있었다</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 1 · 연결</div>
+          <div class="h" style="left:3.43%; top:18.8%;">우리는 이미 막고 있었다</div>
+          <!-- 흐름 -->
+          <div class="card" style="left:4.2%; top:30%; width:27.6%; height:13%;"></div>
+          <div class="t sm c" style="left:4.2%; top:32.3%; width:27.6%; color:#9C9C9C; font-weight:700;">AGENTS.md · Before Editing</div>
+          <div class="t mid c" style="left:4.2%; top:36.8%; width:27.6%; font-weight:700;">읽기를 강제한다</div>
+          <div class="t mid c" style="left:31.8%; top:35.3%; width:4.4%; color:#9C9C9C;">→</div>
+          <div class="card" style="left:36.2%; top:30%; width:27.6%; height:13%;"></div>
+          <div class="t sm c" style="left:36.2%; top:32.3%; width:27.6%; color:#9C9C9C; font-weight:700;">그래서</div>
+          <div class="t mid c" style="left:36.2%; top:36.8%; width:27.6%; font-weight:700;">저장 구조를 알게 된다</div>
+          <div class="t mid c" style="left:63.8%; top:35.3%; width:4.4%; color:#9C9C9C;">→</div>
+          <div class="card" style="left:68.2%; top:30%; width:27.6%; height:13%;"></div>
+          <div class="t sm c" style="left:68.2%; top:32.3%; width:27.6%; color:#9C9C9C; font-weight:700;">결과</div>
+          <div class="t mid c" style="left:68.2%; top:36.8%; width:27.6%; font-weight:700;">없는 메서드를 안 만든다</div>
+          <!-- 읽게 강제하는 것 -->
+          <div style="left:4.2%; top:47.5%; width:91.6%; display:flex; align-items:center; justify-content:center; gap:5px;"><span class="t sm" style="color:#9C9C9C; font-weight:700; margin-right:4px;">변경 전에 읽게 하는 것</span><span class="kchip">관련 모듈</span><span class="kchip">src/store.ts</span><span class="kchip">테스트</span></div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:56.5%; width:91.6%; color:#FC1C49; font-weight:700;">Chapter 1~2에서 만든 문서가 환각 억제 장치였다</div>
+          <div class="t c" style="left:4.2%; top:65.5%; width:91.6%; color:#5B5B5B;">그래서 실습 1은 이 장치를 <b style="color:#000;">끄고</b> — 무엇이 나오는지 본다</div>
+          <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;"><b>안전장치를 끄는 이유</b> — 무엇을 막고 있었는지는 꺼 봐야 보인다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">읽기를 강제한다 → 저장 구조를 알게 된다 → 없는 메서드를 안 만든다. 아래 칩 행(관련 모듈 · src/store.ts · 테스트). 레드는 「Chapter 1~2에서 만든 문서가 환각 억제 장치였다」</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1분. 09 텍스트 연결 — 03과 같은 세 노드 좌표(폭 27.6% · 4.2 / 36.2 / 68.2%). 첫 노드 라벨은 <code>t sm</code> 「AGENTS.md · Before Editing」(문서와 절 이름 원문). 47.5% 중앙 flex 행: <code>t sm</code> 회색 라벨 「변경 전에 읽게 하는 것」 + <code>kchip</code> 셋 <code>관련 모듈</code> · <code>src/store.ts</code> · <code>테스트</code>(README E1 판단 기준 「orders의 실제 저장 구조와 메서드는 src/store.ts에서 확인」 + Lab 04~11의 Before Editing 절). <b>레드 1개 = 56.5% 중앙 <code>t mid</code> 볼드</b>. 65.5% <code>t</code> 회색 「그래서 실습 1은 이 장치를 <b>끄고</b> — 무엇이 나오는지 본다」가 08 실습 큐로 넘기는 다리. 스트립은 README §0 마지막 단락(「안전장치를 잠시 건너뛰었을 때 생기는 실패를 관찰해 … 환각 억제 장치였음을 역으로 확인」). 수치 없음.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">우리는 이미 막고 있었다</div><ul><li>AGENTS.md · Before Editing — 읽기를 강제한다 → 그래서 — 저장 구조를 알게 된다 → 결과 — 없는 메서드를 안 만든다</li><li>변경 전에 읽게 하는 것: 관련 모듈 · src/store.ts · 테스트</li><li>레드: Chapter 1~2에서 만든 문서가 환각 억제 장치였다</li><li>그래서 실습 1은 이 장치를 끄고 — 무엇이 나오는지 본다</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo">4강에서 AGENTS.md를 만들 때는 「매번 재설명을 줄이는 문서」였다. 그 문서가 환각도 막고 있었다는 건 오늘 처음 말하는 관점이다. 그래서 실습 1이 「안전장치를 끄는」 이상한 실습인 이유를 여기서 납득시킨다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 존재는 무엇이 증명하나 — 덱의 중심 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">07</span><span class="chip op">이론 핵심</span><span class="chip cl">클립 1</span><span class="chip lay">표 4행 3열 · 마지막 열 반복 ✕</span><span class="s-time">2분</span></div>
+    <h3>존재는 무엇이 증명하나</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 1 · 이론 핵심</div>
+          <div class="h" style="left:3.43%; top:18.8%;">존재는 무엇이 증명하나</div>
+          <table style="left:4.2%; top:29.5%; width:91.6%;">
+            <tr><th style="background:#5B5B5B; width:30%; text-align:left; padding-left:8px;">주장</th><th style="background:#5B5B5B; width:44%; text-align:left; padding-left:8px;">존재를 판정할 근거</th><th style="background:#5B5B5B;">모델 설명만으로 충분한가</th></tr>
+            <tr><td style="font-weight:700;">외부 패키지가 설치돼 있음</td><td style="color:#5B5B5B;"><span class="kchip">package.json</span> <span class="kchip">lockfile</span> 실제 module resolution</td><td style="text-align:center; color:#FC1C49; font-weight:700;">✕ 아니오</td></tr>
+            <tr><td style="font-weight:700;">내부 helper나 메서드가 있음</td><td style="color:#5B5B5B;">선언 · export · 호출부의 코드 검색</td><td style="text-align:center; color:#FC1C49; font-weight:700;">✕ 아니오</td></tr>
+            <tr><td style="font-weight:700;">인자·옵션을 받을 수 있음</td><td style="color:#5B5B5B;">타입 선언과 구현 signature</td><td style="text-align:center; color:#FC1C49; font-weight:700;">✕ 아니오</td></tr>
+            <tr><td style="font-weight:700;">변경이 동작함</td><td style="color:#5B5B5B;">typecheck · test와 관찰 가능한 결과</td><td style="text-align:center; color:#FC1C49; font-weight:700;">✕ 아니오</td></tr>
+          </table>
+          <div class="t c" style="left:4.2%; top:67.5%; width:91.6%; color:#5B5B5B;">설명이 그럴듯한지가 아니라 — <b style="color:#000;">원문에서 찾았는지</b>를 묻는다</div>
+          <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;"><b>존재는 저장소 원문이 증명한다</b> — 설명은 주장이고, 원문은 근거다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">README E1 판단 기준 표 그대로 — 네 주장 ↔ 판정 근거 ↔ 「모델 설명만으로 충분한가」가 전부 ✕ 아니오. 반복 ✕는 시맨틱 레드</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 2분. <b>이 덱의 중심.</b> 11 텍스트 표 유형 — <code>.mk table</code> 토큰(4.2~95.8% · 29.5%부터). 열 폭 30 / 44 / 26%. <b>헤더 배경은 인라인으로 #5B5B5B</b>로 내렸다 — 기본 레드 헤더를 두면 마지막 열의 반복 ✕(시맨틱 레드)와 장식 레드가 한 장에서 충돌하기 때문. 첫 열은 검정 볼드 주장(<code>td.k</code> 핑크 열을 쓰지 않는다 — 같은 이유), 둘째 열은 회색 근거(첫 행은 <code>package.json</code> · <code>lockfile</code>을 <code>kchip</code>으로 실물 표기), 셋째 열은 <b>「✕ 아니오」 레드 볼드 네 번 반복 — 한 가지 의미(부정)로 통일된 시맨틱 마커라 개수 제한을 받지 않는다.</b> 행 구분선은 토큰 기본값(레드 헤어라인)을 그대로 둔다. 네 행은 README E1 판단 기준 표를 문구 그대로 옮긴 것이고, 04의 「기억이 아니라 조회」를 표로 푼 자리. 67.5% <code>t</code> 회색 한 줄 「설명이 그럴듯한지가 아니라 — <b>원문에서 찾았는지</b>를 묻는다」. 스트립 「존재는 저장소 원문이 증명한다 — 설명은 주장이고, 원문은 근거다」. ✕ 외 레드 없음. 수치 없음.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">존재는 무엇이 증명하나</div><ul><li>외부 패키지가 설치돼 있음 — package.json · lockfile · 실제 module resolution — ✕ 아니오</li><li>내부 helper나 메서드가 있음 — 선언 · export · 호출부의 코드 검색 — ✕ 아니오</li><li>인자·옵션을 받을 수 있음 — 타입 선언과 구현 signature — ✕ 아니오</li><li>변경이 동작함 — typecheck · test와 관찰 가능한 결과 — ✕ 아니오</li><li>설명이 그럴듯한지가 아니라 — 원문에서 찾았는지를 묻는다</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo red">제일 공들인 장. 행마다 「모델이 뭐라고 하든」을 붙여 읽는다 — 「모델이 설치돼 있다고 하든, package.json을 본다」. 마지막 열이 전부 아니오라는 것을 손으로 훑어 내리며 강조한다. 이 표는 실습 1 뒤 판정 기준으로, 실습 4의 체크리스트 재료로 두 번 더 돌아온다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 실습 큐 — 실습 1 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">08</span><span class="chip demo">실습 큐</span><span class="chip cl">클립 1</span><span class="chip lay">큐 컴포넌트 · 만드는 것 + 세 갈래 칩 + 질문/확인 2열</span><span class="s-time">7분 (+README 훑기 1분)</span></div>
+    <h3>실습 1 — 안전장치를 끄고 재현한다</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 1 · 실습</div>
+          <div class="h" style="left:3.43%; top:18.8%;">실습 1 — 안전장치를 끄고 재현한다</div>
+          <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
+          <!-- 이번에 만드는 것 · 세 갈래 · 원칙 -->
+          <div class="card" style="left:4.2%; top:30%; width:91.6%; height:16.5%;"></div>
+          <div class="t sm" style="left:6.6%; top:32.2%; width:20%; color:#9C9C9C; font-weight:700;">이번에 만드는 것</div>
+          <div class="t" style="left:27%; top:31.6%; width:66%; font-weight:700;">커밋하지 않은 실패 패치 — 존재를 확인하지 않은 참조가 든 diff</div>
+          <div class="t sm" style="left:6.6%; top:37.3%; width:20%; color:#9C9C9C; font-weight:700;">세 갈래 · 앞이 성공하면 건너뜀</div>
+          <div style="left:27%; top:36.8%; display:flex; align-items:center; gap:5px;"><span class="kchip">틀린 import</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 2px;">→</span><span class="kchip">없는 내부 helper</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 2px;">→</span><span class="kchip">fixture 폴백</span></div>
+          <div class="t" style="left:6.6%; top:42.2%; width:87%; color:#5B5B5B;"><b style="color:#000;">패키지를 설치하지 않는다 · 커밋하지 않는다</b> — 실패 패치는 작업 트리에만 둔다</div>
+          <!-- 생각할 질문 -->
+          <div class="card" style="left:4.2%; top:50.5%; width:44%; height:27.5%;"></div>
+          <div class="t sm" style="left:6.6%; top:52.8%; width:39%; color:#9C9C9C; font-weight:700;">생각할 질문</div>
+          <div class="t" style="left:6.6%; top:58.3%; width:39.2%;">「이름이 그럴듯한 것과 <b>실제로 존재하는 것</b>은 어떻게 구분하나」</div>
+          <div class="t" style="left:6.6%; top:68.8%; width:39.2%;">「재현을 위해 끈 안전장치를 언제 다시 켜나」</div>
+          <!-- 확인할 것 -->
+          <div class="card" style="left:51.8%; top:50.5%; width:44%; height:27.5%;"></div>
+          <div class="t sm" style="left:54.2%; top:52.8%; width:39%; color:#9C9C9C; font-weight:700;">확인할 것</div>
+          <div class="t" style="left:54.2%; top:58.3%; width:39.2%;">존재를 확인하지 않은 식별자·import를 표시했다</div>
+          <div class="t" style="left:54.2%; top:68.8%; width:39.2%;">모델의 설명이 아니라 <b>저장소 원문</b>으로 판정했다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">실습 큐 — 위 카드에 만드는 것 한 줄, 세 갈래 칩(틀린 import → 없는 내부 helper → fixture 폴백), 원칙 한 줄(패키지 설치 금지 · 커밋 금지). 아래 2열에 질문 둘 · 확인 둘. 레드는 「실습」 배지만</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 7분. 직전에 Lab 13 README §1·§2를 1분 훑는다 — §1의 네 명령(<code>git status</code> · <code>git log</code> 둘 · <code>git diff --stat -- src tests</code>)으로 시작 상태가 깨끗한지, §2 표의 E1~E4 배분을 짚는다. 10강 06~10의 <b>큐 컴포넌트</b>(킥커 「클립 N · 실습」 · 헤드라인 · 우상단 88%/15.5% 레드 「실습」 배지 · 위 카드 30~46.5% 세 행 · 아래 2열 50.5~78%)를 그대로 쓰고, <b>08·13·15·18 네 장이 같은 좌표다.</b> 첫 행은 파일이 아니라 상태가 산출물이라 <code>kchip</code> 대신 <code>t</code> 검정 볼드 한 줄(9강 05 문법). 둘째 행 라벨 「세 갈래 · 앞이 성공하면 건너뜀」 + <code>kchip</code> 셋 사이 회색 「→」(README E1 실행 1·2·3 — 틀린 import → 없는 내부 helper → fixture 폴백). 원칙 한 줄 「<b>패키지를 설치하지 않는다 · 커밋하지 않는다</b> — 실패 패치는 작업 트리에만 둔다」(README E1 실행 「어느 단계에서도 패키지를 설치하거나 패치를 커밋하지 않습니다」). 질문 둘은 README E1 설계 질문 둘째·셋째(첫째 「읽기 순서를 따랐을 때 잘 만들지 않는 이유」는 06이 이미 답했다). 확인할 것 둘은 README E1 검증 둘째·셋째 그대로. <b>레드는 「실습」 배지 하나</b>(네 큐 공통 마커), 그 외 레드 없음. 스트립 없음. 수치 없음.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">실습 1 — 안전장치를 끄고 재현한다</div><ul><li>이번에 만드는 것: 커밋하지 않은 실패 패치 — 존재를 확인하지 않은 참조가 든 diff</li><li>세 갈래 · 앞이 성공하면 건너뜀: 틀린 import → 없는 내부 helper → fixture 폴백</li><li>패키지를 설치하지 않는다 · 커밋하지 않는다 — 실패 패치는 작업 트리에만 둔다</li><li>질문: 「이름이 그럴듯한 것과 실제로 존재하는 것은 어떻게 구분하나」 「재현을 위해 끈 안전장치를 언제 다시 켜나」</li><li>확인: 존재를 확인하지 않은 식별자·import를 표시했다 / 모델의 설명이 아니라 저장소 원문으로 판정했다</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo">첫 갈래(틀린 import)에서 모델이 기존 import만 쓰고 거부하면 그것도 관찰이다 — 「안전장치가 잘 작동한 것」이라고 말하고 다음 갈래로. 패치가 나오면 05의 네 얼굴 중 어디인지, 07의 표 어느 행인지 즉석에서 판정한다. 실습 중 화면은 Codex와 README를 split.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="sec-head"><span class="num">클립 2</span><h2>무엇이 잡는가</h2><span class="time">약 9.5분 · 09~13 · 실습 2</span></div>
+
+  <!-- 09 세 계층이 잡는 게 다르다 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">09</span><span class="chip op">이론 핵심</span><span class="chip cl">클립 2</span><span class="chip lay">표 3행 3열 · 첫 열 명령 칩</span><span class="s-time">1분</span></div>
+    <h3>세 계층이 잡는 게 다르다</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 2 · 이론 핵심</div>
+          <div class="h" style="left:3.43%; top:18.8%;">세 계층이 잡는 게 다르다</div>
+          <table style="left:4.2%; top:29.5%; width:91.6%;">
+            <tr><th style="background:#5B5B5B; width:24%; text-align:left; padding-left:8px;">확인 수단</th><th style="background:#5B5B5B; width:40%; text-align:left; padding-left:8px;">잡는 문제</th><th style="background:#5B5B5B; text-align:left; padding-left:8px;">이것만으로 보증하지 못하는 것</th></tr>
+            <tr><td><span class="kchip">npm run typecheck</span></td><td>없는 모듈·메서드·속성, signature 불일치</td><td style="color:#5B5B5B;">실제 실행 결과와 업무 정책</td></tr>
+            <tr><td><span class="kchip">npm test</span></td><td>실행 시 오류, 기대한 상태·응답·저장 결과의 불일치</td><td style="color:#5B5B5B;">assertion이 없는 동작과 정책 전체</td></tr>
+            <tr><td style="font-weight:700;">정책·diff 검토</td><td>타입과 테스트가 놓친 상태 전환·보존·노출 경계</td><td style="color:#5B5B5B;">실제 실행 성공</td></tr>
+          </table>
+          <div class="t c" style="left:4.2%; top:64%; width:91.6%; color:#5B5B5B;">같은 패치가 두 명령에서 모두 실패할 수도 있다 — <b style="color:#000;">예상해서 맞추지 말고 실제 출력에서 멈춘 지점을 본다</b></div>
+          <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;"><b>세 계층은 대체가 아니라 합이다</b> — 각각 다른 것을 놓친다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">README E2 판단 기준 표 3행 — typecheck · test · 정책·diff 검토 각각 「잡는 문제」와 「보증하지 못하는 것」. 레드 없음</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1분. 11 텍스트 표 유형 — 07과 같은 <code>.mk table</code> 문법(헤더 인라인 #5B5B5B, 열 폭 24 / 40 / 36%). 첫 열의 두 명령은 <code>kchip</code> 실물(<code>npm run typecheck</code> · <code>npm test</code>), 셋째 행 「정책·diff 검토」는 명령이 아니라 사람 행위라 검정 볼드 텍스트. 둘째 열 검정 · 셋째 열 회색 — 「잡는다」가 본체, 「못 잡는다」가 보조. 세 행은 README E2 판단 기준 표 문구 그대로. 64% <code>t</code> 회색 한 줄은 README E2 「같은 패치가 두 명령에서 모두 실패할 수도 있습니다. 결과를 예상해서 맞추지 말고 실제 출력에서 각 검증이 멈춘 지점을 기록합니다」. <b>레드 없음</b>(표 행 헤어라인은 토큰 기본값). 수치 없음(「세」는 구조의 이름).</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">세 계층이 잡는 게 다르다</div><ul><li>npm run typecheck — 없는 모듈·메서드·속성, signature 불일치 / 못 잡는 것: 실제 실행 결과와 업무 정책</li><li>npm test — 실행 시 오류, 기대한 상태·응답·저장 결과의 불일치 / 못 잡는 것: assertion이 없는 동작과 정책 전체</li><li>정책·diff 검토 — 타입과 테스트가 놓친 상태 전환·보존·노출 경계 / 못 잡는 것: 실제 실행 성공</li><li>같은 패치가 두 명령에서 모두 실패할 수도 있다 — 예상해서 맞추지 말고 실제 출력에서 멈춘 지점을 본다</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo">셋째 행이 12강 E3의 diff·정책 대조다 — 「지난주에 한 것이 이 표의 마지막 줄」로 연결한다. 표를 읽을 때 세로로 「잡는 것」 열을 먼저, 그다음 「못 잡는 것」 열을.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 시점과 비용이 다르다 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">10</span><span class="chip op">핵심 개념</span><span class="chip cl">클립 2</span><span class="chip lay">텍스트 3단 · 헤더 바 3 + 레드 한 줄</span><span class="s-time">1분</span></div>
+    <h3>시점과 비용이 다르다</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 2 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:18.8%;">시점과 비용이 다르다</div>
+          <!-- typecheck -->
+          <div class="bar" style="left:4.2%; top:30%; width:29.4%; height:5.5%;">typecheck</div>
+          <div class="card" style="left:4.2%; top:35.5%; width:29.4%; height:24%;"></div>
+          <div class="t sm c" style="left:4.2%; top:38.3%; width:29.4%; color:#9C9C9C; font-weight:700;">시점</div>
+          <div class="t mid c" style="left:4.2%; top:42.3%; width:29.4%; font-weight:700;">실행 전</div>
+          <div class="t sm c" style="left:4.2%; top:49.8%; width:29.4%; color:#9C9C9C; font-weight:700;">비용</div>
+          <div class="t c" style="left:4.2%; top:53.5%; width:29.4%;">초 단위 · 가장 싸다</div>
+          <!-- test -->
+          <div class="bar" style="left:35.3%; top:30%; width:29.4%; height:5.5%;">test</div>
+          <div class="card" style="left:35.3%; top:35.5%; width:29.4%; height:24%;"></div>
+          <div class="t sm c" style="left:35.3%; top:38.3%; width:29.4%; color:#9C9C9C; font-weight:700;">시점</div>
+          <div class="t mid c" style="left:35.3%; top:42.3%; width:29.4%; font-weight:700;">실행 중</div>
+          <div class="t sm c" style="left:35.3%; top:49.8%; width:29.4%; color:#9C9C9C; font-weight:700;">비용</div>
+          <div class="t c" style="left:35.3%; top:53.5%; width:29.4%;">분 단위</div>
+          <!-- 사람 검토 -->
+          <div class="bar" style="left:66.4%; top:30%; width:29.4%; height:5.5%;">사람 검토</div>
+          <div class="card" style="left:66.4%; top:35.5%; width:29.4%; height:24%;"></div>
+          <div class="t sm c" style="left:66.4%; top:38.3%; width:29.4%; color:#9C9C9C; font-weight:700;">시점</div>
+          <div class="t mid c" style="left:66.4%; top:42.3%; width:29.4%; font-weight:700;">판단 시점</div>
+          <div class="t sm c" style="left:66.4%; top:49.8%; width:29.4%; color:#9C9C9C; font-weight:700;">비용</div>
+          <div class="t c" style="left:66.4%; top:53.5%; width:29.4%;">가장 비싸다</div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:65%; width:91.6%; color:#FC1C49; font-weight:700;">싼 것부터 돌린다 — 대체가 아니라 순서다</div>
+          <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;">기계가 잡을 것을 사람이 잡고 있으면 — 사람은 <b>타입이 보지 못하는 것</b>에 쓸 시간을 잃는다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">3단 — typecheck(실행 전 · 초 단위) · test(실행 중 · 분 단위) · 사람 검토(판단 시점 · 가장 비싸다). 레드는 「싼 것부터 돌린다 — 대체가 아니라 순서다」</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1분. 06 텍스트 3단 — 세 열 폭 29.4%(4.2 / 35.3 / 66.4%, 간격 1.7%). 회색 <code>bar</code>(30~35.5%) + 흰 <code>card</code>(35.5~59.5%), 카드 안은 「시점」·「비용」 두 쌍의 <code>t sm</code> 회색 라벨 + 값(<code>t mid</code> 볼드 시점 · <code>t</code> 비용). 「초 단위 · 분 단위」는 크기의 계급이고 실행마다 달라지는 측정값이 아니라 수치 금지 규칙에 걸리지 않는다 — 「30분 · 1초」 같은 구체 수치는 슬라이드에 두지 않고 구두로만(연출 메모). <b>레드 1개 = 65% 중앙 <code>t mid</code> 볼드</b>. 스트립은 요점의 뒷면 — 사람이 아낀 시간을 어디에 쓰나. 수치 없음.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">시점과 비용이 다르다</div><ul><li>typecheck — 시점: 실행 전 / 비용: 초 단위 · 가장 싸다</li><li>test — 시점: 실행 중 / 비용: 분 단위</li><li>사람 검토 — 시점: 판단 시점 / 비용: 가장 비싸다</li><li>레드: 싼 것부터 돌린다 — 대체가 아니라 순서다</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo">구두로만: 「사람이 30분 볼 걸 타입 검사가 1초에 끝내면, 사람은 타입이 못 보는 것에 30분을 쓸 수 있다」. 09의 표와 짝 — 09는 「무엇을」, 10은 「언제·얼마에」.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 에러 원문에는 무엇이 들어 있나 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">11</span><span class="chip op">핵심 개념</span><span class="chip cl">클립 2</span><span class="chip lay">코드 카드(구조만) + 4단 칸 + 레드 한 줄</span><span class="s-time">1분</span></div>
+    <h3>에러 원문에는 무엇이 들어 있나</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 2 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:18.8%;">에러 원문에는 무엇이 들어 있나</div>
+          <!-- 구조만 보여 주는 코드 카드 -->
+          <div class="code" style="left:4.2%; top:29.5%; width:91.6%; height:12.5%;">[파일과 위치]  error [오류 코드]: [식별자] — [기대한 것] <s>vs</s> [받은 것]
+<s>한 줄에 네 자리 — 어느 자리에 무엇이 오는지만 본다. 실제 문자열은 실습이 만든다</s></div>
+          <!-- 네 칸 -->
+          <div class="card" style="left:4.2%; top:46%; width:21.1%; height:16%;"></div>
+          <div class="t mid c" style="left:4.2%; top:48.6%; width:21.1%; font-weight:700;">오류 코드</div>
+          <div class="t c" style="left:4.2%; top:55.2%; width:21.1%; color:#5B5B5B;">오류의 종류</div>
+          <div class="card" style="left:27.7%; top:46%; width:21.1%; height:16%;"></div>
+          <div class="t mid c" style="left:27.7%; top:48.6%; width:21.1%; font-weight:700;">식별자</div>
+          <div class="t c" style="left:27.7%; top:55.2%; width:21.1%; color:#5B5B5B;">무엇이 없는가</div>
+          <div class="card" style="left:51.2%; top:46%; width:21.1%; height:16%;"></div>
+          <div class="t mid c" style="left:51.2%; top:48.6%; width:21.1%; font-weight:700;">파일과 위치</div>
+          <div class="t c" style="left:51.2%; top:55.2%; width:21.1%; color:#5B5B5B;">어디로 가야 하나</div>
+          <div class="card" style="left:74.7%; top:46%; width:21.1%; height:16%;"></div>
+          <div class="t mid c" style="left:74.7%; top:48.6%; width:21.1%; font-weight:700;">기대한 것과 받은 것</div>
+          <div class="t c" style="left:74.7%; top:55.2%; width:21.1%; color:#5B5B5B;">왜 안 맞는가</div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:67%; width:91.6%; color:#FC1C49; font-weight:700;">요약하면 식별자와 위치가 먼저 사라진다</div>
+          <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;">원문이 없으면 <b>다음 사람이 다시 돌려 봐야 한다</b> — 기록이 일을 줄이지 못한다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">위 코드 카드는 에러 한 줄의 자리 구조만([파일과 위치] error [오류 코드]: [식별자] — [기대한 것] vs [받은 것]). 아래 4단이 각 자리의 뜻. 레드는 「요약하면 식별자와 위치가 먼저 사라진다」</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1분. 12 텍스트 & 코드 변형. <code>.code</code> 카드(29.5~42%)는 <b>실제 에러 문자열을 박지 않는다</b> — 대괄호 자리표시 네 개로 구조만 보인다. <code>.code</code>의 <code>&lt;i&gt;</code>(파랑)는 팔레트 밖이라 쓰지 않고 본문색과 <code>&lt;s&gt;</code>(회색 주석)만 쓴다. 이 덱의 다크 블록은 이 코드 카드 하나뿐(디자인 시스템 §6). 아래 4단 카드(46~62% · 4.2 / 27.7 / 51.2 / 74.7%, 05와 같은 열)는 <code>t mid</code> 볼드 자리 이름 + <code>t</code> 회색 「무엇에 쓰나」 한 물음(오류의 종류 · 무엇이 없는가 · 어디로 가야 하나 · 왜 안 맞는가). <b>레드 1개 = 67% 중앙 <code>t mid</code> 볼드</b>. 스트립은 README E2 「원문이어야 … 다음 사람이 다시 확인할 수 있습니다」의 뒤집기. 수치 없음(「네 자리」는 구조의 이름).</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">에러 원문에는 무엇이 들어 있나</div><ul><li>코드 카드: [파일과 위치]  error [오류 코드]: [식별자] — [기대한 것] vs [받은 것]</li><li>오류 코드 — 오류의 종류 / 식별자 — 무엇이 없는가 / 파일과 위치 — 어디로 가야 하나 / 기대한 것과 받은 것 — 왜 안 맞는가</li><li>레드: 요약하면 식별자와 위치가 먼저 사라진다</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo">실습 1에서 나온 실제 에러를 이 자리 구조 위에 얹어 읽는다(터미널 화면으로 전환). 「요약하면 '타입 에러가 났다'만 남는다 — 어느 파일 몇 줄, 어떤 이름인지가 사라진다」.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 요약은 근거를 지운다 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">12</span><span class="chip op">핵심 개념</span><span class="chip cl">클립 2</span><span class="chip lay">좌우 대조 2열 · 헤더 바 + 레드 한 줄</span><span class="s-time">30초</span></div>
+    <h3>요약은 근거를 지운다</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 2 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:18.8%;">요약은 근거를 지운다</div>
+          <!-- 좌: 12강 -->
+          <div class="bar" style="left:4.2%; top:29.5%; width:44%; height:5.5%;">12강</div>
+          <div class="card g" style="left:4.2%; top:35%; width:44%; height:27%;"></div>
+          <div class="t mid" style="left:6.6%; top:38.5%; width:39.2%; font-weight:700; color:#5B5B5B;">명령이 적힌 것과 실행한 것은 다르다</div>
+          <div class="t" style="left:6.6%; top:51%; width:39.2%; color:#5B5B5B;">적혀 있다고 <b style="color:#000;">실행된 것은 아니다</b></div>
+          <!-- 우: 13강 -->
+          <div class="bar" style="left:51.8%; top:29.5%; width:44%; height:5.5%;">13강 — 한 걸음 더</div>
+          <div class="card" style="left:51.8%; top:35%; width:44%; height:27%;"></div>
+          <div class="t mid" style="left:54.2%; top:38.5%; width:39.2%; font-weight:700;">실행했어도 원문이 없으면 증거가 아니다</div>
+          <div class="t" style="left:54.2%; top:51%; width:39.2%; color:#5B5B5B;">실행 결과는 <b style="color:#000;">원문으로만</b> 남는다</div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:68%; width:91.6%; color:#FC1C49; font-weight:700;">「통과했다」「실패했다」는 판정이지 증거가 아니다</div>
+          <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;"><b>증거</b> — 명령 · 종료 코드 · 에러 원문 · 파일과 위치가 함께 있는 기록</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">좌(12강 · 회색 · 명령이 적힌 것과 실행한 것은 다르다) ↔ 우(13강 · 흰 · 실행했어도 원문이 없으면 증거가 아니다). 레드는 「판정이지 증거가 아니다」</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 30초. 02와 같은 10 텍스트 비교 좌표·색 문법(지난 강의 회색 / 오늘 흰색). 좌 인용은 12강 문장 그대로, 우 인용이 오늘의 한 걸음. <b>레드 1개 = 68% 중앙 <code>t mid</code> 볼드</b>. 스트립은 13 실습 큐의 기록 항목 넷(명령 · 종료 코드 · 원문 · 파일과 위치)을 「증거」의 정의로 미리 세운 것. 수치 없음.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">요약은 근거를 지운다</div><ul><li>12강: 명령이 적힌 것과 실행한 것은 다르다 — 적혀 있다고 실행된 것은 아니다</li><li>13강 — 한 걸음 더: 실행했어도 원문이 없으면 증거가 아니다 — 실행 결과는 원문으로만 남는다</li><li>레드: 「통과했다」「실패했다」는 판정이지 증거가 아니다</li><li>스트립: 증거 — 명령 · 종료 코드 · 에러 원문 · 파일과 위치가 함께 있는 기록</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo">짧게. 12강에서 「명령이 적혀 있는데 안 돌렸다」를 잡았다면, 오늘은 「돌렸다는데 뭐가 나왔는지 모른다」를 잡는다. 바로 실습 2로.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13 실습 큐 — 실습 2 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">13</span><span class="chip demo">실습 큐</span><span class="chip cl">클립 2</span><span class="chip lay">큐 컴포넌트 · 만드는 것 + 순서/기록 칩 + 질문/확인 2열</span><span class="s-time">6분</span></div>
+    <h3>실습 2 — 검증 계층별로 실패 기록</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 2 · 실습</div>
+          <div class="h" style="left:3.43%; top:18.8%;">실습 2 — 검증 계층별로 실패 기록</div>
+          <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
+          <!-- 이번에 만드는 것 · 순서 → 기록 · 원칙 -->
+          <div class="card" style="left:4.2%; top:30%; width:91.6%; height:16.5%;"></div>
+          <div class="t sm" style="left:6.6%; top:32.2%; width:20%; color:#9C9C9C; font-weight:700;">이번에 만드는 것</div>
+          <div style="left:27%; top:31.7%; display:flex; gap:5px;"><span class="kchip">notes/error-log-l13.md</span></div>
+          <div class="t sm" style="left:6.6%; top:37.3%; width:20%; color:#9C9C9C; font-weight:700;">돌리는 순서 → 기록할 것</div>
+          <div style="left:27%; top:36.8%; display:flex; align-items:center; gap:5px;"><span class="kchip">npm run typecheck</span><span class="kchip">npm test</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 4px;">→</span><span class="kchip">명령</span><span class="kchip">종료 코드</span><span class="kchip">에러 원문</span><span class="kchip">파일과 위치</span></div>
+          <div class="t" style="left:6.6%; top:42.2%; width:87%; color:#5B5B5B;"><b style="color:#000;">요약으로 바꾸지 않는다 · 아직 고치지 않는다</b> — 실패 패치는 그대로 두고 기록만 남긴다</div>
+          <!-- 생각할 질문 -->
+          <div class="card" style="left:4.2%; top:50.5%; width:44%; height:27.5%;"></div>
+          <div class="t sm" style="left:6.6%; top:52.8%; width:39%; color:#9C9C9C; font-weight:700;">생각할 질문</div>
+          <div class="t" style="left:6.6%; top:58.3%; width:39.2%;">「typecheck는 코드를 <b>실행하지 않고</b> 무엇을 발견하나」</div>
+          <div class="t" style="left:6.6%; top:68.8%; width:39.2%;">「두 명령이 통과해도 정책 위반이 남는 이유는 무엇인가」</div>
+          <!-- 확인할 것 -->
+          <div class="card" style="left:51.8%; top:50.5%; width:44%; height:27.5%;"></div>
+          <div class="t sm" style="left:54.2%; top:52.8%; width:39%; color:#9C9C9C; font-weight:700;">확인할 것</div>
+          <div class="t" style="left:54.2%; top:58.3%; width:39.2%;">두 명령의 실행 여부와 종료 코드가 각각 기록됐다</div>
+          <div class="t" style="left:54.2%; top:68.8%; width:39.2%;">첫 관련 에러가 <b>원문 그대로</b> 보존됐다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">실습 큐 — 위 카드에 만드는 파일 칩, 돌리는 순서(typecheck → test) → 기록할 것 넷(명령 · 종료 코드 · 에러 원문 · 파일과 위치) 칩 행, 원칙 한 줄(요약으로 바꾸지 않는다 · 아직 고치지 않는다). 아래 2열에 질문 둘 · 확인 둘. 레드는 「실습」 배지만</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 6분. 08과 같은 큐 컴포넌트·좌표. 첫 행 <code>kchip</code> <code>notes/error-log-l13.md</code>(README E2 결과). 둘째 행 라벨 「돌리는 순서 → 기록할 것」, 칩은 <b>명령 둘</b>(<code>npm run typecheck</code> · <code>npm test</code> — README E2 실행 순서 그대로) → 회색 「→」 → <b>기록 항목 넷</b>(README E2 「명령별로 실행 명령, 종료 코드, 첫 관련 에러의 원문, 파일과 위치」). 원칙 한 줄 「<b>요약으로 바꾸지 않는다 · 아직 고치지 않는다</b>」(README E2 「에러를 요약문으로 바꾸지 않습니다」 + 프롬프트 「아직 패치를 수정하거나 stage·commit하지 마라」). 질문 둘은 README E2 설계 질문 첫째·셋째(둘째 「test는 타입이 맞는 코드에서도 어떤 동작 실패를 보여주나」는 09 표가 이미 답했다). 확인할 것 둘은 README E2 검증 첫째·둘째 그대로. <b>레드는 「실습」 배지 하나</b>, 그 외 레드 없음. 스트립 없음. 수치 없음.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">실습 2 — 검증 계층별로 실패 기록</div><ul><li>이번에 만드는 것: notes/error-log-l13.md</li><li>돌리는 순서 → 기록할 것: npm run typecheck · npm test → 명령 · 종료 코드 · 에러 원문 · 파일과 위치</li><li>요약으로 바꾸지 않는다 · 아직 고치지 않는다 — 실패 패치는 그대로 두고 기록만 남긴다</li><li>질문: 「typecheck는 코드를 실행하지 않고 무엇을 발견하나」 「두 명령이 통과해도 정책 위반이 남는 이유는 무엇인가」</li><li>확인: 두 명령의 실행 여부와 종료 코드가 각각 기록됐다 / 첫 관련 에러가 원문 그대로 보존됐다</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo">두 명령을 먼저 터미널에서 직접 돌리고, 그 다음 Codex에 README E2 프롬프트를 준다. 모델이 에러를 예쁘게 요약하면 그 순간을 잡아 11의 자리 구조로 되돌린다.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="sec-head"><span class="num">클립 3</span><h2>복구</h2><span class="time">약 6분 · 14·15 · 실습 3</span></div>
+
+  <!-- 14 되돌릴 것과 고칠 것 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">14</span><span class="chip op">핵심 개념</span><span class="chip cl">클립 3</span><span class="chip lay">좌우 대조 2열 · 헤더 바 + 레드 한 줄</span><span class="s-time">1분</span></div>
+    <h3>되돌릴 것과 고칠 것</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 3 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:18.8%;">되돌릴 것과 고칠 것</div>
+          <!-- 좌: 없는 함수를 만들어 준다 -->
+          <div class="bar" style="left:4.2%; top:29.5%; width:44%; height:5.5%;">없는 함수를 만들어 준다</div>
+          <div class="card g" style="left:4.2%; top:35%; width:44%; height:27%;"></div>
+          <div class="t mid" style="left:6.6%; top:38.5%; width:39.2%; font-weight:700; color:#5B5B5B;">빠르다 · 동작한다 · 테스트도 통과할 수 있다</div>
+          <div class="t" style="left:6.6%; top:51%; width:39.2%; color:#5B5B5B;">근거 없이 들어온 설계를 <b style="color:#000;">사후 승인</b>하는 것이다</div>
+          <!-- 우: 근거 없는 호출을 지운다 -->
+          <div class="bar" style="left:51.8%; top:29.5%; width:44%; height:5.5%;">근거 없는 호출을 지운다</div>
+          <div class="card" style="left:51.8%; top:35%; width:44%; height:27%;"></div>
+          <div class="t mid" style="left:54.2%; top:38.5%; width:39.2%; font-weight:700;">패치는 죽고, 기준 상태로 돌아간다</div>
+          <div class="t" style="left:54.2%; top:51%; width:39.2%; color:#5B5B5B;">「이게 필요한가」를 <b style="color:#000;">되묻는 자리</b>가 남는다</div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:68%; width:91.6%; color:#FC1C49; font-weight:700;">「이게 필요한가」가 먼저 — 「어떻게 만들까」는 그다음</div>
+          <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;">패치가 살아난다는 것과 <b>변경이 옳다</b>는 것은 다르다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">좌(없는 함수를 만들어 준다 · 회색 · 사후 승인) ↔ 우(근거 없는 호출을 지운다 · 흰 · 기준 상태로). 레드는 「이게 필요한가가 먼저 — 어떻게 만들까는 그다음」</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1분. 02·12와 같은 10 텍스트 비교 좌표. 여기서는 회색/흰색이 「지난 것/오늘 것」이 아니라 <b>「하지 말 것/할 것」</b>이다(10강 05의 약한 확인/의미 있는 확인 문법). 좌 카드의 첫 줄은 유혹의 이유를 그대로 인정한다(빠르다 · 동작한다 · 통과할 수 있다) — 그래야 「사후 승인」이 무겁게 들린다. <b>레드 1개 = 68% 중앙 <code>t mid</code> 볼드</b>(README E3 설계 질문 첫째 「존재하지 않는 함수를 새로 만드는 것과 근거 없는 호출을 제거하는 것 중 어느 쪽이 기준 상태를 복구하나요」의 답을 순서로 세운 것). 스트립은 README §5 첫 항목(「존재하지 않는 함수나 패키지를 새로 만들어 실패 패치를 살립니다」)의 개념화. 수치 없음.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">되돌릴 것과 고칠 것</div><ul><li>없는 함수를 만들어 준다: 빠르다 · 동작한다 · 테스트도 통과할 수 있다 — 근거 없이 들어온 설계를 사후 승인하는 것이다</li><li>근거 없는 호출을 지운다: 패치는 죽고, 기준 상태로 돌아간다 — 「이게 필요한가」를 되묻는 자리가 남는다</li><li>레드: 「이게 필요한가」가 먼저 — 「어떻게 만들까」는 그다음</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo">수강생 대부분이 왼쪽으로 가고 싶어 한다는 것을 인정하고 시작한다. 「만들어 주면 초록불이 켜진다 — 그런데 그 함수가 필요하다고 누가 결정했나」.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 15 실습 큐 — 실습 3 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">15</span><span class="chip demo">실습 큐</span><span class="chip cl">클립 3</span><span class="chip lay">큐 컴포넌트 · 복구/유지 칩 + 금지 한 줄(레드) + 질문/확인 2열</span><span class="s-time">5분</span></div>
+    <h3>실습 3 — 최소 복구</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 3 · 실습</div>
+          <div class="h" style="left:3.43%; top:18.8%;">실습 3 — 최소 복구</div>
+          <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
+          <!-- 복구 대상 · 유지 대상 · 금지(레드) -->
+          <div class="card" style="left:4.2%; top:30%; width:91.6%; height:16.5%;"></div>
+          <div class="t sm" style="left:6.6%; top:32.2%; width:20%; color:#9C9C9C; font-weight:700;">복구 대상</div>
+          <div style="left:27%; top:31.7%; display:flex; align-items:center; gap:5px;"><span class="kchip">E1에서 추가한 import</span><span class="kchip">호출</span><span class="kchip">옵션</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin-left:4px;">실패 패치 때문에 생긴 앱 diff만</span></div>
+          <div class="t sm" style="left:6.6%; top:37.3%; width:20%; color:#9C9C9C; font-weight:700;">유지 대상</div>
+          <div style="left:27%; top:36.8%; display:flex; align-items:center; gap:5px;"><span class="kchip">시작 HEAD의 Lab 12 코드와 테스트</span><span class="kchip">E2의 실패 원문과 실행 기록</span></div>
+          <div class="t" style="left:6.6%; top:42.2%; width:87%; color:#FC1C49; font-weight:700;">금지 — 가짜 API를 새로 구현해 패치를 살리기 · 앱 전체 되돌리기</div>
+          <!-- 생각할 질문 -->
+          <div class="card" style="left:4.2%; top:50.5%; width:44%; height:27.5%;"></div>
+          <div class="t sm" style="left:6.6%; top:52.8%; width:39%; color:#9C9C9C; font-weight:700;">생각할 질문</div>
+          <div class="t" style="left:6.6%; top:58.3%; width:39.2%;">「없는 함수를 만드는 것과 호출을 지우는 것 중 <b>어느 쪽이 기준 상태를 복구하나</b>」</div>
+          <div class="t" style="left:6.6%; top:68.8%; width:39.2%;">「Lab 12의 정상 변경은 남기고 E1 diff만 지웠음을 어떻게 증명하나」</div>
+          <!-- 확인할 것 -->
+          <div class="card" style="left:51.8%; top:50.5%; width:44%; height:27.5%;"></div>
+          <div class="t sm" style="left:54.2%; top:52.8%; width:39%; color:#9C9C9C; font-weight:700;">확인할 것</div>
+          <div class="t" style="left:54.2%; top:58.3%; width:39.2%;"><span class="kchip">git diff --stat -- src tests</span>가 시작할 때와 같다</div>
+          <div class="t" style="left:54.2%; top:68.8%; width:39.2%;">복구 전후의 typecheck·test 결과가 error log에 연결됐다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">실습 큐 — 위 카드에 복구 대상 칩(E1에서 추가한 import · 호출 · 옵션), 유지 대상 칩(시작 HEAD의 Lab 12 코드와 테스트 · E2의 실패 원문과 실행 기록), 금지 한 줄이 이 장의 레드. 아래 2열에 질문 둘 · 확인 둘</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 5분. 08·13과 같은 큐 컴포넌트·좌표. README E3 판단 기준 표의 세 칸(복구 대상 / 유지할 대상 / 금지할 대응)을 위 카드의 세 행에 그대로 얹었다 — 첫 행 「복구 대상」 <code>kchip</code> 셋 + 회색 한정어 「실패 패치 때문에 생긴 앱 diff만」, 둘째 행 「유지 대상」 <code>kchip</code> 둘(표 둘째 열의 두 행). <b>레드 1개 = 42.2% 셋째 행 <code>t</code> 볼드 「금지 — 가짜 API를 새로 구현해 패치를 살리기 · 앱 전체 되돌리기」</b> — <b>금지 칸을 시각적으로 제일 강하게</b> 두라는 지시에 따라 10강 10처럼 원칙 한 줄을 레드로 세웠다(표 셋째 열의 두 행 「가짜 API를 새로 구현해 패치를 살림」 · 「앱 전체 되돌리기, 다른 변경 삭제」). 그래서 아래 「확인할 것」의 강조는 검정 볼드로 내렸다. 질문 둘은 README E3 설계 질문 둘 그대로. 확인할 것 첫째는 완료 판정 「<code>git diff --stat -- src tests</code>가 시작할 때와 같아야 합니다」를 인라인 <code>kchip</code> 실물로, 둘째는 README E3 검증 셋째. 「실습」 배지는 공통 마커라 강조로 세지 않는다. 스트립 없음. 수치 없음.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">실습 3 — 최소 복구</div><ul><li>복구 대상: E1에서 추가한 import · 호출 · 옵션 — 실패 패치 때문에 생긴 앱 diff만</li><li>유지 대상: 시작 HEAD의 Lab 12 코드와 테스트 · E2의 실패 원문과 실행 기록</li><li>레드: 금지 — 가짜 API를 새로 구현해 패치를 살리기 · 앱 전체 되돌리기</li><li>질문: 「없는 함수를 만드는 것과 호출을 지우는 것 중 어느 쪽이 기준 상태를 복구하나」 「Lab 12의 정상 변경은 남기고 E1 diff만 지웠음을 어떻게 증명하나」</li><li>확인: git diff --stat -- src tests가 시작할 때와 같다 / 복구 전후의 typecheck·test 결과가 error log에 연결됐다</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo">복구 뒤 <code>git diff --stat -- src tests</code>를 직접 쳐서 빈 출력을 보여 준다 — 시작 상태가 깨끗했다면 「비어 있음」이 곧 Lab 12 기준선 복구의 증거다. 모델이 함수를 만들어 살리려 하면 14로 잠깐 돌아간다.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="sec-head"><span class="num">클립 4</span><h2>기준으로 전환</h2><span class="time">약 9.5분 · 16~19 · 실습 4</span></div>
+
+  <!-- 16 모르면 모른다를 어디에 남기나 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">16</span><span class="chip op">연결</span><span class="chip cl">클립 4</span><span class="chip lay">계보 3 노드(앞 둘 회색) + 레드 한 줄</span><span class="s-time">30초</span></div>
+    <h3>모르면 모른다를 어디에 남기나</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 4 · 연결</div>
+          <div class="h" style="left:3.43%; top:18.8%;">모르면 모른다를 어디에 남기나</div>
+          <!-- 9강 -->
+          <div class="card g" style="left:4.2%; top:30%; width:27.6%; height:16%;"></div>
+          <div class="t sm c" style="left:4.2%; top:32.3%; width:27.6%; color:#9C9C9C; font-weight:700;">9강 · Stop Conditions</div>
+          <div class="t mid c" style="left:4.2%; top:36.8%; width:27.6%; font-weight:700; color:#5B5B5B;">언제 멈추나</div>
+          <div class="t c" style="left:4.2%; top:41.5%; width:27.6%; color:#9C9C9C;">계획 안의 멈춤 조건</div>
+          <div class="t mid c" style="left:31.8%; top:36.8%; width:4.4%; color:#9C9C9C;">→</div>
+          <!-- 11강 -->
+          <div class="card g" style="left:36.2%; top:30%; width:27.6%; height:16%;"></div>
+          <div class="t sm c" style="left:36.2%; top:32.3%; width:27.6%; color:#9C9C9C; font-weight:700;">11강 · 사람 판단 요청</div>
+          <div class="t mid c" style="left:36.2%; top:36.8%; width:27.6%; font-weight:700; color:#5B5B5B;">누구에게 묻나</div>
+          <div class="t c" style="left:36.2%; top:41.5%; width:27.6%; color:#9C9C9C;">판단을 사람에게 넘기는 형식</div>
+          <div class="t mid c" style="left:63.8%; top:36.8%; width:4.4%; color:#9C9C9C;">→</div>
+          <!-- 13강 -->
+          <div class="card" style="left:68.2%; top:30%; width:27.6%; height:16%;"></div>
+          <div class="t sm c" style="left:68.2%; top:32.3%; width:27.6%; color:#9C9C9C; font-weight:700;">13강 · 「확인 필요」</div>
+          <div class="t mid c" style="left:68.2%; top:36.8%; width:27.6%; font-weight:700;">무엇을 남기나</div>
+          <div class="t c" style="left:68.2%; top:41.5%; width:27.6%; color:#5B5B5B;">확인 못 한 것을 표시로 남긴다</div>
+          <!-- 한 문장 -->
+          <div class="t mid c" style="left:4.2%; top:53%; width:91.6%; color:#5B5B5B;">확인하지 못한 존재 주장은 <b style="color:#000;">코드로 채우지 않고</b> 「확인 필요」로 남긴다</div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:63%; width:91.6%; color:#FC1C49; font-weight:700;">빈칸은 실패가 아니라 기록이다</div>
+          <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;">모르는 것을 <b>코드가 아니라 표시로</b> 남기는 규칙이 체크리스트의 한 항목이 된다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">계보 셋 — 9강 Stop Conditions(언제 멈추나) → 11강 사람 판단 요청(누구에게 묻나) → 13강 「확인 필요」(무엇을 남기나). 앞 둘은 회색, 오늘 것만 흰 카드. 레드는 「빈칸은 실패가 아니라 기록이다」</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 30초. 09 텍스트 연결 — 03·06과 같은 세 노드 좌표(폭 27.6%, 높이 16%). 앞 두 노드는 <code>card g</code> + #5B5B5B(지난 강의), 셋째만 흰 <code>card</code> + 검정(10강 04의 색 문법). 각 노드는 <code>t sm</code> 강·이름 라벨 + <code>t mid</code> 볼드 물음(언제 · 누구에게 · 무엇을) + <code>t</code> 한 줄. 53% <code>t mid</code> 회색 한 문장(README E4 「확인하지 못한 내용을 <code>확인 필요</code>로 표시하는 규칙」). <b>레드 1개 = 63% 중앙 <code>t mid</code> 볼드 「빈칸은 실패가 아니라 기록이다」</b>. 스트립이 18 실습 큐의 「확인 필요」 항목으로 넘긴다. 수치 없음.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">모르면 모른다를 어디에 남기나</div><ul><li>9강 · Stop Conditions — 언제 멈추나 / 11강 · 사람 판단 요청 — 누구에게 묻나 / 13강 · 「확인 필요」 — 무엇을 남기나</li><li>확인하지 못한 존재 주장은 코드로 채우지 않고 「확인 필요」로 남긴다</li><li>레드: 빈칸은 실패가 아니라 기록이다</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo">짧게. 「9강에서 멈추는 조건을, 11강에서 사람에게 묻는 형식을 배웠다. 오늘은 확인 못 한 것을 어디에 어떻게 남기는지다.」</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 17 두 문서의 경계 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">17</span><span class="chip op">이론 핵심</span><span class="chip cl">클립 4</span><span class="chip lay">좌우 대조 2열 · 헤더 바 + 겹치는 지점 + 레드 한 줄</span><span class="s-time">1분</span></div>
+    <h3>두 문서의 경계</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 4 · 이론 핵심</div>
+          <div class="h" style="left:3.43%; top:18.8%;">두 문서의 경계</div>
+          <!-- 좌: AGENTS.md -->
+          <div class="bar" style="left:4.2%; top:29.5%; width:44%; height:5.5%;">root AGENTS.md — 장소</div>
+          <div class="card" style="left:4.2%; top:35%; width:44%; height:24%;"></div>
+          <div class="t mid" style="left:6.6%; top:38%; width:39.2%; font-weight:700;">이 저장소에서 무엇을 먼저 읽고 언제 멈추나</div>
+          <div class="t" style="left:6.6%; top:50.5%; width:39.2%; color:#5B5B5B;">프로젝트별 정책·계획·검증의 <b style="color:#000;">진입점</b></div>
+          <!-- 우: hallucination guard -->
+          <div class="bar" style="left:51.8%; top:29.5%; width:44%; height:5.5%;">hallucination guard — 행위</div>
+          <div class="card" style="left:51.8%; top:35%; width:44%; height:24%;"></div>
+          <div class="t mid" style="left:54.2%; top:38%; width:39.2%; font-weight:700;">존재 주장을 어떻게 검증하나</div>
+          <div class="t" style="left:54.2%; top:50.5%; width:39.2%; color:#5B5B5B;">외부 API·내부 helper·CLI 옵션의 <b style="color:#000;">존재 검증 절차</b></div>
+          <!-- 겹치는 지점 -->
+          <div class="dash" style="left:4.2%; top:63.5%; width:91.6%;"></div>
+          <div class="t c" style="left:4.2%; top:64.8%; width:91.6%; color:#5B5B5B;">겹치는 지점은 하나 — <b style="color:#000;">확인하지 않은 가정을 변경에 넣지 않는다</b></div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:71%; width:91.6%; color:#FC1C49; font-weight:700;">복제하면 둘 다 죽는다</div>
+          <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;"><b>둘은 서로를 가리킬 뿐</b> — 한쪽의 전문을 다른 쪽에 옮기지 않는다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">좌(root AGENTS.md — 장소 · 무엇을 먼저 읽고 언제 멈추나) ↔ 우(hallucination guard — 행위 · 존재 주장을 어떻게 검증하나). 점선 아래 겹치는 지점 한 줄. 레드는 「복제하면 둘 다 죽는다」</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1분. 05 텍스트 2단 — 두 열 모두 회색 <code>bar</code> + 흰 <code>card</code>(35~59% · 높이 24%로 줄여 아래에 겹치는 지점 자리를 냈다). 바 제목에 「장소 / 행위」 한 단어를 붙여 두 문서의 성격을 갈랐다. 카드 안은 README E4 판단 기준 표의 「책임」 열(<code>t mid</code> 볼드) + 「다른 지점」 열(<code>t</code> 회색, 강조 검정 볼드). 63.5% <code>dash</code> 점선 아래 64.8% <code>t</code> 회색 「겹치는 지점은 하나 — 확인하지 않은 가정을 변경에 넣지 않는다」(표 「겹치는 지점」 열의 guard 행). <b>레드 1개 = 71% 중앙 <code>t mid</code> 볼드 「복제하면 둘 다 죽는다」</b>(README E4 「새 문서에 AGENTS.md 전문을 복제하지 않습니다」 + §5 마지막 항목). 10강 10의 「경로와 사용 조건만 연결한다 — 프롬프트 전문을 복제하지 않는다」와 같은 규율. 스트립은 그 규율의 긍정형. 수치 없음.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">두 문서의 경계</div><ul><li>root AGENTS.md — 장소: 이 저장소에서 무엇을 먼저 읽고 언제 멈추나 / 프로젝트별 정책·계획·검증의 진입점</li><li>hallucination guard — 행위: 존재 주장을 어떻게 검증하나 / 외부 API·내부 helper·CLI 옵션의 존재 검증 절차</li><li>겹치는 지점은 하나 — 확인하지 않은 가정을 변경에 넣지 않는다</li><li>레드: 복제하면 둘 다 죽는다</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo">「AGENTS.md는 이 저장소의 지도, guard는 어느 저장소에서든 쓰는 절차」. 10강에서 프롬프트 전문을 AGENTS.md에 복제하지 않았던 것과 같은 규율임을 한 문장으로 잇는다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 18 실습 큐 — 실습 4 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">18</span><span class="chip demo">실습 큐</span><span class="chip cl">클립 4</span><span class="chip lay">큐 컴포넌트 · 만드는 것 + 분리할 항목 칩 + 질문/확인 2열</span><span class="s-time">7분</span></div>
+    <h3>실습 4 — 실패를 다음 작업의 기준으로</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 4 · 실습</div>
+          <div class="h" style="left:3.43%; top:18.8%;">실습 4 — 실패를 다음 작업의 기준으로</div>
+          <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
+          <!-- 이번에 만드는 것 · 분리할 항목 · 원칙 -->
+          <div class="card" style="left:4.2%; top:30%; width:91.6%; height:16.5%;"></div>
+          <div class="t sm" style="left:6.6%; top:32.2%; width:20%; color:#9C9C9C; font-weight:700;">이번에 만드는 것</div>
+          <div style="left:27%; top:31.7%; display:flex; align-items:center; gap:5px;"><span class="kchip">docs/checklists/hallucination-guard.md</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin-left:4px;">다섯 항목 이상</span></div>
+          <div class="t sm" style="left:6.6%; top:37.3%; width:20%; color:#9C9C9C; font-weight:700;">분리할 항목</div>
+          <div style="left:27%; top:36.8%; display:flex; align-items:center; gap:4px;"><span class="kchip">코드·패키지 존재 확인</span><span class="kchip">type·signature 확인</span><span class="kchip">실행 검증</span><span class="kchip">에러 원문 보존</span><span class="kchip">「확인 필요」 표시</span></div>
+          <div class="t" style="left:6.6%; top:42.2%; width:87%; color:#5B5B5B;">커밋에는 <b style="color:#000;">두 문서만</b> — <span class="kchip">src</span>·<span class="kchip">tests</span>에는 순변경이 없어야 한다</div>
+          <!-- 생각할 질문 -->
+          <div class="card" style="left:4.2%; top:50.5%; width:44%; height:27.5%;"></div>
+          <div class="t sm" style="left:6.6%; top:52.8%; width:39%; color:#9C9C9C; font-weight:700;">생각할 질문</div>
+          <div class="t" style="left:6.6%; top:58.3%; width:39.2%;">「AGENTS.md의 읽기 순서와 이 체크리스트는 <b>무엇이 겹치고 무엇이 다른가</b>」</div>
+          <div class="t" style="left:6.6%; top:68.8%; width:39.2%;">「이번 실패에서 다음 작업에도 반복해 확인할 기준은 무엇인가」</div>
+          <!-- 확인할 것 -->
+          <div class="card" style="left:51.8%; top:50.5%; width:44%; height:27.5%;"></div>
+          <div class="t sm" style="left:54.2%; top:52.8%; width:39%; color:#9C9C9C; font-weight:700;">확인할 것</div>
+          <div class="t" style="left:54.2%; top:58.3%; width:39.2%;">항목이 실제 실패에서 일반화됐고 <b>판정할 수 있다</b></div>
+          <div class="t" style="left:54.2%; top:68.8%; width:39.2%;">AGENTS.md 전문을 복제하지 않고 책임 차이를 유지했다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">실습 큐 — 위 카드에 만드는 파일 칩, 분리할 항목 칩 다섯(코드·패키지 존재 확인 · type·signature 확인 · 실행 검증 · 에러 원문 보존 · 「확인 필요」 표시), 원칙 한 줄(커밋에는 두 문서만 — src·tests 순변경 없음). 아래 2열에 질문 둘 · 확인 둘. 레드는 「실습」 배지만</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 7분. 08·13·15와 같은 큐 컴포넌트·좌표. 첫 행 <code>kchip</code> <code>docs/checklists/hallucination-guard.md</code> + 회색 한정어 「다섯 항목 이상」(README E4 요구 조건 — 실행마다 달라지는 값이 아니라 지시서의 최소 기준이라 수치 금지에 걸리지 않는다). 둘째 행 「분리할 항목」 <code>kchip</code> 다섯(README E4 프롬프트 「코드·패키지의 실제 존재 확인, type·signature 확인, 실행 검증, 에러 원문 보존, 확인하지 못한 내용의 <code>확인 필요</code> 표시를 분리한 체크 항목」) — 칩 간격은 4px로 좁혀 한 줄에 들어가게 했다. 원칙 한 줄 「커밋에는 <b>두 문서만</b> — <code>src</code>·<code>tests</code>에는 순변경이 없어야 한다」(README E4 「아래 두 산출물만 stage합니다. staged diff에서 src/·tests/가 비어 있을 때만 커밋합니다」 — 10강 10과 같은 인라인 <code>kchip</code>). 질문 둘은 README E4 설계 질문 둘 그대로. 확인할 것 첫째는 README E4 검증 첫째의 압축, 둘째는 검증 넷째 그대로. <b>레드는 「실습」 배지 하나</b>, 그 외 레드 없음. 스트립 없음. 이 장에서 <code>notes/error-log-l13.md</code>와 함께 커밋된다.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">실습 4 — 실패를 다음 작업의 기준으로</div><ul><li>이번에 만드는 것: docs/checklists/hallucination-guard.md — 다섯 항목 이상</li><li>분리할 항목: 코드·패키지 존재 확인 · type·signature 확인 · 실행 검증 · 에러 원문 보존 · 「확인 필요」 표시</li><li>커밋에는 두 문서만 — src·tests에는 순변경이 없어야 한다</li><li>질문: 「AGENTS.md의 읽기 순서와 이 체크리스트는 무엇이 겹치고 무엇이 다른가」 「이번 실패에서 다음 작업에도 반복해 확인할 기준은 무엇인가」</li><li>확인: 항목이 실제 실패에서 일반화됐고 판정할 수 있다 / AGENTS.md 전문을 복제하지 않고 책임 차이를 유지했다</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo">커밋 전에 <code>git diff --cached -- src tests</code>가 빈 출력인 것을 화면으로 보여 준다. 07의 표가 체크리스트의 재료라는 것을 짚는다 — 「네 행이 그대로 네 항목이 될 수 있고, 「확인 필요」가 다섯 번째다」.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 19 마무리 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">19</span><span class="chip op">마무리</span><span class="chip cl">클립 4</span><span class="chip lay">루프 4 노드(관찰 강조) + 레드 한 줄 + 이어지는 곳 2</span><span class="s-time">1분</span></div>
+    <h3>관찰의 신뢰성</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">13강 마무리</div>
+          <div class="h" style="left:3.43%; top:18.8%;">13강이 놓은 것은 관찰의 신뢰성이다</div>
+          <!-- 9강 루프: 행동 → 관찰 → 판단 → 반복 -->
+          <div class="card g" style="left:4.2%; top:30%; width:19.6%; height:9.5%;"></div>
+          <div class="t mid c" style="left:4.2%; top:32.7%; width:19.6%; color:#9C9C9C; font-weight:700;">행동</div>
+          <div class="t mid c" style="left:23.8%; top:32.7%; width:4.4%; color:#9C9C9C;">→</div>
+          <div class="card" style="left:28.2%; top:30%; width:19.6%; height:9.5%;"></div>
+          <div class="t mid c" style="left:28.2%; top:32.7%; width:19.6%; font-weight:700;">관찰</div>
+          <div class="t mid c" style="left:47.8%; top:32.7%; width:4.4%; color:#9C9C9C;">→</div>
+          <div class="card g" style="left:52.2%; top:30%; width:19.6%; height:9.5%;"></div>
+          <div class="t mid c" style="left:52.2%; top:32.7%; width:19.6%; color:#9C9C9C; font-weight:700;">판단</div>
+          <div class="t mid c" style="left:71.8%; top:32.7%; width:4.4%; color:#9C9C9C;">→</div>
+          <div class="card g" style="left:76.2%; top:30%; width:19.6%; height:9.5%;"></div>
+          <div class="t mid c" style="left:76.2%; top:32.7%; width:19.6%; color:#9C9C9C; font-weight:700;">반복</div>
+          <div class="t c" style="left:4.2%; top:42.5%; width:91.6%; color:#5B5B5B;">9강의 루프 — 관찰이 <b style="color:#000;">모델의 자기 보고</b>면 루프가 거짓 위에서 돈다</div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:50%; width:91.6%; color:#FC1C49; font-weight:700;">typecheck · test는 모델 바깥의 관찰자다</div>
+          <!-- 이어지는 곳 -->
+          <div class="t sm c" style="left:4.2%; top:58.5%; width:91.6%; color:#9C9C9C; font-weight:700;">이어지는 곳</div>
+          <div class="card k" style="left:4.2%; top:63%; width:44%; height:10%;"></div>
+          <div class="t sm c" style="left:4.2%; top:66%; width:44%; color:#fff;">14강 — 테스트 보강: 관찰자를 더 촘촘하게</div>
+          <div class="card k" style="left:51.8%; top:63%; width:44%; height:10%;"></div>
+          <div class="t sm c" style="left:51.8%; top:66%; width:44%; color:#fff;">15강 — silent fallback: 실패를 삼키는 코드</div>
+          <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;"><b>존재 확인은 기억이 아니라 조회다</b> — 설명은 주장이고, 원문과 실행 결과가 근거다</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">9강 루프 네 노드 중 「관찰」만 흰 카드. 「모델의 자기 보고면 루프가 거짓 위에서 돈다」 한 줄, 레드는 「typecheck · test는 모델 바깥의 관찰자다」. 이어지는 곳 검은 카드 둘(14강 테스트 보강 · 15강 silent fallback)</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1분. 10강 11의 회수+예고 문법을 이 덱의 사상 축에 맞춰 바꿨다. 30~39.5% 네 노드(폭 19.6% · 4.2 / 28.2 / 52.2 / 76.2%, 화살표 4.4%)는 9강이 세운 루프 「행동 → 관찰 → 판단 → 반복」 — <b>관찰만 흰 <code>card</code> + 검정</b>, 나머지 셋은 <code>card g</code> + #9C9C9C(10강 04 문법: 색만으로 오늘의 자리를 가리킨다). 42.5% <code>t</code> 회색 한 문장. <b>레드 1개 = 50% 중앙 <code>t mid</code> 볼드 「typecheck · test는 모델 바깥의 관찰자다」</b>. 58.5% 「이어지는 곳」 아래 <b>검은 카드 둘</b>(9강 11처럼 예고가 둘) — 14강 테스트 보강 · 15강 silent fallback. 스트립이 04의 레드 한 줄을 되받아 덱을 닫는다. 수치 없음.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">13강이 놓은 것은 관찰의 신뢰성이다</div><ul><li>행동 → 관찰 → 판단 → 반복 — 9강의 루프 — 관찰이 모델의 자기 보고면 루프가 거짓 위에서 돈다</li><li>레드: typecheck · test는 모델 바깥의 관찰자다</li><li>이어지는 곳: 14강 — 테스트 보강: 관찰자를 더 촘촘하게 / 15강 — silent fallback: 실패를 삼키는 코드</li><li>스트립: 존재 확인은 기억이 아니라 조회다 — 설명은 주장이고, 원문과 실행 결과가 근거다</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo">「관찰」 카드를 가리키며 — 「오늘 한 일은 전부 이 칸을 모델 손에서 빼내는 것이었다」. 14강은 그 관찰자를 더 촘촘하게 만드는 일, 15강은 관찰자를 속이는 코드(실패를 삼키는 fallback)를 잡는 일이라고 예고하고 닫는다.</div>
+      </div>
+    </div>
+  </section>
+
+</div></body></html>

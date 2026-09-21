@@ -31,6 +31,9 @@ PLANS = [
     dict(id='lec10', num='10강', title='반복 작업 prompt/checklist 만들기',
          sub='반복 구간 고정 · 테스트 보강 · PR 설명 · self-review', dur='약 40분',
          src=os.path.join(ROOT, 'ref/lecture10-slide-plan-v1.html'), cover='assets/cover10.png'),
+    dict(id='lec13', num='13강', title='환각 차단',
+         sub='없는 함수 · 틀린 import · 검증 계층 · hallucination guard', dur='약 40분',
+         src=os.path.join(ROOT, 'ref/lecture13-slide-plan-v1.html'), cover='assets/cover13.png'),
 ]
 FONT = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">'
 
