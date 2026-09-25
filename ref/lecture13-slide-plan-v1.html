@@ -302,32 +302,31 @@
           <div class="kick" style="left:3.43%; top:12.18%;">클립 1 · 분류</div>
           <div class="h" style="left:3.43%; top:18.8%;">환각의 네 가지 종류</div>
           <!-- 1 없는 모듈 -->
-          <div class="bar" style="left:4.2%; top:30%; width:21.1%; height:5.5%;">없는 모듈</div>
-          <div class="card" style="left:4.2%; top:35.5%; width:21.1%; height:22%;"></div>
-          <div class="t" style="left:6%; top:38.5%; width:17.5%; color:#5B5B5B;">설치되지 않은 라이브러리를 <b style="color:#000;">import</b></div>
+          <div class="bar" style="left:4.2%; top:42.5%; width:21.1%; height:5.5%;">없는 모듈</div>
+          <div class="card" style="left:4.2%; top:48%; width:21.1%; height:17%;"></div>
+          <div class="t" style="left:6%; top:51%; width:17.5%; color:#5B5B5B;">설치되지 않은 라이브러리를 <b style="color:#000;">import</b></div>
           <!-- 2 없는 메서드·속성 -->
-          <div class="bar" style="left:27.7%; top:30%; width:21.1%; height:5.5%;">없는 메서드·속성</div>
-          <div class="card" style="left:27.7%; top:35.5%; width:21.1%; height:22%;"></div>
-          <div class="t" style="left:29.5%; top:38.5%; width:17.5%; color:#5B5B5B;">저장 계층에 없는 <b style="color:#000;">helper</b> 호출</div>
+          <div class="bar" style="left:27.7%; top:42.5%; width:21.1%; height:5.5%;">없는 메서드·속성</div>
+          <div class="card" style="left:27.7%; top:48%; width:21.1%; height:17%;"></div>
+          <div class="t" style="left:29.5%; top:51%; width:17.5%; color:#5B5B5B;">저장 계층에 없는 <b style="color:#000;">helper</b> 호출</div>
           <!-- 3 없는 옵션 -->
-          <div class="bar" style="left:51.2%; top:30%; width:21.1%; height:5.5%;">없는 옵션</div>
-          <div class="card" style="left:51.2%; top:35.5%; width:21.1%; height:22%;"></div>
-          <div class="t" style="left:53%; top:38.5%; width:17.5%; color:#5B5B5B;">받지 않는 <b style="color:#000;">인자</b> 전달</div>
+          <div class="bar" style="left:51.2%; top:42.5%; width:21.1%; height:5.5%;">없는 옵션</div>
+          <div class="card" style="left:51.2%; top:48%; width:21.1%; height:17%;"></div>
+          <div class="t" style="left:53%; top:51%; width:17.5%; color:#5B5B5B;">받지 않는 <b style="color:#000;">인자</b> 전달</div>
           <!-- 4 잘못된 시그니처 -->
-          <div class="bar" style="left:74.7%; top:30%; width:21.1%; height:5.5%;">잘못된 시그니처</div>
-          <div class="card" style="left:74.7%; top:35.5%; width:21.1%; height:22%;"></div>
-          <div class="t" style="left:76.5%; top:38.5%; width:17.5%; color:#5B5B5B;">동기 함수에 <b style="color:#000;">await</b>, 인자의 개수·순서 불일치</div>
+          <div class="bar" style="left:74.7%; top:42.5%; width:21.1%; height:5.5%;">잘못된 시그니처</div>
+          <div class="card" style="left:74.7%; top:48%; width:21.1%; height:17%;"></div>
+          <div class="t" style="left:76.5%; top:51%; width:17.5%; color:#5B5B5B;">동기 함수에 <b style="color:#000;">await</b>, 인자의 개수·순서 불일치</div>
           <!-- 안내 -->
-          <div class="t c" style="left:4.2%; top:64%; width:91.6%; color:#5B5B5B;">실습에서 나온 패치를 <b style="color:#000;">이 네 칸 중 어디에 넣을지</b> 판정 — 예시는 실습이 만듦</div>
           <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;">네 가지의 공통점 — <b>이름은 그럴듯하고 존재는 확인되지 않음</b></div>
           <div class="mark"></div>
         </div>
         <div class="cap">4단 — 없는 모듈 · 없는 메서드·속성 · 없는 옵션 · 잘못된 시그니처. 각 칸에 한 줄 설명만. 레드 없음</div>
-        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1분. 07 텍스트 4단 — 네 열 4.2 / 27.7 / 51.2 / 74.7%(폭 21.1%, 10강 02 좌표). 회색 <code>bar</code>(30~35.5%) + 흰 <code>card</code>(35.5~57.5% — 첫 렌더에서 28% 높이가 두 줄 본문에 비해 비어 보여 22%로 줄였다). 카드 안은 <code>t</code> 회색 한 줄 + 검정 볼드 핵심어(import · helper · 인자 · await) — <b>실제 코드 예시를 박지 않는다.</b> 이 장은 분류표이고, 실습 1에서 나온 패치를 이 네 칸에 얹는 방식이다(64% 안내 줄이 그 사용법). 「없는 메서드·속성」 설명의 「저장 계층」은 README E1이 가리키는 <code>src/store.ts</code>를 일반 명사로 부른 것. 네 바 모두 회색 — 어느 하나가 더 중요하지 않다. <b>레드 없음.</b> 수치 없음(「네」는 분류 구조의 이름).</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1분. 07 텍스트 4단 — 네 열 4.2 / 27.7 / 51.2 / 74.7%(폭 21.1%, 10강 02 좌표). 회색 <code>bar</code>(42.5~48%) + 흰 <code>card</code>(48~65%) — 안내 줄을 빼면서 블록을 내리고 카드 높이도 22%→17%로 줄여, 헤드라인 아래(28%)와 스트립(79.5%) 사이 여백을 위아래 균등하게 맞췄다. 카드 안은 <code>t</code> 회색 한 줄 + 검정 볼드 핵심어(import · helper · 인자 · await) — <b>실제 코드 예시를 박지 않는다.</b> 이 장은 분류표이고, 실습 1에서 나온 패치를 이 네 칸에 얹는 방식이다(사용법은 스피커 노트에서 말로 한다 — 64%에 있던 안내 줄은 뺐다). 「없는 메서드·속성」 설명의 「저장 계층」은 README E1이 가리키는 <code>src/store.ts</code>를 일반 명사로 부른 것. 네 바 모두 회색 — 어느 하나가 더 중요하지 않다. <b>레드 없음.</b> 수치 없음(「네」는 분류 구조의 이름).</div>
       </div>
       <div class="txt">
         <h4>슬라이드에 넣을 텍스트</h4>
-        <div class="copy"><div class="t">환각의 네 가지 종류</div><ul><li>없는 모듈 — 설치되지 않은 라이브러리를 import</li><li>없는 메서드·속성 — 저장 계층에 없는 helper 호출</li><li>없는 옵션 — 받지 않는 인자 전달</li><li>잘못된 시그니처 — 동기 함수에 await, 인자의 개수·순서 불일치</li><li>실습에서 나온 패치를 이 네 칸 중 어디에 넣을지 판정 — 예시는 실습이 만듦</li></ul></div>
+        <div class="copy"><div class="t">환각의 네 가지 종류</div><ul><li>없는 모듈 — 설치되지 않은 라이브러리를 import</li><li>없는 메서드·속성 — 저장 계층에 없는 helper 호출</li><li>없는 옵션 — 받지 않는 인자 전달</li><li>잘못된 시그니처 — 동기 함수에 await, 인자의 개수·순서 불일치</li></ul></div>
         <h4>연출 메모</h4>
         <div class="memo">빠르게 넘긴다. 실습 1 뒤에 「우리 패치는 몇 번이었나」로 돌아올 장이다. README E1 세 갈래(틀린 import → 없는 helper → fixture)는 1번·2번에 대응한다는 것만 짚는다.</div>
       </div>
