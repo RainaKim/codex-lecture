@@ -237,17 +237,15 @@
           <div class="card g" style="left:4.2%; top:48%; width:91.6%; height:13%;"></div>
           <div class="t sm" style="left:6.6%; top:50.2%; width:87%; color:#9C9C9C; font-weight:700;">존재하지 않는 메서드를 그럴듯한 이름으로 부른 경우</div>
           <div class="t mid" style="left:6.6%; top:54.5%; width:87%; color:#5B5B5B;"><b style="color:#000;">배열.remove()</b> — <span class="kchip">push</span> <span class="kchip">pop</span> <span class="kchip">splice</span>는 있는데 <b style="color:#000;">remove만 없음</b></div>
-          <!-- 레드 한 줄 -->
-          <div class="t mid c" style="left:4.2%; top:67%; width:91.6%; color:#FC1C49; font-weight:700;">속이는 게 아니라, 있을 법한 걸 채우는 것</div>
           <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;"><b>환각</b> — 존재를 확인하지 않은 모듈·메서드·속성·옵션을 있다고 가정해 변경에 쓴 것</div>
           <div class="mark"></div>
         </div>
-        <div class="cap">위: 본다 → 짐작한다 → 부른다 세 노드. 가운데: 회색 예시 카드 — 라벨에 상황을 못 박고(존재하지 않는 메서드를 그럴듯한 이름으로 부른 경우) 그 아래 예시 한 줄. 레드는 「속이는 게 아니라, 있을 법한 걸 채우는 것」. 스트립은 README E1의 환각 정의</div>
-        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1.5분. 09 텍스트 연결 — 세 노드 폭 27.6%(4.2 / 36.2 / 68.2%), 사이 화살표 폭 4.4%는 <code>t mid</code> 회색 「→」 글리프(아이콘 아님). 각 노드는 <code>t sm</code> 회색 동사 라벨(본다 · 짐작한다 · 부른다) + <code>t mid</code> 볼드 대상. 48~61% <code>card g</code> 예시 카드 — <b>라벨이 상황을 말하고 본문이 예시 하나를 든다.</b> 라벨 폭을 30%→87%로 넓혔다. 예시는 <code>배열.remove()</code>로, <b>사전 설명이 필요 없는 것</b>을 골랐다(대부분 직접 쳐 본 적이 있다). 저장소 실물(<code>orders</code>는 Map이라 <code>find</code>가 없다)은 <b>사전 설명이 세 단계라 03에 넣지 않고 E1 판정에서 쓴다</b>. 본문은 <code>t mid</code> 한 줄 — <b>「A가 아니라 B」 구문을 덧붙이지 않는다</b>(덱 전체에서 이미 여러 번 쓴 형태다). 05의 네 종류 중 <b>2번(없는 메서드)</b>에 해당하고, 실습 fixture의 <code>orders.transitionTo()</code>와 같은 종류라 E1에서 회수된다. <b>레드 1개 = 67% 중앙 <code>t mid</code> 볼드 「속이는 게 아니라, 있을 법한 걸 채우는 것」</b>. <b>토큰 예측·확률 분포 얘기는 쓰지 않는다.</b> 어려운 말을 쓰지 말고 <b>「짐작해서 채운다」</b>로만 간다. 스트립은 README E1 판단 기준의 정의 문장을 그대로 옮긴 것. 수치 없음.</div>
+        <div class="cap">위: 본다 → 짐작한다 → 부른다 세 노드. 가운데: 회색 예시 카드 — 라벨에 상황을 못 박고(존재하지 않는 메서드를 그럴듯한 이름으로 부른 경우) 그 아래 예시 한 줄. 레드 없음 — 스트립의 환각 정의와 겹쳐서 뺐다. 스트립은 README E1의 환각 정의</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1.5분. 09 텍스트 연결 — 세 노드 폭 27.6%(4.2 / 36.2 / 68.2%), 사이 화살표 폭 4.4%는 <code>t mid</code> 회색 「→」 글리프(아이콘 아님). 각 노드는 <code>t sm</code> 회색 동사 라벨(본다 · 짐작한다 · 부른다) + <code>t mid</code> 볼드 대상. 48~61% <code>card g</code> 예시 카드 — <b>라벨이 상황을 말하고 본문이 예시 하나를 든다.</b> 라벨 폭을 30%→87%로 넓혔다. 예시는 <code>배열.remove()</code>로, <b>사전 설명이 필요 없는 것</b>을 골랐다(대부분 직접 쳐 본 적이 있다). 저장소 실물(<code>orders</code>는 Map이라 <code>find</code>가 없다)은 <b>사전 설명이 세 단계라 03에 넣지 않고 E1 판정에서 쓴다</b>. 본문은 <code>t mid</code> 한 줄 — <b>「A가 아니라 B」 구문을 덧붙이지 않는다</b>(덱 전체에서 이미 여러 번 쓴 형태다). 05의 네 종류 중 <b>2번(없는 메서드)</b>에 해당하고, 실습 fixture의 <code>orders.transitionTo()</code>와 같은 종류라 E1에서 회수된다. <b>레드 없음</b> — 67%에 있던 레드 한 줄(「속이는 게 아니라, 있을 법한 걸 채우는 것」)은 <b>하단 스트립의 환각 정의와 말하는 내용이 겹쳐서 뺐다</b>. 05·09처럼 레드가 없는 장이다. <b>토큰 예측·확률 분포 얘기는 쓰지 않는다.</b> 어려운 말을 쓰지 말고 <b>「짐작해서 채운다」</b>로만 간다. 스트립은 README E1 판단 기준의 정의 문장을 그대로 옮긴 것. 수치 없음.</div>
       </div>
       <div class="txt">
         <h4>슬라이드에 넣을 텍스트</h4>
-        <div class="copy"><div class="t">거짓말이 아닌 환각</div><ul><li>본다: 주변 코드의 이름들 → 짐작한다: 「여기라면 이런 이름이 있겠다」 → 부른다: 확인하지 않은 이름</li><li>존재하지 않는 메서드를 그럴듯한 이름으로 부른 경우 — 배열.remove() — push · pop · splice는 있는데 remove만 없음</li><li>레드: 속이는 게 아니라, 있을 법한 걸 채우는 것</li><li>스트립: 환각 — 존재를 확인하지 않은 모듈·메서드·속성·옵션을 있다고 가정해 변경에 쓴 것</li></ul></div>
+        <div class="copy"><div class="t">거짓말이 아닌 환각</div><ul><li>본다: 주변 코드의 이름들 → 짐작한다: 「여기라면 이런 이름이 있겠다」 → 부른다: 확인하지 않은 이름</li><li>존재하지 않는 메서드를 그럴듯한 이름으로 부른 경우 — 배열.remove() — push · pop · splice는 있는데 remove만 없음</li><li>스트립: 환각 — 존재를 확인하지 않은 모듈·메서드·속성·옵션을 있다고 가정해 변경에 쓴 것</li></ul></div>
         <h4>연출 메모</h4>
         <div class="memo red">「LLM이 다음 토큰을 예측해서…」로 가지 않는다. 앞 강의에서 두 번 했다. 어려운 말 대신 <b>「우리 코드를 잘 봤기 때문에 생긴다」</b>는 역설만 짚는다. 순서: 세 노드를 왼쪽부터 읽고, 예시 카드에서 <b>수강생에게 직접 물어보고</b>(「배열.remove() 쳐 보신 적 있으세요?」), 레드 한 줄로 닫는다. <b>학생이 그 자리에서 틀리는 경험을 만드는 게 이 카드의 목적</b>이다. 말로 풀 때도 <b>「모르는 자리를 비워 두지 않고 채운다」</b> 정도로 쉽게 간다.</div>
       </div>
