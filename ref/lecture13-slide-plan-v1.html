@@ -452,7 +452,7 @@
 
   <!-- 09 세 계층이 잡는 것의 차이 -->
   <section class="slide">
-    <div class="s-top"><span class="s-num">09</span><span class="chip op">이론 핵심</span><span class="chip cl">클립 2</span><span class="chip lay">표 3행 3열 · 첫 열 명령 칩</span><span class="s-time">1분</span></div>
+    <div class="s-top"><span class="s-num">09</span><span class="chip op">이론 핵심</span><span class="chip cl">클립 2</span><span class="chip lay">표 3행 3열 · 첫 열 명령 칩 · 스트립 없음</span><span class="s-time">1분</span></div>
     <h3>셋이 잡는 것, 못 잡는 것</h3>
     <div class="s-body">
       <div class="wf">
@@ -467,11 +467,10 @@
             <tr><td style="font-weight:700;">정책·diff 검토</td><td>타입과 테스트가 놓친 상태 전환·보존·노출 경계</td><td style="color:#5B5B5B;">실제 실행 성공</td></tr>
           </table>
           <div class="t c" style="left:4.2%; top:64%; width:91.6%; color:#5B5B5B;">검출 범위는 표로, <b style="color:#000;">실제 실패 지점은 실행 결과로 확인</b></div>
-          <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;"><b>셋 중 하나로는 안 됨</b> — 각각 다른 것을 놓침</div>
           <div class="mark"></div>
         </div>
-        <div class="cap">README E2 판단 기준 표 3행 — typecheck · test · 정책·diff 검토 각각 「잡는 문제」와 「보증하지 못하는 것」. 레드 없음</div>
-        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1분. 11 텍스트 표 유형 — 07과 같은 <code>.mk table</code> 문법(헤더 인라인 #5B5B5B, 열 폭 24 / 40 / 36%). 첫 열의 두 명령은 <code>kchip</code> 실물(<code>npm run typecheck</code> · <code>npm test</code>), 셋째 행 「정책·diff 검토」는 명령이 아니라 사람 행위라 검정 볼드 텍스트. 둘째 열 검정 · 셋째 열 회색 — 「잡는다」가 본체, 「못 잡는다」가 보조. 위 두 행은 README E2 판단 기준 표 문구 그대로. 셋째 행 「정책·diff 검토」는 README 개정으로 E2 판단 대상에서 빠졌지만(「정책·업무 의미 검토는 Lab 12에서 다뤘으며 이번 실습의 판정 대상은 아닙니다」) 12강과 잇는 고리라 표에는 남긴다 — 오늘 기록할 대상은 위 두 줄이라고 말로 가른다. 「계층」이라는 말은 이 장에서 쓰지 않는다(README가 예방·통제입력·검출을 「계층」으로 다시 정의해 의미가 겹친다). 64% <code>t</code> 회색 한 줄은 README E2 「같은 패치가 두 명령에서 모두 실패하거나 한 명령이 먼저 멈출 수 있습니다. 결과를 예상해서 맞추지 말고 실제 출력에서 각 검증이 멈춘 지점을 기록합니다」를 압축한 것 — <b>위 표는 각 명령의 검출 범위까지만 말하고, 이번 패치가 어디서 걸리는지는 표에 없다</b>는 뜻이다. <b>레드 없음</b>(표 행 헤어라인은 토큰 기본값). 수치 없음(「세」는 구조의 이름).</div>
+        <div class="cap">README E2 판단 기준 표 3행 — typecheck · test · 정책·diff 검토 각각 「잡는 문제」와 「보증하지 못하는 것」. 스트립 없음. 레드 없음</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1분. 11 텍스트 표 유형 — 07과 같은 <code>.mk table</code> 문법(헤더 인라인 #5B5B5B, 열 폭 24 / 40 / 36%). 첫 열의 두 명령은 <code>kchip</code> 실물(<code>npm run typecheck</code> · <code>npm test</code>), 셋째 행 「정책·diff 검토」는 명령이 아니라 사람 행위라 검정 볼드 텍스트. 둘째 열 검정 · 셋째 열 회색 — 「잡는다」가 본체, 「못 잡는다」가 보조. 위 두 행은 README E2 판단 기준 표 문구 그대로. 셋째 행 「정책·diff 검토」는 README 개정으로 E2 판단 대상에서 빠졌지만(「정책·업무 의미 검토는 Lab 12에서 다뤘으며 이번 실습의 판정 대상은 아닙니다」) 12강과 잇는 고리라 표에는 남긴다 — 오늘 기록할 대상은 위 두 줄이라고 말로 가른다. 「계층」이라는 말은 이 장에서 쓰지 않는다(README가 예방·통제입력·검출을 「계층」으로 다시 정의해 의미가 겹친다). 64% <code>t</code> 회색 한 줄은 README E2 「같은 패치가 두 명령에서 모두 실패하거나 한 명령이 먼저 멈출 수 있습니다. 결과를 예상해서 맞추지 말고 실제 출력에서 각 검증이 멈춘 지점을 기록합니다」를 압축한 것 — <b>위 표는 각 명령의 검출 범위까지만 말하고, 이번 패치가 어디서 걸리는지는 표에 없다</b>는 뜻이다. <b>스트립 없음</b> — 「셋 다 필요하다」는 결론은 표의 셋째 열이 이미 말하고, 10의 레드 한 줄(대체가 아니라 순서)과도 겹쳐서 뺐다. 이 장은 표와 64% 한 줄로 끝난다. <b>레드 없음</b>(표 행 헤어라인은 토큰 기본값). 수치 없음(「세」는 구조의 이름).</div>
       </div>
       <div class="txt">
         <h4>슬라이드에 넣을 텍스트</h4>
