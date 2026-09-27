@@ -302,23 +302,40 @@ cp labs/lecture13/inputs/l13-AGENTS.override.md AGENTS.override.md
 
 ### 3 — 새 Task에서 fixture 확인
 
-⚠️ **새 Task를 여는 게 이 단계의 절반이다.** override는 **그 Task에만** 걸린다.
+⚠️ **새 Task를 왜 여는지 한 줄로 말하고 넘어간다. 길게 설명하지 않는다.**
 
-`[같은 checkout을 쓰는 새 Task를 연다]`
-> "같은 checkout을 사용하는 새 Task를 열겠습니다. fixture에는 `orders.transitionTo()`와
-> 옵션 객체, 비동기 반환이라는 주장이 들어 있습니다."
+`[같은 폴더에서 새 Task를 연다]`
+> "새 Task를 하나 열겠습니다. 방금 복사한 override는 **새로 시작하는 Task부터 적용**되거든요.
+> 코드는 같은 폴더 그대로입니다."
 
-`[fixture와 src/store.ts, src/payments.ts]`
-> "현재 저장 계층에는 이 메서드와 옵션 계약이 없습니다. 이제 이 패치를 통제된 오류로
-> 적용하겠습니다."
+`[fixture의 diff 블록을 띄우고 `+` 줄을 짚으며]`
+> "fixture가 바꾸는 건 **이 한 줄**입니다.
+> `await orders.transitionTo(orderId, 'paid', { validateInventory, recordAuditEvent })`."
+> "이 한 줄이 **세 가지를 있다고 치고** 있어요.
+> **`orders`에 `transitionTo`라는 함수가 있다.
+> 그 함수가 저 옵션 두 개를 받는다.
+> 그게 비동기라서 `await`을 붙여야 한다.**"
+> "**셋 다 코드에서 확인해 보겠습니다.**"
 
-⚠️ **`src/store.ts`에서 `orders`가 `Map`인 것을 짚는다.** `get`·`set`·`delete`·`has`는 있고
-`transitionTo`는 없다. **이 장면이 07 표를 실제로 쓰는 유일한 자리다.**
+`[src/store.ts — `orders` 선언]`
+> "`orders`는 `Map`입니다. `Map`이 가진 건 `get`, `set`, `delete`, `has` 정도예요.
+> **`transitionTo`는 없습니다.**"
 
-⚠️ **여기서 05로 한 번 돌아간다. 이 패치 한 줄이 네 칸 중 세 칸이다.**
+`[src/payments.ts — `completePayment` 호출부]`
+> "함수가 없으니 **옵션을 받을 자리도 없고, 비동기인지 따질 것도 없습니다.**
+> 세 주장이 **전부 근거가 없어요.**"
+
+> "그래도 이 패치를 **그대로 넣겠습니다.** 뒤에서 `typecheck`와 `test`가 이걸 어떻게 잡는지
+> 보려고요."
+
+⚠️ **여기가 07 표를 실제로 써 본 자리다. 한 줄로 짚고 넘어간다.**
+> "7번 표에서 말한 게 이겁니다. **모델 설명 말고 코드를 찾아봤죠.**"
+
+⚠️ **05로 잠깐 돌아간다. 네 칸 중 셋이 이 한 줄에 다 들어 있다.**
 `[05로 돌아가며]`
-> "**없는 메서드**가 `transitionTo`, **없는 옵션**이 저 둘, **잘못된 시그니처**가 `await`입니다.
-> **한 줄에 셋**이 들어 있어요. **1번 없는 모듈만** 이번 패치에 없습니다."
+> "5번의 네 칸 기억나시죠. **이 한 줄이 그중 셋에 동시에 걸립니다.**
+> **없는 메서드**가 `transitionTo`, **없는 옵션**이 저 두 개, **잘못된 시그니처**가 `await`."
+> "**없는 모듈**만 이번엔 안 나옵니다."
 
 ### 4 — fixture 적용
 
