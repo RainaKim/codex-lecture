@@ -1,7 +1,7 @@
 # 13강 스피커 노트 — 환각 차단
 
 > Part 2 · Chapter 3 · 13강 · **이론+실습** · 약 40분 · 4클립
-> 슬라이드: `lec13.html` (19장). Lab 정본: `labs/lecture13/README.md` (236줄).
+> 슬라이드: `lec13.html` (19장). Lab 정본: `labs/lecture13/README.md` (224줄).
 > 산출물: `notes/error-log-l13.md` · `docs/checklists/hallucination-guard.md` + 커밋 하나.
 > ⚠️ **이 강의의 커밋에는 `src/`·`tests/` 순변경이 없다.** 앱 코드는 Lab 12 상태로 시작해서
 > Lab 12 상태로 끝난다. 중간에 잠깐 깨뜨렸다가 되돌리는 것이 전부다.
