@@ -209,8 +209,13 @@ Assertion   관찰값을 정책의 기대값과 비교한다
 
 ### E1 진행
 
-`[화면 순서 — `docs/order-policy.md`의 관리자 표시 기준 → `tests/orders.test.ts`의 얕은 테스트
-→ Codex가 만든 공백 표 → `git diff`]`
+`[화면 순서]`
+1. `docs/order-policy.md` · **`## 관리자 조회 기준`** · **`### payment_failed 주문 표시 조건`**
+   — 둘째 불릿 「`order.status === "payment_failed"`일 때만 … 표시한다」
+2. `tests/orders.test.ts` — 얕게 남은 셋 `creates an order`(201만) ·
+   `gets an order`(200만) · `lists admin orders`(`Array.isArray`만)
+3. Codex가 만든 공백 표 (`notes/assertion-review-l14.md`)
+4. 터미널 — `git diff`
 
 > "먼저 **정책에서 결과를 고르겠습니다.** 그다음 현재 테스트가 그 결과를 실제로 묻는지
 > 찾겠습니다. **테스트 이름이 비슷하다고 검증이 있다고 판단하지 않고 `expect`가 비교하는 값을**
@@ -218,6 +223,11 @@ Assertion   관찰값을 정책의 기대값과 비교한다
 
 `[에디터 — `tests/orders.test.ts`의 `lists admin orders`.
 README 3장 · E1 판단 기준 표 4행 「관리자 목록 기본 검사」와 같이 띄우면 좋다]`
+
+⚠️ **얕게 남은 셋이 뭔지 여기서 한 번만 이름으로 짚는다.**
+> "Lab 12에서 쓴 테스트들은 **재고 숫자, 저장된 상태, 결제 이력까지** 비교합니다. 그런데
+> **셋이 얕게 남아 있어요.** **`creates an order`는 201 하나, `gets an order`는 200 하나,
+> `lists admin orders`는 배열이냐 아니냐 하나.**"
 > "관리자 목록 테스트는 endpoint를 호출하고 **배열 여부만** 확인합니다. 라우팅과 JSON 배열
 > 반환은 확인하지만 **목록 항목의 상태나 실패 정보는 전혀 판정하지 않습니다.**
 > **오늘 말하는 나쁜 통과가 딱 이겁니다.**"
