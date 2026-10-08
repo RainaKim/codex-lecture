@@ -219,7 +219,15 @@ Assertion   관찰값을 정책의 기대값과 비교한다
 `[Composer — README 3장 · E1 「실행」의 프롬프트]`
 
 ```text
-@tests/orders.test.ts와 @docs/order-policy.md @docs/payment-policy.md @docs/inventory-policy.md를 대조해 notes/assertion-review-l14.md 초안을 작성해줘. 품절 주문 차단, 결제 실패 상태, 관리자 조회 실패 사유마다 이미 검증되는 값과 비어 있는 값을 구분하고, creates an order·gets an order의 얕은 assertion도 표시해라. lists admin orders의 기존 Array.isArray assertion은 변경 전 나쁜 통과의 원문으로 기록하고 E3에서 admin.test.ts로 이동·교체할 대상으로 표시해라. 위험, 관찰할 값, 예상 결과와 수정할 테스트 파일을 표로 남기되 아직 테스트나 src는 수정하지 마라.
+@tests/orders.test.ts와 @docs/order-policy.md @docs/payment-policy.md
+@docs/inventory-policy.md를 대조해 notes/assertion-review-l14.md 초안을 작성해줘.
+
+주문 생성·조회, 재고 부족, 결제 실패, 관리자 조회에서
+기존 assertion이 실제로 보장하는 값과 아직 판정할 수 없는 값을 구분해라.
+테스트 이름이 아니라 assertion 원문을 근거로 판단하고,
+위험·관찰할 값·정책상 예상 결과·후속 테스트 책임 후보를 표로 정리해라.
+
+아직 테스트나 src는 수정하지 마라.
 ```
 
 ⚠️ **치면서 두 군데를 짚는다.**
@@ -686,7 +694,7 @@ it.fails('관리자 목록은 저장된 상태만 표시한다', async () => { .
 `[Composer — README 3장 · E4 「실행」의 프롬프트]`
 
 ```text
-@notes/assertion-review-l14.md를 완성해 E1에 기록한 lists admin orders의 기존 Array.isArray assertion을 나쁜 통과로, 값 중심으로 강화해 통과한 assertion을 좋은 통과로, 관리자 정책 불일치·미구현을 찾은 assertion을 좋은 실패로 최소 한 행씩 비교해줘. 각 행에 질문한 값, 정책 근거, 실제 결과와 다음 조치를 적고 npm test, npm run lint, npm run typecheck를 실행해 실제 결과를 기록해라. tests 변경과 assertion review만 커밋하고 src·정책·AGENTS.md는 수정하거나 커밋하지 마라.
+@notes/assertion-review-l14.md를 완성해 E1에 원문으로 기록한 약한 assertion을 나쁜 통과로, 값 중심으로 강화해 통과한 assertion을 좋은 통과로, 관리자 정책 불일치·미구현을 찾은 assertion을 좋은 실패로 최소 한 행씩 비교해줘. 각 행에 질문한 값, 정책 근거, 실제 결과와 다음 조치를 적고 npm test, npm run lint, npm run typecheck를 실행해 실제 결과를 기록해라. tests 변경과 assertion review만 커밋하고 src·정책·AGENTS.md는 수정하거나 커밋하지 마라.
 ```
 
 ### E4 결과를 사람이 읽는다
