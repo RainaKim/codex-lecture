@@ -185,6 +185,60 @@ Assertion   관찰값을 정책의 기대값과 비교한다
 > "assertion만 강하게 바꾸고 **setup이 불분명하면 실패 원인을 해석하기 어렵습니다.** 반대로
 > setup만 길어지고 뭘 보려는 건지 흐려지면 **테스트 하나가 여러 가지를 한꺼번에 묻게** 됩니다."
 
+#### 실물에서 네 구간을 짚는다
+
+⚠️ **아래 코드를 커서로 네 토막으로 끊어 가며 읽는다. 줄 번호는 매번 다르니 쓰지 않는다.**
+
+```ts
+const created = await request(app).post('/orders')                 // ┐
+  .send({ items: [{ productId: 'mouse', quantity: 2 }] });         // │ setup
+const orderId = created.body.id as string;                         // ┘
+
+const payment = await request(app).post(`/orders/${orderId}/pay`)  // ┐ act
+  .send({ cardToken: 'FAIL-CARD' });                               // ┘
+const fetched = await request(app).get(`/orders/${orderId}`);      // ← observation ①
+
+expect(payment.status).toBe(402);                                  // ┐
+expect(fetched.body.status).toBe('payment_failed');                // │
+expect(paymentAttempts).toHaveLength(1);                           // │ assertion
+expect(paymentAttempts[0]).toMatchObject({ orderId, ok: false });  // │  + observation ②③
+expect(products.get('mouse')?.stock).toBe(10);                     // ┘
+```
+
+`[커서를 맨 위 두 줄에 두고]`
+> "**여기까지가 setup**입니다. **마우스 두 개짜리 주문을 하나 만들어** 둡니다.
+> **아직 아무것도 시험하지 않았어요.** 재료만 준비한 겁니다."
+
+`[결제 요청 줄로 내리며]`
+> "**이 줄이 act**입니다. **`FAIL-CARD`로 결제를 한 번** 날립니다.
+> **이 테스트가 보려는 동작은 이거 하나**예요."
+
+⚠️ **observation이 세 군데로 흩어져 있다. 이게 이 테스트를 고른 이유다. 천천히 짚는다.**
+`[`fetched` 줄을 짚으며]`
+> "**결제 응답만 보고 끝내지 않습니다.** **주문을 한 번 더 조회**하죠. **저장된 상태를 꺼내
+> 보려고요.**"
+
+`[`paymentAttempts`와 `products.get` 을 번갈아 짚으며]`
+> "그리고 여기 **`paymentAttempts`**, **`products`**. 이건 **HTTP가 아니라 메모리에 있는 걸 직접
+> 꺼내 보는** 겁니다."
+> "**꺼내 보는 자리가 셋**이에요. **응답, 저장된 주문, 그리고 재고하고 이력.**"
+
+`[expect 다섯 줄을 위에서 아래로 훑으며]`
+> "마지막이 **assertion**입니다. 다섯 줄인데 **각각 다른 정책 문서에서 왔습니다.**"
+> "**402**는 결제 정책. **`payment_failed`로 남아 있는 것**은 주문 상태 정책.
+> **실패 이력이 하나 남은 것**도 결제 정책. **재고가 10 그대로인 것**은 재고 정책이고요."
+
+⚠️ **여기서 한 박자 쉬고 이 말을 한다. 이 토막의 결론이다.**
+> "**정책 세 군데를 건드리는데, 이 테스트가 판정하는 건 한 문장**입니다.
+> **「결제가 실패하면 주문은 남고 재고는 안 준다.」**"
+
+⚠️ **얕은 셋과 대비해 닫는다.**
+> "아까 본 **`creates an order`**는 이 자리에 **`expect`가 한 줄**이었죠. **상태 코드 하나.**
+> **같은 구조인데 마지막 칸만 비어 있는** 겁니다."
+
+⚠️ **실제 코드가 위와 다를 수 있다.** Lab 12를 라이브로 구현하므로 **표현이 조금씩 다르다.**
+**글자를 맞추지 말고 네 토막의 역할로** 짚는다.
+
 ⚠️ **합격선을 한 문장으로 준다.**
 > "**한 테스트가 어떤 정책 문장을 판정하는지 한 문장으로 말할 수 있어야 합니다.**"
 
