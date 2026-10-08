@@ -162,15 +162,11 @@ Lab 12 테스트가 없거나 Lab 13 패치가 남아 있으면 **진행하지 �
 
 ### 테스트 한 건의 해부
 
-`[README 0장 · 두 표 바로 위 문단 「테스트에서 setup은 상황을 만들고…」
-→ 에디터에서 `tests/orders.test.ts`의 `preserves a failed payment order and its attempt
-without decrementing stock`을 열고 커서로 네 구간을 짚는다]`
+`[README 0장 · 두 표 바로 위 문단 「테스트에서 setup은 상황을 만들고…」]`
 
-⚠️ **이 테스트를 고른 이유 둘.** **setup과 act가 갈려 있고**, 판정하는 정책이 **한 문장**이다 —
-*결제가 실패하면 주문은 `payment_failed`로 남고 재고는 안 줄어든다.* 그리고 **꺼내 보는 자리가
-셋**이라 바로 뒤의 「응답만 보지 않는다」가 실물로 보인다.
-⚠️ **`decrements aggregated stock once…`는 쓰지 않는다.** 결제를 두 번 날려 중복 차감까지 보는
-테스트라 **「한 테스트는 한 정책」과 어긋난다.**
+⚠️ **아래 네 줄로 말로만 설명하고 넘어간다.** 실물 테스트를 열어 줄마다 짚지 않는다 —
+**E1에 쓸 시간을 먹는다.** 화면에 띄우고 싶으면 `tests/orders.test.ts`의
+`preserves a failed payment order…` 하나면 충분하다.
 
 ```text
 Setup       필요한 주문·상품·저장 상태를 만든다
@@ -184,60 +180,6 @@ Assertion   관찰값을 정책의 기대값과 비교한다
 
 > "assertion만 강하게 바꾸고 **setup이 불분명하면 실패 원인을 해석하기 어렵습니다.** 반대로
 > setup만 길어지고 뭘 보려는 건지 흐려지면 **테스트 하나가 여러 가지를 한꺼번에 묻게** 됩니다."
-
-#### 실물에서 네 구간을 짚는다
-
-⚠️ **아래 코드를 커서로 네 토막으로 끊어 가며 읽는다. 줄 번호는 매번 다르니 쓰지 않는다.**
-
-```ts
-const created = await request(app).post('/orders')                 // ┐
-  .send({ items: [{ productId: 'mouse', quantity: 2 }] });         // │ setup
-const orderId = created.body.id as string;                         // ┘
-
-const payment = await request(app).post(`/orders/${orderId}/pay`)  // ┐ act
-  .send({ cardToken: 'FAIL-CARD' });                               // ┘
-const fetched = await request(app).get(`/orders/${orderId}`);      // ← observation ①
-
-expect(payment.status).toBe(402);                                  // ┐
-expect(fetched.body.status).toBe('payment_failed');                // │
-expect(paymentAttempts).toHaveLength(1);                           // │ assertion
-expect(paymentAttempts[0]).toMatchObject({ orderId, ok: false });  // │  + observation ②③
-expect(products.get('mouse')?.stock).toBe(10);                     // ┘
-```
-
-`[커서를 맨 위 두 줄에 두고]`
-> "**여기까지가 setup**입니다. **마우스 두 개짜리 주문을 하나 만들어** 둡니다.
-> **아직 아무것도 시험하지 않았어요.** 재료만 준비한 겁니다."
-
-`[결제 요청 줄로 내리며]`
-> "**이 줄이 act**입니다. **`FAIL-CARD`로 결제를 한 번** 날립니다.
-> **이 테스트가 보려는 동작은 이거 하나**예요."
-
-⚠️ **observation이 세 군데로 흩어져 있다. 이게 이 테스트를 고른 이유다. 천천히 짚는다.**
-`[`fetched` 줄을 짚으며]`
-> "**결제 응답만 보고 끝내지 않습니다.** **주문을 한 번 더 조회**하죠. **저장된 상태를 꺼내
-> 보려고요.**"
-
-`[`paymentAttempts`와 `products.get` 을 번갈아 짚으며]`
-> "그리고 여기 **`paymentAttempts`**, **`products`**. 이건 **HTTP가 아니라 메모리에 있는 걸 직접
-> 꺼내 보는** 겁니다."
-> "**꺼내 보는 자리가 셋**이에요. **응답, 저장된 주문, 그리고 재고하고 이력.**"
-
-`[expect 다섯 줄을 위에서 아래로 훑으며]`
-> "마지막이 **assertion**입니다. 다섯 줄인데 **각각 다른 정책 문서에서 왔습니다.**"
-> "**402**는 결제 정책. **`payment_failed`로 남아 있는 것**은 주문 상태 정책.
-> **실패 이력이 하나 남은 것**도 결제 정책. **재고가 10 그대로인 것**은 재고 정책이고요."
-
-⚠️ **여기서 한 박자 쉬고 이 말을 한다. 이 토막의 결론이다.**
-> "**정책 세 군데를 건드리는데, 이 테스트가 판정하는 건 한 문장**입니다.
-> **「결제가 실패하면 주문은 남고 재고는 안 준다.」**"
-
-⚠️ **얕은 셋과 대비해 닫는다.**
-> "아까 본 **`creates an order`**는 이 자리에 **`expect`가 한 줄**이었죠. **상태 코드 하나.**
-> **같은 구조인데 마지막 칸만 비어 있는** 겁니다."
-
-⚠️ **실제 코드가 위와 다를 수 있다.** Lab 12를 라이브로 구현하므로 **표현이 조금씩 다르다.**
-**글자를 맞추지 말고 네 토막의 역할로** 짚는다.
 
 ⚠️ **합격선을 한 문장으로 준다.**
 > "**한 테스트가 어떤 정책 문장을 판정하는지 한 문장으로 말할 수 있어야 합니다.**"
@@ -284,10 +226,17 @@ expect(products.get('mouse')?.stock).toBe(10);                     // ┘
 
 ## E1 실습 — 정책과 assertion의 연결 (10분)
 
+⚠️ **먼저 이 실습이 뭘 하는 건지 한두 문장으로 말하고 들어간다.**
+
+> "첫 번째 실습입니다. **코드는 하나도 안 건드립니다.** 지금 테스트가 **뭘 묻고 있고 뭘 안 묻고
+> 있는지**를 **문서 하나에 정리하는 게 전부**예요."
+> "만들 건 **`notes/assertion-review-l14.md`** 하나입니다. **테스트 파일은 다음 실습에서**
+> 손댑니다."
+
 `[README 3장 · E1 「판단 기준」 표 「커리큘럼 후보 / Lab 12에서 이미 묻는 것 /
 이번 Lab에서 남은 판단」 — 네 행]`
 
-⚠️ **coverage와 가르는 것부터 한다. 이 말을 안 하면 수강생이 「테스트 더 쓰기」로 받는다.**
+⚠️ **그다음 coverage와 가른다. 이 말을 안 하면 수강생이 「테스트 더 쓰기」로 받는다.**
 > "E1에서 만드는 표는 **line coverage 표가 아닙니다.** **코드 줄을 실행했는지가 아니라 정책의
 > 어떤 문장을 어느 assertion이 판정하는지**를 연결합니다."
 
