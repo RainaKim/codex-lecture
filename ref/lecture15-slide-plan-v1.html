@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><title>15강 Silent fallback 차단 — 슬라이드 구성안 v1.0</title>
+<style>
+  :root{
+    --ink:#111114; --sub:#6b6b73; --line:#e6e6e9;
+    --main:#FC1C49; --main-lt:#FFE5EB; --sub-o:#FFA71B;
+    --g1:#F5F5F5; --g2:#E6E6E6; --d1:#282828; --d2:#5B5B5B;
+    --wf-line:#b3b3b3; --wf-dash:#c9c9cf; --wf-fill:#fafafb; --wf-txt:#6b6b73;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Segoe UI","Noto Sans KR","Apple SD Gothic Neo",sans-serif;
+    background:#f0f0f2; color:var(--ink); line-height:1.55; padding:40px 20px 80px; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1180px; margin:0 auto;}
+
+  /* ── 문서 헤더 ── */
+  .doc-head{background:#0f0f12; color:#fff; border-radius:16px; padding:36px 40px; margin-bottom:28px;}
+  .doc-head .tag{display:inline-block; background:var(--main); border:none;
+    border-radius:999px; padding:4px 15px; font-size:12.5px; letter-spacing:.2px; margin-bottom:14px; font-weight:700;}
+  .doc-head h1{font-size:27px; font-weight:800; letter-spacing:-.4px;}
+  .doc-head p.sub{margin-top:8px; color:#c9c9d2; font-size:14.5px;}
+  .doc-head .meta{display:flex; flex-wrap:wrap; gap:10px 26px; margin-top:18px; font-size:13px; color:#e2e2e8;}
+  .doc-head .meta b{color:#fff; font-weight:700;}
+
+  /* ── 패널 ── */
+  .panel{background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 30px; margin-bottom:28px;}
+  .panel h2{font-size:17px; font-weight:800; margin-bottom:14px; letter-spacing:-.2px;}
+  .flow{display:flex; gap:8px; flex-wrap:wrap;}
+  .flow .blk{flex:1 1 150px; border-radius:10px; padding:12px 14px; border:1px solid var(--line); background:#fafafb;}
+  .flow .blk .t{font-size:11.5px; color:var(--sub); font-weight:600;}
+  .flow .blk .n{font-size:14px; font-weight:800; margin:2px 0;}
+  .flow .blk .s{font-size:12px; color:var(--sub);}
+  .flow .blk.hl{background:var(--main-lt); border-color:#ffc7d4;}
+  table.idx{width:100%; border-collapse:collapse; font-size:13.5px; margin-top:6px;}
+  table.idx th{background:#fafafb; text-align:left; padding:8px 12px; border-bottom:2px solid var(--line); font-size:12.5px; color:var(--sub);}
+  table.idx td{padding:7px 12px; border-bottom:1px solid #f2f2f4; vertical-align:top;}
+  table.idx td.no{color:var(--main); font-weight:800; width:46px;}
+  table.idx td.lay{color:var(--sub); font-size:12px; width:132px;}
+  .note-inline{font-size:12.5px; color:var(--sub); margin-top:12px;}
+  .sw{display:inline-flex; align-items:center; gap:6px; font-size:12px; margin:0 14px 6px 0;}
+  .sw i{width:13px; height:13px; border-radius:3px; display:inline-block; border:1px solid rgba(0,0,0,.12);}
+
+  /* ── 섹션 헤더 ── */
+  .sec-head{display:flex; align-items:center; gap:14px; margin:44px 0 18px; flex-wrap:wrap;}
+  .sec-head .num{background:var(--main); color:#fff; font-weight:800; font-size:13px; border-radius:8px; padding:5px 12px;}
+  .sec-head h2{font-size:20px; font-weight:800; letter-spacing:-.3px;}
+  .sec-head .time{font-size:13px; color:var(--sub);}
+
+  /* ── 슬라이드 카드 ── */
+  .slide{background:#fff; border:1px solid var(--line); border-radius:14px; padding:24px 28px 28px; margin-bottom:22px;}
+  .s-top{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:6px;}
+  .s-num{font-size:12px; font-weight:800; color:#fff; background:#111114; border-radius:6px; padding:3px 9px;}
+  .chip{font-size:11.5px; font-weight:700; border-radius:999px; padding:3px 11px;}
+  .chip.op{background:#f0f0f2; color:#3c3c42;}
+  .chip.p1{background:var(--main-lt); color:#b8143a;}
+  .chip.p2{background:#FFF1DA; color:#9a5b00;}
+  .chip.p3{background:#EDEDF0; color:#3c3c42;}
+  .chip.p4{background:#E4E4E8; color:#282828;}
+  .chip.cl{background:#111114; color:#fff;}
+  .chip.demo{background:var(--main); color:#fff;}
+  .chip.lay{background:#fff; color:var(--sub); border:1px solid var(--line);}
+  .s-time{font-size:12px; color:var(--sub); margin-left:auto;}
+  .slide h3{font-size:18px; font-weight:800; letter-spacing:-.2px; margin-bottom:16px;}
+  .s-body{display:flex; gap:26px; align-items:flex-start; flex-wrap:wrap;}
+  .wf{flex:0 0 560px; max-width:100%;}
+  .wf .cap{font-size:11.5px; color:var(--sub); margin-top:7px;}
+  .txt{flex:1 1 400px; min-width:320px;}
+  .txt h4{font-size:12px; font-weight:800; color:var(--main); letter-spacing:.5px; margin:0 0 7px;}
+  .txt h4:not(:first-child){margin-top:16px;}
+  .copy{background:#fafafb; border:1px solid var(--line); border-left:3px solid var(--main); border-radius:8px; padding:12px 16px; font-size:13.5px;}
+  .copy .t{font-weight:800; font-size:14.5px; margin-bottom:6px;}
+  .copy .st{color:var(--sub); font-size:12.5px; margin-bottom:8px;}
+  .copy ul{margin:4px 0 0 18px;} .copy li{margin:3px 0;}
+  .copy .small{font-size:12px; color:var(--sub); margin-top:8px;}
+  .txt ul.pts{margin-left:18px; font-size:13px; color:#333;}
+  .txt ul.pts li{margin:4px 0;}
+  .memo{font-size:12.5px; color:#4a4a52; background:#fffdf5; border:1px solid #ffe2b0; border-radius:8px; padding:9px 13px;}
+  .memo.red{background:#fff5f7; border-color:#ffc7d4;}
+
+  /* ── 슬라이드 목업: 실제 EMU 좌표를 %로 환산, 실제 팔레트·타입스케일(0.4375×) ──
+     x% = EMU / 12192000 × 100   ·   y% = EMU / 6858000 × 100
+     pt → px = pt × (96/72) × 0.4375                                              */
+  .mk{position:relative; width:100%; aspect-ratio:16/9; background:#F5F5F5;
+     border:1px solid #e3e3e7; overflow:hidden;
+     font-family:-apple-system,"Pretendard","Helvetica Neue",sans-serif; color:#000;}
+  .mk:before,.mk:after{content:""; position:absolute; left:4.204%; width:91.59%; border-top:1px solid #B3B3B3;}
+  .mk:before{top:7.42%;} .mk:after{top:92.51%;}
+  .mk > *{position:absolute; box-sizing:border-box;}
+  .mk .lbl{left:3.43%; top:2.67%; font-size:6.4px; font-weight:700; letter-spacing:.08em; color:#B3B3B3;}
+  .mk .mark{left:3%; bottom:2%; width:33px; height:5.1px; font-size:0; line-height:0;
+            background-image:url(data:image/png;base64,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);
+            background-size:contain; background-repeat:no-repeat; background-position:left bottom; opacity:.9;}
+  .mk .mark b{display:none;}
+  .mk .kick{font-size:9.3px; font-weight:700; color:#9C9C9C; letter-spacing:.02em;}
+  .mk .h{font-size:17.5px; font-weight:800; line-height:1.2; letter-spacing:-.02em;}
+  .mk .h.big{font-size:22.2px;} .mk .h.cover{font-size:25.7px; line-height:1.24;}
+  .mk .h em{color:#FC1C49; font-style:normal;}
+  .mk .card{background:#fff; border-radius:3px;}
+  .mk .card.g{background:#E6E6E6;}
+  .mk .card.k{background:#282828; color:#fff;}
+  .mk .bar{background:#5B5B5B; color:#fff; border-radius:3px 3px 0 0;
+          display:flex; align-items:center; justify-content:center; font-size:10.5px; font-weight:700;}
+  .mk .bar.r{background:#FC1C49;}
+  .mk .tag{background:#FFE5EB; color:#FC1C49; border-radius:3px; display:flex; align-items:center;
+          justify-content:center; font-size:8.2px; font-weight:700; border:.7px solid #FC1C49;}
+  .mk .n{font-size:16.3px; font-weight:800; color:#FC1C49; line-height:1;}
+  .mk .t{font-size:8.2px; line-height:1.5;}
+  .mk .t.mid{font-size:10.5px;} .mk .t.big{font-size:11.7px; font-weight:700;}
+  .mk .t.sm{font-size:7px; color:#5B5B5B;} .mk .t.mut{font-size:7px; color:#9C9C9C;}
+  .mk .t.r{color:#FC1C49;} .mk .t.c{text-align:center;}
+  .mk .shot{background:#EDEDF0; border-radius:3px;}
+  .mk .shot span{position:absolute; left:4px; top:3px; font-size:6px; color:#9A9AA5; letter-spacing:.04em;}
+  .mk .rule{border-top:1px solid #FC1C49;}
+  .mk .dash{border-top:1px dashed #c9c9cf;}
+  .mk table{position:absolute; border-collapse:collapse; font-size:8.2px;}
+  .mk table th{background:#FC1C49; color:#fff; font-weight:700; padding:3px 5px; text-align:center;}
+  .mk table td{background:#fff; padding:3px 6px; border-bottom:1px solid #FC1C49;}
+  .mk table td.k{background:#FFE5EB; color:#FC1C49; font-weight:700; text-align:center; width:16%;}
+  .mk .code{background:#1E1E1E; border-radius:3px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+            font-size:7.6px; line-height:1.62; color:#D8D8DE; padding:9px 11px; white-space:pre;}
+  .mk .code i{color:#569CD6; font-style:normal;}
+  .mk .code b{color:#CE9178; font-weight:400;}
+  .mk .code u{color:#FF5C7A; text-decoration:none;}
+  .mk .code s{color:#6A6A72; text-decoration:none;}
+  .mk .chip5{border:1px solid #C9C9CF; border-radius:999px; display:flex; align-items:center;
+             justify-content:center; font-size:7.4px; color:#5B5B5B; background:#fff;}
+  .mk .lead{border-top:1px solid #B3B3B3;} .mk .lead.r{border-color:#FC1C49;}
+  .mk .dot{width:3.5px; height:3.5px; border-radius:50%; background:#B3B3B3;} .mk .dot.r{background:#FC1C49;}
+  .mk .kchip{background:#EDEDF0; border-radius:3px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+            font-size:6.6px; color:#3c3c42; padding:2.5px 6px; white-space:nowrap;}
+  .mk .kstrip{background:#fafafb; border:1px solid #e3e3e7; border-radius:3px;}
+  .mk .kstrip-t{font-size:7.4px; color:#5B5B5B;} .mk .kstrip-t b{color:#000;}
+  .mk .anno{font-size:11.7px; font-weight:800; line-height:1.3; letter-spacing:-.01em;}
+  .mk .anno.r{color:#FC1C49;} .mk .anno span{display:block; font-size:7px; font-weight:400; color:#9C9C9C; margin-top:2px;}
+  .wf-spec{font-size:11.5px; color:#4a4a52; margin-top:7px; background:#fafafb; border:1px solid var(--line);
+           border-radius:7px; padding:8px 10px; line-height:1.5;}
+</style>
+</head><body><div class="wrap">
+  <div class="doc-head">
+    <span class="tag">PLAN v1.0</span>
+    <h1>15강 — Silent fallback 차단</h1>
+    <p class="sub">이론 + 실습 40분 · 4클립 · 슬라이드 19장 · v1.0 (Lab 15 README E1~E4에 1:1로 붙인 실습 큐 네 장 + 이론 앵커 열네 장 + 표지)</p>
+    <div class="meta"><span>정렬: 커리큘럼 정본 15강 · Lab 15 E1~E4</span><span>산출물: <b>docs/retry-stop-matrix.md · docs/checklists/failure-handling.md</b> + 두 fallback 제거 diff — 12강 이후 <code>src</code>가 처음 바뀌는 강의</span><span>입력: 13강 19의 15강 예고 · Lab 15 README E1 · <code>docs/payment-policy.md</code></span><span>사상 축: <b>오류가 외부에 정상 응답처럼 보이면 테스트와 운영 모두 실패를 알 수 없다</b></span></div>
+  </div>
+
+  <div class="panel">
+    <h2>덱 성격</h2>
+    <p class="note-inline">이 덱은 <b>이론 + 실습 덱</b>이다. 15강은 Chapter 3의 네 번째 강의로, 13강이 「존재하지 않는 것을 부르는 코드」, 14강이 「핵심 값을 확인하지 않는 assertion」이었다면 15강은 <b>예외가 발생했는데도 정상 결과처럼 보이는 값을 반환하는 코드</b>를 다룬다. 사상 축은 하나다 — <b>오류가 외부에 정상 응답처럼 보이면 테스트와 운영 모두 실패를 알 수 없다.</b> 12강 이후 <code>src</code>가 처음 바뀌는 강의이며, 산출물은 <code>docs/retry-stop-matrix.md</code> · <code>docs/checklists/failure-handling.md</code>와 두 fallback 제거 diff다. 전체 구성은 <b>표지(01) → 탐지(02~06) → 실습 큐 07 → 교정(08~12) → 실습 큐 13 → retry/stop(14·15) → 실습 큐 16 → 체크리스트(17) → 실습 큐 18 → 마무리(19)</b>이고, 실습 N은 클립 N에 온다. 클립 배분: <b>클립 1 — 탐지</b>(약 10.5분 · 01~07) / <b>클립 2 — 교정</b>(약 14분 · 08~13: 에러를 없애 달라는 요청 · fallback 판별 기준 · 외부 응답과 서버 로그 · 오류 처리 기준은 누가 정하나 · 예외 경로 테스트 방법 · 실습 2) / <b>클립 3 — retry·stop</b>(약 9분 · 14~16: 재시도할 실패와 중단할 실패 · 정책이 정한 것과 정하지 않은 것 · 실습 3) / <b>클립 4 — 체크리스트</b>(약 7분 · 17~19: 실패 처리 체크리스트 · 실습 4 · 15강 정리와 16강 예고). 04 한 장만 실제 코드를 넣는다(커리큘럼이 「코드 예시로 보여준다」고 정했다) — 줄 번호는 넣지 않고, 실행 결과는 어느 장에도 넣지 않는다. 실습 큐 네 장(07·13·16·18)은 13강 08과 같은 큐 컴포넌트·좌표(레드 「실습」 배지 88%/15.5% + 헤드라인 + 위 카드 30~46.5% 세 행 + 아래 2열 50.5~78%)를 그대로 쓴다. 스트립은 02 한 장에만 둔다. 13강 플랜과 같은 토큰·좌표 문법(킥커 12.18% · 헤드라인 18.8% · 스트립 79.5%)을 그대로 쓰고, 표지 PNG가 아직 없어 <code>gen2.py</code>의 cover는 None — 01은 텍스트 표지 유형으로 일반 렌더된다.</p>
+  </div>
+
+  <!-- 01 표지 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">01</span><span class="chip op">표지</span><span class="chip cl">클립 1</span><span class="chip lay">텍스트 표지</span><span class="s-time">30초</span></div>
+    <h3>Silent fallback 차단</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="kick" style="left:3.43%; top:12.18%;">Chapter 3 · 15강 · Silent fallback 차단</div>
+          <div class="h cover" style="left:3.43%; top:30%;">Silent fallback 차단</div>
+          <div class="t mid" style="left:3.43%; top:57%; color:#5B5B5B;">빈 배열 · 기본값 · 로그 후 무시</div>
+          <div class="t mut" style="left:3.43%; top:65%;">개발자를 위한 Codex — 15강 · 이론 + 실습 · 약 40분</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">텍스트 표지 — 헤드라인 「Silent fallback 차단」, 부제 「빈 배열 · 기본값 · 로그 후 무시」. Chapter 3 네 번째 강의</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 30초. 템플릿 유형: 01 표지. 13강 표지와 같은 좌표(kicker 12.18% · 커버 30% · 부제 57% · 메타 65%). 표지 PNG(<code>assets/cover15.png</code>)가 아직 없어 <code>gen2.py</code>의 cover는 None이고, 이 텍스트 표지가 그대로 01로 렌더된다. 헤드라인 「Silent fallback 차단」 · 부제 「빈 배열 · 기본값 · 로그 후 무시」 · kicker 「Chapter 3 · 15강 · Silent fallback 차단」은 정확히 이 문구로 둔다. 레드 없음.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">Silent fallback 차단</div><div class="st">빈 배열 · 기본값 · 로그 후 무시</div><div class="small">kicker: Chapter 3 · 15강 · Silent fallback 차단 / meta: 개발자를 위한 Codex — 15강 · 이론 + 실습 · 약 40분</div></div>
+        <h4>연출 메모</h4>
+        <div class="memo">표지 위에서 한 문장만 — 「이번 강의는 통과했는데도 실패를 알 수 없는 경우를 봅니다」. 지난 강의 리캡은 02에서 한다.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="sec-head"><span class="num">클립 1</span><h2>탐지</h2><span class="time">약 10.5분 · 01~07 · 실습 1</span></div>
+
+  <!-- 02 통과 결과가 보증하지 못하는 것 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">02</span><span class="chip op">리캡 · 도입</span><span class="chip cl">클립 1</span><span class="chip lay">좌우 키워드 2열 · 헤더 바 + 레드 한 줄</span><span class="s-time">1분</span></div>
+    <h3>통과 결과가 보증하지 못하는 것</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">지난 강의 리캡 · 15강 시작</div>
+          <div class="h" style="left:3.43%; top:18.8%;">통과 결과가 보증하지 못하는 것</div>
+          <!-- 좌: 지난 강의 -->
+          <div class="bar" style="left:4.2%; top:29.5%; width:44%; height:5.5%;">지난 강의</div>
+          <div class="card g" style="left:4.2%; top:35%; width:44%; height:27%;"></div>
+          <div class="t big c" style="left:6.6%; top:38.5%; width:39.2%; color:#5B5B5B;">핵심 값을 확인하지 않는 assertion</div>
+          <div class="t c" style="left:6.6%; top:52.5%; width:39.2%; color:#5B5B5B;">결과 — <b style="color:#000;">통과</b></div>
+          <!-- 우: 이번 강의 -->
+          <div class="bar" style="left:51.8%; top:29.5%; width:44%; height:5.5%;">이번 강의</div>
+          <div class="card" style="left:51.8%; top:35%; width:44%; height:27%;"></div>
+          <div class="t big c" style="left:54.2%; top:38.5%; width:39.2%;">예외가 정상 응답으로 바뀌는 코드</div>
+          <div class="t c" style="left:54.2%; top:52.5%; width:39.2%; color:#5B5B5B;">결과 — <b style="color:#000;">통과</b></div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:68%; width:91.6%; color:#FC1C49; font-weight:700;">통과해도 실패 여부를 알 수 없음</div>
+          <div class="kstrip" style="left:4.2%; top:79.5%; width:91.6%; height:8.2%;"></div><div class="kstrip-t c" style="left:6%; top:82.1%; width:88%; text-align:center;"><b>이번 강의에서 다룰 것</b> — 오류를 숨기는 코드, 오류를 드러내는 처리, 재시도와 중단 기준</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">좌(지난 강의 · 회색 · 핵심 값을 확인하지 않는 assertion → 통과) ↔ 우(이번 강의 · 흰 · 예외가 정상 응답으로 바뀌는 코드 → 통과). 두 칸의 결과가 같은 「통과」. 레드는 「통과해도 실패 여부를 알 수 없음」</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1분. 10 텍스트 비교 — 13강 02와 같은 좌표(좌 열 4.2~48.2% · 우 열 51.8~95.8%). 두 열 모두 회색 <code>bar</code>(29.5~35%)에 <b>라벨만</b>(지난 강의 / 이번 강의) + 카드(35~62%). 카드 안은 <code>t big</code> 가운데 정렬 <b>키워드</b>(38.5% — 좌 키워드가 두 줄로 접혀 13강의 39.5%보다 1% 올렸다) + <code>t c</code> 결과 한 줄(52.5%). 좌는 <code>card g</code>에 #5B5B5B(지난 것이라 흐린다), 우는 흰 <code>card</code>에 검정. <b>핵심 축은 「원인이 달라도 결과는 같은 통과」 하나</b> — 두 칸의 결과 줄이 똑같이 「통과」인 것이 그림이다. <b>레드 1개 = 68% 중앙 <code>t mid</code> 볼드</b>. 스트립은 이 덱의 네 클립(숨기는 코드 → 드러내는 처리 → retry·stop → 체크리스트)을 한 줄로 예고한다. 이 7장 중 스트립은 이 장에만 둔다. 수치 없음.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">통과 결과가 보증하지 못하는 것</div><ul><li>지난 강의 — 핵심 값을 확인하지 않는 assertion / 결과 — 통과</li><li>이번 강의 — 예외가 정상 응답으로 바뀌는 코드 / 결과 — 통과</li><li>레드: 통과해도 실패 여부를 알 수 없음</li><li>스트립: 이번 강의에서 다룰 것 — 오류를 숨기는 코드, 오류를 드러내는 처리, 재시도와 중단 기준</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo">13강 19에서 15강을 예고했다 — 관찰자(typecheck·test)를 세웠는데, 관찰이 틀린 결과를 못 보게 하는 코드가 있다는 것. 14강은 얕은 assertion이 원인이었다면 15강은 <b>오류 처리 코드가 원인</b>이라는 점을 여기서 짚는다. 왼쪽을 먼저 읽고 오른쪽으로 — 둘 다 결과가 「통과」인 것을 손으로 가리킨다. 「silent fallback」이라는 이름은 03에서 정의와 함께 처음 꺼낸다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 Silent fallback의 유형 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">03</span><span class="chip op">분류</span><span class="chip cl">클립 1</span><span class="chip lay">정의 한 줄 + 텍스트 3단 · 헤더 바 3 + 보충 한 줄</span><span class="s-time">1.5분</span></div>
+    <h3>Silent fallback의 유형</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 1 · 분류</div>
+          <div class="h" style="left:3.43%; top:18.8%;">Silent fallback의 유형</div>
+          <!-- 정의 한 줄 -->
+          <div class="t c" style="left:4.2%; top:29.5%; width:91.6%; font-weight:700;">예외가 발생했는데도 정상 결과처럼 보이는 값을 반환하는 코드</div>
+          <!-- 1 빈 값 반환 -->
+          <div class="bar" style="left:4.2%; top:38%; width:29.4%; height:5.5%;">빈 값 반환</div>
+          <div class="card" style="left:4.2%; top:43.5%; width:29.4%; height:17%;"></div>
+          <div class="t c" style="left:6%; top:48.5%; width:25.8%; color:#5B5B5B;">「데이터 없음」과 <b style="color:#000;">구분 불가</b></div>
+          <!-- 2 기본값 반환 -->
+          <div class="bar" style="left:35.3%; top:38%; width:29.4%; height:5.5%;">기본값 반환</div>
+          <div class="card" style="left:35.3%; top:43.5%; width:29.4%; height:17%;"></div>
+          <div class="t c" style="left:37.1%; top:48.5%; width:25.8%; color:#5B5B5B;">정상 응답과 <b style="color:#000;">모양이 같음</b></div>
+          <!-- 3 로그만 남기고 진행 -->
+          <div class="bar" style="left:66.4%; top:38%; width:29.4%; height:5.5%;">로그만 남기고 진행</div>
+          <div class="card" style="left:66.4%; top:43.5%; width:29.4%; height:17%;"></div>
+          <div class="t c" style="left:68.2%; top:48.5%; width:25.8%; color:#5B5B5B;">호출자에게 <b style="color:#000;">오류가 전달되지 않음</b></div>
+          <!-- 보충 -->
+          <div class="t c" style="left:4.2%; top:67%; width:91.6%; color:#9C9C9C;">빈 배열·기본 객체는 예외가 났는데도 정상 결과로 반환할 때만 해당</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">정의 한 줄(굵게) 아래 3단 — 빈 값 반환 · 기본값 반환 · 로그만 남기고 진행. 각 칸에 한 줄 설명. 아래 회색 보충 한 줄. 레드 없음. 스트립 없음</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1.5분. 13강 05의 헤더 바 + 카드 구조를 3열로 응용 — 세 열 폭 29.4%(4.2 / 35.3 / 66.4%, 13강 10의 3단 좌표). 29.5% <code>t</code> 검정 볼드 가운데 정렬 <b>정의 한 줄</b>(README E1 「예외가 발생했는데도 그 값을 정상 결과처럼 반환하고 … silent fallback입니다」). 회색 <code>bar</code>(38~43.5%) + 흰 <code>card</code>(43.5~60.5%), 카드 안은 <code>t</code> 회색 한 줄 + 검정 볼드 핵심어(구분 불가 · 모양이 같음 · 오류가 전달되지 않음). 세 바 모두 회색 — 어느 하나가 더 중요하지 않다. 67% <code>t</code> #9C9C9C 보충 한 줄은 README E1 「빈 배열이나 기본 객체가 언제나 나쁜 것은 아닙니다」를 옮긴 것 — 04의 실제 코드를 보기 전에 「빈 배열 자체가 죄가 아니다」를 못 박는다. <b>레드 없음.</b> 스트립 없음. 수치 없음.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">Silent fallback의 유형</div><ul><li>예외가 발생했는데도 정상 결과처럼 보이는 값을 반환하는 코드</li><li>빈 값 반환 — 「데이터 없음」과 구분 불가</li><li>기본값 반환 — 정상 응답과 모양이 같음</li><li>로그만 남기고 진행 — 호출자에게 오류가 전달되지 않음</li><li>빈 배열·기본 객체는 예외가 났는데도 정상 결과로 반환할 때만 해당</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo">정의를 먼저 읽고 세 칸으로 내려간다. 세 칸이 04의 두 코드에 그대로 걸린다 — 왼쪽 「빈 값 반환」이 <code>admin.ts</code>, 가운데 「기본값 반환」과 오른쪽 「로그만 남기고 진행」이 한꺼번에 <code>payments.ts</code>다. 보충 줄에서 「빈 배열을 반환하는 코드를 다 지우자는 말이 아니다」를 한 번 짚는다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 이 저장소의 fallback 두 곳 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">04</span><span class="chip op">실물</span><span class="chip cl">클립 1</span><span class="chip lay">코드 카드 2열 + 질문 한 줄씩 + 레드 한 줄</span><span class="s-time">1.5분</span></div>
+    <h3>이 저장소의 fallback 두 곳</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 1 · 실물</div>
+          <div class="h" style="left:3.43%; top:18.8%;">이 저장소의 fallback 두 곳</div>
+          <!-- 좌: src/admin.ts -->
+          <div style="left:4.2%; top:29.5%; display:flex;"><span class="kchip">src/admin.ts</span></div>
+          <div class="code" style="left:4.2%; top:35%; width:47.5%; height:26%;">try {
+  res.json(Array.from(orders.values(), toAdminOrder));
+} catch {
+  res.json([]);
+}</div>
+          <div class="t c" style="left:4.2%; top:63.5%; width:47.5%; color:#5B5B5B;">빈 배열 = 주문이 없음? 오류가 났음?</div>
+          <!-- 우: src/payments.ts -->
+          <div style="left:54.3%; top:29.5%; display:flex;"><span class="kchip">src/payments.ts</span></div>
+          <div class="code" style="left:54.3%; top:35%; width:41.5%; height:26%;">} catch (e) {
+  console.log(e);
+  res.json({ ok: false });
+}</div>
+          <div class="t c" style="left:54.3%; top:63.5%; width:41.5%; color:#5B5B5B;">ok:false = 결제 실패? 서버 오류?</div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:71.5%; width:91.6%; color:#FC1C49; font-weight:700;">호출자가 둘을 구분할 수 없음</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">좌 코드 카드(src/admin.ts · catch 뒤 빈 배열) ↔ 우 코드 카드(src/payments.ts · console.log 뒤 ok:false). 각 카드 아래 질문 한 줄. 레드는 「호출자가 둘을 구분할 수 없음」. 스트립 없음</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1.5분. 12 텍스트 & 코드 변형 — 13강 11의 <code>.code</code> 카드 토큰을 좌우 2열로 썼다 — 좌 4.2~51.7%(폭 47.5%) · 우 54.3~95.8%(폭 41.5%). <b>두 열 폭이 다른 이유</b>: 좌 코드의 가장 긴 줄(<code>res.json(Array.from(orders.values(), toAdminOrder));</code>)이 폭 44%에서는 카드 밖으로 넘쳐, 코드 원문을 줄바꿈하거나 글자 크기를 바꾸는 대신 열 폭을 좌로 3.5% 옮겼다(간격 2.6%는 유지). <b>이 덱에서 실제 코드를 넣는 유일한 장</b>(커리큘럼이 「코드 예시로 보여준다」고 정했다). 줄 번호는 넣지 않는다. 각 열 위 29.5% <code>kchip</code> 파일 라벨, 35~61% <code>.code</code> 카드(두 카드 높이를 같게 맞춰 줄 수 차이를 가린다), 63.5% <code>t</code> 회색 가운데 정렬 질문 한 줄. 코드는 <code>order-ops-demo/src/admin.ts</code> · <code>src/payments.ts</code>의 catch 블록 원문 그대로이고, <code>.code</code>의 <code>&lt;i&gt;</code>(파랑)·<code>&lt;b&gt;</code>(주황)는 팔레트 밖이라 쓰지 않는다. <b>레드 1개 = 71.5% 중앙 <code>t mid</code> 볼드</b>. 스트립 없음. 실행 결과는 넣지 않는다. 수치 없음(「두 곳」은 구조의 이름).</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">이 저장소의 fallback 두 곳</div><ul><li>src/admin.ts — try { res.json(Array.from(orders.values(), toAdminOrder)); } catch { res.json([]); }</li><li>빈 배열 = 주문이 없음? 오류가 났음?</li><li>src/payments.ts — } catch (e) { console.log(e); res.json({ ok: false }); }</li><li>ok:false = 결제 실패? 서버 오류?</li><li>레드: 호출자가 둘을 구분할 수 없음</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo">두 코드를 03의 세 칸에 얹어 읽는다 — 왼쪽은 「빈 값 반환」, 오른쪽은 「로그만 남기고 진행」과 「기본값 반환」이 한 블록에 같이 있다. Lab 12 이후 정상적인 결제 실패는 402와 함께 오지만, 이 catch는 200으로 <code>ok:false</code>를 돌려준다 — 그래서 호출자는 「결제가 거절됐다」와 「서버가 터졌다」를 같은 모양으로 받는다. 이 설명은 슬라이드에 넣지 않고 말로만 한다. 실습 1에서 Codex가 찾아야 할 두 경로가 바로 이 둘이라는 것은 아직 말하지 않는다(07에서 「서로 다른 모양의 두 경로」로만 건다).</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 숨겨지는 오류 정보 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">05</span><span class="chip op">핵심 개념</span><span class="chip cl">클립 1</span><span class="chip lay">플로우 4 노드 + 질문 한 줄씩 + 레드 한 줄</span><span class="s-time">1분</span></div>
+    <h3>숨겨지는 오류 정보</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 1 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:18.8%;">숨겨지는 오류 정보</div>
+          <!-- 흐름: 실패 입력 → 실제 오류 → 외부 응답 → 사라지는 정보 -->
+          <div class="card" style="left:4.2%; top:31%; width:19.6%; height:11%;"></div>
+          <div class="t mid c" style="left:4.2%; top:34.5%; width:19.6%; font-weight:700;">실패 입력</div>
+          <div class="t mid c" style="left:23.8%; top:34.5%; width:4.4%; color:#9C9C9C;">→</div>
+          <div class="card" style="left:28.2%; top:31%; width:19.6%; height:11%;"></div>
+          <div class="t mid c" style="left:28.2%; top:34.5%; width:19.6%; font-weight:700;">실제 오류</div>
+          <div class="t mid c" style="left:47.8%; top:34.5%; width:4.4%; color:#9C9C9C;">→</div>
+          <div class="card" style="left:52.2%; top:31%; width:19.6%; height:11%;"></div>
+          <div class="t mid c" style="left:52.2%; top:34.5%; width:19.6%; font-weight:700;">외부 응답</div>
+          <div class="t mid c" style="left:71.8%; top:34.5%; width:4.4%; color:#9C9C9C;">→</div>
+          <div class="card" style="left:76.2%; top:31%; width:19.6%; height:11%;"></div>
+          <div class="t mid c" style="left:76.2%; top:34.5%; width:19.6%; font-weight:700;">사라지는 정보</div>
+          <!-- 각 노드 아래 질문 -->
+          <div class="t sm c" style="left:4.2%; top:45%; width:19.6%; color:#9C9C9C; word-break:keep-all;">어떤 조건에서 예외 경로로 들어가는가</div>
+          <div class="t sm c" style="left:28.2%; top:45%; width:19.6%; color:#9C9C9C; word-break:keep-all;">서버 안에서 어떤 원인이 생기는가</div>
+          <div class="t sm c" style="left:52.2%; top:45%; width:19.6%; color:#9C9C9C; word-break:keep-all;">호출자가 성공·빈 결과·실패 중 무엇을 받는가</div>
+          <div class="t sm c" style="left:76.2%; top:45%; width:19.6%; color:#9C9C9C; word-break:keep-all;">로그·상태·식별자·오류 근거 중 무엇이 남지 않는가</div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:64%; width:91.6%; color:#FC1C49; font-weight:700;">원인이 응답에서 사라지면 재현과 추적이 어려워짐</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">실패 입력 → 실제 오류 → 외부 응답 → 사라지는 정보 네 노드. 각 노드 아래 회색 질문 한 줄. 레드는 「원인이 응답에서 사라지면 재현과 추적이 어려워짐」. 스트립 없음</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1분. 09 텍스트 연결 — 13강 06의 가로 흐름 노드 구조를 네 노드로(폭 19.6% · 4.2 / 28.2 / 52.2 / 76.2%, 화살표 4.4% — 13강 19의 네 노드 좌표). 노드는 흰 <code>card</code>(31~42%) + <code>t mid</code> 볼드 이름. 각 노드 아래 45% <code>t sm</code> #9C9C9C 질문 한 줄(어절 단위로 접히게 <code>word-break:keep-all</code>) — README E1 판단 기준 표의 「확인할 내용」 열 네 칸을 옮긴 것. 네 노드 이름은 실습 1에서 Codex가 표로 정리할 네 열과 같다. <b>레드 1개 = 64% 중앙 <code>t mid</code> 볼드</b>. 화살표는 글리프(아이콘 아님). <b>실행 결과는 넣지 않는다 — 구조만 보여 준다.</b> 스트립 없음. 수치 없음.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">숨겨지는 오류 정보</div><ul><li>실패 입력 — 어떤 조건에서 예외 경로로 들어가는가</li><li>실제 오류 — 서버 안에서 어떤 원인이 생기는가</li><li>외부 응답 — 호출자가 성공·빈 결과·실패 중 무엇을 받는가</li><li>사라지는 정보 — 로그·상태·식별자·오류 근거 중 무엇이 남지 않는가</li><li>레드: 원인이 응답에서 사라지면 재현과 추적이 어려워짐</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo">04의 <code>payments.ts</code>를 이 네 칸에 얹어 왼쪽부터 읽는다 — 어떤 입력이 catch로 들어가고, 안에서 무엇이 나고, 밖에는 <code>ok:false</code>만 나가고, 그래서 무엇이 남지 않는지. 실제 값을 채우는 건 실습 1에서 Codex가 할 일이라 여기서는 질문만 던진다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 테스트와 운영에 미치는 영향 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">06</span><span class="chip op">핵심 개념</span><span class="chip cl">클립 1</span><span class="chip lay">텍스트 2단 · 헤더 바 2 + 레드 한 줄</span><span class="s-time">1분</span></div>
+    <h3>테스트와 운영에 미치는 영향</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 1 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:18.8%;">테스트와 운영에 미치는 영향</div>
+          <!-- 테스트 -->
+          <div class="bar" style="left:4.2%; top:29.5%; width:44%; height:5.5%;">테스트</div>
+          <div class="card" style="left:4.2%; top:35%; width:44%; height:24%;"></div>
+          <div class="t mid" style="left:6.6%; top:39.5%; width:39.2%;">예외 경로를 실행하지 않으면 <b>통과</b></div>
+          <div class="dash" style="left:6.6%; top:47.5%; width:39.2%;"></div>
+          <div class="t mid" style="left:6.6%; top:49.5%; width:39.2%;">실행해도 200 응답이면 <b>통과</b></div>
+          <!-- 운영 -->
+          <div class="bar" style="left:51.8%; top:29.5%; width:44%; height:5.5%;">운영</div>
+          <div class="card" style="left:51.8%; top:35%; width:44%; height:24%;"></div>
+          <div class="t mid" style="left:54.2%; top:39.5%; width:39.2%;">장애가 <b>정상 응답으로 보임</b></div>
+          <div class="dash" style="left:54.2%; top:47.5%; width:39.2%;"></div>
+          <div class="t mid" style="left:54.2%; top:49.5%; width:39.2%;">발견과 원인 추적이 <b>늦어짐</b></div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:67%; width:91.6%; color:#FC1C49; font-weight:700;">정상 흐름 테스트만으로는 발견되지 않음</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">2단 — 테스트(예외 경로를 실행하지 않으면 통과 / 실행해도 200 응답이면 통과) · 운영(장애가 정상 응답으로 보임 / 발견과 원인 추적이 늦어짐). 레드는 「정상 흐름 테스트만으로는 발견되지 않음」. 스트립 없음</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1분. 13강 10의 헤더 바 + 카드 구조를 2단으로 — 두 열 폭 44%(4.2 / 51.8%, 13강 02 좌표). 회색 <code>bar</code>(29.5~35%) + 흰 <code>card</code>(35~59%), 카드 안은 <code>t mid</code> 두 줄을 <code>dash</code> 점선으로 나눴다(두 줄이 라벨·값 쌍이 아니라 나란한 두 결과라 13강 10의 「시점·비용」 라벨 문법 대신 점선 구분). 핵심어만 검정 볼드(통과 · 정상 응답으로 보임 · 늦어짐). 「200」은 HTTP 상태 코드라 실행마다 달라지는 측정값이 아니고 수치 금지 규칙에 걸리지 않는다. <b>레드 1개 = 67% 중앙 <code>t mid</code> 볼드</b> — README E1 설계 질문 셋째 「현재 테스트가 정상 흐름만 확인할 때 fallback은 왜 통과한 채 남을 수 있나요」의 답. 스트립 없음. 수치 없음.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">테스트와 운영에 미치는 영향</div><ul><li>테스트 — 예외 경로를 실행하지 않으면 통과 / 실행해도 200 응답이면 통과</li><li>운영 — 장애가 정상 응답으로 보임 / 발견과 원인 추적이 늦어짐</li><li>레드: 정상 흐름 테스트만으로는 발견되지 않음</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo">왼쪽 두 줄은 14강과 잇는다 — 「14강에서 assertion을 보강했어도, 예외 경로 자체를 실행하지 않으면 그 assertion은 돌지 않는다」. 오른쪽은 운영자 입장에서 한 문장. 레드 한 줄이 실습 1의 마지막 질문(테스트가 놓치는 이유)으로 바로 이어진다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 실습 큐 — 실습 1 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">07</span><span class="chip demo">실습 큐</span><span class="chip cl">클립 1</span><span class="chip lay">큐 컴포넌트 · 만드는 것 + 순서 칩 + 질문/확인 2열</span><span class="s-time">4분</span></div>
+    <h3>실습 1 — fallback 위치와 숨겨지는 정보 기록</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 1 · 실습</div>
+          <div class="h" style="left:3.43%; top:18.8%;">실습 1 — fallback 위치와 숨겨지는 정보 기록</div>
+          <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
+          <!-- 이번에 만드는 것 · 순서 · 원칙 -->
+          <div class="card" style="left:4.2%; top:30%; width:91.6%; height:16.5%;"></div>
+          <div class="t sm" style="left:6.6%; top:32.2%; width:20%; color:#9C9C9C; font-weight:700;">이번에 만드는 것</div>
+          <div class="t" style="left:27%; top:31.6%; width:66%; font-weight:700;">fallback 조사 결과 — 위치 · 실패 입력 · 외부 응답 · 사라지는 정보</div>
+          <div class="t sm" style="left:6.6%; top:37.3%; width:20%; color:#9C9C9C; font-weight:700;">순서</div>
+          <div style="left:27%; top:36.8%; display:flex; align-items:center; gap:5px;"><span class="kchip">예외 경로 추적</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 2px;">→</span><span class="kchip">표로 정리</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 2px;">→</span><span class="kchip">테스트가 놓치는 이유</span></div>
+          <div class="t" style="left:6.6%; top:42.2%; width:87%; color:#5B5B5B;"><b style="color:#000;">코드 수정 금지</b> — 조사만</div>
+          <!-- 생각할 질문 -->
+          <div class="card" style="left:4.2%; top:50.5%; width:44%; height:27.5%;"></div>
+          <div class="t sm" style="left:6.6%; top:52.8%; width:39%; color:#9C9C9C; font-weight:700;">생각할 질문</div>
+          <div class="t" style="left:6.6%; top:58.3%; width:39.2%;">「실패를 빈 값으로 바꾸면 테스트와 운영에서 각각 무엇을 놓치나」</div>
+          <div class="t" style="left:6.6%; top:68.8%; width:39.2%;">「정상 흐름 테스트만 있을 때 fallback은 왜 통과한 채 남나」</div>
+          <!-- 확인할 것 -->
+          <div class="card" style="left:51.8%; top:50.5%; width:44%; height:27.5%;"></div>
+          <div class="t sm" style="left:54.2%; top:52.8%; width:39%; color:#9C9C9C; font-weight:700;">확인할 것</div>
+          <div class="t" style="left:54.2%; top:58.3%; width:39.2%;">서로 다른 모양의 fallback 두 경로를 구분</div>
+          <div class="t" style="left:54.2%; top:68.8%; width:39.2%;">경로마다 사라지는 정보를 기록</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">실습 큐 — 위 카드에 만드는 것 한 줄, 순서 칩(예외 경로 추적 → 표로 정리 → 테스트가 놓치는 이유), 원칙 한 줄(코드 수정 금지 — 조사만). 아래 2열에 질문 둘 · 확인 둘. 레드는 「실습」 배지만</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 4분. 13강 08의 <b>큐 컴포넌트와 좌표를 그대로</b>(킥커 「클립 N · 실습」 · 헤드라인 · 우상단 88%/15.5% 레드 「실습」 배지 · 위 카드 30~46.5% 세 행 · 아래 2열 50.5~78%). 15강에서는 <b>07·13·16·18 네 장이 같은 좌표</b>다. 첫 행은 파일이 아니라 조사 결과가 산출물이라 <code>kchip</code> 대신 <code>t</code> 검정 볼드 한 줄(README E1 §2 표 「결과: fallback 조사 결과」 + 판단 기준 표의 네 관찰 축). 둘째 행 라벨 「순서」 + <code>kchip</code> 셋 사이 회색 「→」(README E1 실행 프롬프트 — 경로를 찾고 → 표로 정리하고 → 테스트가 왜 놓치는지 적는다). 원칙 한 줄 「<b>코드 수정 금지</b> — 조사만」(README E1 「이 단계에서는 위치와 영향만 조사하며 코드는 수정하지 않습니다」). 질문 둘은 README E1 설계 질문 첫째·셋째(둘째 「한 흐름으로 어떻게 관찰하나」는 05가 이미 답했다). 확인할 것 둘은 README E1 검증 첫째·둘째의 압축. <b>레드는 「실습」 배지 하나</b>(네 큐 공통 마커), 그 외 레드 없음. 스트립 없음. 수치 없음(「두 경로」는 README 검증 항목의 구조 이름).</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">실습 1 — fallback 위치와 숨겨지는 정보 기록</div><ul><li>이번에 만드는 것: fallback 조사 결과 — 위치 · 실패 입력 · 외부 응답 · 사라지는 정보</li><li>순서: 예외 경로 추적 → 표로 정리 → 테스트가 놓치는 이유</li><li>코드 수정 금지 — 조사만</li><li>질문: 「실패를 빈 값으로 바꾸면 테스트와 운영에서 각각 무엇을 놓치나」 「정상 흐름 테스트만 있을 때 fallback은 왜 통과한 채 남나」</li><li>확인: 서로 다른 모양의 fallback 두 경로를 구분 / 경로마다 사라지는 정보를 기록</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo">직전에 Lab 15 README §1을 훑어 시작 상태를 확인한다 — 이전 Lab의 관리자 상태 <code>it.fails()</code>는 이 Lab에서 건드리지 않는다는 것을 미리 말해 둔다. README E1 프롬프트를 그대로 Codex에 주고, 결과 표가 나오면 05의 네 칸 위에 얹어 읽는다. 모델이 조사하다가 코드를 고치려 하면 멈추고 다시 시킨다. 실습 중 화면은 Codex와 README를 split.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="sec-head"><span class="num">클립 2</span><h2>교정</h2><span class="time">약 14분 · 08~13 · 실습 2</span></div>
+
+  <!-- 08 에러를 없애 달라는 요청 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">08</span><span class="chip op">연결</span><span class="chip cl">클립 2</span><span class="chip lay">요청 한 줄 카드 + 칩 행 + 레드 한 줄</span><span class="s-time">1분</span></div>
+    <h3>에러를 없애 달라는 요청</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 2 · 연결</div>
+          <div class="h" style="left:3.43%; top:18.8%;">에러를 없애 달라는 요청</div>
+          <!-- 요청 한 줄 -->
+          <div class="card" style="left:4.2%; top:30%; width:91.6%; height:12%;"></div>
+          <div class="t big c" style="left:4.2%; top:33.3%; width:91.6%;">「에러가 나지 않게 해 줘」</div>
+          <!-- 후보 칩 행 -->
+          <div style="left:4.2%; top:48.5%; width:91.6%; display:flex; align-items:center; justify-content:center; gap:5px;"><span class="t sm" style="color:#9C9C9C; font-weight:700; margin-right:4px;">수정안으로 나올 수 있는 후보</span><span class="kchip">빈 값 반환</span><span class="kchip">기본값 대체</span><span class="kchip">로그만 남기고 진행</span></div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:58%; width:91.6%; color:#FC1C49; font-weight:700;">에러 제거만 목표로 두면 fallback이 후보가 됨</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">위 카드에 요청 한 줄 「에러가 나지 않게 해 줘」(검정 볼드). 아래 칩 행(수정안으로 나올 수 있는 후보 — 빈 값 반환 · 기본값 대체 · 로그만 남기고 진행). 레드는 「에러 제거만 목표로 두면 fallback이 후보가 됨」. 스트립 없음</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1분. 13강 06의 「칩 행 + 레드 한 줄」 구조 — 위 세 노드 자리에 흰 <code>card</code> 한 장(30~42%)을 두고 <code>t big</code> 가운데 정렬 검정 볼드로 요청 한 줄을 넣었다. 48.5% 중앙 flex 행: <code>t sm</code> 회색 라벨 「수정안으로 나올 수 있는 후보」 + <code>kchip</code> 셋(13강 06의 47.5% 행과 같은 문법 — 위 카드가 노드보다 낮게 끝나 1% 내렸다). 세 칩은 03의 세 유형과 같은 이름 — 03에서 「유형」으로 본 것이 08에서는 「수정안 후보」로 돌아온다. <b>레드 1개 = 58% 중앙 <code>t mid</code> 볼드</b>(README E2 설계 질문 넷째 「에러가 나지 않게 만드는 가장 빠른 제안은 왜 거절해야 하나요」의 전제). 레드 문구는 모델 행동의 단정이 아니라 「목표를 이렇게 주면」이라는 조건문이다. 스트립 없음. 수치 없음.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">에러를 없애 달라는 요청</div><ul><li>「에러가 나지 않게 해 줘」</li><li>수정안으로 나올 수 있는 후보: 빈 값 반환 · 기본값 대체 · 로그만 남기고 진행</li><li>레드: 에러 제거만 목표로 두면 fallback이 후보가 됨</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo">모델이 늘 이렇게 한다고 말하지 않는다 — <b>「목표를 이렇게 주면」</b>이라는 조건으로만 말한다. 「에러를 없애라」는 요청은 목표가 「에러 제거」라서 03의 세 유형이 전부 유효한 수정안이 된다는 것이 요지. 실습 1에서 찾은 두 경로가 바로 이 요청의 결과처럼 생겼다는 것을 짚고, 09에서 판별 기준으로 넘어간다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 fallback 판별 기준 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">09</span><span class="chip op">핵심 개념</span><span class="chip cl">클립 2</span><span class="chip lay">표 3행 3열 · 헤더 회색 + 회색 한 줄</span><span class="s-time">1.5분</span></div>
+    <h3>fallback 판별 기준</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 2 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:18.8%;">fallback 판별 기준</div>
+          <table style="left:4.2%; top:29.5%; width:91.6%;">
+            <tr><th style="background:#5B5B5B; width:46%; text-align:left; padding-left:8px;">판별 질문</th><th style="background:#5B5B5B; width:22%;">fallback</th><th style="background:#5B5B5B;">실패를 드러내는 처리</th></tr>
+            <tr><td style="font-weight:700;">실패를 성공 응답이나 빈 값으로 바꾸는가</td><td style="text-align:center; color:#5B5B5B;">예</td><td style="text-align:center;">아니오</td></tr>
+            <tr><td style="font-weight:700;">원인 정보가 사라지는가</td><td style="text-align:center; color:#5B5B5B;">대체로 예</td><td style="text-align:center;">서버 쪽에 보존</td></tr>
+            <tr><td style="font-weight:700;">호출자와 운영자가 실패를 구분할 수 있는가</td><td style="text-align:center; color:#5B5B5B;">아니오</td><td style="text-align:center;">예</td></tr>
+          </table>
+          <div class="t c" style="left:4.2%; top:62%; width:91.6%; color:#5B5B5B;">판별은 사람이 하고, fallback으로 가려낸 후보는 적용하지 않음</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">README E2 판단 기준 표의 세 질문을 행으로 — fallback 열(예 · 대체로 예 · 아니오)과 실패를 드러내는 처리 열(아니오 · 서버 쪽에 보존 · 예). 아래 회색 한 줄. 레드 없음. 스트립 없음</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1.5분. 13강 09의 표 문법 — <code>.mk table</code>(4.2~95.8% · 29.5%부터), <b>헤더 배경은 인라인 #5B5B5B</b>(13강 07·09와 같은 이유 — 장식 레드 헤더를 두지 않는다). 열 폭 46 / 22 / 32%. README E2 판단 기준 표는 「후보 처리」를 행으로 두고 세 질문을 열로 뒀는데, 여기서는 <b>세 질문을 행으로 세우고 두 처리를 열로</b> 돌렸다 — 슬라이드에서는 질문을 세로로 훑어 내리는 쪽이 읽힌다. 첫 열 검정 볼드 질문, 둘째 열(fallback) 회색 가운데 정렬, 셋째 열(실패를 드러내는 처리) 검정 가운데 정렬 — 「드러내는 처리」가 본체, fallback이 보조. <code>td.k</code> 핑크 열은 쓰지 않는다. 행 구분선은 토큰 기본값. 62% <code>t</code> 회색 한 줄은 README E2 「Codex가 fallback 후보를 내지 않으면 … 고정 후보를 설명 수준에서만 같은 표로 판정합니다. 이 후보는 반려하며 적용하지 않습니다」의 압축. <b>레드 없음.</b> 스트립 없음. 수치 없음.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">fallback 판별 기준</div><ul><li>실패를 성공 응답이나 빈 값으로 바꾸는가 — fallback: 예 / 실패를 드러내는 처리: 아니오</li><li>원인 정보가 사라지는가 — fallback: 대체로 예 / 실패를 드러내는 처리: 서버 쪽에 보존</li><li>호출자와 운영자가 실패를 구분할 수 있는가 — fallback: 아니오 / 실패를 드러내는 처리: 예</li><li>판별은 사람이 하고, fallback으로 가려낸 후보는 적용하지 않음</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo">08의 세 후보를 이 표에 한 줄씩 통과시킨다 — 셋 다 첫 행에서 「예」, 셋째 행에서 「아니오」가 나온다. 이 표가 실습 2의 첫 단계(후보 검토)에서 Codex가 낸 후보를 판정하는 기준이고, 판정하는 사람은 수강생 자신이라는 것을 못 박는다. 「예외를 상위 경계로 전달」 같은 후보는 셋째 열에 가까우므로 사람 승인 후보로 남긴다고 말로만 보탠다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 외부 응답과 서버 로그 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">10</span><span class="chip op">핵심 개념</span><span class="chip cl">클립 2</span><span class="chip lay">좌우 대조 2열 · 헤더 바 + 허용/제외 두 쌍 + 레드 한 줄</span><span class="s-time">1분</span></div>
+    <h3>외부 응답과 서버 로그</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 2 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:18.8%;">외부 응답과 서버 로그</div>
+          <!-- 좌: 외부 응답 -->
+          <div class="bar" style="left:4.2%; top:29.5%; width:44%; height:5.5%;">외부 응답</div>
+          <div class="card" style="left:4.2%; top:35%; width:44%; height:30%;"></div>
+          <div class="t sm" style="left:6.6%; top:37.8%; width:39.2%; color:#9C9C9C; font-weight:700;">허용</div>
+          <div class="t" style="left:6.6%; top:41.5%; width:39.2%; word-break:keep-all;">승인한 상태 코드 · 안전한 오류 코드 · 정제된 메시지</div>
+          <div class="t sm" style="left:6.6%; top:51.5%; width:39.2%; color:#9C9C9C; font-weight:700;">제외</div>
+          <div class="t" style="left:6.6%; top:55.2%; width:39.2%; color:#5B5B5B; word-break:keep-all;">카드 정보 · 내부 예외 메시지 · 스택 · 원시 오류 본문</div>
+          <!-- 우: 서버 로그 -->
+          <div class="bar" style="left:51.8%; top:29.5%; width:44%; height:5.5%;">서버 로그</div>
+          <div class="card" style="left:51.8%; top:35%; width:44%; height:30%;"></div>
+          <div class="t sm" style="left:54.2%; top:37.8%; width:39.2%; color:#9C9C9C; font-weight:700;">허용</div>
+          <div class="t" style="left:54.2%; top:41.5%; width:39.2%; word-break:keep-all;">원인 추적에 필요한 구조화된 오류 근거 · 요청 맥락</div>
+          <div class="t sm" style="left:54.2%; top:51.5%; width:39.2%; color:#9C9C9C; font-weight:700;">제외</div>
+          <div class="t" style="left:54.2%; top:55.2%; width:39.2%; color:#5B5B5B; word-break:keep-all;">외부 응답으로 그대로 복사되는 민감·내부 정보</div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:71.5%; width:91.6%; color:#FC1C49; font-weight:700;">외부에는 안전한 실패, 서버에는 원인 근거</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">좌(외부 응답 — 허용: 승인한 상태 코드 · 안전한 오류 코드 · 정제된 메시지 / 제외: 카드 정보 · 내부 예외 메시지 · 스택 · 원시 오류 본문) ↔ 우(서버 로그 — 허용: 원인 추적에 필요한 구조화된 오류 근거 · 요청 맥락 / 제외: 외부 응답으로 그대로 복사되는 민감·내부 정보). 레드는 「외부에는 안전한 실패, 서버에는 원인 근거」. 스트립 없음</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1분. 13강 17 「두 문서의 경계」의 좌우 헤더 바 + 카드 구조 — 두 열 폭 44%(4.2 / 51.8%). 회색 <code>bar</code>(29.5~35%) + 흰 <code>card</code>(35~65% · 높이 30% — 13강 17의 24%보다 키워 허용·제외 두 쌍을 넣었다). 카드 안은 13강 10의 「시점·비용」 라벨 문법 — <code>t sm</code> 회색 라벨 「허용」(37.8%) + <code>t</code> 검정 값(41.5%), 라벨 「제외」(51.5%) + <code>t</code> 회색 #5B5B5B 값(55.2%). 허용이 검정, 제외가 회색 — 남길 것이 본체. 값은 README E2 「정보의 위치」 표의 두 행을 문구 그대로 옮긴 것(「서버 쪽 오류 보존」 행을 바 제목에서는 「서버 로그」로 줄였다). 값이 두 줄로 접힐 수 있어 <code>word-break:keep-all</code>. 13강 17의 점선·겹치는 지점 줄은 이 장에 없다. <b>레드 1개 = 71.5% 중앙 <code>t mid</code> 볼드</b>(README §2 「외부에는 안전한 실패만 보이고, 서버 쪽에는 운영자가 원인을 추적할 증거가 남아야 합니다」). 스트립 없음. 수치 없음.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">외부 응답과 서버 로그</div><ul><li>외부 응답 — 허용: 승인한 상태 코드 · 안전한 오류 코드 · 정제된 메시지 / 제외: 카드 정보 · 내부 예외 메시지 · 스택 · 원시 오류 본문</li><li>서버 로그 — 허용: 원인 추적에 필요한 구조화된 오류 근거 · 요청 맥락 / 제외: 외부 응답으로 그대로 복사되는 민감·내부 정보</li><li>레드: 외부에는 안전한 실패, 서버에는 원인 근거</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo">04의 <code>console.log(e)</code>가 오른쪽 「허용」에 해당하지 않는 이유를 여기서 말한다 — 구조화되지 않았고 요청 맥락이 없다. 왼쪽 「제외」는 <code>docs/payment-policy.md</code> 결제 원칙의 비노출 조항과 같은 목록이라는 것을 짚는다. 관리자 응답에 실패 사유 필드를 추가하는 일은 이번 범위가 아니다(README E2 — Lab 17까지 추가하지 않는다)는 점은 말로만.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 오류 처리 기준은 누가 정하나 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">11</span><span class="chip op">핵심 개념</span><span class="chip cl">클립 2</span><span class="chip lay">정책 유무 2열 + 플로우 3 노드 + 점선 한 줄 + 레드 한 줄</span><span class="s-time">1.5분</span></div>
+    <h3>오류 처리 기준은 누가 정하나</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 2 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:18.8%;">오류 처리 기준은 누가 정하나</div>
+          <!-- 상단: 정책에 있는 것 / 없는 것 -->
+          <div class="card g" style="left:4.2%; top:29.5%; width:44%; height:15%;"></div>
+          <div class="t sm" style="left:6.6%; top:31.6%; width:39.2%; color:#9C9C9C; font-weight:700;">정책에 있는 것</div>
+          <div class="t" style="left:6.6%; top:35.6%; width:39.2%; color:#5B5B5B; word-break:keep-all;">예상된 결제 실패는 402 · 내부 정보 비노출</div>
+          <div class="card" style="left:51.8%; top:29.5%; width:44%; height:15%;"></div>
+          <div class="t sm" style="left:54.2%; top:31.6%; width:39.2%; color:#9C9C9C; font-weight:700;">정책에 없는 것</div>
+          <div class="t" style="left:54.2%; top:35.6%; width:39.2%; font-weight:700; word-break:keep-all;">예기치 못한 예외의 상태 코드 · 본문 · 서버 보존 방식</div>
+          <!-- 흐름: 후보 검토 → 사람이 승인 → 제거·테스트 -->
+          <div class="card" style="left:4.2%; top:49.5%; width:27.6%; height:9.5%;"></div>
+          <div class="t mid c" style="left:4.2%; top:52.2%; width:27.6%; font-weight:700;">후보 · trade-off 검토</div>
+          <div class="t mid c" style="left:31.8%; top:52.2%; width:4.4%; color:#9C9C9C;">→</div>
+          <div class="card" style="left:36.2%; top:49.5%; width:27.6%; height:9.5%;"></div>
+          <div class="t mid c" style="left:36.2%; top:52.2%; width:27.6%; font-weight:700;">사람이 승인</div>
+          <div class="t mid c" style="left:63.8%; top:52.2%; width:4.4%; color:#9C9C9C;">→</div>
+          <div class="card" style="left:68.2%; top:49.5%; width:27.6%; height:9.5%;"></div>
+          <div class="t mid c" style="left:68.2%; top:52.2%; width:27.6%; font-weight:700;">fallback 제거 · 예외 테스트</div>
+          <!-- 점선 + 미승인 분기 -->
+          <div class="dash" style="left:4.2%; top:62.5%; width:91.6%;"></div>
+          <div class="t c" style="left:4.2%; top:63.8%; width:91.6%; color:#9C9C9C;">미승인 · 정책 미결이면 중단하고 결정 요청</div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:71%; width:91.6%; color:#FC1C49; font-weight:700;">승인 전에는 오류 처리 경계를 구현하지 않음</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">상단 2열 — 정책에 있는 것(회색 · 예상된 결제 실패는 402 · 내부 정보 비노출) / 정책에 없는 것(흰 · 예기치 못한 예외의 상태 코드 · 본문 · 서버 보존 방식). 아래 세 노드(후보 · trade-off 검토 → 사람이 승인 → fallback 제거 · 예외 테스트). 점선 아래 회색 「미승인 · 정책 미결이면 중단하고 결정 요청」. 레드는 「승인 전에는 오류 처리 경계를 구현하지 않음」. 스트립 없음</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1.5분. 세 층을 쌓았다. (1) 29.5~44.5% 두 카드(폭 44% · 4.2 / 51.8%, 높이 15% — 바 없이 카드 안에 <code>t sm</code> 회색 라벨 + <code>t</code> 값). <b>좌 <code>card g</code> + #5B5B5B = 정책이 이미 정한 것, 우 흰 <code>card</code> + 검정 볼드 = 이 강의에서 사람이 정해야 할 것</b>(13강 14의 회색/흰 문법 — 색이 「이미 있음 / 지금 정함」을 가른다). 값은 README E2 판단 기준 「예상된 결제 실패의 402와 내부 정보 비노출은 정책에 있지만, 예기치 못한 예외의 상태 코드·본문·서버 쪽 보존 방식은 정책이 정하지 않았습니다」. 「402」는 HTTP 상태 코드라 06의 「200」과 같이 수치 금지에 걸리지 않는다. (2) 49.5~59% 세 노드(13강 06의 세 노드 좌표 — 폭 27.6% · 4.2 / 36.2 / 68.2%, 화살표 4.4%. 높이는 라벨 줄이 없어 13강 19의 9.5%). README §2 flowchart의 E2-1 → 승인 Gate → E2-2. (3) 62.5% <code>dash</code> 점선 아래 63.8% <code>t</code> #9C9C9C 한 줄 — flowchart의 「미승인·정책 미결 → 중단·결정 요청」 분기. <b>레드 1개 = 71% 중앙 <code>t mid</code> 볼드</b>(README E2 「그 승인 전에는 이 경계를 구현하지 않습니다」). <b>좌표 조정 메모:</b> 세 층을 넣느라 상단 카드를 바 없이 15%로, 노드를 9.5%로, 점선·회색 줄을 노드 바로 아래 3.5%에 붙였다 — 13강의 어느 한 장과 똑같은 좌표는 아니다. 스트립 없음.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">오류 처리 기준은 누가 정하나</div><ul><li>정책에 있는 것 — 예상된 결제 실패는 402 · 내부 정보 비노출</li><li>정책에 없는 것 — 예기치 못한 예외의 상태 코드 · 본문 · 서버 보존 방식</li><li>후보 · trade-off 검토 → 사람이 승인 → fallback 제거 · 예외 테스트</li><li>미승인 · 정책 미결이면 중단하고 결정 요청</li><li>레드: 승인 전에는 오류 처리 경계를 구현하지 않음</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo"><b>12강의 승인 단계와 같은 구조</b>라는 것을 먼저 말한다 — 후보를 받고, 사람이 정하고, 그 범위 안에서만 구현한다. 오른쪽 카드 세 가지(상태 코드 · 본문 · 서버 보존 방식)를 실습 2에서 수강생이 <b>한 번의 세션 메시지로</b> 승인하거나 보류한다는 것, 보류하면 실습 3으로 넘어가지 않는다는 것을 짚는다. 승인 뒤에는 승인 범위 안의 제거·테스트에 다시 승인을 받지 않는다(README E2).</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 예외 경로 테스트 방법 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">12</span><span class="chip op">핵심 개념</span><span class="chip cl">클립 2</span><span class="chip lay">플로우 2 노드 + 칩 행 + 레드 한 줄</span><span class="s-time">1분</span></div>
+    <h3>예외 경로 테스트 방법</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 2 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:18.8%;">예외 경로 테스트 방법</div>
+          <!-- 두 노드 -->
+          <div class="card" style="left:4.2%; top:30%; width:43.6%; height:13%;"></div>
+          <div class="t mid c" style="left:4.2%; top:34.5%; width:43.6%; font-weight:700;">정상 입력으로는 예외가 나지 않음</div>
+          <div class="t mid c" style="left:47.8%; top:34.5%; width:4.4%; color:#9C9C9C;">→</div>
+          <div class="card" style="left:52.2%; top:30%; width:43.6%; height:13%;"></div>
+          <div class="t mid c" style="left:52.2%; top:34.5%; width:43.6%; font-weight:700;">예외를 의도적으로 일으켜 확인</div>
+          <!-- 확인할 것 칩 행 -->
+          <div style="left:4.2%; top:49.5%; width:91.6%; display:flex; align-items:center; justify-content:center; gap:5px;"><span class="t sm" style="color:#9C9C9C; font-weight:700; margin-right:4px;">확인할 것</span><span class="kchip">오류가 응답에 드러남</span><span class="kchip">내부 정보가 노출되지 않음</span><span class="kchip">정상 경로가 그대로임</span></div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:59%; width:91.6%; color:#FC1C49; font-weight:700;">예외를 일으키지 않으면 fallback 경로는 시험되지 않음</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">두 노드(정상 입력으로는 예외가 나지 않음 → 예외를 의도적으로 일으켜 확인). 아래 칩 행(확인할 것 — 오류가 응답에 드러남 · 내부 정보가 노출되지 않음 · 정상 경로가 그대로임). 레드는 「예외를 일으키지 않으면 fallback 경로는 시험되지 않음」. 스트립 없음</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1분. 13강 06의 「노드 + 칩 행 + 레드 한 줄」 구조를 두 노드로 — 폭 43.6%(4.2 / 52.2%), 화살표 4.4%(47.8%). 흰 <code>card</code>(30~43%) + <code>t mid</code> 볼드 한 줄. 좌 노드는 README E2 설계 질문 셋째 「메모리 저장소에서 자연스럽게 나지 않는 예외 경로를 테스트에서 어떻게 일으키나요」의 전제, 우 노드는 README E2 구현 프롬프트 「각각의 예외 경로를 의도적으로 일으켜 … 검증하는 테스트」. 49.5% 중앙 flex 행: <code>t sm</code> 회색 라벨 「확인할 것」 + <code>kchip</code> 셋 — README E2 검증 셋째·넷째(두 예외 경로 테스트 + 정상 경로 통과 / 외부 응답에 내부 정보 없음)를 세 칩으로 나눈 것. <b>레드 1개 = 59% 중앙 <code>t mid</code> 볼드</b> — 06 레드(정상 흐름 테스트만으로는 발견되지 않음)를 테스트 작성 쪽에서 되받는다. 스트립 없음. 수치 없음(「두 경로」 같은 수는 쓰지 않았다).</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">예외 경로 테스트 방법</div><ul><li>정상 입력으로는 예외가 나지 않음 → 예외를 의도적으로 일으켜 확인</li><li>확인할 것: 오류가 응답에 드러남 · 내부 정보가 노출되지 않음 · 정상 경로가 그대로임</li><li>레드: 예외를 일으키지 않으면 fallback 경로는 시험되지 않음</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo"><b>13강의 fault injection과 같은 방식</b>이다 — 13강에서는 틀린 패치를 통제된 입력으로 넣어 검출 계층을 시험했고, 여기서는 예외를 통제된 입력으로 일으켜 오류 처리 경계를 시험한다. 메모리 저장소라 실제로는 예외가 잘 나지 않는다는 점, 그래서 테스트가 예외를 만들어야 한다는 점을 말로 보탠다. 어떤 방법으로 일으킬지는 Codex가 제안하고 사람이 보는 것으로 두고, 슬라이드에서 특정 기법을 정하지 않는다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13 실습 큐 — 실습 2 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">13</span><span class="chip demo">실습 큐</span><span class="chip cl">클립 2</span><span class="chip lay">큐 컴포넌트 · 만드는 것 + 순서 칩 + 질문/확인 2열</span><span class="s-time">8분</span></div>
+    <h3>실습 2 — fallback 제거와 테스트</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 2 · 실습</div>
+          <div class="h" style="left:3.43%; top:18.8%;">실습 2 — fallback 제거와 테스트</div>
+          <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
+          <!-- 이번에 만드는 것 · 순서 · 원칙 -->
+          <div class="card" style="left:4.2%; top:30%; width:91.6%; height:16.5%;"></div>
+          <div class="t sm" style="left:6.6%; top:32.2%; width:20%; color:#9C9C9C; font-weight:700;">이번에 만드는 것</div>
+          <div class="t" style="left:27%; top:31.6%; width:66%; font-weight:700;">승인된 오류 처리 경계로 바뀐 두 경로와 예외 경로 테스트</div>
+          <div class="t sm" style="left:6.6%; top:37.3%; width:20%; color:#9C9C9C; font-weight:700;">순서</div>
+          <div style="left:27%; top:36.8%; display:flex; align-items:center; gap:5px;"><span class="kchip">후보 검토</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 2px;">→</span><span class="kchip">사람 승인</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 2px;">→</span><span class="kchip">제거와 테스트</span></div>
+          <div class="t" style="left:6.6%; top:42.2%; width:87%; color:#5B5B5B;"><b style="color:#000;">승인 전 수정 금지 · 새 기본값 금지</b> — 경계는 사람이 정함</div>
+          <!-- 생각할 질문 -->
+          <div class="card" style="left:4.2%; top:50.5%; width:44%; height:27.5%;"></div>
+          <div class="t sm" style="left:6.6%; top:52.8%; width:39%; color:#9C9C9C; font-weight:700;">생각할 질문</div>
+          <div class="t" style="left:6.6%; top:58.3%; width:39.2%;">「예기치 못한 예외의 상태 코드와 본문은 누가 정하나」</div>
+          <div class="t" style="left:6.6%; top:68.8%; width:39.2%;">「에러가 나지 않게 만드는 가장 빠른 제안은 왜 반려하나」</div>
+          <!-- 확인할 것 -->
+          <div class="card" style="left:51.8%; top:50.5%; width:44%; height:27.5%;"></div>
+          <div class="t sm" style="left:54.2%; top:52.8%; width:39%; color:#9C9C9C; font-weight:700;">확인할 것</div>
+          <div class="t" style="left:54.2%; top:58.3%; width:39.2%;">후보 검토와 반려가 코드 변경 전에 분리됨</div>
+          <div class="t" style="left:54.2%; top:68.8%; width:39.2%;">외부 응답에 내부 정보가 없고 정상 경로도 통과</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">실습 큐 — 위 카드에 만드는 것 한 줄, 순서 칩(후보 검토 → 사람 승인 → 제거와 테스트), 원칙 한 줄(승인 전 수정 금지 · 새 기본값 금지 — 경계는 사람이 정함). 아래 2열에 질문 둘 · 확인 둘. 레드는 「실습」 배지만</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 8분. 07과 같은 큐 컴포넌트·좌표(13강 08). 첫 행은 파일이 아니라 바뀐 코드와 테스트가 산출물이라 <code>kchip</code> 대신 <code>t</code> 검정 볼드 한 줄(README E2 §2 표 「결과: 변경된 오류 처리와 관련 테스트」). 둘째 행 「순서」 <code>kchip</code> 셋 사이 회색 「→」 — README §2 flowchart의 E2-1 후보 검토 → 승인 Gate → E2-2 제거·테스트(11의 세 노드와 같은 순서). 원칙 한 줄 「<b>승인 전 수정 금지 · 새 기본값 금지</b> — 경계는 사람이 정함」(README E2 「이 단계에서는 파일을 수정하지 않습니다」 + 구현 프롬프트 「새 기본값으로 대체하지 말고 제거하며」). 질문 둘은 README E2 설계 질문 첫째·넷째(둘째는 10이, 셋째는 12가 이미 답했다). 확인할 것 둘은 README E2 검증 첫째와 셋째·넷째의 압축. <b>레드는 「실습」 배지 하나</b>, 그 외 레드 없음. 스트립 없음. 수치 없음(「두 경로」는 README 검증 항목의 구조 이름).</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">실습 2 — fallback 제거와 테스트</div><ul><li>이번에 만드는 것: 승인된 오류 처리 경계로 바뀐 두 경로와 예외 경로 테스트</li><li>순서: 후보 검토 → 사람 승인 → 제거와 테스트</li><li>승인 전 수정 금지 · 새 기본값 금지 — 경계는 사람이 정함</li><li>질문: 「예기치 못한 예외의 상태 코드와 본문은 누가 정하나」 「에러가 나지 않게 만드는 가장 빠른 제안은 왜 반려하나」</li><li>확인: 후보 검토와 반려가 코드 변경 전에 분리됨 / 외부 응답에 내부 정보가 없고 정상 경로도 통과</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo">README E2의 두 프롬프트를 순서대로 준다 — 첫 프롬프트(후보·trade-off)는 파일을 건드리지 않는다. 후보가 나오면 09 표로 판정하고, 상태 코드·본문·서버 보존 방식 세 가지를 <b>한 번의 세션 메시지로 승인</b>한다(새 승인 기록 파일을 만들지 않는다). 승인 뒤 둘째 프롬프트로 제거와 테스트. 모델이 새 기본값으로 바꾸려 하면 멈추고 다시 시킨다. 이전 관리자 상태 <code>it.fails()</code>는 그대로 두는지 확인한다. 실습 중 화면은 Codex와 README를 split.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="sec-head"><span class="num">클립 3</span><h2>retry/stop</h2><span class="time">약 9분 · 14~16 · 실습 3</span></div>
+
+  <!-- 14 재시도할 실패와 중단할 실패 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">14</span><span class="chip op">핵심 개념</span><span class="chip cl">클립 3</span><span class="chip lay">좌우 대조 2열 · 헤더 바 + 레드 한 줄</span><span class="s-time">1.5분</span></div>
+    <h3>재시도할 실패와 중단할 실패</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 3 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:18.8%;">재시도할 실패와 중단할 실패</div>
+          <!-- 좌: 재시도 후보 -->
+          <div class="bar" style="left:4.2%; top:29.5%; width:44%; height:5.5%;">재시도 후보</div>
+          <div class="card g" style="left:4.2%; top:35%; width:44%; height:27%;"></div>
+          <div class="t mid" style="left:6.6%; top:38.5%; width:39.2%; font-weight:700; color:#5B5B5B; word-break:keep-all;">같은 입력으로 다시 실행하면 성공할 수 있는 실패</div>
+          <div class="t" style="left:6.6%; top:53%; width:39.2%; color:#5B5B5B;">일시적 오류</div>
+          <!-- 우: 중단 -->
+          <div class="bar" style="left:51.8%; top:29.5%; width:44%; height:5.5%;">중단</div>
+          <div class="card" style="left:51.8%; top:35%; width:44%; height:27%;"></div>
+          <div class="t mid" style="left:54.2%; top:38.5%; width:39.2%; font-weight:700; word-break:keep-all;">다시 실행해도 같은 결과인 실패</div>
+          <div class="t" style="left:54.2%; top:53%; width:39.2%; color:#5B5B5B;">정책 · 데이터 · 권한 문제 — 사람 확인</div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:68%; width:91.6%; color:#FC1C49; font-weight:700;">모든 실패를 재시도하지 않음</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">좌(재시도 후보 · 회색 · 같은 입력으로 다시 실행하면 성공할 수 있는 실패 / 일시적 오류) ↔ 우(중단 · 흰 · 다시 실행해도 같은 결과인 실패 / 정책 · 데이터 · 권한 문제 — 사람 확인). 레드는 「모든 실패를 재시도하지 않음」. 스트립 없음</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1.5분. 13강 14 「되돌릴 것과 고칠 것」의 좌우 헤더 바 + 카드 구조·좌표 그대로(바 29.5~35%, 카드 35~62%, <code>t mid</code> 볼드 38.5% + <code>t</code> 회색 53%). <b>좌 <code>card g</code> + #5B5B5B, 우 흰 <code>card</code> + 검정</b> — 13강 14처럼 「하지 말 것 / 할 것」이 아니라 <b>「승인 전 후보 / 정책이 확정한 것」</b>으로 읽는다(README E3 판단 기준 표의 두 분류 — 「사람 판단이 필요한 retry 후보」는 <code>사람 승인 전 후보</code>로 표시, 「정책이 확정한 stop」은 정책에 맞게 중단). 좌 바 제목이 「재시도」가 아니라 「재시도 후보」인 이유가 그것이다. 카드 안 첫 줄은 README E3 설계 질문 첫째의 두 절을 나눈 것, 둘째 줄은 분류 이름. 좌 첫 줄이 두 줄로 접혀 둘째 줄을 13강 14의 51%보다 2% 내렸다(<code>word-break:keep-all</code>). <b>레드 1개 = 68% 중앙 <code>t mid</code> 볼드</b>(README §5 「정책이 보류한 재시도 횟수나 식별 방식을 사실처럼 적고 자동 재시도를 구현합니다」의 반대). 스트립 없음. 수치 없음.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">재시도할 실패와 중단할 실패</div><ul><li>재시도 후보 — 같은 입력으로 다시 실행하면 성공할 수 있는 실패 / 일시적 오류</li><li>중단 — 다시 실행해도 같은 결과인 실패 / 정책 · 데이터 · 권한 문제 — 사람 확인</li><li>레드: 모든 실패를 재시도하지 않음</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo">왼쪽이 회색인 이유를 말한다 — 이 앱에는 외부 호출이 없어 일시적 오류의 실례가 없고, 정책도 기술적 재시도를 보류했다. 그래서 왼쪽은 「후보」로만 남고 확정은 오른쪽뿐이다. <code>payment_failed</code> 주문의 재결제 금지가 오른쪽의 대표 사례라는 것을 짚고 15로 넘어간다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 15 정책이 정한 것과 정하지 않은 것 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">15</span><span class="chip op">핵심 개념</span><span class="chip cl">클립 3</span><span class="chip lay">좌우 대조 2열 · 헤더 바 + 세 줄씩 + 점선 아래 회색 한 줄 + 레드 한 줄</span><span class="s-time">1.5분</span></div>
+    <h3>정책이 정한 것과 정하지 않은 것</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 3 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:18.8%;">정책이 정한 것과 정하지 않은 것</div>
+          <!-- 좌: 정한 것 -->
+          <div class="bar" style="left:4.2%; top:29.5%; width:44%; height:5.5%;">정한 것</div>
+          <div class="card" style="left:4.2%; top:35%; width:44%; height:24%;"></div>
+          <div class="t" style="left:6.6%; top:37.5%; width:39.2%;">결제 실패는 402</div>
+          <div class="dash" style="left:6.6%; top:43.5%; width:39.2%;"></div>
+          <div class="t" style="left:6.6%; top:45%; width:39.2%;">실패한 주문의 재결제 금지</div>
+          <div class="dash" style="left:6.6%; top:51%; width:39.2%;"></div>
+          <div class="t" style="left:6.6%; top:52.5%; width:39.2%;">내부 정보 비노출</div>
+          <!-- 우: 정하지 않은 것 -->
+          <div class="bar" style="left:51.8%; top:29.5%; width:44%; height:5.5%;">정하지 않은 것</div>
+          <div class="card" style="left:51.8%; top:35%; width:44%; height:24%;"></div>
+          <div class="t" style="left:54.2%; top:37.5%; width:39.2%; color:#5B5B5B;">기술적 재시도의 허용 조건</div>
+          <div class="dash" style="left:54.2%; top:43.5%; width:39.2%;"></div>
+          <div class="t" style="left:54.2%; top:45%; width:39.2%; color:#5B5B5B;">재시도 식별 방식</div>
+          <div class="dash" style="left:54.2%; top:51%; width:39.2%;"></div>
+          <div class="t" style="left:54.2%; top:52.5%; width:39.2%; color:#5B5B5B;">최대 재시도 횟수</div>
+          <!-- 점선 + 회색 한 줄 -->
+          <div class="dash" style="left:4.2%; top:63.5%; width:91.6%;"></div>
+          <div class="t c" style="left:4.2%; top:64.8%; width:91.6%; color:#5B5B5B;">13강 「확인 필요」 · 14강 「보류」와 같은 처리</div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:71%; width:91.6%; color:#FC1C49; font-weight:700;">미결 항목은 추정하지 않고 사람 결정으로 남김</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">좌(정한 것 — 결제 실패는 402 / 실패한 주문의 재결제 금지 / 내부 정보 비노출) ↔ 우(정하지 않은 것 — 기술적 재시도의 허용 조건 / 재시도 식별 방식 / 최대 재시도 횟수). 점선 아래 회색 「13강 「확인 필요」 · 14강 「보류」와 같은 처리」. 레드는 「미결 항목은 추정하지 않고 사람 결정으로 남김」. 스트립 없음</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1.5분. 13강 17 「두 문서의 경계」 구조·좌표 그대로 — 회색 <code>bar</code>(29.5~35%) + 흰 <code>card</code>(35~59% · 높이 24%), 63.5% <code>dash</code> 점선 + 64.8% <code>t</code> 회색 한 줄, 71% 레드. 카드 안은 13강 17의 「볼드 한 줄 + 회색 한 줄」 대신 <code>t</code> 세 줄을 <code>dash</code> 점선(06 문법)으로 나눴다 — 세 항목이 서로 나란하고 어느 하나가 제목이 아니다. 좌 열 검정(확정), 우 열 #5B5B5B(미결). 좌 세 줄은 <code>docs/payment-policy.md</code> 결제 원칙(402 · 동일 주문 재결제 금지 · 비노출), 우 세 줄은 같은 문서 보류 사항 첫 항목(「네트워크·인프라 수준 재시도의 허용 조건, 식별 방식과 최대 횟수」)을 셋으로 나눈 것. 「402」는 HTTP 상태 코드. 회색 한 줄은 13강 16 「모르면 모른다를 어디에 남기나」의 「확인 필요」 표기와 14강의 「보류」 표기가 같은 규율이라는 연결. <b>레드 1개 = 71% 중앙 <code>t mid</code> 볼드</b>(README E3 「기술적 재시도 횟수를 예시처럼 지어내지 않습니다」). 스트립 없음. 수치 없음.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">정책이 정한 것과 정하지 않은 것</div><ul><li>정한 것 — 결제 실패는 402 / 실패한 주문의 재결제 금지 / 내부 정보 비노출</li><li>정하지 않은 것 — 기술적 재시도의 허용 조건 / 재시도 식별 방식 / 최대 재시도 횟수</li><li>13강 「확인 필요」 · 14강 「보류」와 같은 처리</li><li>레드: 미결 항목은 추정하지 않고 사람 결정으로 남김</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo"><code>docs/payment-policy.md</code>의 「보류 사항」 절을 화면에 띄워 오른쪽 세 줄이 거기서 나왔다는 것을 보여 준다. 「정책에 없으니 적당히 세 번」이라고 쓰는 순간 그 문서가 운영 규칙을 새로 정하는 문서가 된다 — 기준표는 확정과 보류를 가르는 문서이지 규칙을 만드는 문서가 아니라는 점을 README E3 문장으로 읽는다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 16 실습 큐 — 실습 3 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">16</span><span class="chip demo">실습 큐</span><span class="chip cl">클립 3</span><span class="chip lay">큐 컴포넌트 · 만드는 파일 칩 + 순서 칩 + 질문/확인 2열</span><span class="s-time">6분</span></div>
+    <h3>실습 3 — retry/stop 기준표 작성</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 3 · 실습</div>
+          <div class="h" style="left:3.43%; top:18.8%;">실습 3 — retry/stop 기준표 작성</div>
+          <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
+          <!-- 이번에 만드는 것 · 순서 · 원칙 -->
+          <div class="card" style="left:4.2%; top:30%; width:91.6%; height:16.5%;"></div>
+          <div class="t sm" style="left:6.6%; top:32.2%; width:20%; color:#9C9C9C; font-weight:700;">이번에 만드는 것</div>
+          <div style="left:27%; top:31.7%; display:flex; align-items:center; gap:5px;"><span class="kchip">docs/retry-stop-matrix.md</span></div>
+          <div class="t sm" style="left:6.6%; top:37.3%; width:20%; color:#9C9C9C; font-weight:700;">순서</div>
+          <div style="left:27%; top:36.8%; display:flex; align-items:center; gap:5px;"><span class="kchip">실패 종류 분류</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 2px;">→</span><span class="kchip">정책 상태 표시</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 2px;">→</span><span class="kchip">승인된 경계 옮겨 적기</span></div>
+          <div class="t" style="left:6.6%; top:42.2%; width:87%; color:#5B5B5B;"><b style="color:#000;">재시도 횟수·식별 방식 추정 금지</b> — 미결은 「사람 결정 필요」</div>
+          <!-- 생각할 질문 -->
+          <div class="card" style="left:4.2%; top:50.5%; width:44%; height:27.5%;"></div>
+          <div class="t sm" style="left:6.6%; top:52.8%; width:39%; color:#9C9C9C; font-weight:700;">생각할 질문</div>
+          <div class="t" style="left:6.6%; top:58.3%; width:39.2%; word-break:keep-all;">「같은 입력으로 회복되는 실패와 반복하면 안 되는 실패는 어떻게 다른가」</div>
+          <div class="t" style="left:6.6%; top:68.8%; width:39.2%;">「재시도 횟수가 정책에 없을 때 기준표에는 무엇을 기록하나」</div>
+          <!-- 확인할 것 -->
+          <div class="card" style="left:51.8%; top:50.5%; width:44%; height:27.5%;"></div>
+          <div class="t sm" style="left:54.2%; top:52.8%; width:39%; color:#9C9C9C; font-weight:700;">확인할 것</div>
+          <div class="t" style="left:54.2%; top:58.3%; width:39.2%;">확정된 중단과 승인 전 재시도 후보를 분리</div>
+          <div class="t" style="left:54.2%; top:68.8%; width:39.2%;">승인된 오류 처리 경계를 별도 절에 기록</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">실습 큐 — 위 카드에 만드는 파일 칩(docs/retry-stop-matrix.md), 순서 칩(실패 종류 분류 → 정책 상태 표시 → 승인된 경계 옮겨 적기), 원칙 한 줄(재시도 횟수·식별 방식 추정 금지 — 미결은 「사람 결정 필요」). 아래 2열에 질문 둘 · 확인 둘. 레드는 「실습」 배지만</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 6분. 07·13과 같은 큐 컴포넌트·좌표(13강 08). 첫 행은 파일이 산출물이라 <code>kchip</code>(13강 18 문법 — <code>docs/retry-stop-matrix.md</code>). 둘째 행 「순서」 <code>kchip</code> 셋 사이 회색 「→」 — README E3 실행 프롬프트의 세 요구(실패 종류·감지 신호·재시도 여부·중단 뒤 행동 표로 정리 → 정책 상태 표시와 <code>사람 승인 전 후보</code> 표기 → 승인된 오류 처리 경계를 별도 절에 옮겨 적기). 원칙 한 줄 「<b>재시도 횟수·식별 방식 추정 금지</b> — 미결은 「사람 결정 필요」」(README E3 「재시도 횟수나 식별 방식을 추정하지 말고」). 질문 둘은 README E3 설계 질문 첫째·둘째(셋째 「E2 승인 경계를 어떻게 남기나」는 순서 칩 셋째와 확인 둘째가 답한다). 확인할 것 둘은 README E3 검증 첫째·넷째. 첫 질문이 두 줄로 접히지만 07의 질문 간격(58.3 / 68.8%) 안에 든다. <b>레드는 「실습」 배지 하나</b>, 그 외 레드 없음. 스트립 없음. 수치 없음(README 검증 셋째의 「두 개 이상」은 슬라이드에 넣지 않았다).</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">실습 3 — retry/stop 기준표 작성</div><ul><li>이번에 만드는 것: docs/retry-stop-matrix.md</li><li>순서: 실패 종류 분류 → 정책 상태 표시 → 승인된 경계 옮겨 적기</li><li>재시도 횟수·식별 방식 추정 금지 — 미결은 「사람 결정 필요」</li><li>질문: 「같은 입력으로 회복되는 실패와 반복하면 안 되는 실패는 어떻게 다른가」 「재시도 횟수가 정책에 없을 때 기준표에는 무엇을 기록하나」</li><li>확인: 확정된 중단과 승인 전 재시도 후보를 분리 / 승인된 오류 처리 경계를 별도 절에 기록</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo">실습 2가 보류로 끝났다면 이 실습으로 넘어가지 않는다(README E2) — 그 경우 결정이 필요한 이유를 남기는 것으로 끝낸다. README E3 프롬프트를 그대로 주고, 결과 표에서 「사람 승인 전 후보」 표기와 별도 절의 승인 경계를 눈으로 확인한다. 모델이 횟수를 예시처럼 채우면 지우게 한다. 실습 중 화면은 Codex와 README를 split.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="sec-head"><span class="num">클립 4</span><h2>체크리스트</h2><span class="time">약 7분 · 17~19 · 실습 4</span></div>
+
+  <!-- 17 실패 처리 체크리스트 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">17</span><span class="chip op">핵심 개념</span><span class="chip cl">클립 4</span><span class="chip lay">헤더 바 + 카드 6칸(3열 × 2행) + 레드 한 줄</span><span class="s-time">1분</span></div>
+    <h3>실패 처리 체크리스트</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 4 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:18.8%;">실패 처리 체크리스트</div>
+          <!-- 1행 -->
+          <div class="bar" style="left:4.2%; top:29.5%; width:29.4%; height:5%;">오류 보존</div>
+          <div class="card" style="left:4.2%; top:34.5%; width:29.4%; height:15%;"></div>
+          <div class="t c" style="left:6%; top:37.5%; width:25.8%; word-break:keep-all;">원인 추적 근거가 서버 쪽에 남는가</div>
+          <div class="bar" style="left:35.3%; top:29.5%; width:29.4%; height:5%;">외부 응답</div>
+          <div class="card" style="left:35.3%; top:34.5%; width:29.4%; height:15%;"></div>
+          <div class="t c" style="left:37.1%; top:37.5%; width:25.8%; word-break:keep-all;">안전한 실패와 내부 정보 비노출이 함께 지켜지는가</div>
+          <div class="bar" style="left:66.4%; top:29.5%; width:29.4%; height:5%;">로그</div>
+          <div class="card" style="left:66.4%; top:34.5%; width:29.4%; height:15%;"></div>
+          <div class="t c" style="left:68.2%; top:37.5%; width:25.8%; word-break:keep-all;">추적 가능한 근거가 남는가</div>
+          <!-- 2행 -->
+          <div class="bar" style="left:4.2%; top:52.5%; width:29.4%; height:5%;">retry</div>
+          <div class="card" style="left:4.2%; top:57.5%; width:29.4%; height:15%;"></div>
+          <div class="t c" style="left:6%; top:60.5%; width:25.8%; word-break:keep-all;">확정된 재시도와 승인 전 후보가 구분되는가</div>
+          <div class="bar" style="left:35.3%; top:52.5%; width:29.4%; height:5%;">stop</div>
+          <div class="card" style="left:35.3%; top:57.5%; width:29.4%; height:15%;"></div>
+          <div class="t c" style="left:37.1%; top:60.5%; width:25.8%; word-break:keep-all;">반복하지 말아야 할 실패의 다음 행동이 있는가</div>
+          <div class="bar" style="left:66.4%; top:52.5%; width:29.4%; height:5%;">테스트</div>
+          <div class="card" style="left:66.4%; top:57.5%; width:29.4%; height:15%;"></div>
+          <div class="t c" style="left:68.2%; top:60.5%; width:25.8%; word-break:keep-all;">정상·예외 경로가 각각 검증됐는가</div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:77%; width:91.6%; color:#FC1C49; font-weight:700;">다음 변경에서도 같은 질문으로 확인</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">6칸 — 오류 보존 · 외부 응답 · 로그 / retry · stop · 테스트. 각 칸에 체크리스트가 물을 질문 한 줄. 레드는 「다음 변경에서도 같은 질문으로 확인」. 스트립 없음</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1분. 13강 10의 3단 카드(헤더 바 + 카드)를 위아래 두 줄로 쌓아 6칸 — 열 폭 29.4%(4.2 / 35.3 / 66.4%). <b>좌표 조정:</b> 두 줄을 넣기 위해 바 높이를 13강 10의 5.5%에서 5%로, 카드 높이를 24%에서 15%로 줄였다 — 1행 바 29.5% · 카드 34.5~49.5%, 2행 바 52.5% · 카드 57.5~72.5%(행 간격 3%). 카드 안은 <code>t</code> 가운데 정렬 질문 한 줄(어절 단위로 접히게 <code>word-break:keep-all</code>, 두 줄까지 카드 안에 든다). 여섯 질문은 README E4 판단 기준 표 「checklist가 물어야 할 질문」 열 — 「로그」 행만 원문 「단순 출력이 아니라 추적 가능한 근거가 남는가」에서 앞 절을 떼어 「추적 가능한 근거가 남는가」로 뒀고(제안 문구), 「테스트」 행은 「실제로」를 뺀 제안 문구. 여섯 바 모두 회색 — 어느 하나가 더 중요하지 않다. <b>레드 1개 = 77% 하단 중앙 <code>t mid</code> 볼드</b>(README E4 「오류를 숨기지 않는 변경을 다음 작업에서도 판단할 수 있는 재사용 기준」). 스트립 없음. 수치 없음(「여섯」은 이 장에 쓰지 않았다).</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">실패 처리 체크리스트</div><ul><li>오류 보존 — 원인 추적 근거가 서버 쪽에 남는가</li><li>외부 응답 — 안전한 실패와 내부 정보 비노출이 함께 지켜지는가</li><li>로그 — 추적 가능한 근거가 남는가</li><li>retry — 확정된 재시도와 승인 전 후보가 구분되는가</li><li>stop — 반복하지 말아야 할 실패의 다음 행동이 있는가</li><li>테스트 — 정상·예외 경로가 각각 검증됐는가</li><li>레드: 다음 변경에서도 같은 질문으로 확인</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo">위 세 칸은 클립 2(10·12), 아래 두 칸은 클립 3(14·15), 마지막 칸은 12로 돌아간다 — 「오늘 본 장면이 그대로 여섯 칸」이라고 손으로 훑는다. 체크리스트는 이번 Lab의 코드 조각을 복사하지 않고 질문으로만 쓴다(README E4)는 것을 짚는다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 18 실습 큐 — 실습 4 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">18</span><span class="chip demo">실습 큐</span><span class="chip cl">클립 4</span><span class="chip lay">큐 컴포넌트 · 만드는 파일 칩 + 순서 칩 + 질문/확인 2열</span><span class="s-time">5분</span></div>
+    <h3>실습 4 — 실패 처리 체크리스트 작성</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 4 · 실습</div>
+          <div class="h" style="left:3.43%; top:18.8%;">실습 4 — 실패 처리 체크리스트 작성</div>
+          <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
+          <!-- 이번에 만드는 것 · 순서 · 원칙 -->
+          <div class="card" style="left:4.2%; top:30%; width:91.6%; height:16.5%;"></div>
+          <div class="t sm" style="left:6.6%; top:32.2%; width:20%; color:#9C9C9C; font-weight:700;">이번에 만드는 것</div>
+          <div style="left:27%; top:31.7%; display:flex; align-items:center; gap:5px;"><span class="kchip">docs/checklists/failure-handling.md</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin-left:4px;">여섯 항목 이상</span></div>
+          <div class="t sm" style="left:6.6%; top:37.3%; width:20%; color:#9C9C9C; font-weight:700;">순서</div>
+          <div style="left:27%; top:36.8%; display:flex; align-items:center; gap:5px;"><span class="kchip">체크 항목 작성</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 2px;">→</span><span class="kchip">test · lint · typecheck</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 2px;">→</span><span class="kchip">범위 확인 후 커밋</span></div>
+          <div class="t" style="left:6.6%; top:42.2%; width:87%; color:#5B5B5B;"><b style="color:#000;">정책 미결은 표시</b> — 「확인 필요」 또는 「사람 승인 전 후보」</div>
+          <!-- 생각할 질문 -->
+          <div class="card" style="left:4.2%; top:50.5%; width:44%; height:27.5%;"></div>
+          <div class="t sm" style="left:6.6%; top:52.8%; width:39%; color:#9C9C9C; font-weight:700;">생각할 질문</div>
+          <div class="t" style="left:6.6%; top:58.3%; width:39.2%; word-break:keep-all;">「다음 변경에서 silent fallback을 다시 넣지 않으려면 무엇을 확인해야 하나」</div>
+          <div class="t" style="left:6.6%; top:68.8%; width:39.2%;">「전체 검증 결과와 변경 파일 범위를 커밋 전 증거로 어떻게 남기나」</div>
+          <!-- 확인할 것 -->
+          <div class="card" style="left:51.8%; top:50.5%; width:44%; height:27.5%;"></div>
+          <div class="t sm" style="left:54.2%; top:52.8%; width:39%; color:#9C9C9C; font-weight:700;">확인할 것</div>
+          <div class="t" style="left:54.2%; top:58.3%; width:39.2%;">여섯 영역이 각각 항목으로 분리됨</div>
+          <div class="t" style="left:54.2%; top:68.8%; width:39.2%;">변경 파일이 결제·관리자 오류 처리, 관련 테스트, 두 문서로 제한</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">실습 큐 — 위 카드에 만드는 파일 칩(docs/checklists/failure-handling.md · 여섯 항목 이상), 순서 칩(체크 항목 작성 → test · lint · typecheck → 범위 확인 후 커밋), 원칙 한 줄(정책 미결은 표시 — 「확인 필요」 또는 「사람 승인 전 후보」). 아래 2열에 질문 둘 · 확인 둘. 레드는 「실습」 배지만</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 5분. 07·13·16과 같은 큐 컴포넌트·좌표(13강 08). 첫 행 <code>kchip</code> <code>docs/checklists/failure-handling.md</code> + 회색 한정어 「여섯 항목 이상」(13강 18의 「다섯 항목 이상」과 같은 문법 — README E4 「체크리스트는 여섯 항목 이상이어야 하며」. 실행마다 달라지는 값이 아니라 지시서의 최소 기준이라 수치 금지에 걸리지 않는다). 둘째 행 「순서」 <code>kchip</code> 셋 사이 회색 「→」 — README E4 실행 프롬프트의 세 단락(체크 항목 작성 → test·lint·typecheck 실행과 결과 기록 → 범위를 제한해 커밋). 원칙 한 줄 「<b>정책 미결은 표시</b> — 「확인 필요」 또는 「사람 승인 전 후보」」(같은 프롬프트의 「정책 미결은 확인 필요 또는 사람 승인 전 후보로 표시해라」). 질문 둘은 README E4 설계 질문 첫째·셋째(둘째 「어떻게 한 기준으로 연결하나」는 17이 답했다). 확인할 것 첫째는 README E4 검증 첫째의 압축, 둘째는 검증 넷째 그대로. 둘째 확인이 두 줄로 접히지만 68.8%부터 카드 하단 78% 안에 든다. <b>레드는 「실습」 배지 하나</b>, 그 외 레드 없음. 스트립 없음.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">실습 4 — 실패 처리 체크리스트 작성</div><ul><li>이번에 만드는 것: docs/checklists/failure-handling.md — 여섯 항목 이상</li><li>순서: 체크 항목 작성 → test · lint · typecheck → 범위 확인 후 커밋</li><li>정책 미결은 표시 — 「확인 필요」 또는 「사람 승인 전 후보」</li><li>질문: 「다음 변경에서 silent fallback을 다시 넣지 않으려면 무엇을 확인해야 하나」 「전체 검증 결과와 변경 파일 범위를 커밋 전 증거로 어떻게 남기나」</li><li>확인: 여섯 영역이 각각 항목으로 분리됨 / 변경 파일이 결제·관리자 오류 처리, 관련 테스트, 두 문서로 제한</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo">커밋 전에 <code>git diff --cached --stat</code>으로 변경 파일이 결제·관리자 오류 처리, 관련 테스트, 두 문서뿐인지 화면으로 보여 준다. 관리자 실패 사유 필드나 승인 밖 정책 결정이 커밋에 섞이면 뺀다(README E4 검증 다섯째). test·lint·typecheck 중 돌리지 않은 것이 있으면 「미실행」으로 구분해 적게 한다 — 실제 결과를 슬라이드에 옮기지 않는다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 19 15강 정리와 16강 예고 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">19</span><span class="chip op">마무리</span><span class="chip cl">클립 4</span><span class="chip lay">흐름 6 노드(fallback 제거 강조) + 산출물 칩 행 + 레드 한 줄 + 이어지는 곳 1</span><span class="s-time">1분</span></div>
+    <h3>15강 정리와 16강 예고</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 3</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">15강 마무리</div>
+          <div class="h" style="left:3.43%; top:18.8%;">15강 정리와 16강 예고</div>
+          <!-- Chapter 3 흐름: 계획 → 구현 → diff 확인 → 테스트 보강 → fallback 제거 → PR preflight -->
+          <div class="card g" style="left:4.2%; top:30%; width:12.6%; height:9.5%;"></div>
+          <div class="t c" style="left:4.2%; top:32.9%; width:12.6%; color:#9C9C9C; font-weight:700;">계획</div>
+          <div class="t mid c" style="left:16.8%; top:32.7%; width:3.2%; color:#9C9C9C;">→</div>
+          <div class="card g" style="left:20%; top:30%; width:12.6%; height:9.5%;"></div>
+          <div class="t c" style="left:20%; top:32.9%; width:12.6%; color:#9C9C9C; font-weight:700;">구현</div>
+          <div class="t mid c" style="left:32.6%; top:32.7%; width:3.2%; color:#9C9C9C;">→</div>
+          <div class="card g" style="left:35.8%; top:30%; width:12.6%; height:9.5%;"></div>
+          <div class="t c" style="left:35.8%; top:32.9%; width:12.6%; color:#9C9C9C; font-weight:700;">diff 확인</div>
+          <div class="t mid c" style="left:48.4%; top:32.7%; width:3.2%; color:#9C9C9C;">→</div>
+          <div class="card g" style="left:51.6%; top:30%; width:12.6%; height:9.5%;"></div>
+          <div class="t c" style="left:51.6%; top:32.9%; width:12.6%; color:#9C9C9C; font-weight:700;">테스트 보강</div>
+          <div class="t mid c" style="left:64.2%; top:32.7%; width:3.2%; color:#9C9C9C;">→</div>
+          <div class="card" style="left:67.4%; top:30%; width:12.6%; height:9.5%;"></div>
+          <div class="t c" style="left:67.4%; top:32.9%; width:12.6%; font-weight:700; white-space:nowrap;">fallback 제거</div>
+          <div class="t mid c" style="left:80%; top:32.7%; width:3.2%; color:#9C9C9C;">→</div>
+          <div class="card g" style="left:83.2%; top:30%; width:12.6%; height:9.5%;"></div>
+          <div class="t c" style="left:83.2%; top:32.9%; width:12.6%; color:#9C9C9C; font-weight:700; white-space:nowrap;">PR preflight</div>
+          <!-- 산출물 칩 행 -->
+          <div style="left:4.2%; top:44.5%; width:91.6%; display:flex; align-items:center; justify-content:center; gap:5px;"><span class="t sm" style="color:#9C9C9C; font-weight:700; margin-right:4px;">15강 산출물</span><span class="kchip">fallback 제거 diff</span><span class="kchip">retry/stop 기준표</span><span class="kchip">실패 처리 체크리스트</span></div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:53%; width:91.6%; color:#FC1C49; font-weight:700;">실패를 숨기지 않고 드러냄</div>
+          <!-- 이어지는 곳 -->
+          <div class="t sm c" style="left:4.2%; top:61.5%; width:91.6%; color:#9C9C9C; font-weight:700;">이어지는 곳</div>
+          <div class="card k" style="left:4.2%; top:66%; width:91.6%; height:10%;"></div>
+          <div class="t sm c" style="left:4.2%; top:69%; width:91.6%; color:#fff;">16강 — PR preflight: 오류 처리 경계 · 검증 결과 · 두 문서가 점검 근거</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">Chapter 3 흐름 여섯 노드 중 「fallback 제거」만 흰 카드. 산출물 칩 행(fallback 제거 diff · retry/stop 기준표 · 실패 처리 체크리스트). 레드는 「실패를 숨기지 않고 드러냄」. 이어지는 곳 검은 카드 하나(16강 PR preflight)</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1분. 13강 19 「13강이 놓은 것」 구조 — 상단 노드 행 + 회색/레드 줄 + 「이어지는 곳」 검은 카드. 노드는 13강 19의 넷 대신 Chapter 3 흐름 <b>여섯</b>(12강 계획 · 구현 → 13강 diff 확인 → 14강 테스트 보강 → 15강 fallback 제거 → 16강 PR preflight) — 폭 12.6%(4.2 / 20 / 35.8 / 51.6 / 67.4 / 83.2%), 화살표 3.2%, 높이 9.5%. 노드 글자는 폭이 좁아 <code>t mid</code> 대신 <code>t</code> 볼드(「fallback 제거」·「PR preflight」는 <code>white-space:nowrap</code>). <b>「fallback 제거」만 흰 <code>card</code> + 검정</b>, 나머지 다섯은 <code>card g</code> + #9C9C9C(13강 19의 「관찰」 강조 문법 — 색만으로 이 강의의 자리를 가리킨다). 44.5% 중앙 flex 행: <code>t sm</code> 회색 라벨 「15강 산출물」 + <code>kchip</code> 셋(README §2 표의 E2·E3·E4 결과). <b>레드 1개 = 53% 중앙 <code>t mid</code> 볼드</b>(README §2 「이 Lab의 핵심은 … 오류의 위치를 정하는 것입니다」). 61.5% 「이어지는 곳」 아래 <b>검은 카드 하나</b>(13강 19의 검은 카드 문법, 예고가 하나라 전폭 91.6%) — README §6 「Lab 16에는 승인된 오류 처리 경계, 실제 검증 결과, retry-stop matrix와 failure handling checklist를 PR preflight 근거로 넘깁니다」. 스트립 없음. 수치 없음.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">15강 정리와 16강 예고</div><ul><li>계획 → 구현 → diff 확인 → 테스트 보강 → fallback 제거 → PR preflight</li><li>15강 산출물: fallback 제거 diff · retry/stop 기준표 · 실패 처리 체크리스트</li><li>레드: 실패를 숨기지 않고 드러냄</li><li>이어지는 곳: 16강 — PR preflight: 오류 처리 경계 · 검증 결과 · 두 문서가 점검 근거</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo">「fallback 제거」 카드를 가리키며 — 12강 이후 처음으로 <code>src</code>가 바뀐 강의라는 것, 그런데 바꾼 것은 기능이 아니라 오류가 드러나는 위치라는 것을 한 문장으로. <b>이전 Lab의 관리자 상태 <code>it.fails()</code>는 이 강의에서 그대로 유지되며, 두 catch 제거의 회귀 방지(예외 경로 테스트)와는 다른 책임</b>이라는 점을 여기서 짚는다 — 슬라이드에는 넣지 않고 말로만. 16강 예고는 검은 카드 한 줄로 닫는다.</div>
+      </div>
+    </div>
+  </section>
+
+</div></body></html>
