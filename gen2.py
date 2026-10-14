@@ -34,7 +34,7 @@ PLANS = [
     dict(id='lec13', num='13강', title='환각 차단',
          sub='없는 함수 · 틀린 import · 검증 계층 · hallucination guard', dur='약 40분',
          src=os.path.join(ROOT, 'ref/lecture13-slide-plan-v1.html'), cover='assets/cover13.png'),
-    dict(id='lec15', num='15강', title='Silent fallback 차단',
+    dict(id='lec15', num='15강', title='No Silent Fallback',
          sub='silent fallback · 오류 처리 경계 · retry/stop 기준', dur='약 40분',
          src=os.path.join(ROOT, 'ref/lecture15-slide-plan-v1.html'), cover='assets/cover15.png'),
 ]
