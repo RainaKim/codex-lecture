@@ -139,12 +139,12 @@
     <span class="tag">PLAN v1.0</span>
     <h1>15강 — No Silent Fallback</h1>
     <p class="sub">이론 + 실습 40분 · 4클립 · 슬라이드 19장 · v1.0 (Lab 15 README E1~E4에 1:1로 붙인 실습 큐 네 장 + 이론 앵커 열네 장 + 표지)</p>
-    <div class="meta"><span>정렬: 커리큘럼 정본 15강 · Lab 15 E1~E4</span><span>산출물: <b>docs/retry-stop-matrix.md · docs/checklists/failure-handling.md</b> + 두 fallback 제거 diff — 12강 이후 <code>src</code>가 처음 바뀌는 강의</span><span>입력: 13강 19의 15강 예고 · Lab 15 README E1 · <code>docs/payment-policy.md</code></span><span>사상 축: <b>오류가 외부에 정상 응답처럼 보이면 테스트와 운영 모두 실패를 알 수 없다</b></span></div>
+    <div class="meta"><span>정렬: 커리큘럼 정본 15강 · Lab 15 E1~E4</span><span>산출물: <b>docs/retry-stop-matrix.md</b>(결제 실패 처리 기준표 · <code>## 변경 전 확인</code> 체크리스트 포함) + 두 fallback 제거 diff — 12강 이후 <code>src</code>가 처음 바뀌는 강의</span><span>입력: 13강 19의 15강 예고 · Lab 15 README E1 · <code>docs/payment-policy.md</code></span><span>사상 축: <b>오류가 외부에 정상 응답처럼 보이면 테스트와 운영 모두 실패를 알 수 없다</b></span></div>
   </div>
 
   <div class="panel">
     <h2>덱 성격</h2>
-    <p class="note-inline">이 덱은 <b>이론 + 실습 덱</b>이다. 15강은 Chapter 3의 네 번째 강의로, 13강이 「존재하지 않는 것을 부르는 코드」, 14강이 「핵심 값을 확인하지 않는 assertion」이었다면 15강은 <b>예외가 발생했는데도 정상 결과처럼 보이는 값을 반환하는 코드</b>를 다룬다. 사상 축은 하나다 — <b>오류가 외부에 정상 응답처럼 보이면 테스트와 운영 모두 실패를 알 수 없다.</b> 12강 이후 <code>src</code>가 처음 바뀌는 강의이며, 산출물은 <code>docs/retry-stop-matrix.md</code> · <code>docs/checklists/failure-handling.md</code>와 두 fallback 제거 diff다. 전체 구성은 <b>표지(01) → 탐지(02~06) → 실습 큐 07 → 교정(08~12) → 실습 큐 13 → retry/stop(14·15) → 실습 큐 16 → 체크리스트(17) → 실습 큐 18 → 마무리(19)</b>이고, 실습 N은 클립 N에 온다. 클립 배분: <b>클립 1 — 탐지</b>(약 10.5분 · 01~07) / <b>클립 2 — 교정</b>(약 14분 · 08~13: 에러를 없애 달라는 요청 · fallback 판별 기준 · 외부 응답과 서버 로그 · 오류 처리 기준은 누가 정하나 · 예외 경로 테스트 방법 · 실습 2) / <b>클립 3 — retry·stop</b>(약 9분 · 14~16: 재시도할 실패와 중단할 실패 · 정책이 정한 것과 정하지 않은 것 · 실습 3) / <b>클립 4 — 체크리스트</b>(약 7분 · 17~19: 실패 처리 체크리스트 · 실습 4 · 15강 정리와 16강 예고). 04 한 장만 실제 코드를 넣는다(커리큘럼이 「코드 예시로 보여준다」고 정했다) — 줄 번호는 넣지 않고, 실행 결과는 어느 장에도 넣지 않는다. 실습 큐 네 장(07·13·16·18)은 13강 08과 같은 큐 컴포넌트·좌표(레드 「실습」 배지 88%/15.5% + 헤드라인 + 위 카드 30~46.5% 세 행 + 아래 2열 50.5~78%)를 그대로 쓴다. 스트립은 02 한 장에만 둔다. 13강 플랜과 같은 토큰·좌표 문법(킥커 12.18% · 헤드라인 18.8% · 스트립 79.5%)을 그대로 쓰고, 표지 PNG가 아직 없어 <code>gen2.py</code>의 cover는 None — 01은 텍스트 표지 유형으로 일반 렌더된다.</p>
+    <p class="note-inline">이 덱은 <b>이론 + 실습 덱</b>이다. 15강은 Chapter 3의 네 번째 강의로, 13강이 「존재하지 않는 것을 부르는 코드」, 14강이 「핵심 값을 확인하지 않는 assertion」이었다면 15강은 <b>예외가 발생했는데도 정상 결과처럼 보이는 값을 반환하는 코드</b>를 다룬다. 사상 축은 하나다 — <b>오류가 외부에 정상 응답처럼 보이면 테스트와 운영 모두 실패를 알 수 없다.</b> 12강 이후 <code>src</code>가 처음 바뀌는 강의이며, 산출물은 <code>docs/retry-stop-matrix.md</code>(결제 실패 처리 기준표 — 실습 3의 기준표에 실습 4가 <code>## 변경 전 확인</code> 체크리스트 절을 더한 한 파일)와 두 fallback 제거 diff다. 전체 구성은 <b>표지(01) → 탐지(02~06) → 실습 큐 07 → 교정(08~12) → 실습 큐 13 → retry/stop(14·15) → 실습 큐 16 → 체크리스트(17) → 실습 큐 18 → 마무리(19)</b>이고, 실습 N은 클립 N에 온다. 클립 배분: <b>클립 1 — 탐지</b>(약 10.5분 · 01~07) / <b>클립 2 — 교정</b>(약 14분 · 08~13: 에러를 없애 달라는 요청 · fallback 판별 기준 · 외부 응답과 서버 로그 · 오류 처리 기준은 누가 정하나 · 예외 경로 테스트 방법 · 실습 2) / <b>클립 3 — retry·stop</b>(약 9분 · 14~16: 재시도할 실패와 중단할 실패 · 정책이 정한 것과 정하지 않은 것 · 실습 3) / <b>클립 4 — 체크리스트</b>(약 7분 · 17~19: 실패 처리 체크리스트 · 실습 4 · 15강 정리와 16강 예고). 04 한 장만 실제 코드를 넣는다(커리큘럼이 「코드 예시로 보여준다」고 정했다) — 줄 번호는 넣지 않고, 실행 결과는 어느 장에도 넣지 않는다. 실습 큐 네 장(07·13·16·18)은 13강 08과 같은 큐 컴포넌트·좌표(레드 「실습」 배지 88%/15.5% + 헤드라인 + 위 카드 30~46.5% 세 행 + 아래 2열 50.5~78%)를 그대로 쓴다. 스트립은 02 한 장에만 둔다. 13강 플랜과 같은 토큰·좌표 문법(킥커 12.18% · 헤드라인 18.8% · 스트립 79.5%)을 그대로 쓰고, 표지 PNG가 아직 없어 <code>gen2.py</code>의 cover는 None — 01은 텍스트 표지 유형으로 일반 렌더된다.</p>
   </div>
 
   <!-- 01 표지 -->
@@ -769,7 +769,7 @@
 
   <!-- 17 실패 처리 체크리스트 -->
   <section class="slide">
-    <div class="s-top"><span class="s-num">17</span><span class="chip op">핵심 개념</span><span class="chip cl">클립 4</span><span class="chip lay">헤더 바 + 카드 6칸(3열 × 2행) + 레드 한 줄</span><span class="s-time">1분</span></div>
+    <div class="s-top"><span class="s-num">17</span><span class="chip op">핵심 개념</span><span class="chip cl">클립 4</span><span class="chip lay">좌우 대조 2열 · 헤더 바 + 세 줄 / 두 줄 + 점선 아래 회색 한 줄 + 레드 한 줄</span><span class="s-time">1분</span></div>
     <h3>실패 처리 체크리스트</h3>
     <div class="s-body">
       <div class="wf">
@@ -777,38 +777,35 @@
           <div class="lbl">CHAPTER 3</div>
           <div class="kick" style="left:3.43%; top:12.18%;">클립 4 · 핵심 개념</div>
           <div class="h" style="left:3.43%; top:18.8%;">실패 처리 체크리스트</div>
-          <!-- 1행 -->
-          <div class="bar" style="left:4.2%; top:29.5%; width:29.4%; height:5%;">오류 보존</div>
-          <div class="card" style="left:4.2%; top:34.5%; width:29.4%; height:15%;"></div>
-          <div class="t c" style="left:6%; top:37.5%; width:25.8%; word-break:keep-all;">원인 추적 근거가 서버 쪽에 남는가</div>
-          <div class="bar" style="left:35.3%; top:29.5%; width:29.4%; height:5%;">외부 응답</div>
-          <div class="card" style="left:35.3%; top:34.5%; width:29.4%; height:15%;"></div>
-          <div class="t c" style="left:37.1%; top:37.5%; width:25.8%; word-break:keep-all;">안전한 실패와 내부 정보 비노출이 함께 지켜지는가</div>
-          <div class="bar" style="left:66.4%; top:29.5%; width:29.4%; height:5%;">로그</div>
-          <div class="card" style="left:66.4%; top:34.5%; width:29.4%; height:15%;"></div>
-          <div class="t c" style="left:68.2%; top:37.5%; width:25.8%; word-break:keep-all;">추적 가능한 근거가 남는가</div>
-          <!-- 2행 -->
-          <div class="bar" style="left:4.2%; top:52.5%; width:29.4%; height:5%;">retry</div>
-          <div class="card" style="left:4.2%; top:57.5%; width:29.4%; height:15%;"></div>
-          <div class="t c" style="left:6%; top:60.5%; width:25.8%; word-break:keep-all;">확정된 재시도와 승인 전 후보가 구분되는가</div>
-          <div class="bar" style="left:35.3%; top:52.5%; width:29.4%; height:5%;">stop</div>
-          <div class="card" style="left:35.3%; top:57.5%; width:29.4%; height:15%;"></div>
-          <div class="t c" style="left:37.1%; top:60.5%; width:25.8%; word-break:keep-all;">반복하지 말아야 할 실패의 다음 행동이 있는가</div>
-          <div class="bar" style="left:66.4%; top:52.5%; width:29.4%; height:5%;">테스트</div>
-          <div class="card" style="left:66.4%; top:57.5%; width:29.4%; height:15%;"></div>
-          <div class="t c" style="left:68.2%; top:60.5%; width:25.8%; word-break:keep-all;">정상·예외 경로가 각각 검증됐는가</div>
+          <!-- 좌: 항목의 조건 -->
+          <div class="bar" style="left:4.2%; top:29.5%; width:44%; height:5.5%;">항목의 조건</div>
+          <div class="card" style="left:4.2%; top:35%; width:44%; height:24%;"></div>
+          <div class="t" style="left:6.6%; top:37.5%; width:39.2%;">예·아니오로 판정 가능</div>
+          <div class="dash" style="left:6.6%; top:43.5%; width:39.2%;"></div>
+          <div class="t" style="left:6.6%; top:45%; width:39.2%;">이번 실습의 코드 조각을 복사하지 않음</div>
+          <div class="dash" style="left:6.6%; top:51%; width:39.2%;"></div>
+          <div class="t" style="left:6.6%; top:52.5%; width:39.2%;">정책 미결은 표시</div>
+          <!-- 우: 확인 영역 -->
+          <div class="bar" style="left:51.8%; top:29.5%; width:44%; height:5.5%;">확인 영역</div>
+          <div class="card" style="left:51.8%; top:35%; width:44%; height:24%;"></div>
+          <div class="t" style="left:54.2%; top:41%; width:39.2%;">오류 보존 · 외부 응답 · 로그</div>
+          <div class="dash" style="left:54.2%; top:47%; width:39.2%;"></div>
+          <div class="t" style="left:54.2%; top:48.5%; width:39.2%;">retry · stop · 테스트</div>
+          <!-- 점선 + 회색 한 줄 -->
+          <div class="dash" style="left:4.2%; top:63.5%; width:91.6%;"></div>
+          <div class="t c" style="left:4.2%; top:64.8%; width:91.6%; color:#5B5B5B;">정본 정책은 docs/payment-policy.md — 체크리스트는 정책을 대체하지 않음</div>
           <!-- 레드 한 줄 -->
-          <div class="t mid c" style="left:4.2%; top:77%; width:91.6%; color:#FC1C49; font-weight:700;">다음 변경에서도 같은 질문으로 확인</div>
+          <div class="t mid c" style="left:4.2%; top:71%; width:91.6%; color:#FC1C49; font-weight:700;">다음에 결제 코드를 고칠 때도 같은 질문으로 확인</div>
           <div class="mark"></div>
         </div>
-        <div class="cap">6칸 — 오류 보존 · 외부 응답 · 로그 / retry · stop · 테스트. 각 칸에 체크리스트가 물을 질문 한 줄. 레드는 「다음 변경에서도 같은 질문으로 확인」. 스트립 없음</div>
-        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1분. 13강 10의 3단 카드(헤더 바 + 카드)를 위아래 두 줄로 쌓아 6칸 — 열 폭 29.4%(4.2 / 35.3 / 66.4%). <b>좌표 조정:</b> 두 줄을 넣기 위해 바 높이를 13강 10의 5.5%에서 5%로, 카드 높이를 24%에서 15%로 줄였다 — 1행 바 29.5% · 카드 34.5~49.5%, 2행 바 52.5% · 카드 57.5~72.5%(행 간격 3%). 카드 안은 <code>t</code> 가운데 정렬 질문 한 줄(어절 단위로 접히게 <code>word-break:keep-all</code>, 두 줄까지 카드 안에 든다). 여섯 질문은 README E4 판단 기준 표 「checklist가 물어야 할 질문」 열 — 「로그」 행만 원문 「단순 출력이 아니라 추적 가능한 근거가 남는가」에서 앞 절을 떼어 「추적 가능한 근거가 남는가」로 뒀고(제안 문구), 「테스트」 행은 「실제로」를 뺀 제안 문구. 여섯 바 모두 회색 — 어느 하나가 더 중요하지 않다. <b>레드 1개 = 77% 하단 중앙 <code>t mid</code> 볼드</b>(README E4 「오류를 숨기지 않는 변경을 다음 작업에서도 판단할 수 있는 재사용 기준」). 스트립 없음. 수치 없음(「여섯」은 이 장에 쓰지 않았다).</div>
+        <div class="cap">좌(항목의 조건 — 예·아니오로 판정 가능 / 이번 실습의 코드 조각을 복사하지 않음 / 정책 미결은 표시) ↔ 우(확인 영역 — 오류 보존 · 외부 응답 · 로그 / retry · stop · 테스트). 점선 아래 회색 「정본 정책은 docs/payment-policy.md — 체크리스트는 정책을 대체하지 않음」. 레드는 「다음에 결제 코드를 고칠 때도 같은 질문으로 확인」. 스트립 없음</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1분. 15와 같은 좌우 2열 구조·좌표 — 회색 <code>bar</code>(29.5~35%) + 흰 <code>card</code>(35~59% · 높이 24%), 63.5% <code>dash</code> 점선 + 64.8% <code>t</code> 회색 한 줄, 71% 레드. <b>좌 「항목의 조건」</b>은 체크리스트 항목이 갖춰야 할 조건 — <code>t</code> 세 줄을 <code>dash</code> 점선으로 나눴다(15 문법 · 37.5 / 45 / 52.5%). 첫 줄은 README E4 판단 기준 표의 질문이 모두 「~는가」 한 물음으로 닫히는 형식에서, 둘째 줄은 README E4 「재사용 가능한 확인 기준」(이 실습의 코드가 아니라 다음 결제 변경에서도 읽을 수 있는 기준)에서, 셋째 줄은 E4 실행 프롬프트 「정책 미결은 확인 필요 또는 사람 승인 전 후보로 표시해라」에서 왔다. <b>우 「확인 영역」</b>은 README §3 E4 「판단 기준」 표의 확인 범위 여섯 이름을 두 줄로 묶은 것(오류 보존·외부 응답·로그 = 서버 쪽과 바깥쪽에 무엇이 남는가 / retry·stop·테스트 = 실패 뒤 행동과 검증). 두 줄이라 카드 세로 중앙에 맞춰 41 / 48.5%(점선 47%)에 뒀다. <b>영역 이름만 넣고 표의 질문 문장은 넣지 않는다</b> — 질문은 실습 4의 결과물이라 슬라이드가 먼저 보여 주지 않는다. 회색 한 줄은 README E4 「정본은 계속 <code>docs/payment-policy.md</code>이며, 이 matrix는 … 보조 참조 문서입니다」. <b>레드 1개 = 71% 중앙 <code>t mid</code> 볼드</b>(README E4 설계 질문 첫째 「다음 결제 변경에서도 읽을 수 있는 참조 문서」). 두 바 모두 회색 — 어느 열이 더 중요하지 않다. 스트립 없음. 수치 없음(「여섯」은 이 장에 쓰지 않았다).</div>
       </div>
       <div class="txt">
         <h4>슬라이드에 넣을 텍스트</h4>
-        <div class="copy"><div class="t">실패 처리 체크리스트</div><ul><li>오류 보존 — 원인 추적 근거가 서버 쪽에 남는가</li><li>외부 응답 — 안전한 실패와 내부 정보 비노출이 함께 지켜지는가</li><li>로그 — 추적 가능한 근거가 남는가</li><li>retry — 확정된 재시도와 승인 전 후보가 구분되는가</li><li>stop — 반복하지 말아야 할 실패의 다음 행동이 있는가</li><li>테스트 — 정상·예외 경로가 각각 검증됐는가</li><li>레드: 다음 변경에서도 같은 질문으로 확인</li></ul></div>
+        <div class="copy"><div class="t">실패 처리 체크리스트</div><ul><li>항목의 조건 — 예·아니오로 판정 가능 / 이번 실습의 코드 조각을 복사하지 않음 / 정책 미결은 표시</li><li>확인 영역 — 오류 보존 · 외부 응답 · 로그 / retry · stop · 테스트</li><li>정본 정책은 docs/payment-policy.md — 체크리스트는 정책을 대체하지 않음</li><li>레드: 다음에 결제 코드를 고칠 때도 같은 질문으로 확인</li></ul></div>
         <h4>연출 메모</h4>
-        <div class="memo">위 세 칸은 클립 2(10·12), 아래 두 칸은 클립 3(14·15), 마지막 칸은 12로 돌아간다 — 「오늘 본 장면이 그대로 여섯 칸」이라고 손으로 훑는다. 체크리스트는 이번 Lab의 코드 조각을 복사하지 않고 질문으로만 쓴다(README E4)는 것을 짚는다.</div>
+        <div class="memo">오른쪽 여섯 이름 가운데 오류 보존과 로그가 비슷해 보이는 차이를 짚는다 — 로그가 있다는 것과 원인을 추적할 수 있다는 것은 다르다. 왼쪽 둘째 줄은 「체크리스트에 이번 코드를 붙여 넣으면 다음 변경에서 못 쓴다」로 풀고, 정본은 <code>payment-policy.md</code>이고 체크리스트는 그것을 실제 실패 처리와 잇는 보조 문서라는 것을 말로 확인한 뒤 18로 넘어간다. 각 영역이 물을 질문은 실습에서 직접 쓰게 두고 여기서 읽어 주지 않는다.</div>
       </div>
     </div>
   </section>
@@ -827,30 +824,30 @@
           <!-- 이번에 만드는 것 · 순서 · 원칙 -->
           <div class="card" style="left:4.2%; top:30%; width:91.6%; height:16.5%;"></div>
           <div class="t sm" style="left:6.6%; top:32.2%; width:20%; color:#9C9C9C; font-weight:700;">이번에 만드는 것</div>
-          <div style="left:27%; top:31.7%; display:flex; align-items:center; gap:5px;"><span class="kchip">docs/checklists/failure-handling.md</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin-left:4px;">여섯 항목 이상</span></div>
+          <div style="left:27%; top:31.7%; display:flex; align-items:center; gap:5px;"><span class="kchip">docs/retry-stop-matrix.md</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin-left:4px;">## 변경 전 확인</span></div>
           <div class="t sm" style="left:6.6%; top:37.3%; width:20%; color:#9C9C9C; font-weight:700;">순서</div>
-          <div style="left:27%; top:36.8%; display:flex; align-items:center; gap:5px;"><span class="kchip">체크 항목 작성</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 2px;">→</span><span class="kchip">test · lint · typecheck</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 2px;">→</span><span class="kchip">범위 확인 후 커밋</span></div>
+          <div style="left:27%; top:36.8%; display:flex; align-items:center; gap:5px;"><span class="kchip">체크리스트 작성</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 2px;">→</span><span class="kchip">test · lint · typecheck</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 2px;">→</span><span class="kchip">범위 확인 후 커밋</span></div>
           <div class="t" style="left:6.6%; top:42.2%; width:87%; color:#5B5B5B;"><b style="color:#000;">정책 미결은 표시</b> — 「확인 필요」 또는 「사람 승인 전 후보」</div>
           <!-- 생각할 질문 -->
           <div class="card" style="left:4.2%; top:50.5%; width:44%; height:27.5%;"></div>
           <div class="t sm" style="left:6.6%; top:52.8%; width:39%; color:#9C9C9C; font-weight:700;">생각할 질문</div>
-          <div class="t" style="left:6.6%; top:58.3%; width:39.2%; word-break:keep-all;">「다음 변경에서 silent fallback을 다시 넣지 않으려면 무엇을 확인해야 하나」</div>
-          <div class="t" style="left:6.6%; top:68.8%; width:39.2%;">「전체 검증 결과와 변경 파일 범위를 커밋 전 증거로 어떻게 남기나」</div>
+          <div class="t" style="left:6.6%; top:58.3%; width:39.2%; word-break:keep-all;">「외부 응답, 서버 쪽 오류 보존, retry·stop, 예외 경로 테스트를 어떻게 한 기준으로 연결하나」</div>
+          <div class="t" style="left:6.6%; top:68.8%; width:39.2%; word-break:keep-all;">「전체 검증 결과와 변경 파일 범위를 커밋 전 증거로 어떻게 남기나」</div>
           <!-- 확인할 것 -->
           <div class="card" style="left:51.8%; top:50.5%; width:44%; height:27.5%;"></div>
           <div class="t sm" style="left:54.2%; top:52.8%; width:39%; color:#9C9C9C; font-weight:700;">확인할 것</div>
-          <div class="t" style="left:54.2%; top:58.3%; width:39.2%;">여섯 영역이 각각 항목으로 분리됨</div>
-          <div class="t" style="left:54.2%; top:68.8%; width:39.2%;">변경 파일이 결제·관리자 오류 처리, 관련 테스트, 두 문서로 제한</div>
+          <div class="t" style="left:54.2%; top:58.3%; width:39.2%; word-break:keep-all;">변경 전 확인에 여섯 영역이 각각 항목으로 있음</div>
+          <div class="t" style="left:54.2%; top:68.8%; width:39.2%; word-break:keep-all;">변경 파일이 결제·관리자 오류 처리, 관련 테스트, 이 문서로 제한</div>
           <div class="mark"></div>
         </div>
-        <div class="cap">실습 큐 — 위 카드에 만드는 파일 칩(docs/checklists/failure-handling.md · 여섯 항목 이상), 순서 칩(체크 항목 작성 → test · lint · typecheck → 범위 확인 후 커밋), 원칙 한 줄(정책 미결은 표시 — 「확인 필요」 또는 「사람 승인 전 후보」). 아래 2열에 질문 둘 · 확인 둘. 레드는 「실습」 배지만</div>
-        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 5분. 07·13·16과 같은 큐 컴포넌트·좌표(13강 08). 첫 행 <code>kchip</code> <code>docs/checklists/failure-handling.md</code> + 회색 한정어 「여섯 항목 이상」(13강 18의 「다섯 항목 이상」과 같은 문법 — README E4 「체크리스트는 여섯 항목 이상이어야 하며」. 실행마다 달라지는 값이 아니라 지시서의 최소 기준이라 수치 금지에 걸리지 않는다). 둘째 행 「순서」 <code>kchip</code> 셋 사이 회색 「→」 — README E4 실행 프롬프트의 세 단락(체크 항목 작성 → test·lint·typecheck 실행과 결과 기록 → 범위를 제한해 커밋). 원칙 한 줄 「<b>정책 미결은 표시</b> — 「확인 필요」 또는 「사람 승인 전 후보」」(같은 프롬프트의 「정책 미결은 확인 필요 또는 사람 승인 전 후보로 표시해라」). 질문 둘은 README E4 설계 질문 첫째·셋째(둘째 「어떻게 한 기준으로 연결하나」는 17이 답했다). 확인할 것 첫째는 README E4 검증 첫째의 압축, 둘째는 검증 넷째 그대로. 둘째 확인이 두 줄로 접히지만 68.8%부터 카드 하단 78% 안에 든다. <b>레드는 「실습」 배지 하나</b>, 그 외 레드 없음. 스트립 없음.</div>
+        <div class="cap">실습 큐 — 위 카드에 만드는 파일 칩(docs/retry-stop-matrix.md · 회색 「## 변경 전 확인」), 순서 칩(체크리스트 작성 → test · lint · typecheck → 범위 확인 후 커밋), 원칙 한 줄(정책 미결은 표시 — 「확인 필요」 또는 「사람 승인 전 후보」). 아래 2열에 질문 둘 · 확인 둘. 레드는 「실습」 배지만</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 5분. 07·13·16과 같은 큐 컴포넌트·좌표(13강 08). 첫 행 <code>kchip</code> <code>docs/retry-stop-matrix.md</code> + 회색 한정어 「## 변경 전 확인」(13강 18의 회색 한정어와 같은 문법) — 체크리스트는 실습 3에서 만든 같은 파일 안의 절이고, 결과물 이름은 「결제 실패 처리 기준표」다(README §2 표 E4 결과 <code>docs/retry-stop-matrix.md</code>, §3 E4 「<code>## 변경 전 확인</code> 절에 … 재사용 가능한 확인 기준을 둡니다」). 둘째 행 「순서」 <code>kchip</code> 셋 사이 회색 「→」 — README E4 실행 프롬프트의 세 단락(변경 전 확인 절의 항목 작성 → test·lint·typecheck 실행과 실제 결과·미실행 구분 기록 → 범위를 제한해 커밋). 원칙 한 줄 「<b>정책 미결은 표시</b> — 「확인 필요」 또는 「사람 승인 전 후보」」(같은 프롬프트의 「정책 미결은 확인 필요 또는 사람 승인 전 후보로 표시해라」). 질문 둘은 README E4 설계 질문 둘째·셋째 그대로(첫째 「참조 문서로 어떻게 다듬나」는 17의 왼쪽 열이 답했다). 확인할 것 첫째는 README E4 검증 둘째의 압축, 둘째는 검증 다섯째 그대로. 첫 질문과 둘째 확인이 두 줄로 접히지만 58.3 / 68.8% 간격과 카드 하단 78% 안에 든다(<code>word-break:keep-all</code>). <b>레드는 「실습」 배지 하나</b>, 그 외 레드 없음. 스트립 없음. 수치 없음(README의 「여섯 개 이상」은 슬라이드에 넣지 않았다 — 「여섯 영역」은 개수가 아니라 17의 영역 이름을 가리킨다).</div>
       </div>
       <div class="txt">
         <h4>슬라이드에 넣을 텍스트</h4>
-        <div class="copy"><div class="t">실습 4 — 실패 처리 체크리스트 작성</div><ul><li>이번에 만드는 것: docs/checklists/failure-handling.md — 여섯 항목 이상</li><li>순서: 체크 항목 작성 → test · lint · typecheck → 범위 확인 후 커밋</li><li>정책 미결은 표시 — 「확인 필요」 또는 「사람 승인 전 후보」</li><li>질문: 「다음 변경에서 silent fallback을 다시 넣지 않으려면 무엇을 확인해야 하나」 「전체 검증 결과와 변경 파일 범위를 커밋 전 증거로 어떻게 남기나」</li><li>확인: 여섯 영역이 각각 항목으로 분리됨 / 변경 파일이 결제·관리자 오류 처리, 관련 테스트, 두 문서로 제한</li></ul></div>
+        <div class="copy"><div class="t">실습 4 — 실패 처리 체크리스트 작성</div><ul><li>이번에 만드는 것: docs/retry-stop-matrix.md — ## 변경 전 확인</li><li>순서: 체크리스트 작성 → test · lint · typecheck → 범위 확인 후 커밋</li><li>정책 미결은 표시 — 「확인 필요」 또는 「사람 승인 전 후보」</li><li>질문: 「외부 응답, 서버 쪽 오류 보존, retry·stop, 예외 경로 테스트를 어떻게 한 기준으로 연결하나」 「전체 검증 결과와 변경 파일 범위를 커밋 전 증거로 어떻게 남기나」</li><li>확인: 변경 전 확인에 여섯 영역이 각각 항목으로 있음 / 변경 파일이 결제·관리자 오류 처리, 관련 테스트, 이 문서로 제한</li></ul></div>
         <h4>연출 메모</h4>
-        <div class="memo">커밋 전에 <code>git diff --cached --stat</code>으로 변경 파일이 결제·관리자 오류 처리, 관련 테스트, 두 문서뿐인지 화면으로 보여 준다. 관리자 실패 사유 필드나 승인 밖 정책 결정이 커밋에 섞이면 뺀다(README E4 검증 다섯째). test·lint·typecheck 중 돌리지 않은 것이 있으면 「미실행」으로 구분해 적게 한다 — 실제 결과를 슬라이드에 옮기지 않는다.</div>
+        <div class="memo">README E4 프롬프트를 그대로 주고, 결과가 실습 3의 <code>docs/retry-stop-matrix.md</code> 안에 <code>## 변경 전 확인</code> 절로 들어갔는지 먼저 확인한다. 커밋 전에 <code>git diff --cached --stat</code>으로 변경 파일이 결제·관리자 오류 처리, 관련 테스트, 이 문서뿐인지 화면으로 보여 준다. 관리자 실패 사유 필드나 승인 밖 정책 결정이 커밋에 섞이면 뺀다(README E4 검증 여섯째). test·lint·typecheck 중 돌리지 않은 것이 있으면 「미실행」으로 구분해 적게 한다 — 실제 결과를 슬라이드에 옮기지 않는다.</div>
       </div>
     </div>
   </section>
@@ -884,21 +881,21 @@
           <div class="card g" style="left:83.2%; top:30%; width:12.6%; height:9.5%;"></div>
           <div class="t c" style="left:83.2%; top:32.9%; width:12.6%; color:#9C9C9C; font-weight:700; white-space:nowrap;">PR preflight</div>
           <!-- 산출물 칩 행 -->
-          <div style="left:4.2%; top:44.5%; width:91.6%; display:flex; align-items:center; justify-content:center; gap:5px;"><span class="t sm" style="color:#9C9C9C; font-weight:700; margin-right:4px;">15강 산출물</span><span class="kchip">fallback 제거 diff</span><span class="kchip">retry/stop 기준표</span><span class="kchip">실패 처리 체크리스트</span></div>
+          <div style="left:4.2%; top:44.5%; width:91.6%; display:flex; align-items:center; justify-content:center; gap:5px;"><span class="t sm" style="color:#9C9C9C; font-weight:700; margin-right:4px;">15강 산출물</span><span class="kchip">fallback 제거 diff</span><span class="kchip">결제 실패 처리 기준표 · 체크리스트</span></div>
           <!-- 레드 한 줄 -->
           <div class="t mid c" style="left:4.2%; top:53%; width:91.6%; color:#FC1C49; font-weight:700;">실패를 숨기지 않고 드러냄</div>
           <!-- 이어지는 곳 -->
           <div class="t sm c" style="left:4.2%; top:61.5%; width:91.6%; color:#9C9C9C; font-weight:700;">이어지는 곳</div>
           <div class="card k" style="left:4.2%; top:66%; width:91.6%; height:10%;"></div>
-          <div class="t sm c" style="left:4.2%; top:69%; width:91.6%; color:#fff;">16강 — PR preflight: 오류 처리 경계 · 검증 결과 · 두 문서가 점검 근거</div>
+          <div class="t sm c" style="left:4.2%; top:69%; width:91.6%; color:#fff;">16강 — PR preflight: 오류 처리 경계 · 검증 결과 · 체크리스트가 점검 근거</div>
           <div class="mark"></div>
         </div>
-        <div class="cap">Chapter 3 흐름 여섯 노드 중 「fallback 제거」만 흰 카드. 산출물 칩 행(fallback 제거 diff · retry/stop 기준표 · 실패 처리 체크리스트). 레드는 「실패를 숨기지 않고 드러냄」. 이어지는 곳 검은 카드 하나(16강 PR preflight)</div>
-        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1분. 13강 19 「13강이 놓은 것」 구조 — 상단 노드 행 + 회색/레드 줄 + 「이어지는 곳」 검은 카드. 노드는 13강 19의 넷 대신 Chapter 3 흐름 <b>여섯</b>(12강 계획 · 구현 → 13강 diff 확인 → 14강 테스트 보강 → 15강 fallback 제거 → 16강 PR preflight) — 폭 12.6%(4.2 / 20 / 35.8 / 51.6 / 67.4 / 83.2%), 화살표 3.2%, 높이 9.5%. 노드 글자는 폭이 좁아 <code>t mid</code> 대신 <code>t</code> 볼드(「fallback 제거」·「PR preflight」는 <code>white-space:nowrap</code>). <b>「fallback 제거」만 흰 <code>card</code> + 검정</b>, 나머지 다섯은 <code>card g</code> + #9C9C9C(13강 19의 「관찰」 강조 문법 — 색만으로 이 강의의 자리를 가리킨다). 44.5% 중앙 flex 행: <code>t sm</code> 회색 라벨 「15강 산출물」 + <code>kchip</code> 셋(README §2 표의 E2·E3·E4 결과). <b>레드 1개 = 53% 중앙 <code>t mid</code> 볼드</b>(README §2 「이 Lab의 핵심은 … 오류의 위치를 정하는 것입니다」). 61.5% 「이어지는 곳」 아래 <b>검은 카드 하나</b>(13강 19의 검은 카드 문법, 예고가 하나라 전폭 91.6%) — README §6 「Lab 16에는 승인된 오류 처리 경계, 실제 검증 결과, retry-stop matrix와 failure handling checklist를 PR preflight 근거로 넘깁니다」. 스트립 없음. 수치 없음.</div>
+        <div class="cap">Chapter 3 흐름 여섯 노드 중 「fallback 제거」만 흰 카드. 산출물 칩 행(fallback 제거 diff · 결제 실패 처리 기준표 · 체크리스트). 레드는 「실패를 숨기지 않고 드러냄」. 이어지는 곳 검은 카드 하나(16강 PR preflight)</div>
+        <div class="wf-spec"><b>제작 명세:</b> 시간 배분 1분. 13강 19 「13강이 놓은 것」 구조 — 상단 노드 행 + 회색/레드 줄 + 「이어지는 곳」 검은 카드. 노드는 13강 19의 넷 대신 Chapter 3 흐름 <b>여섯</b>(12강 계획 · 구현 → 13강 diff 확인 → 14강 테스트 보강 → 15강 fallback 제거 → 16강 PR preflight) — 폭 12.6%(4.2 / 20 / 35.8 / 51.6 / 67.4 / 83.2%), 화살표 3.2%, 높이 9.5%. 노드 글자는 폭이 좁아 <code>t mid</code> 대신 <code>t</code> 볼드(「fallback 제거」·「PR preflight」는 <code>white-space:nowrap</code>). <b>「fallback 제거」만 흰 <code>card</code> + 검정</b>, 나머지 다섯은 <code>card g</code> + #9C9C9C(13강 19의 「관찰」 강조 문법 — 색만으로 이 강의의 자리를 가리킨다). 44.5% 중앙 flex 행: <code>t sm</code> 회색 라벨 「15강 산출물」 + <code>kchip</code> 둘(README §2 표의 E2 결과 「변경된 오류 처리와 관련 테스트」 = fallback 제거 diff, E4 결과 <code>docs/retry-stop-matrix.md</code> = 결제 실패 처리 기준표 — 실습 3의 기준표에 실습 4의 <code>## 변경 전 확인</code> 체크리스트가 들어간 한 파일이라 칩 하나에 「· 체크리스트」로 붙였다). <b>레드 1개 = 53% 중앙 <code>t mid</code> 볼드</b>(README §2 「이 Lab의 핵심은 … 오류의 위치를 정하는 것입니다」). 61.5% 「이어지는 곳」 아래 <b>검은 카드 하나</b>(13강 19의 검은 카드 문법, 예고가 하나라 전폭 91.6%) — README §6 「Lab 16에는 승인된 오류 처리 경계, 실제 검증 결과와 결제 실패 처리 matrix를 PR preflight 근거로 넘깁니다」 — 카드 안에서는 matrix를 그 안의 체크리스트로 가리킨다. 스트립 없음. 수치 없음.</div>
       </div>
       <div class="txt">
         <h4>슬라이드에 넣을 텍스트</h4>
-        <div class="copy"><div class="t">15강 정리와 16강 예고</div><ul><li>계획 → 구현 → diff 확인 → 테스트 보강 → fallback 제거 → PR preflight</li><li>15강 산출물: fallback 제거 diff · retry/stop 기준표 · 실패 처리 체크리스트</li><li>레드: 실패를 숨기지 않고 드러냄</li><li>이어지는 곳: 16강 — PR preflight: 오류 처리 경계 · 검증 결과 · 두 문서가 점검 근거</li></ul></div>
+        <div class="copy"><div class="t">15강 정리와 16강 예고</div><ul><li>계획 → 구현 → diff 확인 → 테스트 보강 → fallback 제거 → PR preflight</li><li>15강 산출물: fallback 제거 diff · 결제 실패 처리 기준표 · 체크리스트</li><li>레드: 실패를 숨기지 않고 드러냄</li><li>이어지는 곳: 16강 — PR preflight: 오류 처리 경계 · 검증 결과 · 체크리스트가 점검 근거</li></ul></div>
         <h4>연출 메모</h4>
         <div class="memo">「fallback 제거」 카드를 가리키며 — 12강 이후 처음으로 <code>src</code>가 바뀐 강의라는 것, 그런데 바꾼 것은 기능이 아니라 오류가 드러나는 위치라는 것을 한 문장으로. <b>이전 Lab의 관리자 상태 <code>it.fails()</code>는 이 강의에서 그대로 유지되며, 두 catch 제거의 회귀 방지(예외 경로 테스트)와는 다른 책임</b>이라는 점을 여기서 짚는다 — 슬라이드에는 넣지 않고 말로만. 16강 예고는 검은 카드 한 줄로 닫는다.</div>
       </div>

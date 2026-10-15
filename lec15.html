@@ -420,28 +420,25 @@
           <div class="lbl">CHAPTER 3</div>
           <div class="kick" style="left:3.43%; top:12.18%;">클립 4 · 핵심 개념</div>
           <div class="h" style="left:3.43%; top:18.8%;">실패 처리 체크리스트</div>
-          <!-- 1행 -->
-          <div class="bar" style="left:4.2%; top:29.5%; width:29.4%; height:5%;">오류 보존</div>
-          <div class="card" style="left:4.2%; top:34.5%; width:29.4%; height:15%;"></div>
-          <div class="t c" style="left:6%; top:37.5%; width:25.8%; word-break:keep-all;">원인 추적 근거가 서버 쪽에 남는가</div>
-          <div class="bar" style="left:35.3%; top:29.5%; width:29.4%; height:5%;">외부 응답</div>
-          <div class="card" style="left:35.3%; top:34.5%; width:29.4%; height:15%;"></div>
-          <div class="t c" style="left:37.1%; top:37.5%; width:25.8%; word-break:keep-all;">안전한 실패와 내부 정보 비노출이 함께 지켜지는가</div>
-          <div class="bar" style="left:66.4%; top:29.5%; width:29.4%; height:5%;">로그</div>
-          <div class="card" style="left:66.4%; top:34.5%; width:29.4%; height:15%;"></div>
-          <div class="t c" style="left:68.2%; top:37.5%; width:25.8%; word-break:keep-all;">추적 가능한 근거가 남는가</div>
-          <!-- 2행 -->
-          <div class="bar" style="left:4.2%; top:52.5%; width:29.4%; height:5%;">retry</div>
-          <div class="card" style="left:4.2%; top:57.5%; width:29.4%; height:15%;"></div>
-          <div class="t c" style="left:6%; top:60.5%; width:25.8%; word-break:keep-all;">확정된 재시도와 승인 전 후보가 구분되는가</div>
-          <div class="bar" style="left:35.3%; top:52.5%; width:29.4%; height:5%;">stop</div>
-          <div class="card" style="left:35.3%; top:57.5%; width:29.4%; height:15%;"></div>
-          <div class="t c" style="left:37.1%; top:60.5%; width:25.8%; word-break:keep-all;">반복하지 말아야 할 실패의 다음 행동이 있는가</div>
-          <div class="bar" style="left:66.4%; top:52.5%; width:29.4%; height:5%;">테스트</div>
-          <div class="card" style="left:66.4%; top:57.5%; width:29.4%; height:15%;"></div>
-          <div class="t c" style="left:68.2%; top:60.5%; width:25.8%; word-break:keep-all;">정상·예외 경로가 각각 검증됐는가</div>
+          <!-- 좌: 항목의 조건 -->
+          <div class="bar" style="left:4.2%; top:29.5%; width:44%; height:5.5%;">항목의 조건</div>
+          <div class="card" style="left:4.2%; top:35%; width:44%; height:24%;"></div>
+          <div class="t" style="left:6.6%; top:37.5%; width:39.2%;">예·아니오로 판정 가능</div>
+          <div class="dash" style="left:6.6%; top:43.5%; width:39.2%;"></div>
+          <div class="t" style="left:6.6%; top:45%; width:39.2%;">이번 실습의 코드 조각을 복사하지 않음</div>
+          <div class="dash" style="left:6.6%; top:51%; width:39.2%;"></div>
+          <div class="t" style="left:6.6%; top:52.5%; width:39.2%;">정책 미결은 표시</div>
+          <!-- 우: 확인 영역 -->
+          <div class="bar" style="left:51.8%; top:29.5%; width:44%; height:5.5%;">확인 영역</div>
+          <div class="card" style="left:51.8%; top:35%; width:44%; height:24%;"></div>
+          <div class="t" style="left:54.2%; top:41%; width:39.2%;">오류 보존 · 외부 응답 · 로그</div>
+          <div class="dash" style="left:54.2%; top:47%; width:39.2%;"></div>
+          <div class="t" style="left:54.2%; top:48.5%; width:39.2%;">retry · stop · 테스트</div>
+          <!-- 점선 + 회색 한 줄 -->
+          <div class="dash" style="left:4.2%; top:63.5%; width:91.6%;"></div>
+          <div class="t c" style="left:4.2%; top:64.8%; width:91.6%; color:#5B5B5B;">정본 정책은 docs/payment-policy.md — 체크리스트는 정책을 대체하지 않음</div>
           <!-- 레드 한 줄 -->
-          <div class="t mid c" style="left:4.2%; top:77%; width:91.6%; color:#FC1C49; font-weight:700;">다음 변경에서도 같은 질문으로 확인</div>
+          <div class="t mid c" style="left:4.2%; top:71%; width:91.6%; color:#FC1C49; font-weight:700;">다음에 결제 코드를 고칠 때도 같은 질문으로 확인</div>
           <div class="mark"></div>
         </section>
 <section class="mk anim">
@@ -452,20 +449,20 @@
           <!-- 이번에 만드는 것 · 순서 · 원칙 -->
           <div class="card" style="left:4.2%; top:30%; width:91.6%; height:16.5%;"></div>
           <div class="t sm" style="left:6.6%; top:32.2%; width:20%; color:#9C9C9C; font-weight:700;">이번에 만드는 것</div>
-          <div style="left:27%; top:31.7%; display:flex; align-items:center; gap:5px;"><span class="kchip">docs/checklists/failure-handling.md</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin-left:4px;">여섯 항목 이상</span></div>
+          <div style="left:27%; top:31.7%; display:flex; align-items:center; gap:5px;"><span class="kchip">docs/retry-stop-matrix.md</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin-left:4px;">## 변경 전 확인</span></div>
           <div class="t sm" style="left:6.6%; top:37.3%; width:20%; color:#9C9C9C; font-weight:700;">순서</div>
-          <div style="left:27%; top:36.8%; display:flex; align-items:center; gap:5px;"><span class="kchip">체크 항목 작성</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 2px;">→</span><span class="kchip">test · lint · typecheck</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 2px;">→</span><span class="kchip">범위 확인 후 커밋</span></div>
+          <div style="left:27%; top:36.8%; display:flex; align-items:center; gap:5px;"><span class="kchip">체크리스트 작성</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 2px;">→</span><span class="kchip">test · lint · typecheck</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 2px;">→</span><span class="kchip">범위 확인 후 커밋</span></div>
           <div class="t" style="left:6.6%; top:42.2%; width:87%; color:#5B5B5B;"><b style="color:#000;">정책 미결은 표시</b> — 「확인 필요」 또는 「사람 승인 전 후보」</div>
           <!-- 생각할 질문 -->
           <div class="card" style="left:4.2%; top:50.5%; width:44%; height:27.5%;"></div>
           <div class="t sm" style="left:6.6%; top:52.8%; width:39%; color:#9C9C9C; font-weight:700;">생각할 질문</div>
-          <div class="t" style="left:6.6%; top:58.3%; width:39.2%; word-break:keep-all;">「다음 변경에서 silent fallback을 다시 넣지 않으려면 무엇을 확인해야 하나」</div>
-          <div class="t" style="left:6.6%; top:68.8%; width:39.2%;">「전체 검증 결과와 변경 파일 범위를 커밋 전 증거로 어떻게 남기나」</div>
+          <div class="t" style="left:6.6%; top:58.3%; width:39.2%; word-break:keep-all;">「외부 응답, 서버 쪽 오류 보존, retry·stop, 예외 경로 테스트를 어떻게 한 기준으로 연결하나」</div>
+          <div class="t" style="left:6.6%; top:68.8%; width:39.2%; word-break:keep-all;">「전체 검증 결과와 변경 파일 범위를 커밋 전 증거로 어떻게 남기나」</div>
           <!-- 확인할 것 -->
           <div class="card" style="left:51.8%; top:50.5%; width:44%; height:27.5%;"></div>
           <div class="t sm" style="left:54.2%; top:52.8%; width:39%; color:#9C9C9C; font-weight:700;">확인할 것</div>
-          <div class="t" style="left:54.2%; top:58.3%; width:39.2%;">여섯 영역이 각각 항목으로 분리됨</div>
-          <div class="t" style="left:54.2%; top:68.8%; width:39.2%;">변경 파일이 결제·관리자 오류 처리, 관련 테스트, 두 문서로 제한</div>
+          <div class="t" style="left:54.2%; top:58.3%; width:39.2%; word-break:keep-all;">변경 전 확인에 여섯 영역이 각각 항목으로 있음</div>
+          <div class="t" style="left:54.2%; top:68.8%; width:39.2%; word-break:keep-all;">변경 파일이 결제·관리자 오류 처리, 관련 테스트, 이 문서로 제한</div>
           <div class="mark"></div>
         </section>
 <section class="mk anim">
@@ -491,13 +488,13 @@
           <div class="card g" style="left:83.2%; top:30%; width:12.6%; height:9.5%;"></div>
           <div class="t c" style="left:83.2%; top:32.9%; width:12.6%; color:#9C9C9C; font-weight:700; white-space:nowrap;">PR preflight</div>
           <!-- 산출물 칩 행 -->
-          <div style="left:4.2%; top:44.5%; width:91.6%; display:flex; align-items:center; justify-content:center; gap:5px;"><span class="t sm" style="color:#9C9C9C; font-weight:700; margin-right:4px;">15강 산출물</span><span class="kchip">fallback 제거 diff</span><span class="kchip">retry/stop 기준표</span><span class="kchip">실패 처리 체크리스트</span></div>
+          <div style="left:4.2%; top:44.5%; width:91.6%; display:flex; align-items:center; justify-content:center; gap:5px;"><span class="t sm" style="color:#9C9C9C; font-weight:700; margin-right:4px;">15강 산출물</span><span class="kchip">fallback 제거 diff</span><span class="kchip">결제 실패 처리 기준표 · 체크리스트</span></div>
           <!-- 레드 한 줄 -->
           <div class="t mid c" style="left:4.2%; top:53%; width:91.6%; color:#FC1C49; font-weight:700;">실패를 숨기지 않고 드러냄</div>
           <!-- 이어지는 곳 -->
           <div class="t sm c" style="left:4.2%; top:61.5%; width:91.6%; color:#9C9C9C; font-weight:700;">이어지는 곳</div>
           <div class="card k" style="left:4.2%; top:66%; width:91.6%; height:10%;"></div>
-          <div class="t sm c" style="left:4.2%; top:69%; width:91.6%; color:#fff;">16강 — PR preflight: 오류 처리 경계 · 검증 결과 · 두 문서가 점검 근거</div>
+          <div class="t sm c" style="left:4.2%; top:69%; width:91.6%; color:#fff;">16강 — PR preflight: 오류 처리 경계 · 검증 결과 · 체크리스트가 점검 근거</div>
           <div class="mark"></div>
         </section>
 </div></div>
