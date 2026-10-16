@@ -37,6 +37,9 @@ PLANS = [
     dict(id='lec15', num='15강', title='No Silent Fallback',
          sub='silent fallback · 오류 처리 경계 · retry/stop 기준', dur='약 40분',
          src=os.path.join(ROOT, 'ref/lecture15-slide-plan-v1.html'), cover='assets/cover15.png'),
+    dict(id='lec17', num='17강', title='역할 분리',
+         sub='planner · implementer · reviewer · 사람 승인 지점', dur='약 45분',
+         src=os.path.join(ROOT, 'ref/lecture17-slide-plan-v1.html'), cover='assets/cover17.png'),
 ]
 FONT = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">'
 

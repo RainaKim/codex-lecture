@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>17강 역할 분리 — 개발자를 위한 Codex</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  *{margin:0; padding:0; box-sizing:border-box;}
+  html,body{height:100%;}
+  body{font-family:Pretendard,-apple-system,sans-serif; background:#1c1c1e; overflow:hidden;
+       -webkit-user-select:none; user-select:none;}
+  #wrap{position:fixed; inset:0; display:flex; align-items:center; justify-content:center;}
+  #stage{width:560px; height:315px; position:relative; box-shadow:0 18px 70px rgba(0,0,0,.45);}
+  /* ── 슬라이드 (플랜 목업 CSS 그대로) ── */
+  .mk{position:relative; width:100%; aspect-ratio:16/9; background:#F5F5F5;
+     border:1px solid #e3e3e7; overflow:hidden;
+     font-family:-apple-system,"Pretendard","Helvetica Neue",sans-serif; color:#000;}
+  .mk:before,.mk:after{content:""; position:absolute; left:4.204%; width:91.59%; border-top:1px solid #B3B3B3;}
+  .mk:before{top:7.42%;} .mk:after{top:92.51%;}
+  .mk > *{position:absolute; box-sizing:border-box;}
+  .mk .lbl{left:3.43%; top:2.67%; font-size:6.4px; font-weight:700; letter-spacing:.08em; color:#B3B3B3;}
+  .mk .mark{left:3%; bottom:2%; width:33px; height:5.1px; font-size:0; line-height:0;
+            background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQQAAAAoCAYAAAAYEYTzAAAcmElEQVR42u1de5xdVXX+1t7n3ElIgACSkGQmKcHyCFoFagG1DSCYmYREbR0fUWsrtUXwUYptJUHCCL4BX4iltpVaG9BREMgbUdLKoyAPKcQqCCaZSQgQhJAQZs7ee/WPs3bumpNzX8mgSXv373d+d+beffc5e++1v7XWt9bel9BkYfRaQr/f+f+U7uM8mT8k4tcw4ygAhzBhPBieCFsBGiDgIWPo9he8v3Pc4MqBWm21S7u0y95RqDkwABHA2w6dc9iYDryHCL3MeJUlW9lZAwwwS4uUX0QAMzz7LcT0H4bo3zCw7WbCGsdYbIA+pvzL7dIu7bIvAEJcuL6z50Iie5EhSsABgQM8OMiCltU/4puCEqAExsBYAEDg8EAI4dJ0cMX32tZCu7TLPgcIeR03dfYsomSRJTodYDgODoCl5tpggAMAJJRYECGEcL2hoQ/Rhh9sZMxKCGtcezrapV32UkBQxv8Ik56nze0NgT9hTHI0BweP4Alkm+ciOADgxFRsYD/g2b+7MrByTRsU2qVd9gkLITfpc9cBIPQFnnTGOJ+m5xHoo8bYA13IAsAgkGkeGOASMklgDAfOFqSDq783SqBg5NqdEuRql3ZpA0K0DAjgoa7Zx1Zcupk2LX2aAQMszsFA+fzc1X1EgOkzMO8CAMfOA2SoSbIygIOFIRBxCG5+OrhqWZtTaJd22asAYbEh9AXunPsKx74/oeQSGli6JFoLQL9o0Fk2avNs2uzTie0nLSV/APYt8gscDBkC03ZD7iTasOrh+Awt9sUC8AD+AsBpoumbtRRi3WsArFZt7QvFFuaR96Fnb5e9FRB0GDBqaT+1+xKT7ndhcC+uMMQX0YYVP8nr5qZ9bjn0Uu5S9Fp0bv+rAFxoTDLZhwwMbopfYLBPKLE+uIdssuM1WDcxA/pDiyHJBIAD8C0A79rN8TgfwBWqrXZpl/9/gBDdBO02AIsJnas6HE94KLEdM0LIMjD9w46EPzV+3fInRvILyo2YOG8SOsJCzzjHGpO4kHkA1IhfYLBLTEfi3NCn0o0rF+2G6xAX8T8AOEv+Tpr8bqz7YQBf28cA4c8BvEysHAtgEMC/y9y2czzapaVicvMcPDxl9tk8pedI3mk13GZo4K4dRFgEeDCCMdZ+aKyn+1xnz7kaDIB+3mk5PHnzZtqw7CPW4KTAYWViUpuQNQw4riugZH0YDmTM+dzVfQTQHyKR2WqfZEHryzZ5mX1wDvsAfA7AZQA+C+CCWu5gu7RLE4unj389/U0TjLFXZuBFuaXQa3KXoNcmAyuvc8Hdbim1LmRDhniyNemVoWv7HVlXzxmEfk9AYMxKgDWeAWLMSmj9snvthmU9PmTv9MyPJCZNLIgY7GuYKsRAsCbpcIy/z59j7WgJNTW4Unk1u9HmaFtsrbb5jFgzO+T11y+hNUl7UTujcY+9ZQ5/014B1XUZXGfPudakV/rgMhvCibRx5f255gcI/Z6nzjkRhu7wHCQ5mTmhxAJAQFgyzG7x2IHVj450I1SY8tDe8b5j+/kAzrcm2d+F4ZB/NtKNYIANCAzebk04ktav2sSAoeZCgdHM/0cA75e/STT/JwHcKHV8qceS13scwOY65nYMaXr1ebxHDFnG/3WpF86Mbeo6sY1aBKF2hR4AcCyATIDtLgB/qNrcXZJRA2Qo6W8r7db6ji203wxBWqtOHEdX0r5vMIdl76HBuKNkzovznEh7oUG7rRLDtmRRuybm0TeQO5hco+Pd4MCWTOoNLqu2JPzA4PL/ytgtsSa1DGYCWccuOHbBULKggvRe19nzcZ50xrhdwAC9lp7q35YMLO+zTCcE9tcmZE1CiWGw124EARTA3pp0vA/mj/N3Z+2JGR/b/h8A9wC4E8DdJdc9spA2F76HkkXv5PNETbhTPnz8X1+hzsSGwvdT1YavgejF9nXJ5L1h1UarRS/euEjSQn99k1aVLflOqgQ0th8XpO5X2bOX1TFqHKEsPq8+R6Fe7FNxXk0Drqk4r7YgA0b1zxX6V6s00+969V0dZaPnMY6NKZE7QbDpZx5Fzh/HCOQRfGLS07LOnjfTQP/3cythZm4VhDELPbI3W5j9Qg4KBgBcGPYW5gBj0k+ElBa4rjmLaUPfdyKnAPT73KqYZWlw2SMAFmRd3dcYmEsTU3kN2MExO9qJvnmgIzDmA/gqcEoA1uypmTRWOt2ILAw1wCAO6rHIIxivA9Aln28E8F8AlgC4F8BkAG8paL07RJObghXgARxTaNMCeBLATwF8B8APCsJcAbBA+sQADlWfA8BUAGcrIHkGwLdbIBhjyHUMgHkA5gB4hdzHC2l5D4AbAPxY9dHXaetAAO8A0APgdwHsB+BZAGulne9K3xYAmCDfiePwXTUHidQZpwR5AMBNAH4fwPsAvEZI1hcAPATgXwEsV88yU0jnk2WuHIDHAKwC8A1xuYrzxAD2B/BOBSAWwH8D+E8Ah8kcng7gcAAdALYAeBDA9QCWqu/4EtmaJ3Mfwes5ANeVKJJYvxvADFX/RZG/IVXHqHv+MYA3Sd8PlnqPA/ihENCDO+sPT+k5m7vO5OHObp91dnvuOjO4zu6f8/RZYxiLxYLI3YfhKd0X8bT5nHX2ZK6zh+OVdfaErLMn4665zNPmsZ/as4KnzT2hqqZnJaJ2TWyL0Wtd59wP+s65m3jafGmn22WdPYE753DW2f00zzj9wGrUoymXAeIysGjKTP4+q8AV1LpKXSqZ4C/IQHKNKwjBN6vks4+rZ9QuxSdkMrnOdZMIbiwTmviOvgZVP6gJMACAtwL4WRNtLwNwVOG7xbbeDuBXDdpZA+AIAI8U3v9FAez2A7CtUOdHAD6gNHHZ9WX5/jnCtdSq95gAMwpWBWShF+t/HsAbADzRRP9eUTJOse07C/U3K3mmkjG9pVDfAzikxEU4WpRVvWfbIuMHAMYQ4USAQAATyDj23prKkd6P/WCeHDTLRsY/9f5yH4bXGTJW9iTsNPUJSBz74ELmjU26feC7fOecL/Jh3YdW05GrOQuEfp8MLLtyh3HHB/ZXAeQTk1qAg0PwCdlDsmEjwrZ4T0kaLvhyta4y8mV/ACsA/LUASjTpMjHL40UALgLwJQEOJwvXibbSQuABfFqAoiJ1MnVpc38egFsBTFLPtUV9h0v6ql2GZ1q0DD4JoF+ESZummXJHoqk5R4T5DQXTPLa1UDTddNUfVxg7B+CPpI8d8n8cv2dL+vZMoX+/B+AqGZcX1fvaDfiQAOtXxfIZkmu4MJ+HizUxU1k+2nrcUbj36QBulrnRspAVzP8/AnA7gFOV9aPLcy0Sw8X6Wwp8CAPoFOvyD9SzDKuxj894sIzfxwAEA8JR0lZcdDYEFwBaxNPnHAasEb9vLdHmW7YDfIEhW0q6EcgQyOa5B5wYk3wkpOZ+19Vzdk4O7hqmHL9+1Sa7Ydm5FvTaEMIteZjSWMA4E+zhMQS6h4BgVTiyXtixCAgBeaLTqWrRG+XrV9QVBfBVItg67GkKYPBKmQCnLIdUXRWlIV4Ut+JaNUep+g6VPHcx7NosGPy9LGLtD5vC8yUKLB2AgwB8T/oU/XIP4E8FXLSfSqqtiupnJqDRpT5PSuYEyvWL18GKmxhTGLtEzeM85X93yFVRdVJ5jgMAfKWGkkgKz/dqcd1cQRbSgjXopN0bALwcu2bRFvtkm5ivWvXj2uwT93FY1auosY9cQlQqnwZwZkLgSXJsQdzdSB4hpKYywfmsLwX+itFbXcwD/df5zu4PJpS81rErzUQkkGUALmQuITMVlHzNd815L/twIW3sv7XqRqwRfqHX0ED/3QDe6Dp7FhDoIpNUjgJnXaMABABwCfIsRFPHl2bxcR9XwvHnAObL3xU1kUH857UiECeISWhqaICiifjWwn1J/N0vCfq/Ue4dgeo/gZ1krxbUWunZug43CQbHA/iUCK8tWEnrxJy3YjlMVp9nwhFcDmC2tDVZzHQNKrF+JHi3CdC9TlledjdCdtqfXyrP0y2akRWIe7VAfyKWAAlQvFqBWUCe+n4cgPtlIYUGnFMiZv4dwilNkX5NlDqRuzoQeeLbGS9haNIBGA9grnq26Fb8o7hYEyUS92oZm20yX/+dMDA+P8tESy0ZH7JAoLOGpsz5Gm3sfyCPHKzNY46M8z3xHbTLoSi7ON+J48BgHxJKToKlH2Sdc7/lyF9MG1b+sjRMOdC3hCedcWMAXRI4atCJu5txF59vkjK565WOghZZpEzHKNz3CGl3X2Ghv1Um+2AliLWiHkeUPOOfKJ+5X8KkF8pELVH1t0pYMU70jULUxWzLB4R4M8rCaAYcLi4h054SV+n7yu2ZIO1/RtwpC+DfxBqI2vDDIvxOsfDbAXxQSCxN7B4L4EoAp6gQXrMlgu8NQloOq758G0BvAaCNPOt71VhcImPYU4gInCaA0EwU5QvS/y3q/ZeJ/Py1AgUvbsYpAG5TADTaZbLcPxLXiZCm56o6/wLg60rOH5EBKl3UxGC2ZK01XjTT2qr/P7jyLg5hiTWpCTUSjUbyC2QzdsFxCImx707Z3Oe65iziySfsVxqm3HzLdjuw7G/SwRO/HMOfezhAQflzxUv7kEHVf70sXB1/f1S0933KbIvC9h2JLmQ1zE29+LPCImUR0v1V3aUATlJgoGP2vxDr5GfiR+rFvl3ef1iuX9YZl6g5p4t21+Gx7bJIlggYRE3/rPicC0Qjni7uwc8VkL5DtRWfa4Ew/qEwdg/LfX6qzPtmi5H+f1jAoCL3ZwCLFa8Rn2UrgL+R/2PdTACkSOAd2QBEY9tflTa3FPr1NIDzBOxMgfR8b5Mk7+6WTEUzYv+PFXmCUhTvAfA2Zf2RIfC2MkwgkPWceWsqb8i65rxJ+/8MUBLswhDcNgtD3ERIy+Tboo0Lw94AB1hKLvV24k+yqd1vJfSFCAY5gZlHNnZjx2M9wanFHySKE9Da4NQCEUnilz0rwqTBJIYD/0OAwTSIJd9dCA9BfPcHxH+dX7BobI2kkrKzH7Tf3+hsiPjZ65VLFLX0VRJG7VALVSfhLBWz+FZ1PxY3YHrBpVku5FuqzNc4dhURzo+pBcJNgnx0tQbkPprgHZBFSspdeEgWarHurwQsNICNaUBSx0W/UPFKul+Rt1ok9axywU5W3MloF5LI0rpCGP13hNhcLQB2fEE2GACbPNZLQNFviC1xYHD4HL+8uwOYKQg3y9Kmpes9wmXGJAYq4tD4acl6MLuQOUv2mMSm/b5z7tKhKd3HSRq0pE6P6pkIz4lvt6nkiu8PFiboSE20ipa8VfnNZQJqxHythf5RMK+TCUtFKCPwzBCz+kbxif9dFqsvtBdQP/sxNFFHl6NLOIkbUM3844JY+MLY6HvMKNH0NyoA5BJtRiKsTzXgecrcr+dKxjqOZ1ao+1RJiFkDVFn7tcYXwiNtVaBTNtdbhQPSbU4Rk/6l2HwWgebzGJlpGuf2DOF77hVL9+/EDQwAjGHQI9VNj7suXsc+JKZyZPYiSRiy1wgZaNKhHZf7MLzekDXcEijEMKULWciCMWZuYsxdvnPuFXmYctTAIE7yIomXz5RXfR0tr8cIoRgHcVxhEp8W66AeKRlygK0JCNHS+LVYAb8QDRnvGbWWR54ItECE6Qql0V8KM3NcwWpwElsPDfqLkoVwUKGvEMDlBm1tU2PXykKpt6uTapCAzdRtBozWo/7egPjZ+sL3xii+6qUgFY3wA5dg5MY9HXqERMQ+K+BwMoBgmOmeBuNtArtgmRbyxHmT5IAUAnqJnlqzzQMLa4Uhm7AWjAEZFzLP4Iox9jyfmvvd1O6/5Jm9FR494X9BBO45AM/XuULBz9dlfAMzMgrAfg2EOiL1g+LTXSw+nFFhK1MwP8+Teq0c+rI7wKnN4f0bLBJSoTVddtQAnEabflIZ45fStx7tcmATcs9SrzjevgnAaRUAizJ2kRCY3xdOSIcevbKiZogLOMMw3BrPzpkaB5kQQIE5GJsc7JKsT0z6nQRjZWDlEh+yOxNKLTcgGOu5EQzkbgQw1SZjr3Zbt305HtYyChNnCwJcL1Mxvg4oLRckenAsyjcvafLmtU2anIlYCn2C1KcKc3+fukeiwOFvkafI+iZAodUFtU59L5q6r8euyTnFvjpVJ/Z3gxrz+N6sOpGXyHMchTyZhvcBQIhjcpJaoFRj4ZIi82KdLYWIRJnZX8vCZDHxG81zJE7XCNn9CuSp3d9GHiKNVkMMsR8MYKGpDB74EBgPGrJcZ0FbH7JgjD2Lp77xVVWCMd/6GAJ9NCDwnsxidCMyDhnYBeYgQvrkaAhHs2m+utylgCJ+9jHlGmiSsqIG9f2ov5lFJ6tY8SV3SBjqAuQ5+adhZOowoZrvgAaAQGqRNkpyif26Uwl6XOzni5WQYWQSTAyVHS5gdpDSNpCowbOoxv9ZXJ9pqOZzaEI3AuTfKT5ibweECJxHId/D4DEymSqOlZfPj1YWAQs/tAPVTVDFfROTBfw1ORzrTkCeI1FPDiIYDyty+lfI92q8A3kS2SWoRtZi/Vk5eUd0nZyNyrUWK4PZGJNkMLvshqxsXH5HCP5aayqW9+CkIQbYghLv3VBKyTfzd0/5TZ+CHCdutWKeY3x+LvLDSLTZ52XgD0O+kWVyHUDQG6VeK1GJNRi5VyHm51+tBK+oGYqknNYWh8sizZowTaM18FMRUg2eM4QMPBwjd9VlYildLybp/cjPsYxM+zOobshiZTLfINGHYewa8v04gHejsPNuLy9RJq5EHorWadBxnGYjD0tqV4+Q55noBT2IkclmY0T5BLVo4+ulqG4AozpgNVasygclEqLLUzJ3TyjQJgAHJADwovHfGhv44wQan29v3vVGBLI+ZD416enZlNnzaWP/TSN2Q3qzMJCbb0CyG3K3UN4bkybOZ9fTwLJBCT3+pg8Mjdr1SQD/LP57TPoJMsinIU8l/plM3onIY7qTUT9TMYim7EMeiyaloS8RgBhCnp9/LkZmmhFGbs+OYa7N6nMWjXA78v0X2wTULm8g2F7IpW/JM0Yr4FTkodCb5TURC2au9NvJIv868sSq+fK9K5AnaumkruOFvPom8vyF7RLJeZuA475gGZSB+4HIk36+jXyz12ZRDnOQb+zSwGiFYOwvRGJuR56ZqrfZnyPAfo2A7GEA/kzGORRcsqL8vl1A9lh575Py99fk/uOlrSlq3BnAloTRa2l9/6Zsas/ViU0/6sJwzbMIA0AWzDDmc/zy7lV4dGYG9OVhwif612VTZ1+R2I6LQshaOc9wp3VgAPLBu0DmMzmhOPO3dSZgRPRLZQKmFUDhBGW+F8mipEG7B8hk6Ky46QD+SWn1sYXvQITiXvWeVa5Nd0FIjpErMvxXFECjaCUY5CHOtyNP5Y1JPvF534VdD66N94t1l6N6SMudInwfKLR1iADseSXPYLHvFZ2q/nYFAGVuWXQzPyJAbRWZe5O4WQco2WPk263f2eJYsVgsx4pbEonwBXK9IO+ZErldYSQRyCTkP+3C8BPFnYwje0/GsQuJSY/yO3BOcTfksy92XOZDtj5vo+WUTG9Mahn+qo6BZQ/luQi7lZgUsGs2YqvAwmoR9koEQp+l4EtchuhrDxXMYn3/CvLkmLOVHx1Ue6mAge6DBqdfq0Ufkf0a5Y9GszLutBwW87CZ/hqxcu5ENfGKVXvFAzzi/SvIN8Z8RYW2LPLkl1tR3c2p24p9y2S8ooA/Xxi3UMPNaVTnpa4by1ZlqRVdBqfmMRLai4Xxt2p8rczRxQpgvFqoMVQadylaVDMRfaF+BKkPi0U3FiN3fgaJghn1f5TbjQA+b3ZGDQZWPwMO55qcS6gzGGTy3ZDmQp7xlonAGql7mzl0y03Pg3lR3gZz86uPfUI2Cd79MtlRuTBPZe7fXe5gPxm0uKMtkn67AywWeVbhaUKWJcpXturvitKM5yrirEO96javFk0xXCCidAKJJt4uQ54vrzMg44JcJ9p7K6onACWo7vw7qAUAfE783msKfUywa2ZnIlrtHPFRrRLeIIA0T1yEpDBe0TROZWxeEBdqUL0fQ59loT4r/bOohirLTPpi3XEt1N2vznhFxfB15BvCogxo+UjU2O1AvqfhE9g16zRq/C8B+KLqu45mxd2YFSEGbyvMxYGFKNl2cVl+VJAJnXGqycrHxd17wgJAH9YyY1Zin7/14QvHH35IYjtODuyy8p2MoAAOiU3HuWxof/v8o0svRq8lLPeMXmuev+lBv/8RsxNKpwV438Tx64Hy9GcXgDOTzUsfuxinEGFNq1o9msPxxJpHkR94sV786UfQ+tHkEcEHkefhP4N8p9ghatIc8h18XwHwl7JIXol8D0G8/2oBFFIm+l2onvN4iJiLOvFoM4CVAjBfx8iNR0XN/jPkKdPPykLcIVrnSQG0G5oMU5Fo7BtF6CoSOTkAI7c8/xz55pj3C4FYdmJSzOj8PvLdhRMkojK20MfrxX++BfkOxWdk7jaIi7S0wJ7/nvQr1rlbxrcYcjUlde+QfhVDhYnM2UZV98fi28dxnyCaV5+YdKeQfz9Hnkj2MlRTvYE8dP0d5Af03IzaJ0vFeVwpc9kp7aVqzB8W8FkoMk4i0+vls++iurnLiLX1TYkuHCTXGDWPQ3Kvq4QUfgz5+aU7n4jyLMSZ7DvvvsGaynwXhjICpWX+fm5ZmODZn9AxuPJB2Q1JhH4/PLnndTYxP2YOdf2dHAwIlqwZ5mxBx8Cqa/fSH30tLsaXq3DO0yJErZKfWjjGCo9wiDKd14nGRg0wqPd8e0qWacJrPPI8+Any3tMiPK6kH43amij97BA/+nHVx73117Li2E6XBZgqruSLEp6N/ZsqizkVi+0x6Wez/dPzeLiQ1CRj/kiBAGxWQcYyCfl5E5EM3ozqSVY7702FhZ7/P7M3DVu3f9eYdJ6QjLv8LBuDfWJS671bnQyumF380ZbhqbOvTW3HO1wYLj0zIYB9mh+EgmH27+sYWPGNUQKDsow4xp7njVOBCCqWBLUP1Kx1f4PyPHgNGmhyoZSeoovd/8GWRvdO0PxeCc171PusmXEzLcztaNStBwhfEK6kA9U9Ka30vdZYhTpt1Tp4N9SQWYP6KdtabkcOQvz1JlrbP2wGxr3FheGrE5MmCREVf2glhiGtTd6YTemeV01WysOQqcMFPrjtBjRiNySDAwMuNan1jGeHkL15FMEAavD1xaPUrsPIU5OsWtSuwCg3c39NOpW16VvQmpo4KuMHWi2+wbO5FoRck5BlfQwtjFsrc/tS1S3rH9eZwzCKbdWS8Voy6zHyoJh6crtr8oywgQT0h3Rgxdk+ZO/zwJbEpIlkLrkYQWCAwMxk6LM8s7eShwn7+DbMsrR51a+YwxeMSQ0Az+AQcvLQJCZNQgg/dN6dPGbDqhv3UjehEeBoNpr3wjb3xv7yXtrH0SqjOYe/FRkzNWxjOfOw1yYDK75h3fDxwbt/ASjLLQZjROuzY5dZkx6TPbftA3E35ClY4xmLTfJi5XM+uIGEbJJQYlJTsYHxmPfubDuw7A1jNq3+n9zFWNP+YdV2aZe9hDCp5TDzTk5g0w/W28HlZ3nyxwV2l/vAv0zIUH4galIBBxjCxdx1+pTq1uW1RFtueh4cLgBhR2D/Ix/8WWZo26uSweVX54egLB7tcw/apV1+E+tFpyH/nypNdUj/7DsA8KQzxrm08nqDcAoDvw/wdGvSqSG4L9uBFReon4vPIxdTth1BG1f8otpey7/s3C7t8tsEgZhy/iCqpGIH8tyBj2Hf+rXwuuV/AaNOHGEsDC4+AAAAAElFTkSuQmCC);
+            background-size:contain; background-repeat:no-repeat; background-position:left bottom; opacity:.9;}
+  .mk .mark b{display:none;}
+  .mk .kick{font-size:9.3px; font-weight:700; color:#9C9C9C; letter-spacing:.02em;}
+  .mk .h{font-size:17.5px; font-weight:800; line-height:1.2; letter-spacing:-.02em;}
+  .mk .h.big{font-size:22.2px;} .mk .h.cover{font-size:25.7px; line-height:1.24;}
+  .mk .h em{color:#FC1C49; font-style:normal;}
+  .mk .card{background:#fff; border-radius:3px;}
+  .mk .card.g{background:#E6E6E6;}
+  .mk .card.k{background:#282828; color:#fff;}
+  .mk .bar{background:#5B5B5B; color:#fff; border-radius:3px 3px 0 0;
+          display:flex; align-items:center; justify-content:center; font-size:10.5px; font-weight:700;}
+  .mk .bar.r{background:#FC1C49;}
+  .mk .tag{background:#FFE5EB; color:#FC1C49; border-radius:3px; display:flex; align-items:center;
+          justify-content:center; font-size:8.2px; font-weight:700; border:.7px solid #FC1C49;}
+  .mk .n{font-size:16.3px; font-weight:800; color:#FC1C49; line-height:1;}
+  .mk .t{font-size:8.2px; line-height:1.5;}
+  .mk .t.mid{font-size:10.5px;} .mk .t.big{font-size:11.7px; font-weight:700;}
+  .mk .t.sm{font-size:7px; color:#5B5B5B;} .mk .t.mut{font-size:7px; color:#9C9C9C;}
+  .mk .t.r{color:#FC1C49;} .mk .t.c{text-align:center;}
+  .mk .shot{background:#EDEDF0; border-radius:3px;}
+  .mk .shot span{position:absolute; left:4px; top:3px; font-size:6px; color:#9A9AA5; letter-spacing:.04em;}
+  .mk .rule{border-top:1px solid #FC1C49;}
+  .mk .dash{border-top:1px dashed #c9c9cf;}
+  .mk table{position:absolute; border-collapse:collapse; font-size:8.2px;}
+  .mk table th{background:#FC1C49; color:#fff; font-weight:700; padding:3px 5px; text-align:center;}
+  .mk table td{background:#fff; padding:3px 6px; border-bottom:1px solid #FC1C49;}
+  .mk table td.k{background:#FFE5EB; color:#FC1C49; font-weight:700; text-align:center; width:16%;}
+  .mk .code{background:#1E1E1E; border-radius:3px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+            font-size:7.6px; line-height:1.62; color:#D8D8DE; padding:9px 11px; white-space:pre;}
+  .mk .code i{color:#569CD6; font-style:normal;}
+  .mk .code b{color:#CE9178; font-weight:400;}
+  .mk .code u{color:#FF5C7A; text-decoration:none;}
+  .mk .code s{color:#6A6A72; text-decoration:none;}
+  .mk .chip5{border:1px solid #C9C9CF; border-radius:999px; display:flex; align-items:center;
+             justify-content:center; font-size:7.4px; color:#5B5B5B; background:#fff;}
+  .mk .lead{border-top:1px solid #B3B3B3;} .mk .lead.r{border-color:#FC1C49;}
+  .mk .dot{width:3.5px; height:3.5px; border-radius:50%; background:#B3B3B3;} .mk .dot.r{background:#FC1C49;}
+  .mk .kchip{background:#EDEDF0; border-radius:3px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+            font-size:6.6px; color:#3c3c42; padding:2.5px 6px; white-space:nowrap;}
+  .mk .kstrip{background:#fafafb; border:1px solid #e3e3e7; border-radius:3px;}
+  .mk .kstrip-t{font-size:7.4px; color:#5B5B5B;} .mk .kstrip-t b{color:#000;}
+  .mk .anno{font-size:11.7px; font-weight:800; line-height:1.3; letter-spacing:-.01em;}
+  .mk .anno.r{color:#FC1C49;} .mk .anno span{display:block; font-size:7px; font-weight:400; color:#9C9C9C; margin-top:2px;}
+  .mk{display:none; position:absolute; inset:0; width:560px; height:315px; aspect-ratio:auto; border:none;}
+  .mk.on{display:block;}
+  .mk.cover-img img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;}
+  /* ── 진입 애니메이션 ── */
+  @media (prefers-reduced-motion: no-preference){
+    .mk.anim > *{opacity:0; transform:translateY(10px);
+      transition:opacity .55s cubic-bezier(.2,.6,.2,1), transform .55s cubic-bezier(.2,.6,.2,1);}
+    .mk.anim.go > *{opacity:1; transform:none;}
+    .mk.anim > .lbl, .mk.anim > .mark{transition-delay:0ms !important;}
+  }
+  /* ── HUD ── */
+  .hud{position:fixed; z-index:10; font-size:13px; color:rgba(255,255,255,.85);
+       background:rgba(28,28,30,.62); backdrop-filter:blur(8px); border-radius:8px;
+       padding:7px 12px; opacity:0; transition:opacity .25s;}
+  body.hud-on .hud{opacity:1;}
+  #ctr{right:16px; bottom:16px; cursor:pointer; font-variant-numeric:tabular-nums;}
+  #ttl{left:16px; bottom:16px; max-width:52vw; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  #home{right:16px; top:16px; cursor:pointer; text-decoration:none;}
+  .edge{position:fixed; top:0; bottom:0; width:30%; z-index:5; cursor:pointer;}
+  /* ── 목차 오버레이 ── */
+  #toc{position:fixed; inset:0; z-index:20; background:rgba(20,20,22,.97); overflow-y:auto;
+       display:none; padding:56px 24px;}
+  #toc.on{display:block;}
+  #toc .list{max-width:640px; margin:0 auto;}
+  #toc .row{display:flex; gap:14px; align-items:baseline; padding:11px 14px; border-radius:8px;
+            cursor:pointer; color:#d8d8de; font-size:15px;}
+  #toc .row:hover{background:rgba(255,255,255,.06);}
+  #toc .row.cur{background:rgba(252,28,73,.14); color:#fff;}
+  #toc .row .n{font-size:12px; font-weight:700; color:#FC1C49; min-width:34px; font-variant-numeric:tabular-nums;}
+</style>
+</head>
+<body class="hud-on">
+<div id="wrap"><div id="stage">
+<section class="mk cover-img anim"><img src="assets/cover17.png" alt="표지"></section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 4</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 1 · 도입</div>
+          <div class="h" style="left:3.43%; top:18.8%;">한 세션이 모든 일을 맡을 때</div>
+          <!-- 좌: 한 세션 -->
+          <div class="bar" style="left:4.2%; top:29.5%; width:44%; height:5.5%;">한 세션</div>
+          <div class="card g" style="left:4.2%; top:35%; width:44%; height:24%;"></div>
+          <div class="t" style="left:6.6%; top:37.5%; width:39.2%; color:#5B5B5B;">계획·구현·검토가 같은 맥락</div>
+          <div class="dash" style="left:6.6%; top:43.5%; width:39.2%;"></div>
+          <div class="t" style="left:6.6%; top:45%; width:39.2%; color:#5B5B5B;">자기 변경을 자기가 검토</div>
+          <div class="dash" style="left:6.6%; top:51%; width:39.2%;"></div>
+          <div class="t" style="left:6.6%; top:52.5%; width:39.2%; color:#5B5B5B;">정책 미결을 구현 중에 채울 수 있음</div>
+          <!-- 우: 역할 분리 -->
+          <div class="bar" style="left:51.8%; top:29.5%; width:44%; height:5.5%;">역할 분리</div>
+          <div class="card" style="left:51.8%; top:35%; width:44%; height:24%;"></div>
+          <div class="t" style="left:54.2%; top:37.5%; width:39.2%;">역할마다 입력과 출력이 정해짐</div>
+          <div class="dash" style="left:54.2%; top:43.5%; width:39.2%;"></div>
+          <div class="t" style="left:54.2%; top:45%; width:39.2%;">검토가 구현 과정을 모른 채 진행</div>
+          <div class="dash" style="left:54.2%; top:51%; width:39.2%;"></div>
+          <div class="t" style="left:54.2%; top:52.5%; width:39.2%;">정책 미결은 사람 승인 뒤 구현</div>
+          <!-- 점선 + 회색 한 줄 -->
+          <div class="dash" style="left:4.2%; top:63.5%; width:91.6%;"></div>
+          <div class="t c" style="left:4.2%; top:64.8%; width:91.6%; color:#5B5B5B;">판단은 실습 2의 비교 기록에서 확인</div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:71%; width:91.6%; color:#FC1C49; font-weight:700;">구조를 바꿔 같은 작업을 비교</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 4</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 1 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:18.8%;">세 역할의 입력과 출력</div>
+          <table style="left:4.2%; top:29.5%; width:91.6%;">
+            <tr><th style="background:#5B5B5B; width:16%; text-align:left; padding-left:8px;">역할</th><th style="background:#5B5B5B; width:27%; text-align:left; padding-left:8px;">입력</th><th style="background:#5B5B5B; width:31%; text-align:left; padding-left:8px;">출력</th><th style="background:#5B5B5B; text-align:left; padding-left:8px;">하지 않는 일</th></tr>
+            <tr><td style="font-weight:700;">planner</td><td>요청 · 정책 · 현재 코드 · 테스트</td><td>변경 후보 · 미결 정책 · 검증 계획</td><td style="color:#5B5B5B;">코드 수정</td></tr>
+            <tr><td style="font-weight:700;">implementer</td><td>승인 기록이 있는 plan</td><td>승인 범위의 코드 · 테스트 · 검증 결과</td><td style="color:#5B5B5B;">승인 없는 구현 · 계획 밖 변경</td></tr>
+            <tr><td style="font-weight:700;">reviewer</td><td>승인 plan · diff · 테스트 · 정책</td><td>발견 사항 · 사람 결정 항목</td><td style="color:#5B5B5B;">파일 수정 · stage · commit</td></tr>
+          </table>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:63%; width:91.6%; color:#FC1C49; font-weight:700;">하지 않는 일을 먼저 정함</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 4</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 1 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:18.8%;">역할 사이의 인계는 파일</div>
+          <!-- 사람 승인 칩 (화살표 1 · 3 위) -->
+          <div class="chip5" style="left:19.5%; top:28.5%; width:13%; height:5.2%;">사람 승인</div>
+          <div class="chip5" style="left:67.5%; top:28.5%; width:13%; height:5.2%;">사람 승인</div>
+          <!-- 흐름: planner → implementer → reviewer → 수정 -->
+          <div class="card" style="left:4.2%; top:35.5%; width:19.6%; height:11%;"></div>
+          <div class="t mid c" style="left:4.2%; top:39%; width:19.6%; font-weight:700;">planner</div>
+          <div class="t mid c" style="left:23.8%; top:39%; width:4.4%; color:#9C9C9C;">→</div>
+          <div class="card" style="left:28.2%; top:35.5%; width:19.6%; height:11%;"></div>
+          <div class="t mid c" style="left:28.2%; top:39%; width:19.6%; font-weight:700;">implementer</div>
+          <div class="t mid c" style="left:47.8%; top:39%; width:4.4%; color:#9C9C9C;">→</div>
+          <div class="card" style="left:52.2%; top:35.5%; width:19.6%; height:11%;"></div>
+          <div class="t mid c" style="left:52.2%; top:39%; width:19.6%; font-weight:700;">reviewer</div>
+          <div class="t mid c" style="left:71.8%; top:39%; width:4.4%; color:#9C9C9C;">→</div>
+          <div class="card g" style="left:76.2%; top:35.5%; width:19.6%; height:11%;"></div>
+          <div class="t mid c" style="left:76.2%; top:39%; width:19.6%; font-weight:700; color:#9C9C9C;">수정</div>
+          <!-- 인계 파일 칩 -->
+          <div style="left:4.2%; top:50%; width:19.6%; display:flex; justify-content:center;"><span class="kchip">계획 파일</span></div>
+          <div style="left:28.2%; top:50%; width:19.6%; display:flex; justify-content:center;"><span class="kchip">diff · 테스트</span></div>
+          <div style="left:52.2%; top:50%; width:19.6%; display:flex; justify-content:center;"><span class="kchip">발견 사항 파일</span></div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:62%; width:91.6%; color:#FC1C49; font-weight:700;">인계는 파일로 남김</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 4</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 1 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:18.8%;">역할마다 새 세션</div>
+          <!-- 좌: 새 세션이 받는 것 -->
+          <div class="bar" style="left:4.2%; top:29.5%; width:44%; height:5.5%;">새 세션이 받는 것</div>
+          <div class="card" style="left:4.2%; top:35%; width:44%; height:30%;"></div>
+          <div class="t" style="left:6.6%; top:37.5%; width:39.2%;">계획 파일</div>
+          <div class="dash" style="left:6.6%; top:43.3%; width:39.2%;"></div>
+          <div class="t" style="left:6.6%; top:44.5%; width:39.2%;">diff · 테스트</div>
+          <div class="dash" style="left:6.6%; top:50.3%; width:39.2%;"></div>
+          <div class="t" style="left:6.6%; top:51.5%; width:39.2%;">관련 정책</div>
+          <div class="dash" style="left:6.6%; top:57.3%; width:39.2%;"></div>
+          <div class="t" style="left:6.6%; top:58.5%; width:39.2%;">16강 판정 · 남은 위험</div>
+          <!-- 우: 받지 않는 것 -->
+          <div class="bar" style="left:51.8%; top:29.5%; width:44%; height:5.5%;">받지 않는 것</div>
+          <div class="card g" style="left:51.8%; top:35%; width:44%; height:30%;"></div>
+          <div class="t" style="left:54.2%; top:37.5%; width:39.2%; color:#5B5B5B;">implementer의 대화</div>
+          <div class="dash" style="left:54.2%; top:43.3%; width:39.2%;"></div>
+          <div class="t" style="left:54.2%; top:44.5%; width:39.2%; color:#5B5B5B;">구현 과정</div>
+          <div class="dash" style="left:54.2%; top:50.3%; width:39.2%;"></div>
+          <div class="t" style="left:54.2%; top:51.5%; width:39.2%; color:#5B5B5B;">중간 판단</div>
+          <!-- 점선 + 회색 한 줄 -->
+          <div class="dash" style="left:4.2%; top:69%; width:91.6%;"></div>
+          <div class="t c" style="left:4.2%; top:70.3%; width:91.6%; color:#5B5B5B;">reviewer는 읽기 전용 — 파일 수정 · stage · commit 금지</div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:76.5%; width:91.6%; color:#FC1C49; font-weight:700;">구현 과정을 모른 채 계획과 diff만 봄</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 4</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 1 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:18.8%;">역할을 만드는 두 방법</div>
+          <!-- 좌: 새 세션 + 프롬프트 파일 -->
+          <div class="bar" style="left:4.2%; top:29.5%; width:44%; height:5.5%;">새 세션 + 프롬프트 파일</div>
+          <div class="card" style="left:4.2%; top:35%; width:44%; height:30%;"></div>
+          <div class="t" style="left:6.6%; top:37.5%; width:39.2%;">역할마다 새 세션</div>
+          <div class="dash" style="left:6.6%; top:43.3%; width:39.2%;"></div>
+          <div class="t" style="left:6.6%; top:44.5%; width:39.2%;">인계는 파일</div>
+          <div class="dash" style="left:6.6%; top:50.3%; width:39.2%;"></div>
+          <div class="t" style="left:6.6%; top:51.5%; width:39.2%;">단계 사이에 사람이 승인</div>
+          <div class="dash" style="left:6.6%; top:57.3%; width:39.2%;"></div>
+          <div class="t" style="left:6.6%; top:58.5%; width:39.2%;">이번 실습 방식</div>
+          <!-- 우: Codex 서브에이전트 -->
+          <div class="bar" style="left:51.8%; top:29.5%; width:44%; height:5.5%;">Codex 서브에이전트</div>
+          <div class="card" style="left:51.8%; top:35%; width:44%; height:30%;"></div>
+          <div class="t" style="left:54.2%; top:37.5%; width:39.2%; word-break:keep-all;">요청하거나 AGENTS.md · 스킬이 지시하면 생성</div>
+          <div class="dash" style="left:54.2%; top:43.3%; width:39.2%;"></div>
+          <div class="t" style="left:54.2%; top:44.5%; width:39.2%; word-break:keep-all;">샌드박스 · 승인은 부모 세션 설정을 따름</div>
+          <div class="dash" style="left:54.2%; top:50.3%; width:39.2%;"></div>
+          <div class="t" style="left:54.2%; top:51.5%; width:39.2%; word-break:keep-all;">결과는 요약으로 부모에게 돌아옴</div>
+          <div class="dash" style="left:54.2%; top:57.3%; width:39.2%;"></div>
+          <div class="t" style="left:54.2%; top:58.5%; width:39.2%; word-break:keep-all;">읽기 위주 병렬 작업에 적합 · 병렬 쓰기는 충돌 주의 · 토큰 더 듦</div>
+          <!-- 점선 + 회색 한 줄 -->
+          <div class="dash" style="left:4.2%; top:69%; width:91.6%;"></div>
+          <div class="t c" style="left:4.2%; top:70.3%; width:91.6%; color:#5B5B5B;">이번 실습은 단계마다 사람이 승인하므로 새 세션 방식으로 진행</div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:76.5%; width:91.6%; color:#FC1C49; font-weight:700;">승인 지점이 역할을 만드는 방식을 정함</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 4</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 1 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:18.8%;">역할 프롬프트의 구성</div>
+          <!-- 1 입력 -->
+          <div class="bar" style="left:4.2%; top:29.5%; width:17.2%; height:5.5%;">입력</div>
+          <div class="card" style="left:4.2%; top:35%; width:17.2%; height:15%;"></div>
+          <div class="t sm c" style="left:5.4%; top:40.3%; width:14.8%; word-break:keep-all;">무엇을 읽고 시작하는가</div>
+          <!-- 2 금지 -->
+          <div class="bar" style="left:22.8%; top:29.5%; width:17.2%; height:5.5%;">금지</div>
+          <div class="card" style="left:22.8%; top:35%; width:17.2%; height:15%;"></div>
+          <div class="t sm c" style="left:24%; top:40.3%; width:14.8%; word-break:keep-all;">무엇을 하지 않는가</div>
+          <!-- 3 출력 -->
+          <div class="bar" style="left:41.4%; top:29.5%; width:17.2%; height:5.5%;">출력</div>
+          <div class="card" style="left:41.4%; top:35%; width:17.2%; height:15%;"></div>
+          <div class="t sm c" style="left:42.6%; top:40.3%; width:14.8%; word-break:keep-all;">무엇을 남기는가</div>
+          <!-- 4 검증 -->
+          <div class="bar" style="left:60%; top:29.5%; width:17.2%; height:5.5%;">검증</div>
+          <div class="card" style="left:60%; top:35%; width:17.2%; height:15%;"></div>
+          <div class="t sm c" style="left:61.2%; top:40.3%; width:14.8%; word-break:keep-all;">무엇으로 확인하는가</div>
+          <!-- 5 Handoff -->
+          <div class="bar" style="left:78.6%; top:29.5%; width:17.2%; height:5.5%;">Handoff</div>
+          <div class="card" style="left:78.6%; top:35%; width:17.2%; height:15%;"></div>
+          <div class="t sm c" style="left:79.8%; top:40.3%; width:14.8%; word-break:keep-all;">언제 다음 역할로 넘기는가</div>
+          <!-- 점선 + 회색 한 줄 -->
+          <div class="dash" style="left:4.2%; top:56.5%; width:91.6%;"></div>
+          <div class="t c" style="left:4.2%; top:57.8%; width:91.6%; color:#5B5B5B;">10강 PR 설명 계약 형식에 Handoff 추가</div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:64%; width:91.6%; color:#FC1C49; font-weight:700;">역할은 금지 조건으로 구분</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 4</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 1 · 실습</div>
+          <div class="h" style="left:3.43%; top:18.8%;">실습 1 — 역할 프롬프트 만들기</div>
+          <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
+          <!-- 이번에 만드는 것 · 순서 · 원칙 -->
+          <div class="card" style="left:4.2%; top:30%; width:91.6%; height:16.5%;"></div>
+          <div class="t sm" style="left:6.6%; top:32.2%; width:20%; color:#9C9C9C; font-weight:700;">이번에 만드는 것</div>
+          <div style="left:27%; top:31.7%; display:flex; align-items:center; gap:5px;"><span class="kchip">docs/prompts/planner.md</span><span class="kchip">docs/prompts/implementer.md</span><span class="kchip">docs/prompts/reviewer.md</span></div>
+          <div class="t sm" style="left:6.6%; top:37.3%; width:20%; color:#9C9C9C; font-weight:700;">순서</div>
+          <div style="left:27%; top:36.8%; display:flex; align-items:center; gap:5px;"><span class="kchip">계약 작성</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 2px;">→</span><span class="kchip">경계 시험</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 2px;">→</span><span class="kchip">고친 뒤 재시험</span></div>
+          <div class="t" style="left:6.6%; top:42.2%; width:87%; color:#5B5B5B;"><b style="color:#000;">범위를 넘는 요청에 응하지 않음</b> — 거절 · 중단 · 보고</div>
+          <!-- 생각할 질문 -->
+          <div class="card" style="left:4.2%; top:50.5%; width:44%; height:27.5%;"></div>
+          <div class="t sm" style="left:6.6%; top:52.8%; width:39%; color:#9C9C9C; font-weight:700;">생각할 질문</div>
+          <div class="t" style="left:6.6%; top:58.3%; width:39.2%; word-break:keep-all;">「역할이 범위를 넘는 요청을 받으면 거절 · 중단 · 보고 중 무엇을 하는가」</div>
+          <div class="t" style="left:6.6%; top:68.8%; width:39.2%; word-break:keep-all;">「다음 역할이 대화 기억 없이 시작하려면 어떤 파일이 필요한가」</div>
+          <!-- 확인할 것 -->
+          <div class="card" style="left:51.8%; top:50.5%; width:44%; height:27.5%;"></div>
+          <div class="t sm" style="left:54.2%; top:52.8%; width:39%; color:#9C9C9C; font-weight:700;">확인할 것</div>
+          <div class="t" style="left:54.2%; top:58.3%; width:39.2%; word-break:keep-all;">역할이 범위 밖 요청을 실행하지 않고 중단 이유와 handoff를 보고함</div>
+          <div class="t" style="left:54.2%; top:68.8%; width:39.2%; word-break:keep-all;">역할 파일마다 입력 · 금지 · 출력 · 검증 · Handoff가 있음</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 4</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 2 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:18.8%;">정책이 비어 있을 때</div>
+          <!-- 흐름: 후보 제시 → 사람 승인 → 승인 기록 → 구현 -->
+          <div class="card" style="left:4.2%; top:31%; width:19.6%; height:11%;"></div>
+          <div class="t mid c" style="left:4.2%; top:34.5%; width:19.6%; font-weight:700;">후보 제시</div>
+          <div class="t mid c" style="left:23.8%; top:34.5%; width:4.4%; color:#9C9C9C;">→</div>
+          <div class="card" style="left:28.2%; top:31%; width:19.6%; height:11%;"></div>
+          <div class="t mid c" style="left:28.2%; top:34.5%; width:19.6%; font-weight:700;">사람 승인</div>
+          <div class="t mid c" style="left:47.8%; top:34.5%; width:4.4%; color:#9C9C9C;">→</div>
+          <div class="card" style="left:52.2%; top:31%; width:19.6%; height:11%;"></div>
+          <div class="t mid c" style="left:52.2%; top:34.5%; width:19.6%; font-weight:700;">승인 기록</div>
+          <div class="t mid c" style="left:71.8%; top:34.5%; width:4.4%; color:#9C9C9C;">→</div>
+          <div class="card" style="left:76.2%; top:31%; width:19.6%; height:11%;"></div>
+          <div class="t mid c" style="left:76.2%; top:34.5%; width:19.6%; font-weight:700;">구현</div>
+          <!-- 각 노드 아래 역할 한 줄 -->
+          <div class="t sm c" style="left:4.2%; top:45%; width:19.6%; color:#9C9C9C; word-break:keep-all;">planner 「후보와 미결만 제시」</div>
+          <div class="t sm c" style="left:28.2%; top:45%; width:19.6%; color:#9C9C9C; word-break:keep-all;">사람 「값을 결정」</div>
+          <div class="t sm c" style="left:52.2%; top:45%; width:19.6%; color:#9C9C9C; word-break:keep-all;">계획 파일 「승인 기록」</div>
+          <div class="t sm c" style="left:76.2%; top:45%; width:19.6%; color:#9C9C9C; word-break:keep-all;">implementer 「기록이 있어야 시작」</div>
+          <!-- 점선 + 회색 한 줄 -->
+          <div class="dash" style="left:4.2%; top:58%; width:91.6%;"></div>
+          <div class="t c" style="left:4.2%; top:59.3%; width:91.6%; color:#5B5B5B;">13강 「확인 필요」 · 14강 「보류」 · 15강 「사람 승인 전 후보」와 같은 처리</div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:66%; width:91.6%; color:#FC1C49; font-weight:700;">정책 값은 사람이 정함</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 4</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 2 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:18.8%;">구현 전 승인</div>
+          <!-- 좌: 시작 조건 -->
+          <div class="bar" style="left:4.2%; top:29.5%; width:44%; height:5.5%;">시작 조건</div>
+          <div class="card" style="left:4.2%; top:35%; width:44%; height:24%;"></div>
+          <div class="t" style="left:6.6%; top:41%; width:39.2%;">계획 파일에 승인 기록 있음</div>
+          <div class="dash" style="left:6.6%; top:47%; width:39.2%;"></div>
+          <div class="t" style="left:6.6%; top:48.5%; width:39.2%;">승인된 범위 안의 파일</div>
+          <!-- 우: 멈춤 조건 -->
+          <div class="bar" style="left:51.8%; top:29.5%; width:44%; height:5.5%;">멈춤 조건</div>
+          <div class="card g" style="left:51.8%; top:35%; width:44%; height:24%;"></div>
+          <div class="t" style="left:54.2%; top:41%; width:39.2%; color:#5B5B5B;">승인 기록 없음</div>
+          <div class="dash" style="left:54.2%; top:47%; width:39.2%;"></div>
+          <div class="t" style="left:54.2%; top:48.5%; width:39.2%; color:#5B5B5B;">계획 밖 파일이 필요함</div>
+          <!-- 점선 + 회색 한 줄 -->
+          <div class="dash" style="left:4.2%; top:63.5%; width:91.6%;"></div>
+          <div class="t c" style="left:4.2%; top:64.8%; width:91.6%; color:#5B5B5B;">승인 메시지와 구현 요청은 별도 단계 — 승인 메시지는 파일을 수정하지 않음</div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:71%; width:91.6%; color:#FC1C49; font-weight:700;">승인 기록이 없으면 구현하지 않음</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 4</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 2 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:18.8%;">통제 비교</div>
+          <!-- 좌: 같게 둘 것 -->
+          <div class="bar" style="left:4.2%; top:29.5%; width:44%; height:5.5%;">같게 둘 것</div>
+          <div class="card g" style="left:4.2%; top:35%; width:44%; height:30%;"></div>
+          <div class="t" style="left:6.6%; top:37.5%; width:39.2%; color:#5B5B5B;">시작 커밋</div>
+          <div class="dash" style="left:6.6%; top:43.3%; width:39.2%;"></div>
+          <div class="t" style="left:6.6%; top:44.5%; width:39.2%; color:#5B5B5B;">요청 문장</div>
+          <div class="dash" style="left:6.6%; top:50.3%; width:39.2%;"></div>
+          <div class="t" style="left:6.6%; top:51.5%; width:39.2%; color:#5B5B5B;">승인된 결정</div>
+          <div class="dash" style="left:6.6%; top:57.3%; width:39.2%;"></div>
+          <div class="t" style="left:6.6%; top:58.5%; width:39.2%; color:#5B5B5B;">검증 명령</div>
+          <!-- 우: 다르게 둘 것 -->
+          <div class="bar" style="left:51.8%; top:29.5%; width:44%; height:5.5%;">다르게 둘 것</div>
+          <div class="card" style="left:51.8%; top:35%; width:44%; height:30%;"></div>
+          <div class="t mid c" style="left:54.2%; top:47.5%; width:39.2%; font-weight:700;">역할 구조 (한 세션 · 역할 분리)</div>
+          <!-- 점선 + 회색 한 줄 -->
+          <div class="dash" style="left:4.2%; top:69%; width:91.6%;"></div>
+          <div class="t c" style="left:4.2%; top:70.3%; width:91.6%; color:#5B5B5B;">달라진 결과는 역할 구조의 차이로 읽음</div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:76.5%; width:91.6%; color:#FC1C49; font-weight:700;">달라지는 것은 역할 구조 하나</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 4</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 2 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:18.8%;">비교 기준</div>
+          <table style="left:4.2%; top:29.5%; width:91.6%;">
+            <tr><th style="background:#5B5B5B; width:26%; text-align:left; padding-left:8px;">기준</th><th style="background:#5B5B5B; text-align:left; padding-left:8px;">보는 것</th></tr>
+            <tr><td style="font-weight:700;">변경 범위</td><td>승인 plan 안의 파일과 책임만 바뀌었는가</td></tr>
+            <tr><td style="font-weight:700;">정책 근거</td><td>확정 정책 · 사람 승인 · 미결을 구분했는가</td></tr>
+            <tr><td style="font-weight:700;">검증 근거</td><td>같은 test · lint · typecheck와 값 중심 assertion을 썼는가</td></tr>
+            <tr><td style="font-weight:700;">계획 이탈</td><td>계획 밖 변경을 숨기지 않고 중단 · 승인 요청했는가</td></tr>
+          </table>
+          <div class="t c" style="left:4.2%; top:63.5%; width:91.6%; color:#5B5B5B;">결과를 본 뒤에 기준을 고르지 않음</div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:70%; width:91.6%; color:#FC1C49; font-weight:700;">기준은 실행하기 전에 확정</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 4</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 2 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:18.8%;">별도 작업 공간에서 실행</div>
+          <!-- 열 1: 같은 시작 커밋 -->
+          <div class="card g" style="left:4.2%; top:36%; width:19.6%; height:11%;"></div>
+          <div class="t mid c" style="left:4.2%; top:39.5%; width:19.6%; font-weight:700; color:#5B5B5B;">같은 시작 커밋</div>
+          <div class="t mid c" style="left:23.8%; top:39.5%; width:4.4%; color:#9C9C9C;">→</div>
+          <!-- 열 2: 작업 공간 A / B -->
+          <div class="card" style="left:28.2%; top:29.5%; width:19.6%; height:11%;"></div>
+          <div class="t mid c" style="left:28.2%; top:31.5%; width:19.6%; font-weight:700;">작업 공간 A</div>
+          <div class="t sm c" style="left:28.2%; top:36%; width:19.6%; color:#9C9C9C;">한 세션</div>
+          <div class="card" style="left:28.2%; top:42.5%; width:19.6%; height:11%;"></div>
+          <div class="t mid c" style="left:28.2%; top:44.5%; width:19.6%; font-weight:700;">작업 공간 B</div>
+          <div class="t sm c" style="left:28.2%; top:49%; width:19.6%; color:#9C9C9C;">역할 분리</div>
+          <div class="t mid c" style="left:47.8%; top:39.5%; width:4.4%; color:#9C9C9C;">→</div>
+          <!-- 열 3: 비교 기록 -->
+          <div class="card" style="left:52.2%; top:36%; width:19.6%; height:11%;"></div>
+          <div class="t mid c" style="left:52.2%; top:39.5%; width:19.6%; font-weight:700;">비교 기록</div>
+          <div class="t mid c" style="left:71.8%; top:39.5%; width:4.4%; color:#9C9C9C;">→</div>
+          <!-- 열 4: 채택 -->
+          <div class="card" style="left:76.2%; top:36%; width:19.6%; height:11%;"></div>
+          <div class="t mid c" style="left:76.2%; top:39.5%; width:19.6%; font-weight:700;">채택 (하나)</div>
+          <!-- 점선 + 회색 한 줄 -->
+          <div class="dash" style="left:4.2%; top:60%; width:91.6%;"></div>
+          <div class="t c" style="left:4.2%; top:61.3%; width:91.6%; color:#5B5B5B;">채택하지 않은 쪽은 diff 요약만 기록</div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:68%; width:91.6%; color:#FC1C49; font-weight:700;">두 실행을 같은 작업 트리에서 섞지 않음</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 4</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 2 · 실습</div>
+          <div class="h" style="left:3.43%; top:18.8%;">실습 2 — 같은 작업 두 방식으로 실행</div>
+          <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
+          <!-- 이번에 만드는 것 · 순서 · 원칙 -->
+          <div class="card" style="left:4.2%; top:30%; width:91.6%; height:16.5%;"></div>
+          <div class="t sm" style="left:6.6%; top:32.2%; width:20%; color:#9C9C9C; font-weight:700;">이번에 만드는 것</div>
+          <div style="left:27%; top:31.7%; display:flex; align-items:center; gap:5px;"><span class="kchip">notes/plans/admin-failure-info-l17.md</span><span class="kchip">notes/role-split-run-l17.md</span></div>
+          <div class="t sm" style="left:6.6%; top:37.3%; width:20%; color:#9C9C9C; font-weight:700;">순서</div>
+          <div style="left:27%; top:36.8%; display:flex; align-items:center; gap:5px;"><span class="kchip">plan 작성</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 2px;">→</span><span class="kchip">정책 승인</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 2px;">→</span><span class="kchip">두 실행</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 2px;">→</span><span class="kchip">비교 기록</span></div>
+          <div class="t" style="left:6.6%; top:42.2%; width:87%; color:#5B5B5B;"><b style="color:#000;">승인 전 구현 금지</b> — 두 실행의 입력은 같게</div>
+          <!-- 생각할 질문 -->
+          <div class="card" style="left:4.2%; top:50.5%; width:44%; height:27.5%;"></div>
+          <div class="t sm" style="left:6.6%; top:52.8%; width:39%; color:#9C9C9C; font-weight:700;">생각할 질문</div>
+          <div class="t" style="left:6.6%; top:58.3%; width:39.2%; word-break:keep-all;">「실패 정보를 추가하면 저장 · 응답 · 테스트 중 어디까지 바뀌는가」</div>
+          <div class="t" style="left:6.6%; top:68.8%; width:39.2%; word-break:keep-all;">「결과를 보기 전에 어떤 비교 축을 고정해야 공정한가」</div>
+          <!-- 확인할 것 -->
+          <div class="card" style="left:51.8%; top:50.5%; width:44%; height:27.5%;"></div>
+          <div class="t sm" style="left:54.2%; top:52.8%; width:39%; color:#9C9C9C; font-weight:700;">확인할 것</div>
+          <div class="t" style="left:54.2%; top:58.3%; width:39.2%; word-break:keep-all;">승인 메시지와 구현 요청이 분리되고 승인 기록이 plan에 있음</div>
+          <div class="t" style="left:54.2%; top:68.8%; width:39.2%; word-break:keep-all;">두 실행의 시작 커밋 · 요청 · 결정 · 검증 명령이 같음</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 4</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 3 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:18.8%;">reviewer가 찾는 것</div>
+          <table style="left:4.2%; top:29.5%; width:91.6%;">
+            <tr><th style="background:#5B5B5B; width:34%; text-align:left; padding-left:8px;">찾을 것</th><th style="background:#5B5B5B; text-align:left; padding-left:8px;">대조 자료</th></tr>
+            <tr><td style="font-weight:700;">계획 이탈</td><td>계획 파일 · 승인 기록</td></tr>
+            <tr><td style="font-weight:700;">누락된 테스트</td><td>tests · 계획의 검증 항목</td></tr>
+            <tr><td style="font-weight:700;">정책 위반</td><td>정책 문서</td></tr>
+            <tr><td style="font-weight:700;">silent fallback</td><td>15강 「변경 전 확인」</td></tr>
+            <tr><td style="font-weight:700;">민감정보 노출</td><td>결제 정책의 비노출 원칙</td></tr>
+          </table>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:72%; width:91.6%; color:#FC1C49; font-weight:700;">대조 자료 없이 찾지 않음</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 4</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 3 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:18.8%;">발견 사항의 형식</div>
+          <!-- 카드 하나 · 네 줄 -->
+          <div class="card" style="left:4.2%; top:29.5%; width:91.6%; height:33%;"></div>
+          <div class="t sm" style="left:6.6%; top:33%; width:20%; color:#9C9C9C; font-weight:700;">파일</div>
+          <div class="t" style="left:27%; top:32.4%; width:66%;">어디인가</div>
+          <div class="dash" style="left:6.6%; top:38.8%; width:86.8%;"></div>
+          <div class="t sm" style="left:6.6%; top:40.5%; width:20%; color:#9C9C9C; font-weight:700;">근거</div>
+          <div class="t" style="left:27%; top:39.9%; width:66%;">무엇과 대조했는가</div>
+          <div class="dash" style="left:6.6%; top:46.3%; width:86.8%;"></div>
+          <div class="t sm" style="left:6.6%; top:48%; width:20%; color:#9C9C9C; font-weight:700;">영향</div>
+          <div class="t" style="left:27%; top:47.4%; width:66%;">무엇이 달라지는가</div>
+          <div class="dash" style="left:6.6%; top:53.8%; width:86.8%;"></div>
+          <div class="t sm" style="left:6.6%; top:55.5%; width:20%; color:#9C9C9C; font-weight:700;">사람이 정할 결정</div>
+          <div class="t" style="left:27%; top:54.9%; width:66%;">누가 무엇을 정하는가</div>
+          <!-- 회색 한 줄 -->
+          <div class="t c" style="left:4.2%; top:67%; width:91.6%; color:#5B5B5B;">발견이 없으면 「없음」 — diff 요약 · 입력 한계와 분리</div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:73.5%; width:91.6%; color:#FC1C49; font-weight:700;">근거 없는 사항은 발견이 아님</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 4</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 3 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:18.8%;">발견 사항 처리</div>
+          <!-- 열 1: 발견 사항 -->
+          <div class="card" style="left:4.2%; top:38%; width:27.6%; height:11.5%;"></div>
+          <div class="t mid c" style="left:4.2%; top:41.6%; width:27.6%; font-weight:700;">발견 사항</div>
+          <div class="t mid c" style="left:31.8%; top:41.6%; width:4.4%; color:#9C9C9C;">→</div>
+          <!-- 열 2: 사람 결정 -->
+          <div class="card" style="left:36.2%; top:38%; width:27.6%; height:11.5%;"></div>
+          <div class="t mid c" style="left:36.2%; top:41.6%; width:27.6%; font-weight:700;">사람 결정</div>
+          <div class="t mid c" style="left:63.8%; top:41.6%; width:4.4%; color:#9C9C9C;">→</div>
+          <!-- 열 3: 수용 / 보류 / 범위 밖 인계 -->
+          <div class="card" style="left:68.2%; top:31%; width:27.6%; height:7.5%;"></div>
+          <div class="t mid c" style="left:68.2%; top:32.2%; width:27.6%; font-weight:700;">수용</div>
+          <div class="card" style="left:68.2%; top:40%; width:27.6%; height:7.5%;"></div>
+          <div class="t mid c" style="left:68.2%; top:41.2%; width:27.6%; font-weight:700;">보류</div>
+          <div class="card" style="left:68.2%; top:49%; width:27.6%; height:7.5%;"></div>
+          <div class="t mid c" style="left:68.2%; top:50.2%; width:27.6%; font-weight:700;">범위 밖 인계</div>
+          <!-- 점선 + 회색 한 줄 -->
+          <div class="dash" style="left:4.2%; top:62%; width:91.6%;"></div>
+          <div class="t c" style="left:4.2%; top:63.3%; width:91.6%; color:#5B5B5B;">15강 「보류」 · 16강 「남은 위험」과 같은 처리</div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:70%; width:91.6%; color:#FC1C49; font-weight:700;">수정은 결정한 뒤에 시작</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 4</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 3 · 실습</div>
+          <div class="h" style="left:3.43%; top:18.8%;">실습 3 — reviewer 검토</div>
+          <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
+          <!-- 이번에 만드는 것 · 순서 · 원칙 -->
+          <div class="card" style="left:4.2%; top:30%; width:91.6%; height:16.5%;"></div>
+          <div class="t sm" style="left:6.6%; top:32.2%; width:20%; color:#9C9C9C; font-weight:700;">이번에 만드는 것</div>
+          <div style="left:27%; top:31.7%; display:flex; align-items:center; gap:5px;"><span class="kchip">발견 사항 보고</span><span class="kchip">사람 처리 결정</span></div>
+          <div class="t sm" style="left:6.6%; top:37.3%; width:20%; color:#9C9C9C; font-weight:700;">순서</div>
+          <div style="left:27%; top:36.8%; display:flex; align-items:center; gap:5px;"><span class="kchip">새 reviewer Task</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 2px;">→</span><span class="kchip">발견 사항 읽기</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 2px;">→</span><span class="kchip">수용 · 보류 · 인계 분류</span></div>
+          <div class="t" style="left:6.6%; top:42.2%; width:87%; color:#5B5B5B;"><b style="color:#000;">reviewer는 수정하지 않음</b> — 보고만</div>
+          <!-- 생각할 질문 -->
+          <div class="card" style="left:4.2%; top:50.5%; width:44%; height:27.5%;"></div>
+          <div class="t sm" style="left:6.6%; top:52.8%; width:39%; color:#9C9C9C; font-weight:700;">생각할 질문</div>
+          <div class="t" style="left:6.6%; top:58.3%; width:39.2%; word-break:keep-all;">「구현 대화를 모르는 reviewer가 어떤 파일만으로 변경을 판단할 수 있는가」</div>
+          <div class="t" style="left:6.6%; top:68.8%; width:39.2%; word-break:keep-all;">「발견 사항을 수정으로 바꾸기 전에 누가 수용 · 보류 · 인계를 정하는가」</div>
+          <!-- 확인할 것 -->
+          <div class="card" style="left:51.8%; top:50.5%; width:44%; height:27.5%;"></div>
+          <div class="t sm" style="left:54.2%; top:52.8%; width:39%; color:#9C9C9C; font-weight:700;">확인할 것</div>
+          <div class="t" style="left:54.2%; top:58.3%; width:39.2%; word-break:keep-all;">발견 사항을 사람이 수용 · 보류 · 범위 밖 인계로 결정함</div>
+          <div class="t" style="left:54.2%; top:68.8%; width:39.2%; word-break:keep-all;">발견 사항과 diff 요약 · 입력 한계가 분리됨</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 4</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 4 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:18.8%;">역할을 나눠도 사람이 정하는 것</div>
+          <table style="left:4.2%; top:29.5%; width:91.6%;">
+            <tr><th style="background:#5B5B5B; width:22%; text-align:left; padding-left:8px;">결정</th><th style="background:#5B5B5B; width:40%; text-align:left; padding-left:8px;">보는 자료</th><th style="background:#5B5B5B; text-align:left; padding-left:8px;">가능한 결정</th></tr>
+            <tr><td style="font-weight:700;">정책 값</td><td style="color:#5B5B5B;">정책 문서 · 후보</td><td>승인 · 수정 · 보류</td></tr>
+            <tr><td style="font-weight:700;">범위 변경</td><td style="color:#5B5B5B;">계획 파일 · diff</td><td>계획 갱신 · 되돌리기 · 분리</td></tr>
+            <tr><td style="font-weight:700;">발견 사항 처리</td><td style="color:#5B5B5B;">발견 사항</td><td>수용 · 보류 · 범위 밖 인계</td></tr>
+            <tr><td style="font-weight:700;">민감정보 판단</td><td style="color:#5B5B5B;">응답 · 테스트 · 비노출 원칙</td><td>허용 · 제외</td></tr>
+            <tr><td style="font-weight:700;">merge 판단</td><td style="color:#5B5B5B;">preflight 기록 · review-ready 판정</td><td>진행 · 보류</td></tr>
+          </table>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:72%; width:91.6%; color:#FC1C49; font-weight:700;">최종 정책과 merge 판단은 사람</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 4</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 4 · 실습</div>
+          <div class="h" style="left:3.43%; top:18.8%;">실습 4 — 사람 승인 지점 기록</div>
+          <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
+          <!-- 이번에 만드는 것 · 순서 · 원칙 -->
+          <div class="card" style="left:4.2%; top:30%; width:91.6%; height:16.5%;"></div>
+          <div class="t sm" style="left:6.6%; top:32.2%; width:20%; color:#9C9C9C; font-weight:700;">이번에 만드는 것</div>
+          <div style="left:27%; top:31.7%; display:flex; align-items:center; gap:5px;"><span class="kchip">notes/role-split-run-l17.md</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin-left:4px;">## 사람 승인 지점</span></div>
+          <div class="t sm" style="left:6.6%; top:37.3%; width:20%; color:#9C9C9C; font-weight:700;">순서</div>
+          <div style="left:27%; top:36.8%; display:flex; align-items:center; gap:5px;"><span class="kchip">승인 지점 기록</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 2px;">→</span><span class="kchip">preflight 재실행</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 2px;">→</span><span class="kchip">검증 후 커밋 · 채택</span></div>
+          <div class="t" style="left:6.6%; top:42.2%; width:87%; color:#5B5B5B;"><b style="color:#000;">앞 단계에서 실제로 일어난 승인에서 뽑음</b> — 가상으로 쓰지 않음</div>
+          <!-- 생각할 질문 -->
+          <div class="card" style="left:4.2%; top:50.5%; width:44%; height:27.5%;"></div>
+          <div class="t sm" style="left:6.6%; top:52.8%; width:39%; color:#9C9C9C; font-weight:700;">생각할 질문</div>
+          <div class="t" style="left:6.6%; top:58.3%; width:39.2%; word-break:keep-all;">「앞 단계에서 사람이 실제로 멈추고 결정한 지점은 어디였는가」</div>
+          <div class="t" style="left:6.6%; top:68.8%; width:39.2%; word-break:keep-all;">「새 diff가 preflight를 다시 통과했다는 증거를 어떻게 남기는가」</div>
+          <!-- 확인할 것 -->
+          <div class="card" style="left:51.8%; top:50.5%; width:44%; height:27.5%;"></div>
+          <div class="t sm" style="left:54.2%; top:52.8%; width:39%; color:#9C9C9C; font-weight:700;">확인할 것</div>
+          <div class="t" style="left:54.2%; top:58.3%; width:39.2%; word-break:keep-all;">승인 지점마다 입력 자료 · 가능한 결정 · 결정 주체가 있음</div>
+          <div class="t" style="left:54.2%; top:68.8%; width:39.2%; word-break:keep-all;">커밋에 승인 범위 밖 변경이 없음</div>
+          <div class="mark"></div>
+        </section>
+<section class="mk anim">
+          <div class="lbl">CHAPTER 4</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">17강 마무리</div>
+          <div class="h" style="left:3.43%; top:18.8%;">17강 정리와 18강 예고</div>
+          <!-- Chapter 4 흐름: 역할 분리 → Issue → plan → 구현 후보 → 검증 → PR 설명 -->
+          <div class="card" style="left:4.2%; top:30%; width:12.6%; height:9.5%;"></div>
+          <div class="t c" style="left:4.2%; top:32.9%; width:12.6%; font-weight:700; white-space:nowrap;">역할 분리</div>
+          <div class="t mid c" style="left:16.8%; top:32.7%; width:3.2%; color:#9C9C9C;">→</div>
+          <div class="card g" style="left:20%; top:30%; width:12.6%; height:9.5%;"></div>
+          <div class="t c" style="left:20%; top:32.9%; width:12.6%; color:#9C9C9C; font-weight:700;">Issue</div>
+          <div class="t mid c" style="left:32.6%; top:32.7%; width:3.2%; color:#9C9C9C;">→</div>
+          <div class="card g" style="left:35.8%; top:30%; width:12.6%; height:9.5%;"></div>
+          <div class="t c" style="left:35.8%; top:32.9%; width:12.6%; color:#9C9C9C; font-weight:700;">plan</div>
+          <div class="t mid c" style="left:48.4%; top:32.7%; width:3.2%; color:#9C9C9C;">→</div>
+          <div class="card g" style="left:51.6%; top:30%; width:12.6%; height:9.5%;"></div>
+          <div class="t c" style="left:51.6%; top:32.9%; width:12.6%; color:#9C9C9C; font-weight:700; white-space:nowrap;">구현 후보</div>
+          <div class="t mid c" style="left:64.2%; top:32.7%; width:3.2%; color:#9C9C9C;">→</div>
+          <div class="card g" style="left:67.4%; top:30%; width:12.6%; height:9.5%;"></div>
+          <div class="t c" style="left:67.4%; top:32.9%; width:12.6%; color:#9C9C9C; font-weight:700;">검증</div>
+          <div class="t mid c" style="left:80%; top:32.7%; width:3.2%; color:#9C9C9C;">→</div>
+          <div class="card g" style="left:83.2%; top:30%; width:12.6%; height:9.5%;"></div>
+          <div class="t c" style="left:83.2%; top:32.9%; width:12.6%; color:#9C9C9C; font-weight:700; white-space:nowrap;">PR 설명</div>
+          <!-- 산출물 칩 행 -->
+          <div style="left:4.2%; top:44.5%; width:91.6%; display:flex; align-items:center; justify-content:center; gap:5px;"><span class="t sm" style="color:#9C9C9C; font-weight:700; margin-right:4px;">17강 산출물</span><span class="kchip">역할 프롬프트</span><span class="kchip">승인 지점 기록</span><span class="kchip">비교 기록</span></div>
+          <!-- 레드 한 줄 -->
+          <div class="t mid c" style="left:4.2%; top:53%; width:91.6%; color:#FC1C49; font-weight:700;">역할은 나누고 판단은 사람이 함</div>
+          <!-- 이어지는 곳 -->
+          <div class="t sm c" style="left:4.2%; top:61.5%; width:91.6%; color:#9C9C9C; font-weight:700;">이어지는 곳</div>
+          <div class="card k" style="left:4.2%; top:66%; width:91.6%; height:10%;"></div>
+          <div class="t sm c" style="left:4.2%; top:69%; width:91.6%; color:#fff;">18강 — GitHub Issue에서 시작: 역할 프롬프트와 승인 지점이 이어서 쓰는 입력</div>
+          <div class="mark"></div>
+        </section>
+</div></div>
+<div class="edge" style="left:0" onclick="go(-1)"></div>
+<div class="edge" style="right:0" onclick="go(1)"></div>
+<a class="hud" id="home" href="index.html">목차</a>
+<div class="hud" id="ttl">17강 · 역할 분리</div>
+<div class="hud" id="ctr" onclick="toggleToc()" title="클릭: 슬라이드 목록">1 / 21</div>
+<div id="toc"><div class="list" id="tocList"></div></div>
+<script>
+var slides = Array.prototype.slice.call(document.querySelectorAll('#stage .mk'));
+var TITLES = [["01", "표지"], ["02", "한 세션이 모든 일을 맡을 때"], ["03", "세 역할의 입력과 출력"], ["04", "역할 사이의 인계는 파일"], ["05", "역할마다 새 세션"], ["06", "역할을 만드는 두 방법"], ["07", "역할 프롬프트의 구성"], ["08", "실습 1 — 역할 프롬프트 만들기"], ["09", "정책이 비어 있을 때"], ["10", "구현 전 승인"], ["11", "통제 비교"], ["12", "비교 기준"], ["13", "별도 작업 공간에서 실행"], ["14", "실습 2 — 같은 작업 두 방식으로 실행"], ["15", "reviewer가 찾는 것"], ["16", "발견 사항의 형식"], ["17", "발견 사항 처리"], ["18", "실습 3 — reviewer 검토"], ["19", "역할을 나눠도 사람이 정하는 것"], ["20", "실습 4 — 사람 승인 지점 기록"], ["21", "17강 정리와 18강 예고"]];
+var N = slides.length, cur = -1, hudT = null;
+var ctr = document.getElementById('ctr'), toc = document.getElementById('toc');
+
+function fit(){
+  var z = Math.min(innerWidth / 560, innerHeight / 315);
+  var st = document.getElementById('stage');
+  if ('zoom' in st.style) st.style.zoom = z;
+  else { st.style.transform = 'scale(' + z + ')'; st.style.transformOrigin = 'center'; }
+}
+addEventListener('resize', fit); fit();
+
+function show(i){
+  i = Math.max(0, Math.min(N - 1, i));
+  if (i === cur) return;
+  if (cur >= 0) slides[cur].classList.remove('on', 'go');
+  cur = i;
+  var s = slides[cur];
+  var kids = s.children;
+  for (var k = 0; k < kids.length; k++)
+    kids[k].style.transitionDelay = Math.min(80 + k * 65, 1150) + 'ms';
+  s.classList.add('on');
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ s.classList.add('go'); }); });
+  ctr.textContent = (cur + 1) + ' / ' + N;
+  location.replace('#' + (cur + 1));
+  wake();
+}
+function go(d){ if (toc.classList.contains('on')) return; show(cur + d); }
+function wake(){
+  document.body.classList.add('hud-on');
+  clearTimeout(hudT);
+  hudT = setTimeout(function(){ document.body.classList.remove('hud-on'); }, 2600);
+}
+var tocList = document.getElementById('tocList');
+function toggleToc(){
+  if (!tocList.childElementCount){
+    TITLES.forEach(function(t, i){
+      var r = document.createElement('div'); r.className = 'row';
+      r.innerHTML = '<span class="n">' + t[0] + '</span><span>' + t[1] + '</span>';
+      r.onclick = function(){ toggleToc(); show(i); };
+      tocList.appendChild(r);
+    });
+  }
+  toc.classList.toggle('on');
+  if (toc.classList.contains('on')){
+    var rows = tocList.children;
+    for (var j = 0; j < rows.length; j++) rows[j].classList.toggle('cur', j === cur);
+    if (rows[cur]) rows[cur].scrollIntoView({block: 'center'});
+  }
+}
+document.addEventListener('keydown', function(e){
+  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); go(1); }
+  else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(-1); }
+  else if (e.key === 'Home') show(0);
+  else if (e.key === 'End') show(N - 1);
+  else if (e.key === 'f') { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }
+  else if (e.key === 'o' || e.key === 'g') toggleToc();
+  else if (e.key === 'Escape') { if (toc.classList.contains('on')) toggleToc(); else location.href = 'index.html'; }
+});
+var tx = null;
+document.addEventListener('touchstart', function(e){ tx = e.touches[0].clientX; }, {passive: true});
+document.addEventListener('touchend', function(e){
+  if (tx === null) return;
+  var dx = e.changedTouches[0].clientX - tx;
+  if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1);
+  tx = null;
+}, {passive: true});
+document.addEventListener('mousemove', wake);
+show(Math.max(0, (parseInt(location.hash.slice(1)) || 1) - 1));
+</script>
+</body>
+</html>
