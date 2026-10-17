@@ -191,7 +191,7 @@
             <tr><td style="font-weight:700;">입력 안정성</td><td>실행마다 달라지는 경로 · 로그 · diff를 입력으로 따로 뺄 수 있는가</td></tr>
             <tr><td style="font-weight:700;">실패 영향</td><td>잘못 판단해도 읽기 결과로 끝나는가, 코드나 외부 서비스를 바꾸는가</td></tr>
             <tr><td style="font-weight:700;">사람 판단</td><td>정책, 작업 범위, 공개해도 되는지를 매번 사람이 정해야 하는가</td></tr>
-            <tr><td style="font-weight:700;color:#FC1C49;">무인 권한</td><td>네트워크나 앱, 작업 폴더 밖 쓰기 없이 필요한 정보를 얻는가</td></tr>
+            <tr><td style="font-weight:700;color:#FC1C49;">자동 실행 권한</td><td>네트워크나 앱, 작업 폴더 밖 쓰기 없이 필요한 정보를 얻는가</td></tr>
           </table>
           <div class="t c" style="left:4.2%; top:64%; width:91.6%; color:#5B5B5B;">판정마다 근거 파일을 함께 기록</div>
           <div class="mark"></div>
@@ -243,7 +243,7 @@
             <tr><td style="font-weight:700;">Desktop</td><td>작업 상태 · Skill 사용 · Scheduled 생성과 실행 검토 <span style="color:#FC1C49; font-weight:700;">— 중심 화면</span></td></tr>
             <tr><td style="font-weight:700;">CLI</td><td>Skill · 검증 명령의 수동 시험 <span style="color:#5B5B5B;">— Scheduled 관리 화면 없음</span></td></tr>
             <tr><td style="font-weight:700;">Browser</td><td>URL로 접근하는 웹 근거 확인</td></tr>
-            <tr><td style="font-weight:700;">Computer Use</td><td>전용 도구가 없는 화면 확인 <span style="color:#5B5B5B;">— 민감 화면이면 무인 실행 중단</span></td></tr>
+            <tr><td style="font-weight:700;">Computer Use</td><td>전용 도구가 없는 화면 확인 <span style="color:#5B5B5B;">— 민감 화면이면 자동 실행 중단</span></td></tr>
             <tr><td style="font-weight:700;">Scheduled</td><td>검증한 Skill을 정해진 시간에 실행 <span style="color:#5B5B5B;">— 검증 전 절차는 제외</span></td></tr>
           </table>
           <div class="t c" style="left:4.2%; top:64%; width:91.6%; color:#5B5B5B;">필요한 것 중 가장 작은 도구부터</div>
@@ -252,10 +252,10 @@
 <section class="mk anim">
           <div class="lbl">CHAPTER 4</div>
           <div class="kick" style="left:3.43%; top:12.18%;">클립 2 · 핵심 개념</div>
-          <div class="h" style="left:3.43%; top:18.8%;">무인 실행에는 승인 화면이 없음</div>
+          <div class="h" style="left:3.43%; top:18.8%;">자동 실행에는 승인 화면이 없음</div>
           <div class="card t c" style="left:4.2%; top:33%; width:12.6%; height:16%; display:flex; align-items:center; justify-content:center; padding:0 3px; font-weight:700; line-height:1.35; word-break:keep-all;">예약 시각</div>
           <div class="t mid c" style="left:16.8%; top:38.3%; width:3.2%; color:#9C9C9C;">→</div>
-          <div class="card t c" style="left:20%; top:33%; width:12.6%; height:16%; display:flex; align-items:center; justify-content:center; padding:0 3px; font-weight:700; line-height:1.35; word-break:keep-all;">무인 실행</div>
+          <div class="card t c" style="left:20%; top:33%; width:12.6%; height:16%; display:flex; align-items:center; justify-content:center; padding:0 3px; font-weight:700; line-height:1.35; word-break:keep-all;">자동 실행</div>
           <div class="t mid c" style="left:32.6%; top:38.3%; width:3.2%; color:#9C9C9C;">→</div>
           <div class="card t c" style="left:35.8%; top:33%; width:12.6%; height:16%; display:flex; align-items:center; justify-content:center; padding:0 3px; font-weight:700; line-height:1.35; word-break:keep-all;">승인이 필요한 지점</div>
           <div class="t mid c" style="left:48.4%; top:38.3%; width:3.2%; color:#9C9C9C;">→</div>
@@ -294,19 +294,19 @@
 <section class="mk anim">
           <div class="lbl">CHAPTER 4</div>
           <div class="kick" style="left:3.43%; top:12.18%;">클립 2 · 핵심 개념</div>
-          <div class="h" style="left:3.43%; top:18.8%;">일반 세션과 무인 실행</div>
+          <div class="h" style="left:3.43%; top:18.8%;">일반 세션과 자동 실행</div>
           <div class="bar" style="left:4.2%; top:29.5%; width:44%; height:5.5%;">일반 세션</div>
           <div class="card" style="left:4.2%; top:35%; width:44%; height:24%;"></div>
           <div class="t" style="left:6.6%; top:41.0%; width:39.2%; word-break:keep-all;">사람이 승인하면 진행</div>
           <div class="dash" style="left:6.6%; top:47.0%; width:39.2%;"></div>
           <div class="t" style="left:6.6%; top:48.5%; width:39.2%; word-break:keep-all;">승인 화면 있음</div>
-          <div class="bar" style="left:51.8%; top:29.5%; width:44%; height:5.5%;">무인 실행</div>
+          <div class="bar" style="left:51.8%; top:29.5%; width:44%; height:5.5%;">자동 실행</div>
           <div class="card g" style="left:51.8%; top:35%; width:44%; height:24%;"></div>
           <div class="t" style="left:54.2%; top:41.0%; width:39.2%; word-break:keep-all; color:#5B5B5B;">승인 화면 없음</div>
           <div class="dash" style="left:54.2%; top:47.0%; width:39.2%;"></div>
           <div class="t" style="left:54.2%; top:48.5%; width:39.2%; word-break:keep-all; color:#5B5B5B;">sandbox 안에서만</div>
           <div class="dash" style="left:4.2%; top:63.5%; width:91.6%;"></div>
-          <div class="t mid c" style="left:4.2%; top:68%; width:91.6%; color:#FC1C49; font-weight:700;">직접 승인해서 성공한 명령도 무인으로 돌릴 수 있는가</div>
+          <div class="t mid c" style="left:4.2%; top:68%; width:91.6%; color:#FC1C49; font-weight:700;">직접 승인해서 성공한 명령도 자동으로 돌릴 수 있는가</div>
           <div class="mark"></div>
         </section>
 <section class="mk anim">
@@ -326,7 +326,7 @@
 <section class="mk anim">
           <div class="lbl">CHAPTER 4</div>
           <div class="kick" style="left:3.43%; top:12.18%;">클립 2 · 실습</div>
-          <div class="h" style="left:3.43%; top:18.8%;">E2 · 작업 화면과 무인 권한 연결</div>
+          <div class="h" style="left:3.43%; top:18.8%;">E2 · 작업 화면과 자동 실행 권한 연결</div>
           <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
           <div class="card" style="left:4.2%; top:30%; width:91.6%; height:16.5%;"></div>
           <div class="t sm" style="left:6.6%; top:32.2%; width:20%; color:#9C9C9C; font-weight:700;">이번에 만드는 것</div>
@@ -337,7 +337,7 @@
           <div class="card" style="left:4.2%; top:50.5%; width:44%; height:27.5%;"></div>
           <div class="t sm" style="left:6.6%; top:52.8%; width:39%; color:#9C9C9C; font-weight:700;">생각할 질문</div>
           <div class="t" style="left:6.6%; top:58.3%; width:39.2%; word-break:keep-all;">「파일 · 명령 · 웹 · GUI 중 필요한 가장 작은 도구는 무엇인가」</div>
-          <div class="t" style="left:6.6%; top:68.8%; width:39.2%; word-break:keep-all;">「일반 세션에서 직접 승인해 성공한 명령도 무인 실행으로 돌릴 수 있는가」</div>
+          <div class="t" style="left:6.6%; top:68.8%; width:39.2%; word-break:keep-all;">「일반 세션에서 직접 승인해 성공한 명령도 자동 실행으로 돌릴 수 있는가」</div>
           <div class="card" style="left:51.8%; top:50.5%; width:44%; height:27.5%;"></div>
           <div class="t sm" style="left:54.2%; top:52.8%; width:39%; color:#9C9C9C; font-weight:700;">확인할 것</div>
           <div class="t" style="left:54.2%; top:58.3%; width:39.2%; word-break:keep-all;">후보마다 가장 작은 작업 화면 · 필요 권한 · 시험 근거가 있음</div>
@@ -548,7 +548,7 @@
 <div id="toc"><div class="list" id="tocList"></div></div>
 <script>
 var slides = Array.prototype.slice.call(document.querySelectorAll('#stage .mk'));
-var TITLES = [["01", "표지"], ["02", "어떤 일을 위임할까"], ["03", "Skill과 Scheduled의 책임"], ["04", "Automation 후보"], ["05", "선별 기준"], ["06", "판정"], ["07", "E1 · 반복 작업 후보 선별"], ["08", "어디서 무엇을 하나"], ["09", "무인 실행에는 승인 화면이 없음"], ["10", "sandbox가 막는 것"], ["11", "일반 세션과 무인 실행"], ["12", "정의서 필드"], ["13", "E2 · 작업 화면과 무인 권한 연결"], ["14", "Skill의 구조"], ["15", "Skill로 만들 것"], ["16", "새 세션 시험"], ["17", "E3 · Skill 만들기와 새 세션 시험"], ["18", "중단 조건"], ["19", "중단 보고서"], ["20", "예약 만들기와 실제 실행"], ["21", "E4 · 중단 조건 표와 Scheduled 생성"], ["22", "19강 정리와 20강 예고"]];
+var TITLES = [["01", "표지"], ["02", "어떤 일을 위임할까"], ["03", "Skill과 Scheduled의 책임"], ["04", "Automation 후보"], ["05", "선별 기준"], ["06", "판정"], ["07", "E1 · 반복 작업 후보 선별"], ["08", "어디서 무엇을 하나"], ["09", "자동 실행에는 승인 화면이 없음"], ["10", "sandbox가 막는 것"], ["11", "일반 세션과 자동 실행"], ["12", "정의서 필드"], ["13", "E2 · 작업 화면과 자동 실행 권한 연결"], ["14", "Skill의 구조"], ["15", "Skill로 만들 것"], ["16", "새 세션 시험"], ["17", "E3 · Skill 만들기와 새 세션 시험"], ["18", "중단 조건"], ["19", "중단 보고서"], ["20", "예약 만들기와 실제 실행"], ["21", "E4 · 중단 조건 표와 Scheduled 생성"], ["22", "19강 정리와 20강 예고"]];
 var N = slides.length, cur = -1, hudT = null;
 var ctr = document.getElementById('ctr'), toc = document.getElementById('toc');
 
