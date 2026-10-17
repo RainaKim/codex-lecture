@@ -40,6 +40,9 @@ PLANS = [
     dict(id='lec17', num='17강', title='역할 분리',
          sub='planner · implementer · reviewer · 사람 승인 지점', dur='약 45분',
          src=os.path.join(ROOT, 'ref/lecture17-slide-plan-v1.html'), cover='assets/cover17.png'),
+    dict(id='lec19', num='19강', title='백그라운드 실행과 Automation',
+         sub='Skill 승격 · 무인 권한 · 중단 조건 · Scheduled 생성', dur='약 45분',
+         src=os.path.join(ROOT, 'ref/lecture19-slide-plan-v1.html'), cover='assets/cover19.png'),
 ]
 FONT = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">'
 
