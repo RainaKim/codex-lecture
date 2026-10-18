@@ -784,8 +784,8 @@
           <div class="t sm" style="left:6.6%; top:32.2%; width:20%; color:#9C9C9C; font-weight:700;">이번에 만드는 것</div>
           <div style="left:27%; top:31.7%; display:flex; align-items:center; gap:5px;"><span class="kchip">.agents/skills/&lt;이름&gt;/SKILL.md</span><span class="kchip">후보 문서</span><span class="kchip">실행 기록 E3</span></div>
           <div class="t sm" style="left:6.6%; top:37.3%; width:20%; color:#9C9C9C; font-weight:700;">순서</div>
-          <div style="left:27%; top:36.8%; display:flex; align-items:center; gap:5px;"><span class="kchip">Skill 작성</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 2px;">→</span><span class="kchip">새 세션 호출</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 2px;">→</span><span class="kchip">일반 요청과 비교</span></div>
-          <div class="t" style="left:6.6%; top:42.2%; width:87%; color:#5B5B5B;"><b style="color:#000;">긴 과거 대화를 복제하지 않음</b> — 안정된 절차만 남김</div>
+          <div style="left:27%; top:36.8%; display:flex; align-items:center; gap:5px;"><span class="kchip">후보 추천</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 2px;">→</span><span class="kchip">사람 승인</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 2px;">→</span><span class="kchip">Skill 만들기</span><span class="t sm" style="color:#9C9C9C; line-height:1; margin:0 2px;">→</span><span class="kchip">새 세션 시험</span></div>
+          <div class="t" style="left:6.6%; top:42.2%; width:87%; color:#5B5B5B;"><b style="color:#000;">긴 대화 내용을 그대로 옮기지 않음</b> — 바뀌지 않는 절차만 담음</div>
           <div class="card" style="left:4.2%; top:50.5%; width:44%; height:27.5%;"></div>
           <div class="t sm" style="left:6.6%; top:52.8%; width:39%; color:#9C9C9C; font-weight:700;">생각할 질문</div>
           <div class="t" style="left:6.6%; top:58.3%; width:39.2%; word-break:keep-all;">「반복 절차와 실행마다 달라지는 입력을 분리했는가」</div>
@@ -796,14 +796,14 @@
           <div class="t" style="left:54.2%; top:68.8%; width:39.2%; word-break:keep-all;">새 세션이 Skill 이름과 입력만으로 정해진 결과 형식과 멈춤 규칙을 따름</div>
           <div class="mark"></div>
         </div>
-        <div class="cap">실습 큐 — 위 카드에 만드는 것 칩(.agents/skills/&lt;이름&gt;/SKILL.md · 후보 문서 · 실행 기록 E3), 순서 칩(Skill 작성 → 새 세션 호출 → 일반 요청과 비교), 원칙 한 줄(긴 대화 내용을 그대로 옮기지 않음 — 바뀌지 않는 절차만 담음). 아래 2열에 질문 둘 · 확인 둘. 레드는 「실습」 배지만</div>
+        <div class="cap">실습 큐 — 위 카드에 만드는 것 칩(.agents/skills/&lt;이름&gt;/SKILL.md · 후보 문서 · 실행 기록 E3), 순서 칩(후보 추천 → 사람 승인 → Skill 만들기 → 새 세션 시험), 원칙 한 줄(긴 대화 내용을 그대로 옮기지 않음 — 바뀌지 않는 절차만 담음). 아래 2열에 질문 둘 · 확인 둘. 레드는 「실습」 배지만</div>
         <div class="wf-spec"><b>제작 명세:</b> 예상 2분. 07과 같은 큐 좌표. 첫 행은 <code>kchip</code> 셋 — 경로가 긴 SKILL.md 칩 하나만 실제 경로이고 나머지는 이름(후보 문서 = docs/automation/candidates.md · 실행 기록 E3 = notes/automation-run-l19.md의 E3 절)으로 줄여 세 칩이 행 폭 안에 들게 했다(스크린샷으로 확인). 목표 · 문맥은 순서 칩, 제약은 원칙 한 줄, 완료 조건은 「확인할 것」. 질문 둘은 README E3 설계 질문, 확인 둘은 사람 확인 · 검증의 압축. <b>레드는 「실습」 배지 하나</b>. 스트립 없음. 수치 없음. <b>넣지 않은 것:</b> 승격한 후보 이름 · SKILL.md 실제 문장 · 두 결과의 비교 내용 — 실습 결과다.</div>
       </div>
       <div class="txt">
         <h4>슬라이드에 넣을 텍스트</h4>
-        <div class="copy"><div class="t">E3 · Skill 만들기와 새 세션 시험</div><ul><li>이번에 만드는 것: .agents/skills/&lt;이름&gt;/SKILL.md · 후보 문서 · 실행 기록 E3</li><li>순서: Skill 작성 → 새 세션 호출 → 일반 요청과 비교</li><li>긴 대화 내용을 그대로 옮기지 않음 — 바뀌지 않는 절차만 담음</li><li>질문: 「반복 절차와 실행마다 달라지는 입력을 분리했는가」 「Skill이 멈출 때와 사람이 이어받을 지점이 분명한가」</li><li>확인: description이 언제 쓰고 쓰지 않을지를 구분함 / 새 세션이 Skill 이름과 입력만으로 정해진 결과 형식과 멈춤 규칙을 따름</li></ul></div>
+        <div class="copy"><div class="t">E3 · Skill 만들기와 새 세션 시험</div><ul><li>이번에 만드는 것: .agents/skills/&lt;이름&gt;/SKILL.md · 후보 문서 · 실행 기록 E3</li><li>순서: 후보 추천 → 사람 승인 → Skill 만들기 → 새 세션 시험</li><li>긴 대화 내용을 그대로 옮기지 않음 — 바뀌지 않는 절차만 담음</li><li>질문: 「반복 절차와 실행마다 달라지는 입력을 분리했는가」 「Skill이 멈출 때와 사람이 이어받을 지점이 분명한가」</li><li>확인: description이 언제 쓰고 쓰지 않을지를 구분함 / 새 세션이 Skill 이름과 입력만으로 정해진 결과 형식과 멈춤 규칙을 따름</li></ul></div>
         <h4>연출 메모</h4>
-        <div class="memo">README E3를 띄운다. E2에서 사람이 승인한 후보 하나를 <code>$skill-creator</code>로 Skill로 만들게 하고, 14의 구조와 15의 남길 것·남기지 않을 것을 화면에 둔다. 새 세션에는 Skill 이름과 이번 실행의 입력만 주게 하고, 같은 입력의 일반 요청과 16의 축으로 비교하게 한다. 승인이나 추가 권한이 필요한 명령은 Skill을 완성으로 과장하지 말고 조건부로 기록하게 한다. 실습 중 화면은 Codex와 README를 split.</div>
+        <div class="memo">README E3를 띄운다. Codex가 추천한 후보를 사람이 승인한 뒤 그 후보 하나를 <code>$skill-creator</code>로 Skill로 만들게 하고, 14의 구조와 15의 남길 것·남기지 않을 것을 화면에 둔다. 새 세션에는 Skill 이름과 이번 실행의 입력만 주게 하고, 같은 입력의 일반 요청과 16의 축으로 비교하게 한다. 승인이나 추가 권한이 필요한 명령은 Skill을 완성으로 과장하지 말고 조건부로 기록하게 한다. 실습 중 화면은 Codex와 README를 split.</div>
       </div>
     </div>
   </section>
