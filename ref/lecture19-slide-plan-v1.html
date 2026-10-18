@@ -145,13 +145,13 @@
 
   <div class="panel">
     <h2>덱 성격</h2>
-    <p class="note-inline">이 덱은 <b>이론 + 실습 덱</b>이다. 19강은 Part 2 · Chapter 4의 셋째 강의로, 지금까지 반복한 검증·점검·확인 절차 가운데 무인으로 맡길 수 있는 것을 가려내고, 맡기기 전에 멈추는 조건과 사람이 재개하는 지점을 만든다. 커리큘럼 정본의 지침대로 <b>독립 기능 소개가 아니라 기존 Desktop App 중심 흐름에서 반복되는 부분을 떼어내는 구성</b>이다. 전체 구성은 <b>표지(01) → 반복과 위임(02~06) → 실습 큐 07 → 표면과 자동 실행 권한(08~12) → 실습 큐 13 → Skill 승격(14~16) → 실습 큐 17 → 중단 조건과 예약(18~20) → 실습 큐 21 → 마무리(22)</b>이고, 실습 큐 E1~E4는 클립 1~4에 하나씩 온다. 클립 배분(예상 · 리허설 후 확정): <b>클립 1 — 반복 작업의 후보 선별</b>(약 10분 · 01~07) / <b>클립 2 — 어디서 무엇을 하나과 자동 실행 권한</b>(약 10분 · 08~13) / <b>클립 3 — Skill 승격</b>(약 7분 · 14~17) / <b>클립 4 — 중단 조건과 예약 생성</b>(약 8분 · 18~22).</p>
+    <p class="note-inline">이 덱은 <b>이론 + 실습 덱</b>이다. 19강은 Part 2 · Chapter 4의 셋째 강의로, 지금까지 반복한 검증·점검·확인 절차 가운데 무인으로 맡길 수 있는 것을 가려내고, 맡기기 전에 멈추는 조건과 사람이 재개하는 지점을 만든다. 커리큘럼 정본의 지침대로 <b>독립 기능 소개가 아니라 기존 Desktop App 중심 흐름에서 반복되는 부분을 떼어내는 구성</b>이다. 전체 구성은 <b>표지(01) → 반복과 위임(02~06) → 실습 큐 07 → 표면과 자동 실행 권한(08~12) → 실습 큐 13 → Skill 승격(14~16) → 실습 큐 17 → 중단 조건과 예약(18~20) → 실습 큐 21 → 마무리(22)</b>이고, 실습 큐 E1~E4는 클립 1~4에 하나씩 온다. 클립 배분(예상 · 리허설 후 확정): <b>클립 1 — 반복 작업의 후보 판정</b>(약 10분 · 01~07) / <b>클립 2 — 어디서 무엇을 하나과 자동 실행 권한</b>(약 10분 · 08~13) / <b>클립 3 — Skill 승격</b>(약 7분 · 14~17) / <b>클립 4 — 중단 조건과 예약 생성</b>(약 8분 · 18~22).</p>
     <p class="note-inline" style="margin-top:10px;"><b>실습 결과를 슬라이드에 넣지 않는다.</b> 네 후보가 적합 · 조건부 · 수동 유지 중 어디에 속하는지, 어느 후보가 자동 실행 권한 때문에 걸러지는지, 승격할 후보의 이름과 SKILL.md 본문, 두 세션의 비교 결과, 중단 조건의 상한 값과 Scheduled 생성 화면은 모두 실습 또는 라이브 데모에서 나오는 것이다. 04는 후보 이름과 입력 종류만, 06은 판정의 뜻만, 18은 중단 유형과 감지 신호만 적는다. 실습 큐 네 장(07·13·17·21)은 17강 10 · 16 · 20 · 22와 같은 큐 컴포넌트·좌표(레드 「실습」 배지 88%/15.5% + 헤드라인 + 위 카드 30~46.5% 세 행 + 아래 2열 50.5~78%)를 그대로 쓰고, README의 목표 · 문맥 · 제약 · 완료 조건을 순서 칩 · 원칙 한 줄 · 확인할 것으로 압축한다.</p>
     <p class="note-inline" style="margin-top:10px; color:#5B5B5B;"><b>공식 문서 근거(슬라이드에 사실로 쓴 것):</b> Scheduled 관리 화면은 ChatGPT Desktop 앱 · 웹에만 있고 Codex CLI · IDE에는 없다(08 · 10). 예약 실행은 무인이며 기본 sandbox를 쓰고 조직 정책이 허용하면 승인 정책은 never다(09). read-only는 파일 수정 · 네트워크 · 컴퓨터 앱 사용을, workspace-write는 workspace 밖 파일 수정 · 네트워크 · 컴퓨터 앱 사용을 막는다(10). Desktop 앱의 예약 prompt에서 <code>$skill-name</code>으로 Skill을 직접 호출할 수 있다(14 · 20). 로컬 프로젝트 task는 컴퓨터와 앱이 켜져 있어야 하고 잦은 일정은 worktree를 쌓을 수 있다(20). Skill은 <code>SKILL.md</code>(name · description 필수) 폴더이고 repo 위치는 <code>.agents/skills</code>다(14). <b>공식 스킬 문서에는 Skill과 Scheduled task의 관계 설명이 없다</b> — 03의 책임 분리(Skill = 일하는 방법, Scheduled = 언제)는 이 과정의 설계이며 슬라이드에도 그렇게 표기했다.</p>
     <p class="note-inline" style="margin-top:10px;">17강 · 13강 플랜과 같은 토큰 · 좌표 문법(킥커 12.18% · 헤드라인 18.8%)을 그대로 쓰고, 표지는 <code>assets/cover19.png</code>로 <code>gen2.py</code>가 01을 이미지 표지로 교체한다 — 01의 텍스트 표지 목업은 PNG와 같은 문구를 적어 둔 대체 표기다. 스트립은 쓰지 않는다. 마지막 슬라이드의 Chapter 4 흐름은 <b>역할 분리 → Issue → 후보 판정 → Skill → 중단 조건 → PR 후보</b>로 두고 19강이 세 노드를 차지한다.</p>
   </div>
 
-  <div class="sec-head"><span class="num">클립 1</span><h2>반복 작업의 후보 선별</h2><span class="time">예상 약 10분 · 01~07 · 실습 E1</span></div>
+  <div class="sec-head"><span class="num">클립 1</span><h2>반복 작업의 후보 판정</h2><span class="time">예상 약 10분 · 01~07 · 실습 E1</span></div>
 
   <!-- 01 백그라운드 실행과 Automation -->
   <section class="slide">
@@ -267,63 +267,16 @@
     </div>
   </section>
 
-  <!-- 04 Automation 후보 -->
-  <section class="slide">
-    <div class="s-top"><span class="s-num">04</span><span class="chip op">핵심 개념</span><span class="chip cl">클립 1</span><span class="chip lay">4열 카드 · 후보 이름 + 입력 한 줄 + 점선 아래 회색 한 줄 + 레드 한 줄</span><span class="s-time">예상 1분</span></div>
-    <h3>Automation 후보</h3>
-    <div class="s-body">
-      <div class="wf">
-        <div class="mk">
-          <div class="lbl">CHAPTER 4</div>
-          <div class="kick" style="left:3.43%; top:12.18%;">클립 1 · 핵심 개념</div>
-          <div class="h" style="left:3.43%; top:18.8%;">Automation 후보</div>
-          <div class="card" style="left:4.2%; top:29.5%; width:21.7%; height:27%;"></div>
-          <div class="t" style="left:6.0%; top:32.5%; width:18.1%; font-weight:700; word-break:keep-all;">새 Issue의 관련 파일 후보 정리</div>
-          <div class="dash" style="left:6.0%; top:40.5%; width:18.1%;"></div>
-          <div class="t sm" style="left:6.0%; top:43%; width:18.1%; color:#9C9C9C; font-weight:700;">입력</div>
-          <div class="t" style="left:6.0%; top:47.5%; width:18.1%; color:#5B5B5B; word-break:keep-all;">Issue · 정책 · 코드</div>
-          <div class="card" style="left:27.5%; top:29.5%; width:21.7%; height:27%;"></div>
-          <div class="t" style="left:29.3%; top:32.5%; width:18.1%; font-weight:700; word-break:keep-all;">테스트 실패 로그 요약</div>
-          <div class="dash" style="left:29.3%; top:40.5%; width:18.1%;"></div>
-          <div class="t sm" style="left:29.3%; top:43%; width:18.1%; color:#9C9C9C; font-weight:700;">입력</div>
-          <div class="t" style="left:29.3%; top:47.5%; width:18.1%; color:#5B5B5B; word-break:keep-all;">실패 로그</div>
-          <div class="card" style="left:50.8%; top:29.5%; width:21.7%; height:27%;"></div>
-          <div class="t" style="left:52.6%; top:32.5%; width:18.1%; font-weight:700; word-break:keep-all;">PR preflight 실행</div>
-          <div class="dash" style="left:52.6%; top:40.5%; width:18.1%;"></div>
-          <div class="t sm" style="left:52.6%; top:43%; width:18.1%; color:#9C9C9C; font-weight:700;">입력</div>
-          <div class="t" style="left:52.6%; top:47.5%; width:18.1%; color:#5B5B5B; word-break:keep-all;">diff · checklist</div>
-          <div class="card" style="left:74.1%; top:29.5%; width:21.7%; height:27%;"></div>
-          <div class="t" style="left:75.9%; top:32.5%; width:18.1%; font-weight:700; word-break:keep-all;">문서와 코드 불일치 후보 찾기</div>
-          <div class="dash" style="left:75.9%; top:40.5%; width:18.1%;"></div>
-          <div class="t sm" style="left:75.9%; top:43%; width:18.1%; color:#9C9C9C; font-weight:700;">입력</div>
-          <div class="t" style="left:75.9%; top:47.5%; width:18.1%; color:#5B5B5B; word-break:keep-all;">문서 · 코드</div>
-          <div class="dash" style="left:4.2%; top:62%; width:91.6%;"></div>
-          <div class="t c" style="left:4.2%; top:63.3%; width:91.6%; color:#5B5B5B;">모든 후보를 같은 기준으로 판정</div>
-          <div class="t mid c" style="left:4.2%; top:70%; width:91.6%; color:#FC1C49; font-weight:700;">후보마다 기록을 보고 판정</div>
-          <div class="mark"></div>
-        </div>
-        <div class="cap">카드 넷 — 새 Issue의 관련 파일 후보 정리(입력: Issue · 정책 · 코드) / 테스트 실패 로그 요약(입력: 실패 로그) / PR preflight 실행(입력: diff · checklist) / 문서와 코드 불일치 후보 찾기(입력: 문서 · 코드). 전부 흰 카드. 점선 아래 회색 「모든 후보를 같은 기준으로 판정」. 레드는 「후보마다 기록을 보고 판정」</div>
-        <div class="wf-spec"><b>제작 명세:</b> 예상 1분. 17강 23의 노드 격자에 맞춰 카드 폭 21.7%(좌 4.2 · 27.5 · 50.8 · 74.1%, 간격 1.6%) · 29.5~56.5%. 카드 안은 이름(볼드 · <code>word-break:keep-all</code> 한 줄, 폭을 넘으면 두 줄까지 40.5% <code>dash</code> 위에 든다) → <code>dash</code> → 회색 라벨 「입력」 + 입력 종류 한 줄. 입력은 종류만 적고 값·경로는 적지 않는다. <b>카드 색은 전부 흰색, 적합·조건부·수동 유지 표시와 권한 표시는 넣지 않는다</b> — 판정은 05 기준과 E1에서 나온다. 62% <code>dash</code> + 63.3% 회색 한 줄과 70% 레드 한 줄도 판정을 암시하지 않는 문구로만 둔다. <b>레드 1개 = 70% 중앙 <code>t mid</code> 볼드</b>. 스트립 없음. 수치 없음(「네 장」은 쓰지 않았다). <b>넣지 않은 것:</b> 후보별 판정 · 필요한 권한 · 반복 근거 — 모두 실습에서 나오는 값이다.</div>
-      </div>
-      <div class="txt">
-        <h4>슬라이드에 넣을 텍스트</h4>
-        <div class="copy"><div class="t">Automation 후보</div><ul><li>새 Issue의 관련 파일 후보 정리 — 입력: Issue · 정책 · 코드</li><li>테스트 실패 로그 요약 — 입력: 실패 로그</li><li>PR preflight 실행 — 입력: diff · checklist</li><li>문서와 코드 불일치 후보 찾기 — 입력: 문서 · 코드</li><li>회색: 모든 후보를 같은 기준으로 판정</li><li>레드: 후보마다 기록을 보고 판정</li></ul></div>
-        <h4>연출 메모</h4>
-        <div class="memo">후보는 커리큘럼이 정해 둔 이름이고, 이 슬라이드에서는 이름과 입력 종류만 읽는다. 어느 후보가 자동화에 맞는지는 말하지 않는다 — 다음 슬라이드의 기준으로 실습에서 직접 대조한다고 넘긴다. 이름이 그럴듯하다는 이유로 반복 작업이라고 가정하지 않는다는 점만 한 문장으로 덧붙인다.</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 05 선별 기준 -->
+  <!-- 04 판정 기준 -->
   <section class="slide">
     <div class="s-top"><span class="s-num">05</span><span class="chip op">핵심 개념</span><span class="chip cl">클립 1</span><span class="chip lay">표 5행 2열 · 헤더 회색 + 마지막 행 첫 칸 레드 마커 + 회색 한 줄</span><span class="s-time">예상 2분</span></div>
-    <h3>선별 기준</h3>
+    <h3>판정 기준</h3>
     <div class="s-body">
       <div class="wf">
         <div class="mk">
           <div class="lbl">CHAPTER 4</div>
           <div class="kick" style="left:3.43%; top:12.18%;">클립 1 · 핵심 개념</div>
-          <div class="h" style="left:3.43%; top:18.8%;">선별 기준</div>
+          <div class="h" style="left:3.43%; top:18.8%;">판정 기준</div>
           <table style="left:4.2%; top:29.5%; width:91.6%;">
             <tr><th style="background:#5B5B5B; width:22%; text-align:left; padding-left:8px;">기준</th><th style="background:#5B5B5B; text-align:left; padding-left:8px;">확인할 질문</th></tr>
             <tr><td style="font-weight:700;">반복 빈도</td><td>01~18강에서 같은 절차와 출력이 다시 나타났는가</td></tr>
@@ -336,18 +289,18 @@
           <div class="mark"></div>
         </div>
         <div class="cap">표 — 기준 / 확인할 질문. 반복 빈도(01~18강에서 같은 절차와 출력이 다시 나타났는가) · 입력 안정성(실행마다 달라지는 경로 · 로그 · diff를 입력으로 따로 뺄 수 있는가) · 실패 영향(잘못 판단해도 읽기 결과로 끝나는가, 코드나 외부 서비스를 바꾸는가) · 사람 판단(정책, 작업 범위, 공개해도 되는지를 매번 사람이 정해야 하는가) · 자동 실행 권한(네트워크나 앱, 작업 폴더 밖 쓰기 없이 필요한 정보를 얻는가). 레드는 마지막 행 「자동 실행 권한」 한 칸</div>
-        <div class="wf-spec"><b>제작 명세:</b> 예상 2분. 17강 17·21의 표 문법 — <code>.mk table</code> 4.2~95.8% · 29.5%부터, <b>헤더 배경은 인라인 #5B5B5B</b>, 열 폭 22 / 78%, 헤더 왼쪽 정렬, 첫 열 볼드. 질문 문구는 <b>README E1 판단 기준 표</b>를 그대로 옮겼다(README의 「Lab 01~18」을 슬라이드에서는 「01~18강」으로 표기). <b>레드 1개 = 마지막 행 첫 칸 「자동 실행 권한」 볼드</b> — 이 기준이 이 강의의 새 축(자동 실행의 권한)을 가리키는 마커이며 다른 레드는 두지 않는다. 64% 회색 한 줄은 근거를 경로로 남기라는 E1 요구. 스트립 없음. 수치 없음(개수 표기 없음 — 제목도 「선별 기준」). <b>넣지 않은 것:</b> 후보별 기준 판정 · 근거 경로 — E1 결과다.</div>
+        <div class="wf-spec"><b>제작 명세:</b> 예상 2분. 17강 17·21의 표 문법 — <code>.mk table</code> 4.2~95.8% · 29.5%부터, <b>헤더 배경은 인라인 #5B5B5B</b>, 열 폭 22 / 78%, 헤더 왼쪽 정렬, 첫 열 볼드. 질문 문구는 <b>README E1 판단 기준 표</b>를 그대로 옮겼다(README의 「Lab 01~18」을 슬라이드에서는 「01~18강」으로 표기). <b>레드 1개 = 마지막 행 첫 칸 「자동 실행 권한」 볼드</b> — 이 기준이 이 강의의 새 축(자동 실행의 권한)을 가리키는 마커이며 다른 레드는 두지 않는다. 64% 회색 한 줄은 근거를 경로로 남기라는 E1 요구. 스트립 없음. 수치 없음(개수 표기 없음 — 제목도 「판정 기준」). <b>넣지 않은 것:</b> 후보별 기준 판정 · 근거 경로 — E1 결과다.</div>
       </div>
       <div class="txt">
         <h4>슬라이드에 넣을 텍스트</h4>
-        <div class="copy"><div class="t">선별 기준</div><ul><li>반복 빈도 — 01~18강에서 같은 절차와 출력이 다시 나타났는가</li><li>입력 안정성 — 실행마다 달라지는 경로 · 로그 · diff를 입력으로 따로 뺄 수 있는가</li><li>실패 영향 — 잘못 판단해도 읽기 결과로 끝나는가, 코드나 외부 서비스를 바꾸는가</li><li>사람 판단 — 정책, 작업 범위, 공개해도 되는지를 매번 사람이 정해야 하는가</li><li>자동 실행 권한 — 네트워크나 앱, 작업 폴더 밖 쓰기 없이 필요한 정보를 얻는가 (레드 마커)</li><li>회색: 판정마다 근거 파일을 함께 기록</li></ul></div>
+        <div class="copy"><div class="t">판정 기준</div><ul><li>반복 빈도 — 01~18강에서 같은 절차와 출력이 다시 나타났는가</li><li>입력 안정성 — 실행마다 달라지는 경로 · 로그 · diff를 입력으로 따로 뺄 수 있는가</li><li>실패 영향 — 잘못 판단해도 읽기 결과로 끝나는가, 코드나 외부 서비스를 바꾸는가</li><li>사람 판단 — 정책, 작업 범위, 공개해도 되는지를 매번 사람이 정해야 하는가</li><li>자동 실행 권한 — 네트워크나 앱, 작업 폴더 밖 쓰기 없이 필요한 정보를 얻는가 (레드 마커)</li><li>회색: 판정마다 근거 파일을 함께 기록</li></ul></div>
         <h4>연출 메모</h4>
         <div class="memo">표를 위에서 아래로 읽으며 질문 하나하나가 파일이나 실행 기록으로 확인되는지 짚는다. 마지막 행은 이 강의에서 처음 나오는 축이라는 것을 레드 마커로만 가리키고, 06·09·10에서 이유를 이어서 설명한다. 후보를 어떻게 판정했는지는 말하지 않는다.</div>
       </div>
     </div>
   </section>
 
-  <!-- 06 판정 -->
+  <!-- 05 판정 -->
   <section class="slide">
     <div class="s-top"><span class="s-num">06</span><span class="chip op">핵심 개념</span><span class="chip cl">클립 1</span><span class="chip lay">3열 카드 · 헤더 바 + 한 줄씩 + 점선 아래 레드 한 줄</span><span class="s-time">예상 1.5분</span></div>
     <h3>판정</h3>
@@ -382,16 +335,63 @@
     </div>
   </section>
 
-  <!-- 07 E1 · 반복 작업 후보 선별 -->
+  <!-- 06 Automation 후보 -->
+  <section class="slide">
+    <div class="s-top"><span class="s-num">04</span><span class="chip op">핵심 개념</span><span class="chip cl">클립 1</span><span class="chip lay">4열 카드 · 후보 이름 + 입력 한 줄 + 점선 아래 회색 한 줄 + 레드 한 줄</span><span class="s-time">예상 1분</span></div>
+    <h3>Automation 후보</h3>
+    <div class="s-body">
+      <div class="wf">
+        <div class="mk">
+          <div class="lbl">CHAPTER 4</div>
+          <div class="kick" style="left:3.43%; top:12.18%;">클립 1 · 핵심 개념</div>
+          <div class="h" style="left:3.43%; top:18.8%;">Automation 후보</div>
+          <div class="card" style="left:4.2%; top:29.5%; width:21.7%; height:27%;"></div>
+          <div class="t" style="left:6.0%; top:32.5%; width:18.1%; font-weight:700; word-break:keep-all;">새 Issue의 관련 파일 후보 정리</div>
+          <div class="dash" style="left:6.0%; top:40.5%; width:18.1%;"></div>
+          <div class="t sm" style="left:6.0%; top:43%; width:18.1%; color:#9C9C9C; font-weight:700;">입력</div>
+          <div class="t" style="left:6.0%; top:47.5%; width:18.1%; color:#5B5B5B; word-break:keep-all;">Issue · 정책 · 코드</div>
+          <div class="card" style="left:27.5%; top:29.5%; width:21.7%; height:27%;"></div>
+          <div class="t" style="left:29.3%; top:32.5%; width:18.1%; font-weight:700; word-break:keep-all;">테스트 실패 로그 요약</div>
+          <div class="dash" style="left:29.3%; top:40.5%; width:18.1%;"></div>
+          <div class="t sm" style="left:29.3%; top:43%; width:18.1%; color:#9C9C9C; font-weight:700;">입력</div>
+          <div class="t" style="left:29.3%; top:47.5%; width:18.1%; color:#5B5B5B; word-break:keep-all;">실패 로그</div>
+          <div class="card" style="left:50.8%; top:29.5%; width:21.7%; height:27%;"></div>
+          <div class="t" style="left:52.6%; top:32.5%; width:18.1%; font-weight:700; word-break:keep-all;">PR preflight 실행</div>
+          <div class="dash" style="left:52.6%; top:40.5%; width:18.1%;"></div>
+          <div class="t sm" style="left:52.6%; top:43%; width:18.1%; color:#9C9C9C; font-weight:700;">입력</div>
+          <div class="t" style="left:52.6%; top:47.5%; width:18.1%; color:#5B5B5B; word-break:keep-all;">diff · checklist</div>
+          <div class="card" style="left:74.1%; top:29.5%; width:21.7%; height:27%;"></div>
+          <div class="t" style="left:75.9%; top:32.5%; width:18.1%; font-weight:700; word-break:keep-all;">문서와 코드 불일치 후보 찾기</div>
+          <div class="dash" style="left:75.9%; top:40.5%; width:18.1%;"></div>
+          <div class="t sm" style="left:75.9%; top:43%; width:18.1%; color:#9C9C9C; font-weight:700;">입력</div>
+          <div class="t" style="left:75.9%; top:47.5%; width:18.1%; color:#5B5B5B; word-break:keep-all;">문서 · 코드</div>
+          <div class="dash" style="left:4.2%; top:62%; width:91.6%;"></div>
+          <div class="t c" style="left:4.2%; top:63.3%; width:91.6%; color:#5B5B5B;">방금 본 기준을 후보마다 같게 적용</div>
+          <div class="t mid c" style="left:4.2%; top:70%; width:91.6%; color:#FC1C49; font-weight:700;">후보마다 기록을 보고 판정</div>
+          <div class="mark"></div>
+        </div>
+        <div class="cap">카드 넷 — 새 Issue의 관련 파일 후보 정리(입력: Issue · 정책 · 코드) / 테스트 실패 로그 요약(입력: 실패 로그) / PR preflight 실행(입력: diff · checklist) / 문서와 코드 불일치 후보 찾기(입력: 문서 · 코드). 전부 흰 카드. 점선 아래 회색 「방금 본 기준을 후보마다 같게 적용」. 레드는 「후보마다 기록을 보고 판정」</div>
+        <div class="wf-spec"><b>제작 명세:</b> 예상 1분. 17강 23의 노드 격자에 맞춰 카드 폭 21.7%(좌 4.2 · 27.5 · 50.8 · 74.1%, 간격 1.6%) · 29.5~56.5%. 카드 안은 이름(볼드 · <code>word-break:keep-all</code> 한 줄, 폭을 넘으면 두 줄까지 40.5% <code>dash</code> 위에 든다) → <code>dash</code> → 회색 라벨 「입력」 + 입력 종류 한 줄. 입력은 종류만 적고 값·경로는 적지 않는다. <b>카드 색은 전부 흰색, 적합·조건부·수동 유지 표시와 권한 표시는 넣지 않는다</b> — 판정은 05 기준과 E1에서 나온다. 62% <code>dash</code> + 63.3% 회색 한 줄과 70% 레드 한 줄도 판정을 암시하지 않는 문구로만 둔다. <b>레드 1개 = 70% 중앙 <code>t mid</code> 볼드</b>. 스트립 없음. 수치 없음(「네 장」은 쓰지 않았다). <b>넣지 않은 것:</b> 후보별 판정 · 필요한 권한 · 반복 근거 — 모두 실습에서 나오는 값이다.</div>
+      </div>
+      <div class="txt">
+        <h4>슬라이드에 넣을 텍스트</h4>
+        <div class="copy"><div class="t">Automation 후보</div><ul><li>새 Issue의 관련 파일 후보 정리 — 입력: Issue · 정책 · 코드</li><li>테스트 실패 로그 요약 — 입력: 실패 로그</li><li>PR preflight 실행 — 입력: diff · checklist</li><li>문서와 코드 불일치 후보 찾기 — 입력: 문서 · 코드</li><li>회색: 방금 본 기준을 후보마다 같게 적용</li><li>레드: 후보마다 기록을 보고 판정</li></ul></div>
+        <h4>연출 메모</h4>
+        <div class="memo">후보는 커리큘럼이 정해 둔 이름이고, 이 슬라이드에서는 이름과 입력 종류만 읽는다. 어느 후보가 자동화에 맞는지는 말하지 않는다 — 다음 슬라이드의 기준으로 실습에서 직접 대조한다고 넘긴다. 이름이 그럴듯하다는 이유로 반복 작업이라고 가정하지 않는다는 점만 한 문장으로 덧붙인다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 E1 · 후보 판정 -->
   <section class="slide">
     <div class="s-top"><span class="s-num">07</span><span class="chip demo">실습 큐</span><span class="chip cl">클립 1</span><span class="chip lay">큐 컴포넌트 · 만드는 파일 칩 + 순서 칩 + 질문/확인 2열</span><span class="s-time">예상 2분 (+실습 진행)</span></div>
-    <h3>E1 · 반복 작업 후보 선별</h3>
+    <h3>E1 · 후보 판정</h3>
     <div class="s-body">
       <div class="wf">
         <div class="mk">
           <div class="lbl">CHAPTER 4</div>
           <div class="kick" style="left:3.43%; top:12.18%;">클립 1 · 실습</div>
-          <div class="h" style="left:3.43%; top:18.8%;">E1 · 반복 작업 후보 선별</div>
+          <div class="h" style="left:3.43%; top:18.8%;">E1 · 후보 판정</div>
           <div style="left:88%; top:15.5%; width:7.5%; height:5.8%; background:#FC1C49; border-radius:999px; color:#fff; font-size:7.6px; font-weight:700; display:flex; align-items:center; justify-content:center;">실습</div>
           <div class="card" style="left:4.2%; top:30%; width:91.6%; height:16.5%;"></div>
           <div class="t sm" style="left:6.6%; top:32.2%; width:20%; color:#9C9C9C; font-weight:700;">이번에 만드는 것</div>
@@ -414,9 +414,9 @@
       </div>
       <div class="txt">
         <h4>슬라이드에 넣을 텍스트</h4>
-        <div class="copy"><div class="t">E1 · 반복 작업 후보 선별</div><ul><li>이번에 만드는 것: docs/automation/candidates.md · notes/automation-run-l19.md (E1 절)</li><li>순서: 반복 근거 찾기 → 기준 대조 → 판정 기록</li><li>판정은 근거를 보고 정함 — 확인하지 못한 권한은 미확인으로 표시</li><li>질문: 「반복했다는 근거가 파일과 실행 기록에 남아 있는가」 「입력 형식이 매번 달라도 같은 절차로 판정할 수 있는가」</li><li>확인: 후보마다 기준별 판정과 근거가 기록됨 / 조건부 · 수동 유지도 정상 결과로 기록됨</li></ul></div>
+        <div class="copy"><div class="t">E1 · 후보 판정</div><ul><li>이번에 만드는 것: docs/automation/candidates.md · notes/automation-run-l19.md (E1 절)</li><li>순서: 반복 근거 찾기 → 기준 대조 → 판정 기록</li><li>판정은 근거를 보고 정함 — 확인하지 못한 권한은 미확인으로 표시</li><li>질문: 「반복했다는 근거가 파일과 실행 기록에 남아 있는가」 「입력 형식이 매번 달라도 같은 절차로 판정할 수 있는가」</li><li>확인: 후보마다 기준별 판정과 근거가 기록됨 / 조건부 · 수동 유지도 정상 결과로 기록됨</li></ul></div>
         <h4>연출 메모</h4>
-        <div class="memo">Lab 19 README E1을 띄우고 시작 상태를 확인한다. 05의 기준 표를 화면에 두고, 01~18강의 실행 기록·checklist·역할 prompt·Issue·탐색 기록에서 같은 절차와 출력이 반복된 경로를 찾게 한다. 이름만 보고 반복 작업으로 가정하지 말고 경로로 확인하라고 안내하며, 아직 확인하지 못한 권한은 미확인으로 두게 한다. 실습 중 화면은 Codex와 README를 split.</div>
+        <div class="memo">Lab 19 README E1을 띄우고 시작 상태를 확인한다. 04의 기준 표를 화면에 두고, 01~18강의 실행 기록·checklist·역할 prompt·Issue·탐색 기록에서 같은 절차와 출력이 반복된 경로를 찾게 한다. 이름만 보고 반복 작업으로 가정하지 말고 경로로 확인하라고 안내하며, 아직 확인하지 못한 권한은 미확인으로 두게 한다. 실습 중 화면은 Codex와 README를 split.</div>
       </div>
     </div>
   </section>
